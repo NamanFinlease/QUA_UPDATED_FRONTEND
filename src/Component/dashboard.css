@@ -1,0 +1,18 @@
+/* Dashboard.css */
+
+.table-container {
+    margin-top: 60px; /* Adjusted for navbar height */
+    padding: 20px;
+    overflow-x: auto; /* Ensure table is scrollable on smaller screens */
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  
+  .with-sidebar {
+    margin-left: 250px; /* Sidebar is open */
+  }
+  
+  .without-sidebar {
+    margin-left: 0; /* Sidebar is closed */
+  }
+  

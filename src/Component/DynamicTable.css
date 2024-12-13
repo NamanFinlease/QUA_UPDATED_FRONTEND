@@ -1,0 +1,47 @@
+/* Table container */
+.table-container {
+   
+    margin-top: 60px; /* Adjusted for navbar height */
+    padding: 20px;
+    overflow-x: auto; /* Ensure table is scrollable on smaller screens */
+    display: grid;
+    grid-template-columns: 1fr;
+}
+z
+/* Table styling */
+.dynamic-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1rem; /* Default font size */
+}
+
+.table-header, .table-cell {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.table-header {
+    background-color: rgb(148, 144, 144);
+    color: black;
+    font-weight: bold;
+}
+
+.table-header:hover {
+    background-color: #686767;
+}
+
+.table-row:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table-row:hover {
+    background-color: #d8d5d5;
+}
+
+/* Adjust font size based on screen size */
+@media (max-width: 768px) {
+    .dynamic-table {
+        font-size: 0.875rem; /* Smaller font size for smaller screens */
+    }
+}

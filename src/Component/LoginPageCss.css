@@ -1,0 +1,88 @@
+/* Ensure the body and html cover the full viewport */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+/* Login container styles */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
+  background-color: #5f6b83; /* Fallback color */
+  background-image: url('/src/assets/image/loginbackground.jpg'); /* Update with your actual image path */
+  background-size: cover; /* Ensures the image covers the entire container */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+.loginH2{
+  text-shadow: 2px 2px rgb(226, 221, 221);
+  text-align: center;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+/* Login box styles */
+
+.login-box {
+  background: rgba(255, 255, 255, 0.15); /* Dark blue background with 70% opacity */
+  padding: 20px;
+  border-radius: 40px;
+  box-shadow: 15px 15px 15px rgba(196, 195, 195, 0.1);
+  width: 400px;
+  height: 400px;
+  transition: background-image 0.3s ease; /* Smooth transition for background image */
+}
+
+/* Heading styles */
+h2 {
+  margin: 0 0 20px;
+  font-size: 30px;
+  color:white;
+}
+
+/* Input group styles */
+.input-group {
+  margin-bottom: 15px;
+  color: white;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color:white;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Button styles */
+.btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #1d3650;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: rgb(122, 138, 151);
+}
+
+/* Error message styles */
+.error {
+  color: #d9534f;
+  margin-bottom: 15px;
+}

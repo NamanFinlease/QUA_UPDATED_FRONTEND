@@ -1,0 +1,99 @@
+/* SearchForm.css */
+
+/* Container for the form and navbar */
+.search-form-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px; /* Optional: padding around the container */
+}
+
+/* Add margin-top to create space between the navbar and the form */
+.search-form {
+    width: 100%;
+    max-width: 800px; /* Increased width to accommodate side-by-side form parts */
+    margin: 40px auto 20px auto; /* Adjust top margin to create space */
+    padding: 20px;
+    border: 1px solid #b6b3b3;
+    border-radius: 8px;
+    background-color:rgb(247, 245, 245);
+}
+
+/* Heading styling */
+.search-form-h2 {
+    background-color: rgb(219, 225, 233); /* Background color */
+    color: black; /* Text color */
+    text-align: center;
+
+    width: 100%; /* Full width */
+    border-radius: 4px; /* Rounded corners */
+    border: 2px solid #333; /* Border color and width */
+    padding: 10px; /* Padding inside the heading */
+    box-sizing: border-box; /* Ensure padding and border are included in width */
+}
+
+/* Styling for the form container */
+.search-form-container h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.search-button{
+   margin-right: 52px;
+   margin-left: 350px;
+
+
+}
+.search-button:hover {
+    background-color:#333; /* Change background color on hover */
+ }
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Button styling */
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 40px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Layout for form parts */
+.search-form-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between form parts */
+}
+
+.search-form-part-1,
+.search-form-part-2 {
+    flex: 1; /* Take equal width */
+    min-width: 280px; /* Ensure a minimum width */
+}
+
+.search-form-part-1 {
+    margin-right: 20px; /* Space between the two parts */
+}
