@@ -88,6 +88,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
         setActionType(type); // Set the action to either 'hold' or 'reject'
     };
 
+
     const handleReasonChange = (event) => {
         const reason = event.target.value;
         setSelectedReason(reason);
@@ -99,7 +100,6 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
         // Submit logic for hold/reject based on actionType
         if (actionType === 'hold') {
             if (activeRole === "screener") {
-                console.log('screener submit')
 
                 holdLead({ id, reason: remarks })
             } else if (activeRole === "creditManager") {
@@ -329,7 +329,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                 }
 
                 {/* Render buttons if no action is selected */}
-                {(!actionType && !applicationProfile?.isApproved) && (
+                {(!actionType && !applicationProfile?.isApproved  && !applicationProfile?.isDisbursed ) && (
                     <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: 2 }}>
                         {activeRole === "sanctionHead" && <Button
                             // variant="contained"

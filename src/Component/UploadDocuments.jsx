@@ -22,7 +22,7 @@ const UploadDocuments = ({ leadData }) => {
 
     const { id } = useParams();
     const fileInputRef = useRef()
-    const { empInfo } = useAuthStore();
+    const { empInfo,activeRole } = useAuthStore();
     const [uploadedDocs, setUploadedDocs] = useState()
     const [selectedDocuments, setSelectedDocuments] = useState([])
     const [selectedDocType, setSelectedDocType] = useState(null);
@@ -115,7 +115,6 @@ const UploadDocuments = ({ leadData }) => {
                 salarySlip: [],
                 bankStatement: [],
             });
-            console.log('uploadeddddddddd')
             setFileInputs([{ file: null, remarks: '' }]); // Reset file inputs
             setSelectedDocType(null)
 
@@ -151,7 +150,9 @@ const UploadDocuments = ({ leadData }) => {
 
     return (
         <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3, p: 3, backgroundColor: '#ffffff', borderRadius: 2 }}>
-            <Typography variant="h6" style={{ fontWeight: '600', color: "#000000", mb: 2 }}>
+            {activeRole === "screener" && 
+            <>
+                <Typography variant="h6" style={{ fontWeight: '600', color: "#000000", mb: 2 }}>
                 Upload Documents
             </Typography>
 
@@ -299,6 +300,8 @@ const UploadDocuments = ({ leadData }) => {
                     </>
                 )}
             </Box>
+            </>
+            }
 
 
             {

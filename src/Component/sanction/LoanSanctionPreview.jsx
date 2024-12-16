@@ -81,7 +81,7 @@ const LoanSanctionPreview = ({
             {/* Header Section */}
             <Box textAlign="center" mb={3}>
               <img
-                src="https://ramleela.s3.ap-south-1.amazonaws.com/speedo-header.jpg"
+                src="https://ramleela.s3.ap-south-1.amazonaws.com/QUALOAN+Header+Footer+/letterhead_header.webp"
                 alt="Sanctionletter-header"
                 width="760"
                 height="123"
@@ -112,7 +112,7 @@ const LoanSanctionPreview = ({
 
             {/* Message Section */}
             <Typography variant="body1" mt={2}>
-              Thank you for showing your interest in Speedoloan and giving us an opportunity to serve you.
+              Thank you for showing your interest in Qualoan and giving us an opportunity to serve you.
             </Typography>
             <Typography variant="body1" mb={2}>
               We are pleased to inform you that your loan application has been approved as per the below mentioned terms and conditions.
@@ -120,7 +120,7 @@ const LoanSanctionPreview = ({
 
             {/* Company Info */}
             <Typography variant="body2" fontWeight="bold" mb={2}>
-              Speedoloan, a brand name under Naman Finlease Private Limited (RBI approved NBFC – Reg No.14.01466) S-370, Panchsheel Park, Near Panchsheel Park Metro Station Gate NO. 1, New Delhi- 110017.
+              Qualoan, a brand name under Naman Finlease Private Limited (RBI approved NBFC – Reg No.14.01466) 229, 2nd Floor,Vipul Agora Mall,MG Road, Gurugram, Haryana, 122001.
             </Typography>
 
             <Typography variant="body1" mb={2}>
@@ -185,11 +185,62 @@ const LoanSanctionPreview = ({
                 </TableBody>
               </Table>
             </TableContainer>
+            <Box>
+              {/* Informational Section */}
+              <Typography variant="body1" mb={2}>
+                Henceforth, visiting (physically) your Workplace and Residence has your concurrence on it.
+              </Typography>
+
+              <Typography variant="body1" mb={2}>
+                Kindly request you to go through the above-mentioned terms and conditions and provide your kind acceptance over E-mail so that we can process your loan for final disbursement.
+              </Typography>
+
+              {/* Regards Section */}
+              <Typography variant="body1" fontWeight="bold" color="#0363a3" mb={1}>
+                Best Regards,
+              </Typography>
+              <Typography variant="body1" fontWeight="bold" color="#0363a3" mb={2}>
+                Team Qualoan
+              </Typography>
+
+              {/* Link Section */}
+              <Typography variant="body1" mb={2}>
+                If you are not able to click on the accept button, please copy and paste this URL in your browser to proceed or click here:{" "}
+                <a href="https://qualoan.com" target="_blank" rel="noopener noreferrer">
+                  Qualoan
+                </a>
+              </Typography>
+
+              {/* Note Section */}
+              <Typography variant="body1" fontWeight="bold" mb={1}>
+                Kindly Note:
+              </Typography>
+              <Typography variant="body1" mb={1}>
+                You can Prepay/Repay the loan amount using our link REPAY LOAN.
+              </Typography>
+              <Typography variant="body1" mb={1}>
+                Non-payment of the loan on time will adversely affect your credit score, further reducing your chances of getting a loan again. Upon approval, the processing fee will be deducted from your sanctioned amount, and the balance amount will be disbursed to your account.
+              </Typography>
+              <Typography variant="body1" mb={2}>
+                This Sanction letter is valid for 24 Hours only.
+              </Typography>
+
+              {/* Footer Image */}
+              {/* <Box textAlign="center">
+                <img
+                  src="https://ramleela.s3.ap-south-1.amazonaws.com/SalarySaathi+Header+Footer+/Footer.webp"
+                  alt="Sanctionletter-footer"
+                  width="760"
+                  height="104"
+                  style={{ maxWidth: "100%" }}
+                />
+              </Box> */}
+            </Box>
 
             {/* Footer */}
             <Box textAlign="center" mt={3}>
               <img
-                src="https://ramleela.s3.ap-south-1.amazonaws.com/speedo-footer.jpeg"
+                src="https://ramleela.s3.ap-south-1.amazonaws.com/QUALOAN+Header+Footer+/letterhead_footer.webp"
                 alt="Sanctionletter-footer"
                 width="760"
                 height="104"

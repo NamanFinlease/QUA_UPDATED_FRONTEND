@@ -31,7 +31,8 @@ const DisbursalProfile = () => {
   const [currentPage, setCurrentPage] = useState("application");
   const [leadEdit, setLeadEdit] = useState(false);
 
-  const { data, isSuccess, isError, error } = useDisbursalProfileQuery(id, { skip: id === null });
+  const { data, isSuccess, isError, error,refetch } = useDisbursalProfileQuery(id, { skip: id === null });
+  console.log('disbursal profile',id,data,error)
 
 
   useEffect(() => {
@@ -43,6 +44,12 @@ const DisbursalProfile = () => {
       setUploadedDocs(data?.sanction?.application?.lead?.document.map(doc => doc.type));
     }
   }, [isSuccess, data]);
+   // Ensure the API is triggered on every visit or id change
+   useEffect(() => {
+    if (id !== null) {
+      refetch();
+    }
+  }, [id, refetch]);
 
   return (
     <div className="crm-container" style={{ padding: '10px' }}>

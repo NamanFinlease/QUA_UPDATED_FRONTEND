@@ -139,7 +139,7 @@ const Navbar = () => {
                         "&:hover": { color: "#f0f0f0" },
                     }}
                 >
-                    Speedoloan
+                    Qualoan
                 </Typography>
 
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>

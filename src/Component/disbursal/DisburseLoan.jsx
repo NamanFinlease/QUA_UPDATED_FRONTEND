@@ -32,7 +32,6 @@ const DisburseLoan = ({ disburse }) => {
   const { activeRole } = useAuthStore();
   const { applicationProfile } = useStore();
   const navigate = useNavigate();
-  console.log("disbursal date", disburse?.sanction);
 
   const { disbursalDate, netDisbursalAmount } =
     disburse?.application?.cam?.details;
@@ -70,7 +69,6 @@ const DisburseLoan = ({ disburse }) => {
       navigate("/disbursal-pending");
     }
   }, [isSuccess, data]);
-  console.log('api test', isSuccess, data)
 
   return (
     <Box

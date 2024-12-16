@@ -71,7 +71,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                         marginLeft: "20px",
                     }}
                 >
-                    Qualaon
+                    Qualoan
                 </Typography>
             </Box>
 
