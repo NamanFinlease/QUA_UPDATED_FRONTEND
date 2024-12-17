@@ -11,20 +11,20 @@ import Loader from '../loader';
 import useAuthStore from '../store/authStore';
 import AadhaarCompare from './AadhaarCompare';
 
-const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVerified,isAadhaarDetailsSaved, isPanVerified }) => {
+const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVerified, isAadhaarDetailsSaved, isPanVerified }) => {
   const { id } = useParams()
-  const {setCodeVerifier,setFwdp,activeRole} = useAuthStore()
+  const { setCodeVerifier, setFwdp, activeRole } = useAuthStore()
   const navigate = useNavigate()
   const [otp, setOtp] = useState(false)
-  const [openAadhaarCompare,setOpenAadhaarCompare] = useState()
-  const [aadhaarData,setAadhaarData] = useState()
+  const [openAadhaarCompare, setOpenAadhaarCompare] = useState()
+  const [aadhaarData, setAadhaarData] = useState()
   const [otpAadhaar, setOtpAadhaar] = useState(false)
   const [panModal, setPanModal] = useState(false)
   const [otpPan, setOtpPan] = useState(false)
   const [mobileVerified, setMobileVerified] = useState(false);
 
   const [getEmailOtp, { data: emailOtp, isSuccess: emailOtpSuccess, isError: isEmailError, error: emailError }] = useGetEmailOtpMutation()
-  const [checkDetails, { data: aadhaarDetails, isSuccess: aadhaarDetailsSuccess,isLoading:aadhaarDetailsLoading, isError: isAadhaarDetailError, error: aadhaarDetailsError }] = useLazyCheckDetailsQuery()
+  const [checkDetails, { data: aadhaarDetails, isSuccess: aadhaarDetailsSuccess,isFetching:isAadhaarDetailsFetching, isLoading: aadhaarDetailsLoading, isError: isAadhaarDetailError, error: aadhaarDetailsError }] = useLazyCheckDetailsQuery()
   const [getPanDetails, panRes] = useLazyGetPanDetailsQuery()
   const [sendAadhaarLink, aadhaarRes] = useLazyGenerateAadhaarLinkQuery()
 
@@ -54,11 +54,11 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
   }
 
   useEffect(() => {
-    if (panRes?.isSuccess && panRes?.data) {
+    if (panRes?.isSuccess && panRes?.data && !panRes?.isFetching) {
       setPanModal(true)
 
     }
-  }, [panRes?.data, panRes?.isSuccess])
+  }, [panRes?.data, panRes?.isSuccess, panRes?.isFetching])
 
   useEffect(() => {
     if (emailOtpSuccess) {
@@ -66,16 +66,19 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
     }
   }, [emailOtp, emailOtpSuccess])
   useEffect(() => {
-    if (aadhaarRes?.isSuccess && aadhaarRes) {
+    if (aadhaarRes?.isSuccess && aadhaarRes && !aadhaarRes?.isFetching) {
+      Swal.fire({
+        text: "Link sent successfully!",
+        icon: "success",
+      });
       navigate(`/lead-process`)
     }
-    if (aadhaarDetails && aadhaarDetailsSuccess) {
+    if (aadhaarDetails && aadhaarDetailsSuccess && !isAadhaarDetailsFetching) {
       setOpenAadhaarCompare(true)
       setAadhaarData(aadhaarDetails?.data?.details)
     }
-  }, [aadhaarRes.data, aadhaarRes?.isSuccess,aadhaarDetails,aadhaarDetailsSuccess])
+  }, [aadhaarRes.data, aadhaarRes?.isSuccess,aadhaarRes.isFetching, aadhaarDetails, aadhaarDetailsSuccess, isAadhaarDetailsFetching])
 
-  console.log('aadhaar data',aadhaarData)
 
 
 
@@ -83,9 +86,9 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
 
   return (
     <>
-    {openAadhaarCompare && <AadhaarCompare open={openAadhaarCompare} setOpen={setOpenAadhaarCompare} aadhaarDetails={aadhaarData} />}
-      {otp && <EmailVerification open={otp} setOpen={setOtp} />}
-      {<PanCompare open={panModal} setOpen={setPanModal} panDetails={panRes?.data?.data} />}
+      {openAadhaarCompare && <AadhaarCompare open={openAadhaarCompare} setOpen={setOpenAadhaarCompare} aadhaarDetails={aadhaarData} />}
+      {/* {otp && <EmailVerification open={otp} setOpen={setOtp} />} */}
+      {panModal && <PanCompare open={panModal} setOpen={setPanModal} panDetails={panRes?.data?.data} />}
       <Box sx={{ maxWidth: 700, margin: '0 auto', mt: 4 }}>
         {/* Single Accordion for Mobile and Email Verification */}
         <Accordion sx={{ borderRadius: '15px', boxShadow: 3 }}>
@@ -158,43 +161,43 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
                   </span>
                 </Typography>
 
-                {(activeRole === "screener" && !isAadhaarVerified ) && 
-                <>
-                {
-                  isAadhaarDetailsSaved ? 
-                <Button
-                  // variant="contained" 
-                  onClick={handleAadhaarVerification}
-                  sx={{
-                    backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#1F2A40",
-                    color: aadhaarRes.isLoading ? "#666" : "white",
-                    cursor: aadhaarRes.isLoading ? "not-allowed" : "pointer",
-                    "&:hover": {
-                        backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#3F4E64",
-                    },
-                }}
-                  disabled={isAadhaarVerified}
-                >
-                  {aadhaarRes.isLoading ? <CircularProgress size={20} color="inherit" /> : `Verify Aadhaar`}
-                </Button>
-                :
-                <Button
-                  // variant="contained" 
-                  onClick={handleSendAadhaarLink}
-                  sx={{
-                    backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#1F2A40",
-                    color: aadhaarRes.isLoading ? "#666" : "white",
-                    cursor: aadhaarRes.isLoading ? "not-allowed" : "pointer",
-                    "&:hover": {
-                        backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#3F4E64",
-                    },
-                }}
-                  disabled={isAadhaarVerified}
-                >
-                  {aadhaarRes.isLoading ? <CircularProgress size={20} color="inherit" /> : `Send Link`}
-                </Button>
-                }
-                </>
+                {(activeRole === "screener" && !isAadhaarVerified) &&
+                  <>
+                    {
+                      isAadhaarDetailsSaved ?
+                        <Button
+                          // variant="contained" 
+                          onClick={handleAadhaarVerification}
+                          sx={{
+                            backgroundColor: (isAadhaarDetailsFetching || aadhaarDetailsLoading) ? "#ccc" : "#1F2A40",
+                            color: (isAadhaarDetailsFetching || aadhaarDetailsLoading) ? "#666" : "white",
+                            cursor: (isAadhaarDetailsFetching || aadhaarDetailsLoading) ? "not-allowed" : "pointer",
+                            "&:hover": {
+                              backgroundColor: (isAadhaarDetailsFetching || aadhaarDetailsLoading) ? "#ccc" : "#3F4E64",
+                            },
+                          }}
+                          disabled={isAadhaarVerified}
+                        >
+                          {(isAadhaarDetailsFetching || aadhaarDetailsLoading) ? <CircularProgress size={20} color="inherit" /> : `Verify Aadhaar`}
+                        </Button>
+                        :
+                        <Button
+                          // variant="contained" 
+                          onClick={handleSendAadhaarLink}
+                          sx={{
+                            backgroundColor: (aadhaarRes.isLoading || aadhaarRes?.isFetching) ? "#ccc" : "#1F2A40",
+                            color: (aadhaarRes.isLoading || aadhaarRes?.isFetching) ? "#666" : "white",
+                            cursor: (aadhaarRes.isLoading || aadhaarRes?.isFetching) ? "not-allowed" : "pointer",
+                            "&:hover": {
+                              backgroundColor: (aadhaarRes.isLoading || aadhaarRes?.isFetching) ? "#ccc" : "#3F4E64",
+                            },
+                          }}
+                          disabled={isAadhaarVerified}
+                        >
+                          {(aadhaarRes.isLoading || aadhaarRes?.isFetching) ? <CircularProgress size={20} color="inherit" /> : `Send Link`}
+                        </Button>
+                    }
+                  </>
                 }
               </Box>
 
@@ -213,16 +216,16 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
                   // variant="contained"
                   onClick={handlePanVerification}
                   sx={{
-                    backgroundColor: panRes?.isLoading ? "#ccc" : "#1F2A40",
-                    color: panRes?.isLoading ? "#666" : "white",
-                    cursor: panRes?.isLoading ? "not-allowed" : "pointer",
+                    backgroundColor: (panRes?.isLoading || panRes?.isFetching) ? "#ccc" : "#1F2A40",
+                    color: (panRes?.isLoading || panRes?.isFetching) ? "#666" : "white",
+                    cursor: (panRes?.isLoading || panRes?.isFetching) ? "not-allowed" : "pointer",
                     "&:hover": {
-                        backgroundColor: panRes?.isLoading ? "#ccc" : "#3F4E64",
+                      backgroundColor: (panRes?.isLoading || panRes?.isFetching) ? "#ccc" : "#3F4E64",
                     },
-                }}
-                  disabled={panRes?.isLoading}
+                  }}
+                  disabled={(isPanVerified)}
                 >
-                  {panRes?.isLoading ? <CircularProgress size={20} color="inherit" /> : `Verify Pan`}
+                  {(panRes?.isLoading || panRes?.isFetching) ? <CircularProgress size={20} color="inherit" /> : `Verify Pan`}
                 </Button>}
               </Box>
               {(panRes.isError || aadhaarRes.isError || isEmailError) && <Typography variant="body1">
@@ -236,7 +239,7 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
         </Accordion>
       </Box>
     </>
-   );
+  );
 };
 
 export default VerifyContactDetails;
