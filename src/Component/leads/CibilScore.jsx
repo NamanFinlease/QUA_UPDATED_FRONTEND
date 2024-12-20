@@ -22,7 +22,7 @@ const paperStyles = {
 
 const CibilScore = ({ id }) => {
 
-  const [score, setScore] = useState(null);
+  const [cibilScore, setCibilScore] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -45,7 +45,6 @@ const CibilScore = ({ id }) => {
   };
 
   useEffect(() => {
-    console.log('use fect')
     if (docsSuccess) {
       const fileUrl = docsData?.url;
       const mimeType = docsData?.mimeType?.split('/').pop().toLowerCase();
@@ -82,6 +81,15 @@ const CibilScore = ({ id }) => {
     }
   }, [docsData]);
 
+  useEffect(() => {
+    if(cibilRes?.isSuccess&& cibilRes?.data && !cibilRes?.isFetching){
+      console.log('cibil score',cibilRes)
+      setCibilScore(cibilRes?.data)
+
+    }
+
+  },[cibilRes?.isSuccess, cibilRes?.data, cibilRes?.isFetching])
+
 
 
   return (
@@ -107,7 +115,7 @@ const CibilScore = ({ id }) => {
                   },
                 }}
               >
-                {cibilRes?.isLoading ? 'Fetching...' : 'Fetch CIBIL Score'}
+                {(cibilRes?.isLoading || cibilRes?.isFetching) ? 'Fetching...' : 'Fetch CIBIL Score'}
               </Button>
 
               <Box textAlign="right" display="flex" alignItems="center">
