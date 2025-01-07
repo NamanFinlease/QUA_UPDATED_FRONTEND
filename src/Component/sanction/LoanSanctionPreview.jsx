@@ -81,7 +81,7 @@ const LoanSanctionPreview = ({
             {/* Header Section */}
             <Box textAlign="center" mb={3}>
               <img
-                src="https://ramleela.s3.ap-south-1.amazonaws.com/QUALOAN+Header+Footer+/letterhead_header.webp"
+                src="https://ramleela.s3.ap-south-1.amazonaws.com/QUALOAN+Header+Footer+/Header.webp"
                 alt="Sanctionletter-header"
                 width="760"
                 height="123"
@@ -120,7 +120,7 @@ const LoanSanctionPreview = ({
 
             {/* Company Info */}
             <Typography variant="body2" fontWeight="bold" mb={2}>
-              Qualoan, a brand name under Naman Finlease Private Limited (RBI approved NBFC – Reg No.14.01466) 229, 2nd Floor,Vipul Agora Mall,MG Road, Gurugram, Haryana, 122001.
+              Qualoan, a brand name under Naman Finlease Private Limited (RBI approved NBFC – Reg No.14.01466) S-370, Panchsheel Park, Delhi, 110017, India.
             </Typography>
 
             <Typography variant="body1" mb={2}>
@@ -140,34 +140,28 @@ const LoanSanctionPreview = ({
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
-                      Mobile
+                      Sanctioned Loan Amount (Rs.)
                     </TableCell>
-                    <TableCell>{mobile}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
-                      Disbursal Date
-                    </TableCell>
-                    <TableCell>{disbursalDate}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
-                      Processing Fee
-                    </TableCell>
-                    <TableCell>{processingFee}</TableCell>
+                    {/* <TableCell sx={{ color: '#d9534f' }}>{new Intl.NumberFormat().format((loanAmount))} /-</TableCell> */}
+                    <TableCell sx={{ color: '#d9534f' }}>{loanAmount} /-</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
                       ROI
                     </TableCell>
-                    <TableCell>{roi}%</TableCell>
+                    <TableCell>{roi}% Per day</TableCell>
                   </TableRow>
+                  {/* <TableRow>
+                    <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
+                      Mobile
+                    </TableCell>
+                    <TableCell>{mobile}</TableCell>
+                  </TableRow> */}
                   <TableRow>
                     <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
-                      Sanctioned Loan Amount (Rs.)
+                      Disbursal Date
                     </TableCell>
-                    {/* <TableCell sx={{ color: '#d9534f' }}>{new Intl.NumberFormat().format((loanAmount))} /-</TableCell> */}
-                    <TableCell sx={{ color: '#d9534f' }}>{loanAmount} /-</TableCell>
+                    <TableCell>{disbursalDate}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
@@ -180,6 +174,18 @@ const LoanSanctionPreview = ({
                       Repayment Date
                     </TableCell>
                     <TableCell sx={{ color: '#d9534f' }}>{repaymentDate} </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
+                      Processing Fee
+                    </TableCell>
+                    <TableCell>{processingFee}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
+                      Penal Interest (%) 
+                    </TableCell>
+                    <TableCell>{2*(Number(roi))}% Per day</TableCell>
                   </TableRow>
                   {/* Add more rows... */}
                 </TableBody>
