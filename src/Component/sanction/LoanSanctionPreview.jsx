@@ -26,7 +26,8 @@ const LoanSanctionPreview = ({
   // reset
 }) => {
 
-  const { fullname, loanAmount, disbursalDate, bouncedCharges, mobile, penalInterest, processingFee, repaymentAmount, repaymentDate, roi, residenceAddress, sanctionDate, stateCountry, tenure, title } = previewData
+  const { fullname, loanAmount, disbursalDate, pan, bouncedCharges, mobile, penalInterest, processingFee, repaymentAmount, repaymentDate, roi, residenceAddress, sanctionDate, stateCountry, tenure, title } = previewData
+  console.log('preview data',previewData)
 
   const navigate = useNavigate()
 
@@ -140,6 +141,12 @@ const LoanSanctionPreview = ({
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
+                      Pan
+                    </TableCell>
+                    <TableCell>{pan}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
                       Sanctioned Loan Amount (Rs.)
                     </TableCell>
                     {/* <TableCell sx={{ color: '#d9534f' }}>{new Intl.NumberFormat().format((loanAmount))} /-</TableCell> */}
@@ -149,7 +156,7 @@ const LoanSanctionPreview = ({
                     <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
                       ROI
                     </TableCell>
-                    <TableCell>{roi}% Per day</TableCell>
+                    <TableCell>{roi}% </TableCell>
                   </TableRow>
                   {/* <TableRow>
                     <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
@@ -185,7 +192,7 @@ const LoanSanctionPreview = ({
                     <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
                       Penal Interest (%) 
                     </TableCell>
-                    <TableCell>{2*(Number(roi))}% Per day</TableCell>
+                    <TableCell>{penalInterest}% </TableCell>
                   </TableRow>
                   {/* Add more rows... */}
                 </TableBody>
