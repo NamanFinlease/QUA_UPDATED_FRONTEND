@@ -285,6 +285,10 @@ export const applicationApi = createApi({
       query: () => `/sanction/approved/report/?role=${role()}`,
       providesTags:["getApplication"]
     }),
+    exportDisbursed: builder.query({
+      query: () => `/disbursals/disbursed/report/?role=${role()}`,
+      
+    }),
     
   }),
 });
@@ -330,5 +334,6 @@ export const {
     useFetchDisbursalHoldQuery,
     useRejectedDisbursalsQuery,
     useLazyExportSanctionedQuery,
+    useLazyExportDisbursedQuery,
 
 } = applicationApi;

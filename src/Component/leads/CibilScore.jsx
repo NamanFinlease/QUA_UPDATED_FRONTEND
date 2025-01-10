@@ -96,7 +96,7 @@ const CibilScore = ({ id }) => {
     <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3 }}>
       <Accordion style={accordionStyles}>
         <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: '#007bb2' }} />}>
-          <Typography variant="h6" style={{ fontWeight: '600', color: "#ffffff" }}>Fetch CIBIL Score</Typography>
+          <Typography variant="h6" style={{ fontWeight: '600', color: "#ffffff" }}>Fetch CIC Report</Typography>
         </AccordionSummary>
         <AccordionDetails >
           <Paper elevation={3} style={paperStyles}>
@@ -115,7 +115,7 @@ const CibilScore = ({ id }) => {
                   },
                 }}
               >
-                {(cibilRes?.isLoading || cibilRes?.isFetching) ? 'Fetching...' : 'Fetch CIBIL Score'}
+                {(cibilRes?.isLoading || cibilRes?.isFetching) ? 'Fetching...' : 'Fetch CIC Report'}
               </Button>
 
               <Box textAlign="right" display="flex" alignItems="center">
@@ -153,7 +153,7 @@ const CibilScore = ({ id }) => {
                           color: '#0a8001',
                         }}
                       >
-                        CIBIL Score: {cibilRes?.data?.value}
+                        Credit Score: {cibilRes?.data?.value}
                       </Typography>
                     </Box>
 

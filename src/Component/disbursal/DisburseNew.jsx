@@ -14,9 +14,7 @@ const DisburseNew = () => {
   const [totalApplications, setTotalApplications] = useState(0);
   const [page, setPage] = useState(1);
   const [selectedApplication, setSelectedApplication] = useState(null);
-  const { empInfo,activeRole } = useAuthStore()
-  const [allocateApplication, { data: updateApplication, isSuccess,isError:isAllocateError,error:allocateError }] = useAllocateDisbursalMutation();
-  const [exportSanctioned, { data: exportData,isLoading:isEXportLoading, isSuccess:isExportSuccess,isError:isExportErro,error:exportError }] = useLazyExportSanctionedQuery();
+  const { empInfo, activeRole } = useAuthStore()
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 10,
@@ -24,7 +22,9 @@ const DisburseNew = () => {
   const navigate = useNavigate()
 
 
-  const { data: allApplication, isSuccess: applicationSuccess,isError,error, refetch } = useAllDisbursalsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
+  const [allocateApplication, { data: updateApplication, isSuccess, isError: isAllocateError, error: allocateError }] = useAllocateDisbursalMutation();
+  const [exportSanctioned, { data: exportData, isLoading: isExportLoading, isSuccess: isExportSuccess, isFetching: isExportFetching, isError: isExportErro, error: exportError }] = useLazyExportSanctionedQuery();
+  const { data: allApplication, isSuccess: applicationSuccess, isError, error, refetch } = useAllDisbursalsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
 
 
 
@@ -36,10 +36,10 @@ const DisburseNew = () => {
   };
 
   const handleExportClick = () => {
-        console.log("Export click");
-        // Replace with your actual API call
-        exportSanctioned();
-};
+    console.log("Export click");
+    // Replace with your actual API call
+    exportSanctioned();
+  };
 
   const handleCheckboxChange = (id) => {
     setSelectedApplication(selectedApplication === id ? null : id);
@@ -51,7 +51,7 @@ const DisburseNew = () => {
     // refetch(newPaginationModel); 
   };
 
- 
+
   const columns = [
     {
       field: 'select',
@@ -70,7 +70,7 @@ const DisburseNew = () => {
     { field: 'name', headerName: 'Full Name', width: 200 },
     { field: 'mobile', headerName: 'Mobile', width: 150 },
     { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },
-    { field: 'pan', headerName: 'Pan No.', width: 150 },
+    { field: 'pan', headerName: 'PAN No.', width: 150 },
     { field: 'city', headerName: 'City', width: 150 },
     { field: 'state', headerName: 'State', width: 150 },
     { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },
@@ -98,31 +98,39 @@ const DisburseNew = () => {
 
   }));
 
-  console.log('rows',rows)
+  console.log('rows', rows)
 
-  useEffect(()=>{
-    if(isExportSuccess && exportData){
+  useEffect(() => {
+    console.log('export',exportData)
+    if (isExportSuccess && exportData) {
+      try {
+        
+        const formattedData = exportData?.data?.map((row) => {
+          const csvData = {
+            ...row,
+            'Account No': `"${row.accountNo}"`, // Add a leading single quote to force it as a string
+          }
+          delete csvData.accountNo
+          return csvData
+        });
+
+        console.log('export data',exportData,formattedData)
+        // Convert JSON to CSV using PapaParse
+        const csv = Pap.unparse(formattedData, {
+          header: true, // Include headers in the CSV
+        });
+  
+        // Create a Blob for the CSV content
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  
+        // Use file-saver to download the file
+        saveAs(blob, "sanctioned_data.csv");
+      } catch (error) {
+        console.log('error',error)
+      }
       // Preprocess the data to ensure accountNo is a string
-      const formattedData = exportData.data.map((row) => {
-        const csvData = {
-        ...row,
-        'Account No': `"${row.accountNo}"`, // Add a leading single quote to force it as a string
     }
-    delete csvData.accountNo
-    return csvData
-  });
-      // Convert JSON to CSV using PapaParse
-      const csv = Pap.unparse(formattedData, {
-        header: true, // Include headers in the CSV
-    });
-
-    // Create a Blob for the CSV content
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-
-    // Use file-saver to download the file
-    saveAs(blob, "sanctioned_data.csv");
-    }
-  }, [isExportSuccess, exportData]);
+  }, [isExportSuccess, exportData,isExportFetching]);
 
   useEffect(() => {
     if (isSuccess) {

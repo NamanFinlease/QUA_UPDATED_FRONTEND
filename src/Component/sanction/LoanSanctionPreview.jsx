@@ -31,7 +31,7 @@ const LoanSanctionPreview = ({
 
   const navigate = useNavigate()
 
-  const [approveApplication, { data, isSuccess, isError, error }] = useApproveApplicationMutation()
+  const [approveApplication, { data, isSuccess,isLoading,isFetching, isError, error }] = useApproveApplicationMutation()
 
   const handleClose = () => {
     setPreview(false);
@@ -141,7 +141,7 @@ const LoanSanctionPreview = ({
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
-                      Pan
+                      PAN
                     </TableCell>
                     <TableCell>{pan}</TableCell>
                   </TableRow>
@@ -280,10 +280,17 @@ const LoanSanctionPreview = ({
               <Button
                 variant="contained"
                 color="primary"
-                sx={{ px: 3 }}
                 onClick={handleApprove}
+                sx={{
+                  backgroundColor: (isLoading || isFetching) ? "#9de39e" : "#099c0c",
+                  color: (isLoading || isFetching) ? "#666" : "white",
+                  cursor: (isLoading || isFetching) ? "not-allowed" : "pointer",
+                  "&:hover": {
+                    backgroundColor: (isLoading || isFetching) ? "#9de39e" : "#62f064",
+                  },
+                }}
               >
-                Approve
+                {(isLoading || isFetching) ? <CircularProgress size={20} color="inherit" /> : "Approve"}
               </Button>
             </Box>
 

@@ -35,7 +35,7 @@ const DisbursePending = () => {
         { field: 'name', headerName: 'Full Name', width: 200 },
         { field: 'mobile', headerName: 'Mobile', width: 150 },
         { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },
-        { field: 'pan', headerName: 'Pan No.', width: 150 },
+        { field: 'pan', headerName: 'PAN No.', width: 150 },
         { field: 'city', headerName: 'City', width: 150 },
         { field: 'state', headerName: 'State', width: 150 },
         { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },

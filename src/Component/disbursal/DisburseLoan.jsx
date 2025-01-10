@@ -55,6 +55,7 @@ const DisburseLoan = ({ disburse }) => {
   const onSubmit = (data) => {
     disburseLoan({ id, data });
   };
+  console.log("application profile",applicationProfile)
 
   const handleToggleForm = () => {
     setShowForm((prevShowForm) => !prevShowForm); // Toggle form visibility

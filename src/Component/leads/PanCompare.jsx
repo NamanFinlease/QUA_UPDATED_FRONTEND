@@ -147,7 +147,7 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
                       padding: "12px",
                     }}
                   >
-                    Pan Details
+                    PAN Details
                   </TableCell>
                   <TableCell
                     sx={{

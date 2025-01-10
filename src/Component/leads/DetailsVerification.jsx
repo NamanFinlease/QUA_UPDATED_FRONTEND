@@ -205,7 +205,7 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
               {/* Pan Verification Section */}
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Typography variant="body1" sx={{ color: '#898b8c' }}>
-                  Pan:
+                  PAN:
                   <span style={{ color: isPanVerified ? 'green' : 'red' }}>
                     {isPanVerified ? ' Verified' : ' Not Verified'}
                   </span>

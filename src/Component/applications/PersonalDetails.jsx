@@ -42,7 +42,7 @@ const PersonalDetails = ({ id }) => {
     }
     setColumns([
       { label: 'Full Name', value: `${personalDetails?.fName || ''} ${personalDetails?.mName || ''} ${personalDetails?.lName || ''}`, label2: 'Date of Birth', value2: personalDetails?.dob && formatDate(personalDetails?.dob) || '' },
-      { label: 'pan', value: personalDetails?.pan || '', label2: 'Gender', value2: personalDetails?.gender || '' },
+      { label: 'PAN', value: personalDetails?.pan || '', label2: 'Gender', value2: personalDetails?.gender || '' },
       { label: 'Aadhaar', value: personalDetails?.aadhaar || '', label2: 'Mobile', value2: personalDetails?.mobile || '' },
       { label: 'Personal Email', value: personalDetails?.personalEmail || '', label2: 'Office Email', value2: personalDetails?.officeEmail || '' },
     ]);
