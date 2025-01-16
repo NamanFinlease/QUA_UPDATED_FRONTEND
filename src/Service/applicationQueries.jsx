@@ -21,6 +21,7 @@ export const applicationApi = createApi({
     'getDisbursals',
     "getCamDetails",
     "pendingSanctions",
+    "sanctionProfile",
     "getPendinDisbursals"],
   endpoints: (builder) => ({
     // GET request to fetch a Pokemon by name
@@ -96,13 +97,13 @@ export const applicationApi = createApi({
       }),
       invalidatesTags:["getApplication","pendingSanctions"]
     }),
-    approveApplication: builder.mutation({
+    sanctionApprove: builder.mutation({
       query: (id) => ({
 
         url: `sanction/approve/${id}/?role=${role()}`,
         method: 'PATCH',
       }),
-      invalidatesTags:["getApplication","pendingSanctions"]
+      invalidatesTags:["sanctionProfile","pendingSanctions"]
     }),
     recommendApplication: builder.mutation({
       query: (id) => ({
@@ -237,13 +238,21 @@ export const applicationApi = createApi({
       query: ({page,limit}) => `/sanction/pending/?role=${role()}`,
       providesTags:["pendingSanctions"] 
     }),
+    eSignPending: builder.query({
+      query: ({page,limit}) => `/sanction/eSignPending/?role=${role()}`,
+      providesTags:["eSignPending"] 
+    }),
+    sendESign: builder.query({
+      query: (id) => `/sanction/sendESign/${id}/?role=${role()}`,
+      providesTags:["eSignPending"] 
+    }),
     recommendedApplications: builder.query({
       query: ({page,limit}) => `/sanction/recommended/?page=${page}&limit=${limit}&role=${role()}`,
       providesTags:["recommendedApplications"]
     }),
     sanctionProfile: builder.query({
       query: (id) => `/sanction/${id}/?role=${role()}`,
-      // providesTags:["getApplication"]
+      providesTags:["sanctionProfile"]
     }),
     sanctionPreview: builder.query({
       query: (id) => `/sanction/preview/${id}/?role=${role()}`,
@@ -305,7 +314,7 @@ export const {
     useSendBackMutation,
     useSanctionSendBackMutation,
     useDisbursalSendBackMutation,
-    useApproveApplicationMutation,
+    useSanctionApproveMutation,
     useUpdatePersonalDetailsMutation,
     useRecommendLoanMutation,
     useDisburseLoanMutation,
@@ -321,6 +330,8 @@ export const {
     useGetCamDetailsQuery,
     useUpdateCamDetailsMutation,
     usePendingSanctionsQuery,
+    useESignPendingQuery,
+    useLazySendESignQuery,
     useSanctionProfileQuery,
     useSanctionedQuery,
     useRecommendedApplicationsQuery,

@@ -54,6 +54,7 @@ import PendingVerification from "./Component/accounts/PendingVerification";
 import CloseLeads from "./Component/accounts/CloseLeads";
 import CollectionProfile from "./Component/collection/CollectionProfile";
 import PaymentVerification from "./Component/accounts/PaymentVerification";
+import PendingESign from "./Component/sanction/PendingESingn";
 
 function App() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -178,6 +179,10 @@ function App() {
                                     <Route
                                         path="/pending-sanctions"
                                         element={<PendingSanctions />}
+                                    />
+                                    <Route
+                                        path="/eSign-pending"
+                                        element={<PendingESign />}
                                     />
                                     <Route
                                         path="/sanction-profile/:id"

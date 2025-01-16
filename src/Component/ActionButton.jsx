@@ -5,7 +5,7 @@ import { useHoldLeadMutation, useRecommendLeadMutation, useRejectLeadMutation, u
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from './store/authStore';
-import { useHoldApplicationMutation, useHoldDisbursalMutation, useRecommendApplicationMutation, useRecommendLoanMutation, useRejectApplicationMutation, useRejectDisbursalMutation, useSanctionSendBackMutation, useDisbursalSendBackMutation, useSendBackMutation, useUnholdApplicationMutation, useUnholdDisbursalMutation } from '../Service/applicationQueries';
+import { useHoldApplicationMutation, useHoldDisbursalMutation, useRecommendApplicationMutation, useRecommendLoanMutation, useRejectApplicationMutation, useRejectDisbursalMutation, useSanctionSendBackMutation, useDisbursalSendBackMutation, useSendBackMutation, useUnholdApplicationMutation, useUnholdDisbursalMutation, useSanctionApproveMutation } from '../Service/applicationQueries';
 import useStore from '../Store';
 import RejectedLeads from './leads/RejectedLeads';
 
@@ -29,6 +29,7 @@ const loanRejectReasons = [
 ];
 
 const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRender }) => {
+    console.log('sanction', sanctionPreview)
 
     const navigate = useNavigate()
     const { empInfo, activeRole } = useAuthStore()
@@ -49,7 +50,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
     // Disbursal Action component API-----------
     const [holdDisbursal, { data: holdDisbursalData, isSuccess: IsholdDisbursalSuccess, isError: isDisbursalHoldError, error: disbursalHoldError }] = useHoldDisbursalMutation();
     const [unholdDisbursal, { data: unholdDisbursalData, isSuccess: unholdDisbursalSuccess, isError: isUnholdDisbursalError, error: unHoldDisbursalError }] = useUnholdDisbursalMutation();
-    const [recommendLoan, { data: recommendLoanData, isSuccess: isLoanRecommendSuccess,isLoading:recommendLoanLoading, isError: isRecommendError, error: recommendLoanError }] = useRecommendLoanMutation()
+    const [recommendLoan, { data: recommendLoanData, isSuccess: isLoanRecommendSuccess, isLoading: recommendLoanLoading, isError: isRecommendError, error: recommendLoanError }] = useRecommendLoanMutation()
     const [rejectDisbursal, { data: rejectDisbursalData, isSuccess: rejectDisbursalSuccess, isError: isRejectDisbursalError, error: rejectDisbursalError }] = useRejectDisbursalMutation();
 
     // Lead Action component API ----------------------
@@ -61,6 +62,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
 
     // sanction Action mutation -------
     const [sanctionSendBack, { data: sanctionSendBackData, isLoading: sanctionSendBackLoading, isSuccess: sanctionSendBackSuccess, isError: isSanctionSendBackError, error: sanctionSendBackError }] = useSanctionSendBackMutation()
+    const [sanctionApprove, { data: sanctionApproveData, isLoading: sanctionApproveLoading, isSuccess: sanctionApproveSuccess, isError: isSanctionApproveError, error: sanctionApproveError }] = useSanctionApproveMutation()
     const [disbursalSendBack, { data: disbursalSendBackData, isLoading: disbursalSendBackLoading, isSuccess: disbursalSendBackSuccess, isError: isdisbursalSendBackError, error: disbursalSendBackError }] = useDisbursalSendBackMutation()
     const [sanctionReject, { data: sanctionRejectData, isSuccess: sanctionRejectSuccess, isError: isSanctionRejectError, error: sanctionRejectError }] = useRejectLeadMutation();
 
@@ -146,14 +148,14 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
             }
 
         }
-
-        // Reset state after submission
-
     };
 
     const handlePreview = () => {
         sanctionPreview(id)
         setForceRender(true)
+    };
+    const handleSanctionApprove = () => {
+        sanctionApprove(id)
     };
     const handleCancel = () => {
         // Reset all states to go back to initial state
@@ -302,6 +304,19 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
 
     }, [unholdDisbursalData, unholdDisbursalSuccess, rejectApplicationSuccess, rejectDisbursalData])
 
+    useEffect(() => {
+        if (sanctionApproveSuccess && sanctionApproveData) {
+            Swal.fire({
+                text: "Sanction Approved and Loan Number Allotted!",
+                icon: "success"
+            });
+            // navigate("/pending-sanctions")
+
+        }
+
+
+    }, [sanctionApproveSuccess, sanctionApproveData])
+
     const isReadyForSubmit = sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading || recommendLoanLoading
 
 
@@ -319,9 +334,10 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                         {recommendApplicationError?.data?.message} {applicationHoldError?.data?.message} {rejectApplicationError?.data?.message} {unHoldApplicationError?.data?.message}
                     </Alert>
                 }
-                {(isSanctionSendBackError || isdisbursalSendBackError || isRecommendError || isRejectDisbursalError) &&
+                {(isSanctionSendBackError || isdisbursalSendBackError || isRecommendError || isSanctionApproveError || isRejectDisbursalError) &&
                     <Alert severity="error" style={{ marginTop: "10px" }}>
                         {sanctionSendBackError?.data?.message}
+                        {sanctionApproveError?.data?.message}
                         {disbursalSendBackError?.data?.message}
                         {recommendLoanError?.data?.message}
                         {rejectDisbursalError?.data?.message}
@@ -329,24 +345,54 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                 }
 
                 {/* Render buttons if no action is selected */}
-                {(!actionType && !applicationProfile?.isApproved  && !applicationProfile?.isDisbursed ) && (
+                {(!actionType && !applicationProfile?.eSigned && !applicationProfile?.isDisbursed) && (
                     <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: 2 }}>
-                        {activeRole === "sanctionHead" && <Button
-                            // variant="contained"
-                            disabled={previewLoading}
-                            color="success"
-                            onClick={() => handlePreview()}
-                            sx={{
-                                backgroundColor: previewLoading ? "#ccc" : "#04c93f",
-                                color: previewLoading ? "#666" : "white",
-                                cursor: previewLoading ? "not-allowed" : "pointer",
-                                "&:hover": {
-                                    backgroundColor: previewLoading ? "#ccc" : "#8bf7ab",
-                                },
-                            }}
-                        >
-                            {previewLoading ? <CircularProgress size={20} color="inherit" /> : "Preview"}
-                        </Button>}
+                        {
+                            activeRole === "sanctionHead" &&
+                            <>
+                                {applicationProfile?.eSignPending ? null :
+                                    <>
+                                        {!applicationProfile?.isApproved ?
+
+                                            <Button
+                                                // variant="contained"
+                                                disabled={sanctionApproveLoading}
+                                                color="success"
+                                                onClick={() => handleSanctionApprove()}
+                                                sx={{
+                                                    backgroundColor: sanctionApproveLoading ? "#ccc" : "#04c93f",
+                                                    color: sanctionApproveLoading ? "#666" : "white",
+                                                    cursor: sanctionApproveLoading ? "not-allowed" : "pointer",
+                                                    "&:hover": {
+                                                        backgroundColor: sanctionApproveLoading ? "#ccc" : "#8bf7ab",
+                                                    },
+                                                }}
+                                            >
+                                                {sanctionApproveLoading ? <CircularProgress size={20} color="inherit" /> : "Approve"}
+                                            </Button>
+                                            :
+                                            <Button
+                                                // variant="contained"
+                                                disabled={previewLoading}
+                                                color="success"
+                                                onClick={() => handlePreview()}
+                                                sx={{
+                                                    backgroundColor: previewLoading ? "#ccc" : "#04c93f",
+                                                    color: previewLoading ? "#666" : "white",
+                                                    cursor: previewLoading ? "not-allowed" : "pointer",
+                                                    "&:hover": {
+                                                        backgroundColor: previewLoading ? "#ccc" : "#8bf7ab",
+                                                    },
+                                                }}
+                                            >
+                                                {previewLoading ? <CircularProgress size={20} color="inherit" /> : "Preview"}
+                                            </Button>}
+                                    </>
+
+
+                                }
+                            </>
+                        }
                         {(activeRole !== "sanctionHead" && activeRole !== "admin") &&
                             <>
                                 {!isHold && activeRole !== "disbursalHead" &&
@@ -358,10 +404,10 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                 onClick={() => handleActionClick('recommend')}
                                                 sx={{
                                                     backgroundColor: "#04c93f",
-                                                    color:  "white",
+                                                    color: "white",
                                                     cursor: "pointer",
                                                     "&:hover": {
-                                                        backgroundColor:  "#8bf7ab",
+                                                        backgroundColor: "#8bf7ab",
                                                     },
                                                 }}
                                             >

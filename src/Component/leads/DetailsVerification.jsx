@@ -24,9 +24,9 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
   const [mobileVerified, setMobileVerified] = useState(false);
 
   const [getEmailOtp, { data: emailOtp, isSuccess: emailOtpSuccess, isError: isEmailError, error: emailError }] = useGetEmailOtpMutation()
-  const [checkDetails, { data: aadhaarDetails, isSuccess: aadhaarDetailsSuccess,isFetching:isAadhaarDetailsFetching, isLoading: aadhaarDetailsLoading, isError: isAadhaarDetailError, error: aadhaarDetailsError }] = useLazyCheckDetailsQuery()
-  const [getPanDetails, panRes] = useLazyGetPanDetailsQuery()
+  const [checkDetails, { data: aadhaarDetails, isSuccess: aadhaarDetailsSuccess, isFetching: isAadhaarDetailsFetching, isLoading: aadhaarDetailsLoading, isError: isAadhaarDetailError, error: aadhaarDetailsError }] = useLazyCheckDetailsQuery()
   const [sendAadhaarLink, aadhaarRes] = useLazyGenerateAadhaarLinkQuery()
+  const [getPanDetails, panRes] = useLazyGetPanDetailsQuery()
 
   const handleMobileVerification = () => {
     // Logic for mobile verification
@@ -77,7 +77,7 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
       setOpenAadhaarCompare(true)
       setAadhaarData(aadhaarDetails?.data?.details)
     }
-  }, [aadhaarRes.data, aadhaarRes?.isSuccess,aadhaarRes.isFetching, aadhaarDetails, aadhaarDetailsSuccess, isAadhaarDetailsFetching])
+  }, [aadhaarRes.data, aadhaarRes?.isSuccess, aadhaarRes.isFetching, aadhaarDetails, aadhaarDetailsSuccess, isAadhaarDetailsFetching])
 
 
 
@@ -155,7 +155,7 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
               {/* Aadhaar Verification Section */}
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Typography variant="body1" sx={{ color: '#898b8c' }}>
-                  Adhaar:
+                  Aadhaar:
                   <span style={{ color: isAadhaarVerified ? 'green' : 'red' }}>
                     {isAadhaarVerified ? ' Verified' : ' Not Verified'}
                   </span>

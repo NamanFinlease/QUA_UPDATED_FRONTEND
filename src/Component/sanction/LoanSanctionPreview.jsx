@@ -12,10 +12,12 @@ import {
   Modal,
   Button,
   Alert,
+  CircularProgress,
 } from '@mui/material';
-import { useApproveApplicationMutation } from '../../Service/applicationQueries';
+import { useLazySendESignQuery } from '../../Service/applicationQueries';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import KeyFactStatement from './KFS';
 
 const LoanSanctionPreview = ({
   id,
@@ -26,12 +28,11 @@ const LoanSanctionPreview = ({
   // reset
 }) => {
 
-  const { fullname, loanAmount, disbursalDate, pan, bouncedCharges, mobile, penalInterest, processingFee, repaymentAmount, repaymentDate, roi, residenceAddress, sanctionDate, stateCountry, tenure, title } = previewData
-  console.log('preview data',previewData)
+  const { fullname, loanAmount, disbursalDate, pan, loanNo, bouncedCharges, mobile, penalInterest, processingFee, repaymentAmount, repaymentDate, roi, residenceAddress, sanctionDate, stateCountry, tenure, title } = previewData
 
   const navigate = useNavigate()
 
-  const [approveApplication, { data, isSuccess,isLoading,isFetching, isError, error }] = useApproveApplicationMutation()
+  const [approveApplication, { data, isSuccess, isLoading, isFetching, isError, error }] = useLazySendESignQuery()
 
   const handleClose = () => {
     setPreview(false);
@@ -78,6 +79,7 @@ const LoanSanctionPreview = ({
       {/* MUI Modal */}
       <Modal open={preview} onClose={() => handleClose()}>
         <Box sx={modalStyle}>
+        {/* <KeyFactStatement /> */}
           <Container sx={{ padding: '20px', border: '1px solid #ddd' }}>
             {/* Header Section */}
             <Box textAlign="center" mb={3}>
@@ -147,6 +149,12 @@ const LoanSanctionPreview = ({
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
+                      Loan Number
+                    </TableCell>
+                    <TableCell>{loanNo}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
                       Sanctioned Loan Amount (Rs.)
                     </TableCell>
                     {/* <TableCell sx={{ color: '#d9534f' }}>{new Intl.NumberFormat().format((loanAmount))} /-</TableCell> */}
@@ -190,7 +198,7 @@ const LoanSanctionPreview = ({
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
-                      Penal Interest (%) 
+                      Penal Interest (%)
                     </TableCell>
                     <TableCell>{penalInterest}% </TableCell>
                   </TableRow>
@@ -290,7 +298,7 @@ const LoanSanctionPreview = ({
                   },
                 }}
               >
-                {(isLoading || isFetching) ? <CircularProgress size={20} color="inherit" /> : "Approve"}
+                {(isLoading || isFetching) ? <CircularProgress size={20} color="inherit" /> : "Send For eSign"}
               </Button>
             </Box>
 
