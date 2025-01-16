@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { tokens } from '../theme';
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import {
@@ -13,6 +14,7 @@ import {
     InputLabel,
     Select,
     Box,
+    useTheme,
 } from "@mui/material";
 import { Logout, Person } from "@mui/icons-material";
 import useStore from "../Store";
@@ -26,6 +28,10 @@ const Navbar = () => {
     const { setLogin, setEmpInfo, empInfo, activeRole, setActiveRole } =
         useAuthStore();
     // const [currentActiveRole, setCurrentActiveRole] = useState(activeRole)
+
+    //color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const [logout, { isSuccess, isError, error }] = useLogoutMutation();
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
@@ -46,7 +52,7 @@ const Navbar = () => {
             text: `Do you want to switch to the ${selectedRole} role?`,
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
+            confirmButtonColor: colors.primary[400],
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, switch role",
         }).then((result) => {
@@ -118,93 +124,150 @@ const Navbar = () => {
     ];
 
     return (
-        <AppBar
-            position="static"
-            sx={{
-                backgroundColor: "#001f3f",
-                color: "#fff",
-                boxShadow: "none",
-            }}
-        >
-            <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography
-                    variant="h6"
-                    component={Link}
-                    to="/"
-                    sx={{
-                        textDecoration: "none",
-                        color: "inherit",
-                        ml: 5,
-                        fontWeight: "bold",
-                        "&:hover": { color: "#f0f0f0" },
-                    }}
-                >
-                    Qualoan
-                </Typography>
-
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                    <FormControl
-                        variant="standard"
-                        sx={{ m: 1, minWidth: 120 }}
+        <Box sx={{background : colors.white[100]}}>
+            <AppBar
+                position="fixed"
+                sx={{
+                    // background: colors.white[100],
+                    background: `linear-gradient(180deg, ${colors.white[100]} 1%, ${colors.primary[400]} 250%)`,
+                    color: colors.black[100],
+                    borderBottom: `2px solid ${colors.primary[400]}`,
+                    boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.3)",
+                    height:70,
+                    borderBottomLeftRadius:20,
+                    borderTopRightRadius:20,
+                }}
+            >
+                <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+                    <Typography
+                        variant="h6"
+                        component={Link}
+                        to="/"
+                        sx={{ ml: 5, }}
                     >
-                        {/* <InputLabel id="demo-simple-select-standard-label">Age</InputLabel> */}
-                        <Select
-                            labelId="demo-simple-select-standard-label"
-                            id="demo-simple-select-standard"
-                            value={activeRole}
-                            onChange={(e) => handleRoleChange(e)}
-                        // label="Age"
-                        >
-                            {empInfo.empRole &&
-                                empInfo.empRole.map((role, i) => (
-                                    <MenuItem key={i} value={role}>
-                                        {splitCamelCase(role)}
-                                    </MenuItem>
-                                ))}
-                        </Select>
-                    </FormControl>
+                        {/* Qualoan */}
+                        <Box 
+                            component="img" 
+                            src="../src/assets/image/Qua_logo.png"
+                            background="transparent"
+                            sx={{ width: 100, height: 30, margin: "10px" }} 
+                        />
+                    </Typography>
 
-                    <IconButton color="inherit" onClick={handleMenuClick}>
-                        <Avatar
-                            sx={{ backgroundColor: "#fff", color: "#001f3f" }}
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                        <FormControl
+                            variant="outlined"
+                            sx={{ 
+                                m: 1, 
+                                minWidth: 160,
+                                background:colors.primary[400], 
+                                borderTopRightRadius: 20,
+                                borderBottomLeftRadius: 20,
+                                boxShadow:"0px 0px 20px rgb(0,0,0,0.2)",
+                                '& .MuiOutlinedInput-notchedOutline': {
+                                    border: 0,
+                                },
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        border: 0,
+                                    },
+                                    '&:hover fieldset': {
+                                        border: 0,
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        border: 0,
+                                    },
+                                },
+                            }}
                         >
-                            {empInitials} {/* Replace with dynamic initials */}
-                        </Avatar>
-                    </IconButton>
-                    <Menu
-                        anchorEl={menuAnchorEl}
-                        open={Boolean(menuAnchorEl)}
-                        onClose={handleMenuClose}
-                        sx={{
-                            ".MuiPaper-root": {
-                                backgroundColor: "#001f3f",
-                                color: "#fff",
-                            },
-                        }}
-                    >
-                        {sidebarLinks.map((link) => (
-                            <MenuItem
-                                component={Link}
-                                to={link.path}
-                                key={link.text}
+                            <Select
+                                labelId="demo-simple-select-standard-label"
+                                id="demo-simple-select-standard"
+                                value={activeRole}
+                                onChange={(e) => handleRoleChange(e)}
                                 sx={{
-                                    color: "#fff",
-                                    "&:hover": { backgroundColor: "#002f6c" },
+                                    fontWeight:700,
+                                }}
+                            >   
+                                {empInfo.empRole &&
+                                    empInfo.empRole.map((role, i) => (
+                                        <MenuItem 
+                                            key={i} 
+                                            value={role}
+                                            sx={{
+                                                background: colors.white[100],
+                                                color:colors.primary[400],
+                                                '&:hover':{
+                                                background:`${colors.primary[400]}`,
+                                                color:`${colors.white[100]}`
+                                                },
+                                                '&:active':{
+                                                    color:colors.primary[400],
+                                                    background:colors.white[100],
+                                                },
+                                                "&.Mui-selected": {
+                                                    background: `${colors.primary[400]}`,
+                                                    color: `${colors.white[100]}`,
+                                                },
+                                                "&.Mui-selected:hover": {
+                                                    background: `${colors.primary[400]}`,
+                                                    color: `${colors.white[100]}`,
+                                                },
+                                            }}
+                                        >
+                                            {splitCamelCase(role)}
+                                        </MenuItem>
+                                    ))}
+                            </Select>
+                        </FormControl>
+
+                        <IconButton color="inherit" onClick={handleMenuClick}>
+                            <Avatar
+                                sx={{ 
+                                    background:colors.white[100], 
+                                    color: colors.primary[400], 
+                                    border:`3px solid ${colors.primary[400]}`,
+                                    padding:3,
                                 }}
                             >
-                                {link.text}
-                            </MenuItem>
-                        ))}
-                        <MenuItem
-                            onClick={handleLogout}
-                            sx={{ color: "#ff4d4d", fontWeight: "bold" }}
+                                {empInitials} {/* Replace with dynamic initials */}
+                            </Avatar>
+                        </IconButton>
+                        <Menu
+                            anchorEl={menuAnchorEl}
+                            open={Boolean(menuAnchorEl)}
+                            onClose={handleMenuClose}
+                            sx={{
+                                ".MuiPaper-root": {
+                                    background: colors.white[100],
+                                    color: colors.primary[400],
+                                },
+                            }}
                         >
-                            Logout
-                        </MenuItem>
-                    </Menu>
-                </Box>
-            </Toolbar>
-        </AppBar>
+                            {sidebarLinks.map((link) => (
+                                <MenuItem
+                                    component={Link}
+                                    to={link.path}
+                                    key={link.text}
+                                    sx={{
+                                        color: colors.primary[400],
+                                        "&:hover": { background: colors.primary[400], color: colors.white[100] },
+                                    }}
+                                >
+                                    {link.text}
+                                </MenuItem>
+                            ))}
+                            <MenuItem
+                                onClick={handleLogout}
+                                sx={{ color: "red", fontWeight: "bold", "&:hover": { background:"red", color: colors.white[100] } }}
+                            >
+                                Logout
+                            </MenuItem>
+                        </Menu>
+                    </Box>
+                </Toolbar>
+            </AppBar>
+        </Box>
     );
 };
 

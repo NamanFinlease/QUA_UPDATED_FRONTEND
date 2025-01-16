@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useGetInternalDedupeQuery } from '../Service/Query';
+import { tokens } from '../theme';
 import { useParams } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import {
@@ -9,8 +10,10 @@ import {
     Typography,
     Box,
     Alert,
+    useTheme,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CommonTable from './CommonTable';
 
 const columns = [
     { field: 'sr', headerName: '#', width: 50 },
@@ -31,7 +34,10 @@ const InternalDedupe = ({id}) => {
 
     const { data, isSuccess, isError,error } = useGetInternalDedupeQuery(id, { skip: id === null });
 
-      
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+
       const mergeLeadsAndApplications = (leads, applications) => {
         // Step 1: Create a merged array by checking for matches
         const mergedLeads = leads.map(lead => {
@@ -105,23 +111,46 @@ const InternalDedupe = ({id}) => {
     }));
 
     return (
-        <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3, borderRadius: '15px' }}>
-            <Accordion>
+        // <Box>
+            <Accordion
+                sx={{
+                    maxWidth:'700px', 
+                    background:colors.white[100], 
+                    borderRadius:"25px", 
+                    border:"0px",
+                }}>
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon sx={{color:colors.primary[400]}} />}
                     aria-controls="internal-dedupe-content"
                     id="internal-dedupe-header"
                     sx={{
-                        backgroundColor: '#424242',
-                        color: '#fff',
+                        background: colors.white[100],
+                        color: colors.primary[400],
                         fontWeight: 'bold',
-                        borderRadius: '5px',
+                        borderTopRightRadius: '15px',
+                        borderBottomLeftRadius: '15px',
+                        boxShadow:`0px 0px 20px rgb(0,0,0,0.2)`
                     }}
                 >
                     <Typography variant="h6">Internal Dedupe</Typography>
                 </AccordionSummary>
-                <AccordionDetails>
-                    <Box sx={{ height: 400, width: '100%' }}>
+                <AccordionDetails 
+                    sx={{
+                        borderRadius:"20px 0px 20px 20px",
+                        boxShadow:`0px 0px 10px rgb(0,0,0,0.1)`,
+                    }}
+                >
+                    <Box>
+                        <CommonTable    
+                            columns={columns}
+                            rows={rows}
+                            rowCount={data?.relatedLeads.length}
+                            paginationModel={paginationModel}
+                            onPageChange={handlePageChange}
+                        />
+                    </Box>
+
+                    {/* <Box sx={{ height: 400, width: '100%' }}>
                         <DataGrid
                             rows={rows}
                             columns={columns}
@@ -131,13 +160,13 @@ const InternalDedupe = ({id}) => {
                             paginationMode="server"
                             onPaginationModelChange={handlePageChange}
                             sx={{
-                                color: '#1F2A40',  // Default text color for rows
+                                color: 'white',  // Default text color for rows
                                     '& .MuiDataGrid-columnHeaders': {
-                                      backgroundColor: '#1F2A40',  // Optional: Header background color
+                                      backgroundColor: colors.primary[400],  // Optional: Header background color
                                       color: 'white'  // White text for the headers
                                     },
                                     '& .MuiDataGrid-footerContainer': {
-                                      backgroundColor: '#1F2A40',  // Footer background color
+                                      backgroundColor: colors.primary[400],  // Footer background color
                                       color: 'white',  // White text for the footer
                                     },
                                 '& .MuiDataGrid-row:hover': {
@@ -150,15 +179,16 @@ const InternalDedupe = ({id}) => {
                                 },
                             }}
                         />
-                    </Box>
+                    </Box> */}
                 </AccordionDetails>
             </Accordion>
-            {isError &&
-                <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
-                    {error?.data?.message}
-                </Alert>
-            }
-        </Box>
+            // {isError &&
+            //     <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+            //         {error?.data?.message}
+            //     </Alert>
+            // }
+        // {/* </Box> */}
+        
     );
 };
 

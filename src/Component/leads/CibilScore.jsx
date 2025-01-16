@@ -1,24 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Button, Box, Paper, Tooltip } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Typography, Button, Box, Paper, Tooltip, useTheme, } from '@mui/material';
+import { tokens } from '../../theme';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PreviewIcon from '@mui/icons-material/Preview';
 import Swal from 'sweetalert2';
 import { useLazyFetchCibilScoreQuery, useLazyGetLeadDocsQuery } from '../../Service/Query';
 import { useParams } from 'react-router-dom';
 
-const accordionStyles = {
-  borderRadius: '12px',
-  background: 'linear-gradient(145deg, #36cfc9, #ffffff)',
-  boxShadow: '5px 5px 10px #d1d5db, -5px -5px 10px #ffffff',
-  marginBottom: '20px',
-};
-
-const paperStyles = {
-  padding: '20px',
-  borderRadius: '15px',
-  backgroundColor: '#c8c9c7',
-  boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)',
-};
 
 const CibilScore = ({ id }) => {
 
@@ -28,7 +16,6 @@ const CibilScore = ({ id }) => {
 
   const [fetchCibilScore, cibilRes] = useLazyFetchCibilScoreQuery()
   const [getLeadDocs, { data: docsData, isSuccess: docsSuccess, isError: isDocsError, error: docsError }] = useLazyGetLeadDocsQuery();
-
 
   // Placeholder function for fetching CIBIL score
   const submitCibil = async () => {
@@ -82,13 +69,33 @@ const CibilScore = ({ id }) => {
     }
   }, [docsData]);
 
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
+  const accordionStyles = {
+    borderTopRightRadius: '15px',
+    borderBottomLeftRadius: '15px',
+    background: colors.white[100],
+    color:colors.primary[400],
+    boxShadow: '0px 0px 20px #d1d5db',
+    marginBottom: '20px',
+  };
+
+  const paperStyles = {
+    padding: '20px',
+    borderTopLeftRadius: '15px',
+    borderBottomRightRadius: '15px',
+    border:`1px solid ${colors.primary[400]}`,
+    backgroundColor: colors.white[100],
+    boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.1)',
+  };
 
   return (
     <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3 }}>
       <Accordion style={accordionStyles}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: '#007bb2' }} />}>
-          <Typography variant="h6" style={{ fontWeight: '600', color: "#ffffff" }}>Fetch CIBIL Score</Typography>
+        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: colors.primary[400] }} />}>
+          <Typography variant="h6" style={{ fontWeight: '600', }}>Fetch CIC Report</Typography>
         </AccordionSummary>
         <AccordionDetails >
           <Paper elevation={3} style={paperStyles}>
@@ -98,16 +105,18 @@ const CibilScore = ({ id }) => {
                 onClick={submitCibil}
                 disabled={loading}
                 sx={{
-                  borderRadius: '8px',
+                  borderTopRightRadius: '10px',
+                  borderBottomLeftRadius: '10px',
                   padding: '10px 20px',
-                  background: 'linear-gradient(45deg, #42a5f5, #007bb2)',
-                  color: '#fff',
+                  background: colors.white[100],
+                  color: colors.primary[400],
                   '&:hover': {
-                    background: 'linear-gradient(45deg, #007bb2, #42a5f5)',
+                    background: colors.primary[400],
+                    color:colors.white[100],
                   },
                 }}
               >
-                {cibilRes?.isLoading ? 'Fetching...' : 'Fetch CIBIL Score'}
+                {cibilRes?.isLoading ? 'Fetching...' : 'Fetch Credit Score'}
               </Button>
 
               <Box textAlign="right" display="flex" alignItems="center">
@@ -124,16 +133,17 @@ const CibilScore = ({ id }) => {
                     sx={{
                       borderRadius: 2,
                       boxShadow: 3,
-                      bgcolor: '#f9f9f9',
-                      border: '1px solid #ddd',
+                      bgcolor: colors.white[100],
+                      border: `1px solid ${colors.primary[400]}`,
                       p: 1
                     }}
                   >
                     {/* CIBIL Score Section */}
                     <Box
                       sx={{
-                        bgcolor: '#e0f7e0', // Light green background for CIBIL score
-                        borderRadius: 1,
+                        background:colors.white[100], // Light green background for CIBIL score
+                        borderTopLeftRadius: 2,
+                        borderBottomRightRadius: 2,
                         px: 1,
                       }}
                     >
@@ -141,11 +151,11 @@ const CibilScore = ({ id }) => {
                         variant="h6"
                         sx={{
                           fontWeight: 500,
-                          fontSize: '18px',
-                          color: '#0a8001',
+                          fontSize: '16px',
+                          color: colors.primary[400],
                         }}
                       >
-                        CIBIL Score: {cibilRes?.data?.value}
+                        Credit Score: {cibilRes?.data?.value}
                       </Typography>
                     </Box>
 
@@ -157,17 +167,19 @@ const CibilScore = ({ id }) => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        bgcolor: '#0a8001', // Dark green background for the button
-                        color: '#fff', // Icon color
+                        bgcolor: colors.white[100], // Dark green background for the button
+                        color: colors.primary[400], // Icon color
                         border: 'none',
-                        borderRadius: 1,
+                        borderTopLeftRadius: 2,
+                        borderBottomRightRadius: 2,
                         ml: 2,
                         width: 30,
                         height: 30,
                         cursor: 'pointer',
                         transition: 'background-color 0.3s ease', // Smooth background transition
                         '&:hover': {
-                          bgcolor: '#086c01', // Darker green on hover
+                          bgcolor: colors.primary[400],
+                          color:colors.white[100],
                         },
                       }}
                     >

@@ -5,6 +5,7 @@ import { DataGrid, GridToolbar, GridToolbarExport } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom'
 import useAuthStore from '../store/authStore';
 import CustomToolbar from '../CustomToolbar';
+import CommonTable from '../CommonTable';
 
 const Sanctioned = () => {
     const { activeRole } = useAuthStore()
@@ -69,74 +70,22 @@ const Sanctioned = () => {
     }, [isSuccess, data])
     return (
         <>
+            <CommonTable
+                columns={columns}
+                rows={rows}
+                totalRows={totalApplications}
+                paginationModel={paginationModel}
+                onPageChange={handlePageChange}
+                onRowClick={handleLeadClick}
+                title="Total Sanctioned"
+            />
             <div>
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginTop: '70px',
-                        marginLeft: '20px',
-                    }}
-                >
-                    <div
-                        style={{
-                            padding: '10px 20px',
-                            fontWeight: 'bold',
-                            backgroundColor: '#007bff',
-                            color: '#fff',
-                            borderRadius: '5px',
-                            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                            cursor: 'pointer',
-                            marginBottom: "15px"
-                        }}
-                    >
-                        {/* <h1>Sanctioned</h1> */}
-                        Total Applicattions: {totalApplications || 0}
-                    </div>
-
-                </div>
-
-                {columns &&
-                    <div style={{ height: 400, width: '100%' }}>
-                        <DataGrid
-                            rows={rows}
-                            columns={columns}
-                            rowCount={totalApplications}
-                            loading={isLoading}
-                            // slots={{ toolbar: () => <CustomToolbar /> }}
-                            pageSizeOptions={[5]}
-                            paginationModel={paginationModel}
-                            paginationMode="server"
-                            onPaginationModelChange={(pagination) => handlePageChange(pagination)}
-                            onRowClick={(params) => handleLeadClick(params)}
-                            sx={{
-                                color: '#1F2A40',  // Default text color for rows
-                                '& .MuiDataGrid-columnHeaders': {
-                                    backgroundColor: '#1F2A40',  // Optional: Header background color
-                                    color: 'white'  // White text for the headers
-                                },
-                                '& .MuiDataGrid-footerContainer': {
-                                    backgroundColor: '#1F2A40',  // Footer background color
-                                    color: 'white',  // White text for the footer
-                                },
-                                '& .MuiDataGrid-row:hover': {
-                                    backgroundColor: 'white',
-                                    cursor: 'pointer',
-                                },
-                                '& .MuiDataGrid-row': {
-                                    backgroundColor: 'white',
-                                    // cursor: 'pointer',
-                                },
-                            }}
-                        />
-                    </div>}
                 {isError &&
                     <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
                         {error?.data?.message}
                     </Alert>
                 }
             </div>
-
         </>
     )
 }

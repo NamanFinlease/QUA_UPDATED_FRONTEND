@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { tokens } from "../theme";
 import {
     Typography,
     Button,
@@ -8,6 +9,7 @@ import {
     TextField,
     CircularProgress,
     Tooltip,
+    useTheme,
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/Add';
@@ -35,6 +37,10 @@ const UploadDocuments = ({ leadData }) => {
         bankStatement: [],
     });
     const [uploadDocuments, { data, isSuccess: docSuccess, isLoading, isError: isDocError, error: docError }] = useUploadDocumentsMutation();
+
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     // Handle file selection
     const handleFileChange = (index, event) => {
@@ -149,10 +155,23 @@ const UploadDocuments = ({ leadData }) => {
 
 
     return (
-        <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3, p: 3, backgroundColor: '#ffffff', borderRadius: 2 }}>
+        <>
+        <Box 
+            sx={{ 
+                maxWidth: '1000px', 
+                margin: '0 auto', 
+                mt: 3, 
+                p: 3, 
+                backgroundColor: colors.white[100], 
+                color:colors.primary[400],
+                borderRadius: "0px 20px 0px 20px",
+                border: `1px solid ${colors.primary[400]}`,
+                boxShadow : `0px 0px 20px rgb(0,0,0,0.2)`,
+            }}
+        >
             {activeRole === "screener" && 
             <>
-                <Typography variant="h6" style={{ fontWeight: '600', color: "#000000", mb: 2 }}>
+            <Typography variant="h6" style={{ fontWeight: '600', color: colors.primary[400], marginBottom:"10px", textAlign:"center", fontSize:"18px" }}>
                 Upload Documents
             </Typography>
 
@@ -170,9 +189,9 @@ const UploadDocuments = ({ leadData }) => {
                                         setSelectedDocType(key);
                                     }
                                 }}
-                                sx={{ color: 'black' }}
+                                sx={{ color: colors.primary[400],'&.Mui-checked':{color:colors.primary[400]} }}
                             />
-                            <Typography variant="subtitle2" style={{ fontWeight: '600', color: '#000000', fontSize: '14px' }}>
+                            <Typography variant="subtitle2" style={{ fontWeight: '600', color: colors.black[100], fontSize: '14px' }}>
                                 {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
                             </Typography>
                         </Box>
@@ -181,7 +200,7 @@ const UploadDocuments = ({ leadData }) => {
 
                 {selectedDocType && (
                     <>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, }}>
                             {fileInputs.map((input, index) => (
                                 <Box
                                     key={index}
@@ -190,9 +209,9 @@ const UploadDocuments = ({ leadData }) => {
                                         alignItems: 'center',
                                         gap: 2,
                                         p: 2,
-                                        borderRadius: 2,
-                                        backgroundColor: '#f9f9f9',
-                                        boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.2)',
+                                        borderRadius: "0px 20px 0px 20px",
+                                        backgroundColor: colors.white[100],
+                                        boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.2)',
                                     }}
                                 >
                                     <Button
@@ -201,11 +220,12 @@ const UploadDocuments = ({ leadData }) => {
                                         // onClick={() => fileInputRef.current.click()}
                                         sx={{
                                             minWidth: 120,
-                                            borderColor: '#007bff',
-                                            color: '#007bff',
+                                            background: colors.primary[400],
+                                            borderColor: colors.primary[400],
+                                            color: colors.white[100],
+                                            borderRadius:"0px 10px 0px 10px",
                                             '&:hover': {
-                                                backgroundColor: '#e6f7ff',
-                                                borderColor: '#0056b3',
+                                                background: colors.primary[100],
                                             },
                                         }}
                                     >
@@ -227,11 +247,11 @@ const UploadDocuments = ({ leadData }) => {
                                         size="small"
                                         sx={{
                                             flex: 1,
-                                            '& .MuiInputBase-input': { color: '#1b1c1b' },
-                                            '& .MuiInputLabel-root': { color: '#1b1c1b' },
+                                            '& .MuiInputBase-input': { color: colors.primary[400] },
+                                            '& .MuiInputLabel-root': { color: colors.primary[400] },
                                             '& .MuiOutlinedInput-root': {
-                                                '& fieldset': { borderColor: '#007bff' },
-                                                '&:hover fieldset': { borderColor: '#0056b3' },
+                                                '& fieldset': { borderColor: colors.primary[400],borderRadius:"0px 10px 0px 10px", },
+                                                '&:hover fieldset': { borderColor: colors.primary[400] },
                                             },
                                         }}
                                     />
@@ -244,7 +264,7 @@ const UploadDocuments = ({ leadData }) => {
                                             href={URL.createObjectURL(input.file)}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            sx={{ color: '#007bff' }}
+                                            sx={{ color: colors.primary[400] }}
                                         >
                                             <VisibilityIcon />
                                         </IconButton>
@@ -287,11 +307,14 @@ const UploadDocuments = ({ leadData }) => {
                                     disabled={isLoading}
                                     // variant="contained"
                                     sx={{
-                                        backgroundColor: isLoading ? "#ccc" : "#1F2A40",
-                                        color: isLoading ? "#666" : "white",
+                                        backgroundColor: isLoading ? "#ccc" : colors.white[100],
+                                        border: isLoading ? "ccc" : `1px solid ${colors.primary[400]}`,
+                                        borderRadius:"0px 10px 0px 10px",
+                                        color: isLoading ? "#666" : colors.primary[400],
                                         cursor: isLoading ? "not-allowed" : "pointer",
                                         "&:hover": {
-                                            backgroundColor: isLoading ? "#ccc" : "#3F4E64",
+                                            backgroundColor: isLoading ? "#ccc" : colors.primary[400],
+                                            color: isLoading ? "#ccc" : colors.white[100],
                                         },
                                     }}
                                 >
@@ -302,7 +325,8 @@ const UploadDocuments = ({ leadData }) => {
             </Box>
             </>
             }
-
+        </Box>
+        <Box>
 
             {
                 uploadedDocs && uploadedDocs.length > 0 &&
@@ -312,6 +336,7 @@ const UploadDocuments = ({ leadData }) => {
                 />
             }
         </Box>
+        </>
     );
 };
 

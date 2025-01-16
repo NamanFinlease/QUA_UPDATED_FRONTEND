@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import { tokens } from '../theme';
 import {
     Accordion,
     AccordionSummary,
@@ -7,10 +8,13 @@ import {
     Typography,
     Box,
     Alert,
+    useTheme,
+    Paper,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useApplicationLogsQuery } from '../Service/Query';
 import { formatDateTime } from '../utils/helper';
+import CommonTable from './CommonTable';
 
 const columns = [
     { field: 'sr', headerName: '#', width: 50 },
@@ -28,6 +32,10 @@ const ApplicationLogHistory = ({ id }) => {
         page: 0,
         pageSize: 5,
     });
+
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const { data, isSuccess, isError, error } = useApplicationLogsQuery(id);
 
@@ -47,55 +55,38 @@ const ApplicationLogHistory = ({ id }) => {
         reason: log?.reason,
     }));
 
+    const handlePageChange = (newPaginationModel) => {
+        setPaginationModel(newPaginationModel);
+    };
+
     return (
-        <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3 }}>
-            <Accordion>
+        <Box sx={{border:0,mt:3, borderRadius:"25px"}}>
+            <Accordion sx={{maxWidth:'700px', margin: '0 auto', mt:3 , background:colors.white[100], borderRadius:"25px", boxShadow:"0px 0px 5px rgb(0,0,0,0.1)"}}>
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon sx={{color:colors.primary[400]}} />}
                     aria-controls="application-log-content"
                     id="application-log-header"
                     sx={{
-                        backgroundColor: '#424242',
-                        color: '#fff',
+                        background: colors.white[100],
+                        color: colors.primary[400],
                         fontWeight: 'bold',
-                        borderRadius: '5px',
+                        borderRadius: '0px 20px 0px 20px',
+                        boxShadow:"0px 0px 20px rgb(0,0,0,0.2)",
                     }}
                 >
                     <Typography variant="h6">Application Log</Typography>
                 </AccordionSummary>
-                <AccordionDetails>
-                    <Box sx={{ height: 400, width: '100%' }}>
-                        <DataGrid
-                            rows={rows}
+                <AccordionDetails 
+                    sx={{
+                        borderRadius:"20px 0px 20px 20px",
+                        boxShadow:`0px 0px 10px rgb(0,0,0,0.1)`
+                    }}>
+                    <Box sx={{ height: 500, width: '100%' }}>
+                        <CommonTable    
                             columns={columns}
-                            // pageSizeOptions={[5]}
-                            // paginationModel={paginationModel}
-                            paginationMode="server"
-                            onPaginationModelChange={setPaginationModel}
-                            // sx={{
-                            //     '& .MuiDataGrid-row:hover': {
-                            //         cursor: 'pointer',
-                            //     },
-                            // }}
-                            sx={{
-                                color: '#1F2A40',  // Default text color for rows
-                                    '& .MuiDataGrid-columnHeaders': {
-                                      backgroundColor: '#1F2A40',  // Optional: Header background color
-                                      color: 'white'  // White text for the headers
-                                    },
-                                    '& .MuiDataGrid-footerContainer': {
-                                      backgroundColor: '#1F2A40',  // Footer background color
-                                      color: 'white',  // White text for the footer
-                                    },
-                                '& .MuiDataGrid-row:hover': {
-                                    backgroundColor: 'white',
-                                    cursor: 'pointer',
-                                },
-                                '& .MuiDataGrid-row': {
-                                    backgroundColor: 'white',
-                                    // cursor: 'pointer',
-                                },
-                            }}
+                            rows={rows}
+                            paginationModel={ paginationModel}
+                            onPageChange={handlePageChange}
                         />
                     </Box>
                 </AccordionDetails>

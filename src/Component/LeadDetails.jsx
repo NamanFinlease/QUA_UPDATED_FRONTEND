@@ -9,7 +9,9 @@ import {
   Typography,
   OutlinedInput,
   Box,
+  useTheme,
 } from '@mui/material';
+import { tokens } from '../theme';
 import { useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { useUpdateLeadMutation } from '../Service/Query';
@@ -26,6 +28,10 @@ import dayjs from 'dayjs';
 const LeadDetails = ({ leadData, setLeadEdit }) => {
   const { id } = useParams();
   const [updateLead, { data, isSuccess, isError, error }] = useUpdateLeadMutation();
+
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const { handleSubmit, control, setValue } = useForm({
     resolver: yupResolver(leadUpdateSchema),
@@ -48,9 +54,9 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
   };
 
   return (
-    <Box sx={{ padding: '40px', backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
-      <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
-        Lead Details
+    <Box sx={{ padding: '0px 20px', backgroundColor: colors.white[100], minHeight: '100vh' }}>
+      <Typography variant="h3" align="center" gutterBottom sx={{padding:"10px 20px", fontWeight: 'bold', color: colors.primary[400] }}>
+        Edit Lead Details
       </Typography>
 
       <Box
@@ -58,9 +64,12 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
         noValidate
         onSubmit={handleSubmit(onSubmit)}
         sx={{
-          backgroundColor: '#9c9b98',
+          backgroundColor: colors.black[100],
+          color:colors.black[100],
           padding: '30px',
-          borderRadius: '10px',
+          marginBottom:"20px",
+          borderRadius: '0px 30px',
+          border:`2px solid ${colors.primary[400]}` ,
           boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
           display: 'flex',
           flexWrap: 'wrap',
@@ -398,12 +407,13 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
             color="gray"
             onClick={() => setLeadEdit(false)}
             sx={{
-              backgroundColor: 'gray',
-              color: 'white',
-              borderColor: 'gray',
+              backgroundColor: colors.white[100],
+              color: colors.redAccent[500],
+              borderColor: colors.redAccent[500],
               padding: '10px 20px',
               '&:hover': {
-                backgroundColor: 'darkgray',
+                backgroundColor: colors.redAccent[500],
+                color:colors.white[100]
               },
             }}
           >
@@ -413,11 +423,13 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
             type="submit"
             variant="contained"
             sx={{
-              backgroundColor: '#3f51b5',
-              color: 'white',
+              backgroundColor: colors.white[100],
+              color: colors.primary[400],
+              border:`1px solid colors.primary[400]`,
               padding: '10px 20px',
               '&:hover': {
-                backgroundColor: '#303f9f',
+                backgroundColor: colors.primary[400],
+                color:colors.white[100]
               },
             }}
           >
