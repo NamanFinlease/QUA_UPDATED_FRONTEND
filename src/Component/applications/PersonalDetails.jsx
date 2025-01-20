@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { tokens } from '../../theme';
 import {
   Typography,
   Paper,
@@ -11,6 +12,7 @@ import {
   Box,
   TableHead,
   Divider,
+  useTheme
 } from '@mui/material';
 import { useApplicantPersonalDetailsQuery } from '../../Service/applicationQueries';
 import useStore from '../../Store';
@@ -32,6 +34,10 @@ const PersonalDetails = ({ id }) => {
     { skip: id === null }
   );
 
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   useEffect(() => {
     if (applicantSuccess) {
       setPersonalDetails(applicantData?.personalDetails);
@@ -51,15 +57,36 @@ const PersonalDetails = ({ id }) => {
 
   return (
     <>
-      <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '10px', marginBottom: "20px" }}>
-        <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', marginBottom: '16px' }}>
+      <Paper 
+        elevation={3} 
+        sx={{ 
+          padding: '20px', 
+          marginTop: '20px', 
+          borderRadius: '0px 20px', 
+          marginBottom: "20px",
+          background:colors.white[100],
+          color:colors.primary[400], 
+        }}
+      >
+        <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', marginBottom: '16px', textAlign:"center" }}>
           Personal Details
         </Typography>
-        <TableContainer component={Paper} sx={{ borderRadius: '8px' }}>
+        <TableContainer 
+          component={Paper} 
+          sx={{ 
+            borderRadius: '0px 20px', 
+            background:colors.white[100], 
+            color:colors.primary[400],
+            boxShadow:'0px 0px 10px rgb(0,0,0,0.2)',
+            '& .MuiTableCell-root':{
+              color:colors.black[100],
+            }
+          }}
+        >
           <Table aria-label="personal details table">
             <TableBody>
               {columns?.map((row, index) => (
-                <TableRow key={index} sx={{ '&:nth-of-type(odd)': { backgroundColor: '#918f8e' } }}>
+                <TableRow key={index} sx={{ borderBottom:`2px solid ${colors.primary[400]}`, }}>
                   <TableCell align="left" sx={{ fontWeight: 500 }}>{row.label}</TableCell>
                   <TableCell align="left">{row.value || ''}</TableCell>
                   <TableCell align="left" sx={{ fontWeight: 500 }}>{row.label2}</TableCell>

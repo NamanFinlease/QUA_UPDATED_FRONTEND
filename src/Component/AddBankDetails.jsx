@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { tokens } from '../theme';
 import {
     Box,
     Card,
@@ -10,6 +11,7 @@ import {
     InputAdornment,
     Alert,
     CircularProgress,
+    useTheme,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
@@ -25,6 +27,10 @@ const AddBankDetails = () => {
     const [adminBank, { data, isError, isLoading, isSuccess, error: bankError }] =
         useAdminBankMutation();
     const [error, setError] = useState("");
+
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     // Validate IFSC on each key press
     const handleIfscChange = (e) => {
@@ -100,7 +106,7 @@ const AddBankDetails = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 padding: "40px",
-                backgroundColor: "#f3f4f6", // Light gray background
+                backgroundColor: colors.white[100], // Light gray background
                 minHeight: "100vh",
             }}
         >
@@ -109,8 +115,8 @@ const AddBankDetails = () => {
                     maxWidth: 600,
                     width: "100%",
                     padding: "24px 32px",
-                    borderRadius: "12px",
-                    boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.1)",
+                    borderRadius: "0px 20px",
+                    boxShadow: "0px 0px 25px rgba(0, 0, 0, 0.1)",
                     backgroundColor: "#fff",
                     "&:hover": {
                         boxShadow: "0px 15px 30px rgba(0, 0, 0, 0.15)",

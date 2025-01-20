@@ -16,8 +16,10 @@ import {
     InputLabel,
     Select,
     FormControl,
-    CircularProgress
+    CircularProgress,
+    useTheme,
 } from '@mui/material';
+import { tokens } from '../../theme';
 import { useAddBankMutation, useGetBankDetailsQuery, useUpdateBankMutation } from '../../Service/applicationQueries';
 import { useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
@@ -53,6 +55,10 @@ const BankDetails = ({ id }) => {
 
     };
 
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+
 
     const handleOpenForm = () => {
 
@@ -83,17 +89,45 @@ const BankDetails = ({ id }) => {
     }, [addBankRes.data ,updateSuccess,updateData])
 
     return (
-        <Paper elevation={3} style={{ padding: '10px', marginTop: '20px', borderRadius: '10px' }}>
+        <Paper 
+            elevation={3} 
+            style={{ 
+                padding: '20px', 
+                marginTop: '20px', 
+                borderRadius: '0px 20px', 
+                background:colors.white[100],
+            }}
+        >
             {(isAddingBank ||
                 !(bankDetails && Object.keys(bankDetails).length > 0 && !bankDetails.message))
                 ? (
                     <>
-                        <Typography variant="h6" gutterBottom>
+                        <Typography variant="h4" gutterBottom sx={{textAlign:"center", padding:"0px 0px 20px 0px", color:colors.primary[400]}}>
                             Add Bank Details
                         </Typography>
 
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            <Box display="flex" flexDirection="column" gap={2}>
+                            <Box display="flex" flexDirection="column" gap={2}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        color:colors.black[100],
+                                      '& .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: colors.primary[400],
+                                      },
+                                    },
+                                    '& .MuiSelect-select': {
+                                        color:colors.black[100],
+                                        padding: '10px',
+                                    },
+                                    '& .MuiInputLabel-root': { 
+                                        color: colors.black[100],
+                                        ':hover':{
+                                            color:colors.black[100],
+                                        }
+                                    },
+                                    '& .MuiSelect-select': { color: colors.black[100] },
+                                  }}
+                            >
                                 <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} gap={2}>
                                     <Controller
                                         name="bankName"
@@ -106,7 +140,7 @@ const BankDetails = ({ id }) => {
                                                     {...field}
                                                     error={!!fieldState.error}
                                                     helperText={fieldState.error ? fieldState.error.message : ''}
-
+                                                       
                                                 />
                                             )
                                         }}
@@ -175,10 +209,18 @@ const BankDetails = ({ id }) => {
                                         render={({ field, fieldState }) => (
                                             <FormControl
                                                 fullWidth
-                                                variant="standard"
+                                                sx={{ 
+                                                    '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[100] },
+                                                    '& .MuiInputLabel-root': { color: colors.black[100] },
+                                                    '& .MuiSelect-select': { color: colors.black[100] },
+                                                    '& .MuiSelect-icon': { color: colors.black[100] },
+                                                    '&:hover':{
+                                                        '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[100] },
+                                                    }
+                                                }}
                                             // error={!!errors.reference2?.relation}
                                             >
-                                                <InputLabel>Select Account Type</InputLabel>
+                                                <InputLabel style={{ color: colors.black[100] }}>Select Account Type</InputLabel>
                                                 <Select
                                                     {...field}
                                                     label="Account Type"
@@ -200,21 +242,35 @@ const BankDetails = ({ id }) => {
                             <Box display="flex" justifyContent="flex-end" marginTop="20px">
                                 <Button
                                     variant="outlined"
-                                    color="secondary"
-                                    sx={{ marginRight: '10px' }}
+                                    sx={{ 
+                                        marginRight: '10px', 
+                                        borderColor:colors.redAccent[500],
+                                        color:colors.redAccent[500],
+                                        background:colors.white[100],
+                                        borderRadius:"0px 10px",
+                                        border:`2px solid ${colors.redAccent[500]}`,
+                                        '&:hover':{
+                                            background:colors.redAccent[500],
+                                            color:colors.white[100],
+                                        }
+                                    }}
                                     onClick={() => setIsAddingBank(false)}
                                 >
                                     Cancel
                                 </Button>
                                 <Button
                                     disabled={addBankRes?.isLoading || updateLoading}
+                                    variant="outlined"
                                     type="submit"
                                     sx={{
-                                        backgroundColor: (addBankRes?.isLoading || updateLoading) ? "#ccc" : "#1F2A40",
-                                        color: (addBankRes?.isLoading || updateLoading) ? "#666" : "white",
+                                        backgroundColor: (addBankRes?.isLoading || updateLoading) ? "#ccc" : colors.white[100],
+                                        color: (addBankRes?.isLoading || updateLoading) ? "#666" : colors.primary[400],
                                         cursor: (addBankRes?.isLoading || updateLoading) ? "not-allowed" : "pointer",
+                                        borderRadius:"0px 10px",
+                                        border:`2px solid ${colors.primary[400]}`,
                                         "&:hover": {
-                                            backgroundColor: (addBankRes?.isLoading || updateLoading) ? "#ccc" : "#3F4E64",
+                                            background:colors.primary[400],
+                                            color:colors.white[100],
                                         },
                                     }}
                                 >
@@ -232,10 +288,30 @@ const BankDetails = ({ id }) => {
 
                 ) : (
                     <>
-                        <Typography variant="h6" gutterBottom>
+                        <Typography 
+                            variant="h3" 
+                            gutterBottom 
+                            sx={{
+                                color:colors.primary[400],
+                                textAlign:"center",
+                                marginBottom:"20px",
+                            }}
+                        >
                             Bank Details
                         </Typography>
-                        <TableContainer component={Paper}>
+                        <TableContainer 
+                            component={Paper}
+                            sx={{
+                                borderRadius:"0px 20px",
+                                color:colors.black[100],
+                                background:colors.white[100],
+                                boxShadow:"0px 0px 20px rgb(0,0,0,0.2)",
+                                '& .MuiTableCell-root':{
+                                    color:colors.black[100],
+                                    borderBottom:`2px solid ${colors.primary[400]}`,
+                                }
+                            }}
+                        >
                             <Table>
                                 <TableBody>
                                     <TableRow>
@@ -265,11 +341,12 @@ const BankDetails = ({ id }) => {
                                 variant="outlined"
                                 onClick={() => handleOpenForm()}
                                 sx={{
-                                    backgroundColor: 'primary.main',
-                                    color: 'white',
+                                    backgroundColor: colors.white[100],
+                                    color: colors.primary[400],
+                                    borderRadius:"0px 10px",
                                     padding: '10px 20px',
                                     '&:hover': {
-                                        backgroundColor: 'darkPrimary',
+                                        boxShadow:"0px 0px 15px rgb(0,0,0,0.3)",
                                     },
                                 }}
                             >

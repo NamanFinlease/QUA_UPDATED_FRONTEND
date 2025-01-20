@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Paper, Box, Alert } from '@mui/material';
+import { Paper, Box, Alert, useTheme } from '@mui/material';
+import { tokens } from '../../theme';
 import { useNavigate, useParams } from 'react-router-dom';
 import UploadDocuments from '../UploadDocuments';
 import LeadDetails from '../LeadDetails';
@@ -29,6 +30,9 @@ const ApplicationProfile = () => {
 
   const { data: applicationData, isSuccess: applicationSuccess, isError, error, refetch } = useFetchSingleApplicationQuery(id, { skip: id === null });
 
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   useEffect(() => {
     if (applicationSuccess) {
@@ -46,12 +50,12 @@ const ApplicationProfile = () => {
   }, [id, refetch]);
 
   return (
-    <div className="crm-container" style={{ padding: '10px' }}>
+    <div className="crm-container" style={{display:"flex", justifyContent:"center",}}>
       {leadEdit ? (
         <LeadDetails applicationData={applicationData} setLeadEdit={setLeadEdit} />
       ) : (
         <>
-          <div className='p-3'>
+          <div className='p-3' style={{ width:"90%",}}>
             <BarButtons
               barButtonOptions={barButtonOptions}
               currentPage={currentPage}
@@ -60,7 +64,7 @@ const ApplicationProfile = () => {
 
             {currentPage === "application" &&
               <>
-                <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '10px' }}>
+                <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '0px 20px 0px 20px', background:colors.white[100], }}>
                   <ApplicantProfileData leadData={applicationData?.lead} />
                 </Paper>
                 {applicationData?.lead?._id &&

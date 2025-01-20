@@ -1,7 +1,7 @@
 /* Dashboard.css */
 
 .table-container {
-    margin-top: 60px; /* Adjusted for navbar height */
+    margin-top: 160px; /* Adjusted for navbar height */
     padding: 20px;
     overflow-x: auto; /* Ensure table is scrollable on smaller screens */
     display: grid;
@@ -9,7 +9,8 @@
   }
   
   .with-sidebar {
-    margin-left: 250px; /* Sidebar is open */
+    margin-left: "265px"; /* Sidebar is open */
+    margin-top:"100px";
   }
   
   .without-sidebar {

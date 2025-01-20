@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {  Button, Paper, Box, Alert } from '@mui/material';
+import { tokens } from '../theme';
+import {  Button, Paper, Box, Alert, useTheme } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useFetchSingleLeadQuery, } from '../Service/Query';
 import LeadDetails from '../Component/LeadDetails';
@@ -21,10 +22,13 @@ const LeadProfile = () => {
     const { id } = useParams();
     const {empInfo,activeRole} = useAuthStore()
     const [currentPage, setCurrentPage] = useState("lead");
-    const [uploadedDocs, setUploadedDocs] = useState([]); 
+    const [uploadedDocs, setUploadedDocs] = useState([]);
     const { setLead } = useStore()
     const [leadEdit, setLeadEdit] = useState(false);
 
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const { data: leadData, isSuccess: leadSuccess, isError, error } = useFetchSingleLeadQuery(id, { skip: id === null });
 
@@ -41,13 +45,13 @@ const LeadProfile = () => {
     }, [leadSuccess, leadData])
 
     return (
-        <div className="crm-container">
+        <div className="crm-container" style={{display:"flex", justifyContent:"center",}}>
 
             {leadEdit ? (
                 <LeadDetails leadData={leadData} setLeadEdit={setLeadEdit} />
             ) : (
                 <>
-                    <div className="p-3">
+                    <div className="p-3" style={{ width:"90%",}}>
                         <BarButtons
                             barButtonOptions={barButtonOptions}
                             currentPage={currentPage}
@@ -61,22 +65,15 @@ const LeadProfile = () => {
                                     sx={{
                                         padding: '20px',
                                         marginTop: '20px',
-                                        borderRadius: '10px',
-                                        color: '#1F2A40',  // Default text color for rows
-                                        '& .MuiDataGrid-columnHeaders': {
-                                            backgroundColor: '#1F2A40',  // Optional: Header background color
-                                            color: 'white',  // White text for the headers
-                                        },
-                                        '& .MuiDataGrid-footerContainer': {
-                                            backgroundColor: '#1F2A40',  // Footer background color
-                                            color: 'white',  // White text for the footer
-                                        },
+                                        borderTopRightRadius: '20px',
+                                        borderBottomLeftRadius: '20px',
+                                        background:colors.white[100],
                                         '& .MuiDataGrid-row:hover': {
-                                            backgroundColor: 'white',
+                                            backgroundColor: colors.white[100],
                                             cursor: 'pointer',
                                         },
                                         '& .MuiDataGrid-row': {
-                                            backgroundColor: 'white',
+                                            backgroundColor: colors.white[100],
                                         },
                                     }}
                                 >
@@ -92,11 +89,16 @@ const LeadProfile = () => {
                                             variant="outlined"
                                             onClick={() => setLeadEdit(true)}
                                             sx={{
-                                                backgroundColor: 'primary.main',
-                                                color: 'white',
+                                                border:`3px solid ${colors.primary[400]}`,
+                                                borderTopRightRadius:"10px",
+                                                borderBottomLeftRadius:"10px",
+                                                background: colors.white[100],
+                                                color: colors.primary[400],
                                                 padding: '10px 20px',
+                                                transition: "all 0.3s ease",
                                                 '&:hover': {
-                                                    backgroundColor: 'darkPrimary',
+                                                    backgroundColor: colors.primary[400],
+                                                    color:colors.white[100]
                                                 },
                                             }}
                                         >

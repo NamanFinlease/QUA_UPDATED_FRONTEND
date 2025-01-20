@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, TableContainer, TableBody, TableRow, TableCell, Table, CircularProgress } from '@mui/material';
+import { tokens } from '../../theme';
+import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, TableContainer, TableBody, TableRow, TableCell, Table, CircularProgress, useTheme } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -16,21 +17,6 @@ import { formatDate } from '../../utils/helper';
 import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc); // Enable the utc plugin
-
-const accordionStyles = {
-  borderRadius: '12px',
-  background: 'linear-gradient(145deg, #8cb4f5, #474e59)',
-  boxShadow: '5px 5px 10px #d1d5db, -5px -5px 10px #ffffff',
-  marginBottom: '20px'
-};
-
-const paperStyles = {
-  padding: '30px',
-  borderRadius: '15px',
-  backgroundColor: '#918f8e',
-  boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)',
-};
-
 
 
 const Employment = ({ employmentData }) => {
@@ -105,25 +91,45 @@ const Employment = ({ employmentData }) => {
     }
   }, [employmentData]);
 
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
+  const accordionStyles = {
+    borderRadius: '0px 20px',
+    background: colors.white[100],
+    boxShadow: '0px 0px 10px rgb(0,0,0,0.2)',
+    marginBottom: '20px',
+  };
+
+  const paperStyles = {
+    // padding: '30px',
+    borderRadius: '0px 20px',
+    backgroundColor: colors.white[100],
+    color:colors.black[100],
+    boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.1)',
+    margin:0,
+  };
+
   const buttonStyles = {
-    borderRadius: '8px',
+    borderRadius: '0px 10px',
     padding: '10px 20px',
-    backgroundColor: isLoading ? "#ccc" : "#1F2A40",
-    color: isLoading ? "#666" : "white",
+    backgroundColor: isLoading ? "#ccc" : colors.white[100],
+    color: isLoading ? "#666" : colors.primary[400],
     cursor: isLoading ? "not-allowed" : "pointer",
     "&:hover": {
-      backgroundColor: isLoading ? "#ccc" : "#3F4E64",
+      backgroundColor: isLoading ? "#ccc" : colors.primary[100],
     },
   };
 
   return (
     <Accordion style={accordionStyles}>
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon sx={{ color: '#007bb2' }} />}
+        expandIcon={<ExpandMoreIcon sx={{ color: colors.primary[400] }} />}
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Typography variant="h6" style={{ fontWeight: '600' }}>Employment Information</Typography>
+        <Typography variant="h6" style={{ fontWeight: '600', color:colors.primary[400] }}>Employment Information</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Paper elevation={3} style={paperStyles}>
@@ -260,7 +266,20 @@ const Employment = ({ employmentData }) => {
                   )}
 
                   <Box display="flex" justifyContent="flex-end" gap={2} mt={2}>
-                    <Button variant="outlined" onClick={handleEmploymentEditToggle}>
+                    <Button 
+                      variant="outlined" 
+                      sx={{
+                        background:colors.white[100],
+                        // borderColor:colors.redAccent[500],
+                        color:colors.redAccent[500],
+                        borderRadius:"0px 10px",
+                        "&:hover": {
+                          background:colors.redAccent[500],
+                          color:colors.white[100],
+                        }
+                      }}
+                      onClick={handleEmploymentEditToggle}
+                    >
                       Cancel
                     </Button>
                     <Button style={buttonStyles} type="submit">
@@ -272,7 +291,7 @@ const Employment = ({ employmentData }) => {
             </LocalizationProvider>
           ) : (
             <>
-              <TableContainer>
+              <TableContainer sx={{'& .MuiTableCell-root':{color:colors.black[100], borderBottom:`2px solid ${colors.primary[400]}`,}}}>
                 <Table>
                   <TableBody>
                     {columns?.map((column, index) => (
@@ -284,8 +303,6 @@ const Employment = ({ employmentData }) => {
                   </TableBody>
                 </Table>
               </TableContainer>
-
-              <Divider sx={{ my: 2 }} />
 
               {(activeRole === "creditManager"  ) && <Box display="flex" justifyContent="flex-end">
                 <Button

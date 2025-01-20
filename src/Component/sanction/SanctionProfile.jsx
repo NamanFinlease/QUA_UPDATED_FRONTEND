@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Paper, Box, Alert } from '@mui/material';
+import { tokens } from '../../theme';
+import {Paper, Box, Alert, useTheme } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useLazySanctionPreviewQuery, useSanctionProfileQuery } from '../../Service/applicationQueries';
 import useAuthStore from '../store/authStore';
@@ -33,9 +34,9 @@ const SanctionProfile = () => {
   const { data, isSuccess, isError, error } = useSanctionProfileQuery(id, { skip: id === null });
   const [sanctionPreview, { data: previewData, isSuccess: previewSuccess, isLoading: previewLoading, reset, isError: isPreviewError, error: previewError }] = useLazySanctionPreviewQuery()
 
-console.log('data',data)
-
-
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   useEffect(() => {
     if (isSuccess) {
@@ -55,13 +56,13 @@ console.log('data',data)
   }, [previewSuccess, previewData, forceRender]);
   console.log('loading', previewLoading)
   return (
-    <div className="crm-container" style={{ padding: '10px' }} key={forceRender}>
-      {previewSanction ? previewLoading ? <h1> .....Loading data</h1> :
-        <LoanSanctionPreview
-          id={id}
-          preview={previewSanction}
-          setPreview={setPreviewSanction}
-          previewData={previewData}
+    <div className="crm-container" style={{display:"flex", justifyContent:"center", }} key={forceRender}>
+      {previewSanction ? previewLoading ? <h1> .....Loading data</h1>:
+        <LoanSanctionPreview 
+        id={id} 
+        preview={previewSanction} 
+        setPreview={setPreviewSanction} 
+        previewData={previewData} 
         />
         // <SanctionLetterPreview
         // id={id} 
@@ -73,11 +74,11 @@ console.log('data',data)
         :
         <>
 
-          <div className='p-3'>
-            {data?.isApproved ?
-              <h1>Sanctioned Application</h1>
-              :
-              <h1>Pending Application</h1>
+          <div className='p-3' style={{ width:"90%",}}>
+            {data?.isApproved ? 
+            <h1 style={{color:colors.primary[400]}}>Sanctioned Application</h1>
+            :
+            <h1 style={{color:colors.primary[400]}}>Pending Application</h1>
             }
             <BarButtons
               barButtonOptions={barButtonOptions}
@@ -87,7 +88,23 @@ console.log('data',data)
 
             {currentPage === "application" &&
               <>
-                <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '10px' }}>
+                <Paper 
+                  elevation={3} 
+                  sx={{
+                    padding: '20px',
+                    marginTop: '20px',
+                    borderTopRightRadius: '20px',
+                    borderBottomLeftRadius: '20px',
+                    background:colors.white[100],
+                    '& .MuiDataGrid-row:hover': {
+                        backgroundColor: colors.white[100],
+                        cursor: 'pointer',
+                    },
+                    '& .MuiDataGrid-row': {
+                        backgroundColor: colors.white[100],
+                    },
+                }}
+                >
                   <ApplicantProfileData leadData={data?.application?.lead} />
                 </Paper>
                 {data?.application?.lead?._id &&

@@ -4,7 +4,7 @@ import { Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useGetRejectedApplicationsQuery } from '../../Service/applicationQueries';
 import useAuthStore from '../store/authStore';
-
+import CommonTable from '../CommonTable';
 
 const RejectedApplication = () => {
     const [rejectedApplications, setRejectedApplications] = useState()
@@ -63,55 +63,15 @@ const RejectedApplication = () => {
 
     return (
         <>
-            <div className="crm-container">
-            <div
-                    style={{
-                        padding: '10px 20px',
-                        fontWeight: 'bold',
-                        backgroundColor: '#007bff',
-                        color: '#fff',
-                        borderRadius: '5px',
-                        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                        cursor: 'pointer',
-                        marginBottom:"15px"
-                    }}
-                >
-                    Total Applicattion: {totalRejectedApplcations || 0} {/* Defaults to 0 if no leads */}
-                </div>
-                </div>
-                {columns && <div style={{ height: 400, width: '100%' }}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        rowCount={totalRejectedApplcations}
-                        loading={isLoading}
-                        pageSizeOptions={[5]}
-                        paginationModel={paginationModel}
-                        paginationMode="server"
-                        onPaginationModelChange={handlePageChange}
-                        onRowClick={(params) => handleLeadClick(params)}
-                        sx={{
-                            color: '#1F2A40',  // Default text color for rows
-                                '& .MuiDataGrid-columnHeaders': {
-                                  backgroundColor: '#1F2A40',  // Optional: Header background color
-                                  color: 'white'  // White text for the headers
-                                },
-                                '& .MuiDataGrid-footerContainer': {
-                                  backgroundColor: '#1F2A40',  // Footer background color
-                                  color: 'white',  // White text for the footer
-                                },
-                            '& .MuiDataGrid-row:hover': {
-                                cursor: 'pointer',
-                            },
-                        }}
-                    />
-                </div>}
-            {isError &&
-                <Alert severity="error" style={{ marginTop: "10px" }}>
-                    {error?.data?.message}
-                </Alert>
-            }
-
+            <CommonTable
+                columns={columns}
+                rows={rows}
+                totalRows={totalRejectedApplcations}
+                paginationModel={{ paginationModel }}
+                onPageChange={handlePageChange}
+                onRowClick={handleLeadClick}
+                title="Rejected Applications"
+            />
         </>
     )
 }

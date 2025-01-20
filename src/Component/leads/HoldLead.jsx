@@ -5,6 +5,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import OTPVerificationUI from './OtpVerification';
 import useAuthStore from '../store/authStore';
+import CommonTable from '../CommonTable';
 
 
 const HoldLead = () => {
@@ -17,20 +18,22 @@ const HoldLead = () => {
         page: 0,
         pageSize: 5,
     });
-    const {data,isSuccess,isError,error} = useFetchAllHoldLeadsQuery()
+    const {data,isSuccess,isError,error,refetch} = useFetchAllHoldLeadsQuery()
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel)
+        setPaginationModel(newPaginationModel)
+        refetch({ page: newPaginationModel.page +1, limit: newPaginationModel.pageSize}); // Adjust this according to your data fetching logic
     }
 
-    const handleLeadClick = (lead) => {
+    const handleRowClick = (lead) => {
         setId(lead.id)
         navigate(`/lead-profile/${lead.id}`)
     }
 
 
-    // useEffect(() => {
-    //     refetch({ page: paginationModel.page + 1, limit: paginationModel.pageSize });
-    // }, [paginationModel]);
+    useEffect(() => {
+        refetch({ page: paginationModel.page + 1, limit: paginationModel.pageSize });
+    }, [paginationModel]);
 
     useEffect(() => {
         if (data) {
@@ -73,56 +76,15 @@ const HoldLead = () => {
 
     return (
         <>
-            <div className="crm-container">
-            <div
-                    style={{
-                        padding: '10px 20px',
-                        fontWeight: 'bold',
-                        backgroundColor: '#007bff',
-                        color: '#fff',
-                        borderRadius: '5px',
-                        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                        cursor: 'pointer',
-                        marginBottom:"15px"
-                    }}
-                >
-                    Total Applicattion: {totalHoldLeads || 0} {/* Defaults to 0 if no leads */}
-                </div>
-                </div>
-                {columns && <div style={{ height: 400, width: '100%' }}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        rowCount={totalHoldLeads}
-                        // loading={isLoading}
-                        pageSizeOptions={[5]}
-                        paginationModel={paginationModel}
-                        paginationMode="server"
-                        onPaginationModelChange={handlePageChange}
-                        onRowClick={(params) => handleLeadClick(params)}
-                        // sx={{
-                        //     '& .MuiDataGrid-row:hover': {
-                        //         cursor: 'pointer',
-                        //     },
-                        // }}
-                        sx={{
-                            color: '#1F2A40',  // Default text color for rows
-                                '& .MuiDataGrid-columnHeaders': {
-                                  backgroundColor: '#1F2A40',  // Optional: Header background color
-                                  color: 'white'  // White text for the headers
-                                },
-                                '& .MuiDataGrid-footerContainer': {
-                                  backgroundColor: '#1F2A40',  // Footer background color
-                                  color: 'white',  // White text for the footer
-                                },
-                            '& .MuiDataGrid-row:hover': {
-                                cursor: 'pointer',
-                            },
-                        }}
-                    />
-                </div>}
-            {/* </div> */}
-
+            <CommonTable
+                columns={columns}
+                rows={rows}
+                totalRows={totalHoldLeads}
+                paginationModel={{paginationModel }}
+                onPageChange={handlePageChange}
+                onRowClick={handleRowClick}
+                title="Leads Hold"
+            />
         </>
     )
 }

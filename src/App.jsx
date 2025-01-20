@@ -79,6 +79,7 @@ function App() {
                     <>
                         <ProtectedRoute>
                             <Navbar />
+                            <div style={{paddingTop:"70px", background:"#fff"}}></div>
 
                             <Sidebar
                                 isSidebarOpen={isSidebarOpen}
@@ -86,7 +87,7 @@ function App() {
                             />
                             <div
                                 style={{
-                                    marginLeft: isSidebarOpen ? "250px" : "0px",
+                                    marginLeft: isSidebarOpen ? "265px" : "0px",
                                 }}
                             >
                                 <Routes>

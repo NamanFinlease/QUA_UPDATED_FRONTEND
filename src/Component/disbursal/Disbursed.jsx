@@ -7,7 +7,7 @@ import * as Pap from "papaparse";
 import useAuthStore from '../store/authStore';
 import { useDisbursedQuery, useLazyExportDisbursedQuery } from '../../Service/applicationQueries';
 import CustomToolbar from '../CustomToolbar';
-
+import CommonTable from '../CommonTable';
 
 
 const Disbursed = () => {
@@ -129,66 +129,21 @@ const Disbursed = () => {
 
     return (
         <>
-            <div className="crm-container">
-                <div
-                    style={{
-                        padding: '10px 20px',
-                        fontWeight: 'bold',
-                        backgroundColor: '#007bff',
-                        color: '#fff',
-                        borderRadius: '5px',
-                        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                        cursor: 'pointer',
-                        marginBottom:"15px"
-                    }}
-                >
-                    Total Applicattion: {totalDisbursals || 0} {/* Defaults to 0 if no leads */}
-                </div>
-            </div>
-
-            {columns && <div style={{ height: 400, width: '100%' }}>
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    rowCount={totalDisbursals}
-                    // loading={isLoading}
-                    pageSizeOptions={[5]}
-                    paginationModel={paginationModel}
-                    paginationMode="server"
-                    onPaginationModelChange={handlePageChange}
-                    slots={{ toolbar: () => <CustomToolbar onExportClick={handleExportClick} /> }}
-                    onRowClick={(params) => handleLeadClick(params)}
-                    // sx={{
-                    //     '& .MuiDataGrid-row:hover': {
-                    //         cursor: 'pointer',
-                    //     },
-                    // }}
-                    sx={{
-                        color: '#1F2A40',  // Default text color for rows
-                        '& .MuiDataGrid-columnHeaders': {
-                            backgroundColor: '#1F2A40',  // Optional: Header background color
-                            color: 'white'  // White text for the headers
-                        },
-                        '& .MuiDataGrid-footerContainer': {
-                            backgroundColor: '#1F2A40',  // Footer background color
-                            color: 'white',  // White text for the footer
-                        },
-                        '& .MuiDataGrid-row:hover': {
-                            cursor: 'pointer',
-                        },
-                        '& .MuiDataGrid-row': {
-                            color: "black"
-                            // cursor: 'pointer',
-                        },
-                    }}
-                />
-            </div>}
-
+            <CommonTable
+                columns={columns}
+                rows={rows}
+                totalRows={totalDisbursals}
+                paginationModel={paginationModel}
+                onPageChange={handlePageChange}
+                onRowClick={handleLeadClick}
+                title="Total Disbursed"
+                actionButton={true}
+            />
             {(isError) &&
-          <Alert severity="error" style={{ marginTop: "10px" }}>
-            {error?.data?.message}
-          </Alert>
-        }
+            <Alert severity="error" style={{ marginTop: "10px" }}>
+                {error?.data?.message}
+            </Alert>
+            }
 
         </>
     )

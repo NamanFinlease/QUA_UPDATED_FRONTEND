@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Paper, Box, Alert } from '@mui/material';
+import { tokens } from '../../theme';
+import { Paper, Box, Alert, useTheme } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFetchActiveLeadQuery } from '../../Service/LMSQueries';
 import useAuthStore from '../store/authStore';
@@ -17,10 +18,6 @@ import DisburseInfo from '../disbursal/DisburseLoan';
 import ClosingRequest from './ClosingRequest';
 import Payment from '../accounts/Payment';
 
-
-
-
-
 const CollectionProfile = () => {
     const { id } = useParams();
     const [collectionData, setCollectionData] = useState()
@@ -33,6 +30,10 @@ const CollectionProfile = () => {
     const { data, isSuccess, isError, error } = useFetchActiveLeadQuery(id, { skip: id === null });
     const { lead } = collectionData?.disbursal?.sanction?.application ?? {}
     const { application } = collectionData?.disbursal?.sanction ?? {}
+
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     console.log('collection profile 1', data, collectionData)
     const barButtonOptions = [
@@ -57,9 +58,9 @@ const CollectionProfile = () => {
     }, [isSuccess, data]);
 
     return (
-        <div className="crm-container" style={{ padding: '10px' }}>
+        <div className="crm-container" style={{display:"flex", justifyContent:"center", }}>
 
-            <div className='p-3'>
+            <div className='p-3' style={{ width:"90%",}}>
                 <BarButtons
                     barButtonOptions={barButtonOptions}
                     currentPage={currentPage}
@@ -70,7 +71,7 @@ const CollectionProfile = () => {
                     <>
                         {lead?._id &&
                             <>
-                                <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '10px' }}>
+                                <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '0px 20px', background:colors.white[100], }}>
                                     <ApplicantProfileData leadData={lead} />
                                 </Paper>
                                 <InternalDedupe id={lead?._id} />
@@ -88,8 +89,7 @@ const CollectionProfile = () => {
                     <>
                         {console.log('collection profile',)}
                         {currentPage === "personal" && <PersonalDetails id={application?.applicant} />}
-                        {currentPage === "banking" &&
-                            <BankDetails id={application?.applicant} />}
+                        {currentPage === "banking" && <BankDetails id={application?.applicant} />}
 
                         {currentPage === "verification" &&
                             <VerifyContactDetails

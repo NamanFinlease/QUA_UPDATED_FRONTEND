@@ -1,10 +1,14 @@
 import React from 'react'
-
-import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import { tokens } from '../theme';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableRow, useTheme } from '@mui/material';
 import { formatDate } from '../utils/helper';
 
 
 const ApplicantProfileData = ({leadData}) => {
+
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const columns = [
         { label: "First Name", value: leadData?.fName, label2: "Middle Name", value2: leadData?.mName },
@@ -18,11 +22,22 @@ const ApplicantProfileData = ({leadData}) => {
     ];
     return (
         <>
-            <TableContainer component={Paper} sx={{ borderRadius: '8px' }}>
+            <TableContainer component={Paper} sx={{ 
+                borderRadius: '0px 20px 0px 20px',
+                background: colors.white[100],
+                boxShadow:'0px 0px 30px rgba(0,0,0,0.1)',
+                '& .MuiTableCell-root': {
+                    color: colors.black[100], // Text color for table cells
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.2)', // Optional: Customize cell borders
+                },
+                '& .MuiTableRow-root':{
+                    borderBottom: `2px solid ${colors.primary[400]}`
+                }
+                }}>
                 <Table aria-label="application details table">
                     <TableBody>
                         {columns.map((row, index) => (
-                            <TableRow key={index} sx={{ '&:nth-of-type(odd)': { backgroundColor: '#141b2d' } }}>
+                            <TableRow key={index}>
                                 <TableCell align="left" sx={{ fontWeight: 500 }}>{row.label}</TableCell>
                                 <TableCell align="left">{row.value || ''}</TableCell>
                                 <TableCell align="left" sx={{ fontWeight: 500 }}>{row.label2}</TableCell>
