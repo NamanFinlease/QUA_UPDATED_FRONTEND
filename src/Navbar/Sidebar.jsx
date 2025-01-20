@@ -303,10 +303,10 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                                 text: "Sanctioned",
                                                 link: "/sanctioned",
                                             },
-                                            {
-                                                text: "eSignPending",
-                                                link: "/eSign-pending",
-                                            },
+                                            // {
+                                            //     text: "eSignPending",
+                                            //     link: "/eSign-pending",
+                                            // },
                                         ].map((item, index) => (
                                             <ListItem
                                                 key={index}

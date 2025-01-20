@@ -44,7 +44,7 @@ const CollectionProfile = () => {
         'Cam',
         'Disbursal',
         'Collection',
-        ...(activeRole === "accountExecutive" ? ["Accounts"]:[])
+        ...(activeRole === "accountExecutive" ? ["Accounts"] : [])
     ]
 
     useEffect(() => {
@@ -98,6 +98,8 @@ const CollectionProfile = () => {
                                 isAadhaarVerified={lead?.isAadhaarVerified}
                                 isAadhaarDetailsSaved={lead?.isAadhaarDetailsSaved}
                                 isPanVerified={lead?.isPanVerified}
+                                isESignPending={collectionData?.disbursal?.sanction?.eSignPending}
+                                isESigned={collectionData?.disbursal?.sanction?.eSigned}
                             />
                         }
                         {currentPage === "documents" && lead &&
@@ -110,23 +112,23 @@ const CollectionProfile = () => {
                         {currentPage === "disbursal" && <DisburseInfo disburse={collectionData?.disbursal?.sanction} />}
                         {currentPage === "collection" && <ClosingRequest disburse={collectionData?.disbursal} />}
                         {currentPage === "accounts" && (
-                    <>
-                        {collectionData ? (
-                            <Payment
-                                collectionData={collectionData}
-                                leadId={id}
-                                activeRole={activeRole}
-                            />
-                        ) : (
-                            <div>Loading account details...</div>
+                            <>
+                                {collectionData ? (
+                                    <Payment
+                                        collectionData={collectionData}
+                                        leadId={id}
+                                        activeRole={activeRole}
+                                    />
+                                ) : (
+                                    <div>Loading account details...</div>
+                                )}
+                                {isError && (
+                                    <Alert severity="error" style={{ marginTop: "10px" }}>
+                                        {error?.data?.message || "Failed to load account details."}
+                                    </Alert>
+                                )}
+                            </>
                         )}
-                        {isError && (
-                            <Alert severity="error" style={{ marginTop: "10px" }}>
-                                {error?.data?.message || "Failed to load account details."}
-                            </Alert>
-                        )}
-                    </>
-                )}
 
                     </>
 

@@ -17,7 +17,7 @@ import {
 import { useLazySendESignQuery } from '../../Service/applicationQueries';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import KeyFactStatement from './KFS';
+import KeyFactStatement from './KeyFactStatement';
 
 const LoanSanctionPreview = ({
   id,

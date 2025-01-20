@@ -104,6 +104,8 @@ function PaymentVerification() {
                                 isAadhaarVerified={lead?.isAadhaarVerified}
                                 isAadhaarDetailsSaved={lead?.isAadhaarDetailsSaved}
                                 isPanVerified={lead?.isPanVerified}
+                                isESignPending={collectionData?.disbursal?.sanction?.eSignPending}
+                                isESigned={collectionData?.disbursal?.sanction?.eSigned}
                             />
                         )}
                         {currentPage === "documents" && lead && (

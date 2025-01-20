@@ -31,8 +31,8 @@ const DisbursalProfile = () => {
   const [currentPage, setCurrentPage] = useState("application");
   const [leadEdit, setLeadEdit] = useState(false);
 
-  const { data, isSuccess, isError, error,refetch } = useDisbursalProfileQuery(id, { skip: id === null });
-  console.log('disbursal profile',id,data,error)
+  const { data, isSuccess, isError, error, refetch } = useDisbursalProfileQuery(id, { skip: id === null });
+  console.log('disbursal profile', id, data, error)
 
 
   useEffect(() => {
@@ -44,8 +44,8 @@ const DisbursalProfile = () => {
       setUploadedDocs(data?.sanction?.application?.lead?.document.map(doc => doc.type));
     }
   }, [isSuccess, data]);
-   // Ensure the API is triggered on every visit or id change
-   useEffect(() => {
+  // Ensure the API is triggered on every visit or id change
+  useEffect(() => {
     if (id !== null) {
       refetch();
     }
@@ -66,10 +66,10 @@ const DisbursalProfile = () => {
             {disbursalData?.application?.lead?._id &&
               <>
                 <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '10px' }}>
-                  <ApplicantProfileData leadData={disbursalData?.application?.lead} />
+                  <ApplicantProfileData leadData={disbursalData?.sanction?.application?.lead} />
                 </Paper>
-                <InternalDedupe id={disbursalData?.application?.lead?._id} />
-                <ApplicationLogHistory id={disbursalData?.application?.lead?._id} />
+                <InternalDedupe id={disbursalData?.sanction?.application?.lead?._id} />
+                <ApplicationLogHistory id={disbursalData?.sanction?.application?.lead?._id} />
 
               </>
 
@@ -81,30 +81,32 @@ const DisbursalProfile = () => {
 
         {disbursalData && Object.keys(disbursalData).length > 0 &&
           <>
-            {currentPage === "personal" && <PersonalDetails id={disbursalData?.application?.applicant} />}
+            {currentPage === "personal" && <PersonalDetails id={disbursalData?.sanction?.application?.applicant} />}
             {currentPage === "banking" &&
-              <BankDetails id={disbursalData?.application?.applicant} />}
+              <BankDetails id={disbursalData?.sanction?.application?.applicant} />}
 
             {currentPage === "verification" &&
               <VerifyContactDetails
-                isMobileVerified={disbursalData?.application?.lead?.isMobileVerified}
-                isEmailVerified={disbursalData?.application?.lead?.isEmailVerified}
-                isAadhaarVerified={disbursalData?.application?.lead?.isAadhaarVerified}
-                isAadhaarDetailsSaved={disbursalData?.applicationData?.lead?.isAadhaarDetailsSaved}
-                isPanVerified={disbursalData?.application?.lead?.isPanVerified}
+                isMobileVerified={disbursalData?.sanction?.application?.lead?.isMobileVerified}
+                isEmailVerified={disbursalData?.sanction?.application?.lead?.isEmailVerified}
+                isAadhaarVerified={disbursalData?.sanction?.application?.lead?.isAadhaarVerified}
+                isAadhaarDetailsSaved={disbursalData?.sanction?.applicationData?.lead?.isAadhaarDetailsSaved}
+                isPanVerified={disbursalData?.sanction?.application?.lead?.isPanVerified}
+                isESignPending={disbursalData?.sanction?.eSignPending}
+                isESigned={disbursalData?.sanction?.eSigned}
               />
             }
             {currentPage === "documents" &&
               <UploadDocuments
-                leadData={disbursalData?.application?.lead}
+                leadData={disbursalData?.sanctioon?.application?.lead}
                 setUploadedDocs={setUploadedDocs}
                 uploadedDocs={uploadedDocs}
               />
             }
 
-            {currentPage === "cam" && <Cam id={disbursalData?.application?._id} />}
-            {currentPage === "disbursal" && <DisburseLoan disburse={disbursalData} />}
-           
+            {currentPage === "cam" && <Cam id={disbursalData?.sanction?.application?._id} />}
+            {currentPage === "disbursal" && <DisburseLoan disburse={disbursalData?.sanction} />}
+
           </>
 
         }

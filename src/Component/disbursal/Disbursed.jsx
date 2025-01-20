@@ -92,6 +92,7 @@ const Disbursed = () => {
                 'Beneficiary Account No.': `"${row.accountNo}"`, // Add a leading single quote to force it as a string
                 'Lead Created': row["Lead Created"] ? formatDate(row["Lead Created"]) : "",
                 'Disbursed Date': row["Disbursed Date"] ? formatDate(row["Disbursed Date"]) : "",
+                'Repayment Date': row["Repayment Date"] ? formatDate(row["Repayment Date"]) : "",
               }
               delete csvData.accountNo
               return csvData

@@ -11,9 +11,9 @@ import Loader from '../loader';
 import useAuthStore from '../store/authStore';
 import AadhaarCompare from './AadhaarCompare';
 
-const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVerified, isAadhaarDetailsSaved, isPanVerified }) => {
+const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerified,isESignPending,isESigned }) => {
   const { id } = useParams()
-  const { setCodeVerifier, setFwdp, activeRole } = useAuthStore()
+  const { activeRole } = useAuthStore()
   const navigate = useNavigate()
   const [otp, setOtp] = useState(false)
   const [openAadhaarCompare, setOpenAadhaarCompare] = useState()
@@ -228,6 +228,35 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
                   {(panRes?.isLoading || panRes?.isFetching) ? <CircularProgress size={20} color="inherit" /> : `Verify Pan`}
                 </Button>}
               </Box>
+              {/* E-Sign Verification */}
+              {
+                (activeRole === "sanctionHead") &&
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                  <Typography variant="body1" sx={{ color: '#898b8c' }}>
+                    E-Sign:
+                    <span style={{ color: (!isESignPending && !isESigned)  ? 'red' :isESigned ? 'green' :"blue" }}>
+                      {(!isESignPending && !isESigned) ? ' Not E-Signed' : isESigned ? ' Document E-Signed':"E-Sign Pending"}
+                    </span>
+                  </Typography>
+
+
+                  {(activeRole === "screener" && !isPanVerified) && <Button
+                    // variant="contained"
+                    onClick={handlePanVerification}
+                    sx={{
+                      backgroundColor: (panRes?.isLoading || panRes?.isFetching) ? "#ccc" : "#1F2A40",
+                      color: (panRes?.isLoading || panRes?.isFetching) ? "#666" : "white",
+                      cursor: (panRes?.isLoading || panRes?.isFetching) ? "not-allowed" : "pointer",
+                      "&:hover": {
+                        backgroundColor: (panRes?.isLoading || panRes?.isFetching) ? "#ccc" : "#3F4E64",
+                      },
+                    }}
+                    disabled={(isPanVerified)}
+                  >
+                    {(panRes?.isLoading || panRes?.isFetching) ? <CircularProgress size={20} color="inherit" /> : `Verify Pan`}
+                  </Button>}
+                </Box>
+              }
               {(panRes.isError || aadhaarRes.isError || isEmailError) && <Typography variant="body1">
                 <span style={{ color: 'red' }}>
                   {panRes?.error?.data?.message}  {aadhaarRes?.error?.data?.message}  {emailError?.data?.message}
