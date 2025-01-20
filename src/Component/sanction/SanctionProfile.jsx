@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {Paper, Box, Alert } from '@mui/material';
+import { tokens } from '../../theme';
+import {Paper, Box, Alert, useTheme } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useLazySanctionPreviewQuery, useSanctionProfileQuery } from '../../Service/applicationQueries';
 import useAuthStore from '../store/authStore';
@@ -14,7 +15,7 @@ import UploadDocuments from '../UploadDocuments';
 import Cam from '../applications/Cam'
 import LoanSanctionPreview from './LoanSanctionPreview'
 import ApplicantProfileData from '../applicantProfileData';
-
+import VerifyContactDetails from '../leads/DetailsVerification';
 
 const barButtonOptions = ['Application', 'Documents', 'Personal', 'Banking', 'Verification', 'Cam']
 
@@ -31,9 +32,9 @@ const SanctionProfile = () => {
   const { data, isSuccess, isError, error } = useSanctionProfileQuery(id, { skip: id === null });
   const [sanctionPreview, { data: previewData, isSuccess: previewSuccess, isLoading:previewLoading,reset, isError: isPreviewError, error: previewError }] = useLazySanctionPreviewQuery()
 
-
-
-
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   useEffect(() => {
     if (isSuccess) {
@@ -53,7 +54,7 @@ const SanctionProfile = () => {
   }, [previewSuccess,previewData,forceRender]);
 console.log('loading',previewLoading)
   return (
-    <div className="crm-container" style={{ padding: '10px' }} key={forceRender}>
+    <div className="crm-container" style={{display:"flex", justifyContent:"center", }} key={forceRender}>
       {previewSanction ? previewLoading ? <h1> .....Loading data</h1>:
         <LoanSanctionPreview 
         id={id} 
@@ -64,11 +65,11 @@ console.log('loading',previewLoading)
         :
         <>
 
-          <div className='p-3'>
+          <div className='p-3' style={{ width:"90%",}}>
             {data?.isApproved ? 
-            <h1>Sanctioned Application</h1>
+            <h1 style={{color:colors.primary[400]}}>Sanctioned Application</h1>
             :
-            <h1>Pending Application</h1>
+            <h1 style={{color:colors.primary[400]}}>Pending Application</h1>
             }
             <BarButtons
               barButtonOptions={barButtonOptions}
@@ -78,7 +79,23 @@ console.log('loading',previewLoading)
 
             {currentPage === "application" &&
               <>
-                <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '10px' }}>
+                <Paper 
+                  elevation={3} 
+                  sx={{
+                    padding: '20px',
+                    marginTop: '20px',
+                    borderTopRightRadius: '20px',
+                    borderBottomLeftRadius: '20px',
+                    background:colors.white[100],
+                    '& .MuiDataGrid-row:hover': {
+                        backgroundColor: colors.white[100],
+                        cursor: 'pointer',
+                    },
+                    '& .MuiDataGrid-row': {
+                        backgroundColor: colors.white[100],
+                    },
+                }}
+                >
                   <ApplicantProfileData leadData={data?.application?.lead} />
                 </Paper>
                 {data?.application?.lead?._id &&
@@ -113,9 +130,16 @@ console.log('loading',previewLoading)
             {data && Object.keys(data).length > 0 &&
               <>
                 {currentPage === "personal" && <PersonalDetails id={data?.application?.applicant} />}
-                {currentPage === "banking" &&
-                  <BankDetails id={data?.application?.applicant} />}
-
+                {currentPage === "banking" && <BankDetails id={data?.application?.applicant} />}
+                {currentPage === "verification" &&
+                  <VerifyContactDetails
+                    isMobileVerified={data?.application?.isMobileVerified}
+                    isEmailVerified={data?.application?.isEmailVerified}
+                    isAadhaarVerified={data?.application?.isAadhaarVerified}
+                    isAadhaarDetailsSaved={data?.application?.isAadhaarDetailsSaved}
+                    isPanVerified={data?.application?.isPanVerified}
+                  />
+                }
                 {currentPage === "documents" && <UploadDocuments leadData={data?.application?.lead} setUploadedDocs={setUploadedDocs} uploadedDocs={uploadedDocs} />}
 
                 {currentPage === "cam" && <Cam id={data?.application?._id} />}

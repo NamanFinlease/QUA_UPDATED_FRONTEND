@@ -65,7 +65,6 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
         onSubmit={handleSubmit(onSubmit)}
         sx={{
           backgroundColor: colors.black[100],
-          color:colors.black[100],
           padding: '30px',
           marginBottom:"20px",
           borderRadius: '0px 30px',
@@ -76,7 +75,15 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
           gap: '20px',
         }}
       >
-        <Box sx={{ flex: '1 1 45%' }}>
+        <Box 
+          sx={{ 
+            flex: '1 1 45%', 
+            color:colors.black[100],
+            '& .MuiBox-root':{
+              background:`${colors.black[100]} !important`,
+            }
+          }}
+        >
           <Controller
             name="fName"
             control={control}
@@ -410,6 +417,7 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
               backgroundColor: colors.white[100],
               color: colors.redAccent[500],
               borderColor: colors.redAccent[500],
+              borderRadius:"0px 10px 0px 10px",
               padding: '10px 20px',
               '&:hover': {
                 backgroundColor: colors.redAccent[500],
@@ -426,6 +434,7 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
               backgroundColor: colors.white[100],
               color: colors.primary[400],
               border:`1px solid colors.primary[400]`,
+              borderRadius:"0px 10px 0px 10px",
               padding: '10px 20px',
               '&:hover': {
                 backgroundColor: colors.primary[400],

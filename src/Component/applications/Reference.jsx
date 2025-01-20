@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, Alert, Select, MenuItem, FormControl, InputLabel, FormHelperText, TableContainer, TableBody, TableRow, TableCell, Table, CircularProgress } from '@mui/material';
+import { tokens } from '../../theme';
+import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, Alert, Select, MenuItem, FormControl, InputLabel, FormHelperText, TableContainer, TableBody, TableRow, TableCell, Table, CircularProgress, useTheme } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useUpdatePersonalDetailsMutation } from '../../Service/applicationQueries';
@@ -8,19 +9,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { referenceSchema } from '../../utils/validations';
 import useAuthStore from '../store/authStore';
 
-const accordionStyles = {
-  borderRadius: '12px',
-  background: 'linear-gradient(145deg, #8cb4f5, #474e59)',
-  boxShadow: '5px 5px 10px #d1d5db, -5px -5px 10px #ffffff',
-  marginBottom: '20px'
-};
-
-const paperStyles = {
-  padding: '30px',
-  borderRadius: '15px',
-  backgroundColor: '#918f8e',
-  boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)',
-};
 
 const Reference = ({ reference }) => {
   const { applicationProfile } = useStore();
@@ -62,15 +50,34 @@ const Reference = ({ reference }) => {
   }, [reference])
   console.log('reference details',referenceDetails)
 
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
+  const accordionStyles = {
+    borderRadius: '0px 20px',
+    background: colors.white[100],
+    boxShadow: '0px 0px 10px rgb(0,0,0,0.2)',
+    marginBottom: '20px',
+    marginTop:"20px",
+  };
+
+  const paperStyles = {
+    padding: '30px',
+    borderRadius: '0px 20px',
+    backgroundColor: colors.white[100],
+    boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)',
+  };
+
   return (
     <>
       <Accordion style={accordionStyles}>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon sx={{ color: '#007bb2' }} />}
+          expandIcon={<ExpandMoreIcon sx={{ color: colors.primary[400] }} />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography variant="h6" style={{ fontWeight: '600' }}>Reference Information</Typography>
+          <Typography variant="h6" style={{ fontWeight: '600', color:colors.primary[400] }}>Reference Information</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Paper elevation={3} style={paperStyles}>
@@ -202,16 +209,30 @@ const Reference = ({ reference }) => {
 
                   {/* Submit Button */}
                   <Box display="flex" justifyContent="flex-end" gap={2} mt={2}>
-                    <Button variant="outlined" onClick={() => reset()}>Cancel</Button>
+                    <Button
+                      variant="outlined" 
+                      sx={{
+                        background:colors.white[100],
+                        borderRadius:"0px 10px",
+                        color:colors.redAccent[500],
+                        '&:hover': {
+                          background:colors.redAccent[500],
+                          color:colors.white[100],
+                        }
+                      }}
+                      onClick={() => reset()}
+                    >Cancel
+                    </Button>
                     <Button
                       type="submit"
                       sx={{
 
-                        backgroundColor: isLoading ? "#ccc" : "#1F2A40",
-                        color: isLoading ? "#666" : "white",
+                        backgroundColor: isLoading ? "#ccc" : colors.white[100],
+                        color: isLoading ? "#666" : colors.primary[400],
                         cursor: isLoading ? "not-allowed" : "pointer",
+                        borderRadius: "0px 10px",
                         "&:hover": {
-                          backgroundColor: isLoading ? "#ccc" : "#3F4E64",
+                          boxShadow: isLoading ? "#ccc" : "0px 0px 10px rgba(0, 0, 0, 0.2)",
                         },
                       }}>
                       {isLoading ? <CircularProgress size={20} color="inherit" /> : "Save"}
@@ -221,7 +242,19 @@ const Reference = ({ reference }) => {
               </form>
             ) : (
               <>
-                <TableContainer component={Paper} sx={{ borderRadius: '8px' }}>
+                <TableContainer 
+                  component={Paper} 
+                  sx={{ 
+                    borderRadius: '0px 20px',
+                    background: colors.white[100],
+                    color:colors.black[100],
+                    boxShadow:"0px 0px 20px rgb(0,0,0,0.2)",
+                    '& .MuiTableCell-root':{
+                      color:colors.black[100],
+                      borderBottom:`2px solid ${colors.primary[400]}`
+                    } 
+                  }}
+                >
                   <Table aria-label="personal details table">
                     <TableBody>
                       {referenceDetails?.map((references, index) => (
@@ -240,11 +273,11 @@ const Reference = ({ reference }) => {
                     variant="outlined"
                     onClick={() => setOpenEdit(true)}
                     sx={{
-                      backgroundColor: 'primary.main',
-                      color: 'white',
+                      backgroundColor: colors.white[100],
+                      color: colors.primary[400],
                       padding: '10px 20px',
                       '&:hover': {
-                        backgroundColor: 'darkPrimary',
+                        boxShadow:"0px 0px 10px rgb(0,0,0,0.2)",
                       },
                     }}
                   >

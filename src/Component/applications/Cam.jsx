@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextField, Table, TableBody, TableCell, TableRow, TableContainer, Paper, Grid2 } from '@mui/material';
+import { tokens } from '../../theme';
+import { Button, TextField, Table, TableBody, TableCell, TableRow, TableContainer, Paper, Grid2, useTheme } from '@mui/material';
 import { useGetCamDetailsQuery, useUpdateCamDetailsMutation } from '../../Service/applicationQueries';
 import { useParams } from 'react-router-dom';
 import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
@@ -11,6 +12,10 @@ import { formatDate } from '../../utils/helper';
 const Cam = ({id}) => {
   const { data, isLoading: camGetloading, isError: camGetError, isSuccess: getCamSuccess } = useGetCamDetailsQuery(id, { skip: id === null });
   const {activeRole} = useAuthStore()
+
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   
   // const updatData = useUpdateCamDetailsMutation();
   const [isEditing, setIsEditing] = useState(false);
@@ -40,6 +45,7 @@ const Cam = ({id}) => {
     netAdminFeeAmount: '',     // Net Admin Fee Amount
     eligibleTenure: '',        // Eligible Tenure
     repaymentAmount: '',       // Repayment Amount
+    camRemarks: '',            // Cam Remarks
   });
 
   useEffect(() => {
@@ -54,11 +60,12 @@ const Cam = ({id}) => {
         salaryDate3: details?.salaryDate3 || '',          // Salary Date 3
         salaryAmount3: details?.salaryAmount3 || 0,       // Salary Amount 3
         nextPayDate: details?.nextPayDate || '',          // Next Salary Date
-        averageSalary: details?.averageSalary || 0,       // Median Salary Amount
+        averageSalary: details?.averageSalary || 0,       // Avergae Salary
         actualNetSalary: details?.actualNetSalary || 0,   // Net Salary
         creditBureauScore: details?.cibilScore || '-',    // Credit Bureau Score
         customerType: details?.customerType || 'NEW',     // Customer Type
         dedupeCheck: details?.dedupeCheck || 'NO',        // Dedupe Check
+        customerCategory: details?.customerCategory || '-',  // Dedupe Check
         obligations: details?.obligations || 0,         // Obligations (Rs)
         salaryToIncomeRatio: details?.salaryToIncomeRatio || '',  // Salary to Income Ratio
         eligibleLoan: details?.eligibleLoan || 0,         // Loan Amount
@@ -73,6 +80,7 @@ const Cam = ({id}) => {
         netAdminFeeAmount: details?.netAdminFeeAmount || 0,   // Net Admin Fee Amount
         eligibleTenure: details?.eligibleTenure || '-',   // Eligible Tenure
         repaymentAmount: details?.repaymentAmount || 0,   // Repayment Amount
+        camRemarks: details?.camRemarks || " ",   // Repayment Amount
       });
     }
   }, [getCamSuccess, data]);
@@ -87,14 +95,25 @@ const Cam = ({id}) => {
       {
         camGetloading ? (<h1> Loading </h1>) : (<div>
           {!isEditing ? (
-            <div>
+            <div style={{flex:1,}}>
               {/* Display the table with data */}
-              <TableContainer component={Paper}>
+              <TableContainer 
+                component={Paper} 
+                sx={{
+                  color:colors.black[100], 
+                  background:colors.white[100],
+                  borderRadius:"0px 20px", 
+                  boxShadow:`0px 0px 20px ${colors.primary[400]}`,
+                  '& .MuiTableCell-root':{
+                    color:colors.black[100],
+                    borderBottom:`2px solid ${colors.primary[400]}`,
+                  }
+                }}>
                 <Table>
                   <TableBody >
                     <TableRow>
                       <TableCell colSpan={5} align="center">
-                        Lead Id: {formData?.leadId}
+                        Lead ID: {formData?.leadId}
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -118,14 +137,8 @@ const Cam = ({id}) => {
                     <TableRow>
                       <TableCell>Next Salary Date</TableCell>
                       <TableCell>{formData?.nextPayDate || '-'}</TableCell>
-                      <TableCell>Median Salary Amount</TableCell>
+                      <TableCell>Average Salary</TableCell>
                       <TableCell>{formData?.averageSalary}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Customer Type</TableCell>
-                      <TableCell>{formData?.customerType}</TableCell>
-                      <TableCell>Dedupe Check</TableCell>
-                      <TableCell>{formData?.dedupeCheck}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Net Salary</TableCell>
@@ -134,50 +147,60 @@ const Cam = ({id}) => {
                       <TableCell>{formData?.creditBureauScore}</TableCell>
                     </TableRow>
                     <TableRow>
+                      <TableCell>Customer Type</TableCell>
+                      <TableCell>{formData?.customerType}</TableCell>
+                      <TableCell>Dedupe Check</TableCell>
+                      <TableCell>{formData?.dedupeCheck}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Customer Category</TableCell>
+                      <TableCell>{formData?.customerCategory}</TableCell>
                       <TableCell>Obligations (Rs)</TableCell>
                       <TableCell>{formData?.obligations}</TableCell>
-                      <TableCell>ROI</TableCell>
-                      <TableCell>{formData?.roi}%</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Initial Salary To Income Ratio</TableCell>
                       <TableCell>  {formData?.salaryToIncomeRatio}%</TableCell>
-                      <TableCell>Final Salary To Income Ratio</TableCell>
-                      <TableCell>  {formData?.finalsalaryToIncomeRatioPercentage}%</TableCell>
+                      <TableCell>ROI</TableCell>
+                      <TableCell>{formData?.roi}%</TableCell>
                     </TableRow>
                     <TableRow>
+                      <TableCell>Processing Fee Inc. Gst(%)</TableCell> 
+                      <TableCell>{formData?.adminFeePercentage}%</TableCell>
                       <TableCell>Eligible Loan</TableCell>
                       <TableCell>{formData?.eligibleLoan}</TableCell>
+                    </TableRow>
+                    <TableRow>
                       <TableCell>Loan Recommended</TableCell>
                       <TableCell>{formData?.loanRecommended}</TableCell>
-                    </TableRow>
-                    <TableRow>
                       {/* <TableCell>Tenure</TableCell>
           <TableCell>{formData?.eligibleTenure}</TableCell> */}
-                      <TableCell>Disbursal Date</TableCell>
-                      <TableCell>{formData?.disbursalDate}</TableCell>
-                      <TableCell>Repayment Date</TableCell>
-                      <TableCell>{formData?.repaymentDate}</TableCell>
+                      <TableCell>Final Salary To Income Ratio</TableCell>
+                      <TableCell>  {formData?.finalsalaryToIncomeRatioPercentage}%</TableCell>
+                      
                     </TableRow>
                     <TableRow>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Processing Fee Inc. Gst(%)</TableCell>
-                      <TableCell>{formData?.adminFeePercentage}%</TableCell>
                       <TableCell>Net Disbursal Amount</TableCell>
                       <TableCell>{formData?.netDisbursalAmount}</TableCell>
-                      
+                      <TableCell>Disbursal Date</TableCell>
+                      <TableCell>{formData?.disbursalDate}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Repayment Date</TableCell>
+                      <TableCell>{formData?.repaymentDate}</TableCell>
+                      <TableCell>Eligible Tenure</TableCell>
+                      <TableCell>{formData?.eligibleTenure}</TableCell>
                     </TableRow>
                     {/* Additional missing fields based on your formData? object */}
                     <TableRow>
                       <TableCell>Processing Fee Amount</TableCell>
                       <TableCell>{formData?.netAdminFeeAmount}</TableCell>
-                      <TableCell>Tenure</TableCell>
-                      <TableCell>{formData?.eligibleTenure}</TableCell>
+                      <TableCell>Repayment Amount</TableCell>
+                      <TableCell>{formData?.repaymentAmount}</TableCell>
                     </TableRow>
-
-                    <TableRow  >
-                      <TableCell colSpan={4} align="center"  >Repayment    Amount   {formData?.repaymentAmount}</TableCell>
+                    <TableRow>
+                      <TableCell colSpan={1} align="center"  >Remarks</TableCell>
+                      <TableCell colSpan={3} align="center"  >{formData?.camRemarks}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -186,7 +209,23 @@ const Cam = ({id}) => {
 
 
               {/* Edit CAM Button */}
-              {activeRole === "creditManager" && <Button variant="contained" onClick={() => setIsEditing(true)} style={{ marginTop: '20px' }}>
+              {activeRole === "creditManager" && 
+              <Button 
+                variant="contained" 
+                onClick={() => setIsEditing(true)} 
+                style={{ 
+                  margin: '20px', 
+                  background:colors.white[100],
+                  color:colors.primary[400],
+                  border:`2px solid ${colors.primary[400]}`,
+                  borderRadius:"0px 10px 0px 10px",
+                  float:"right",
+                  ':hover':{
+                    background:colors.primary[400],
+                    color:colors.white[100],
+                  },
+                }}
+              >
                 Edit CAM
               </Button>}
             </div>

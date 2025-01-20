@@ -156,6 +156,9 @@ const UploadDocuments = ({ leadData }) => {
 
     return (
         <>
+
+        {activeRole === "screener" && 
+            <>
         <Box 
             sx={{ 
                 maxWidth: '1000px', 
@@ -169,8 +172,7 @@ const UploadDocuments = ({ leadData }) => {
                 boxShadow : `0px 0px 20px rgb(0,0,0,0.2)`,
             }}
         >
-            {activeRole === "screener" && 
-            <>
+            
             <Typography variant="h6" style={{ fontWeight: '600', color: colors.primary[400], marginBottom:"10px", textAlign:"center", fontSize:"18px" }}>
                 Upload Documents
             </Typography>
@@ -323,9 +325,9 @@ const UploadDocuments = ({ leadData }) => {
                     </>
                 )}
             </Box>
+            </Box>
             </>
             }
-        </Box>
         <Box>
 
             {

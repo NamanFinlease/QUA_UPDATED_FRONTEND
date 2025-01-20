@@ -10,7 +10,9 @@ import {
   Typography,
   Alert,
   CircularProgress,
+  useTheme,
 } from "@mui/material";
+import { tokens } from '../../theme';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DisbursalLoanInfo from "./DisbursalLoanInfo"; // Ensure the path is correct
 import useAuthStore from "../store/authStore";
@@ -32,6 +34,10 @@ const DisburseLoan = ({ disburse }) => {
   const { activeRole } = useAuthStore();
   const { applicationProfile } = useStore();
   const navigate = useNavigate();
+
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const { disbursalDate, netDisbursalAmount } =
     disburse?.application?.cam?.details;
@@ -76,9 +82,9 @@ const DisburseLoan = ({ disburse }) => {
         padding: "20px",
         maxWidth: "800px",
         margin: "0 auto",
-        backgroundColor: "#ffffff",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        borderRadius: "8px",
+        backgroundColor: colors.white[100],
+        boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+        borderRadius: "0px 20px",
       }}
     >
       {/* Render DisbursalProfile component before the dropdown header */}

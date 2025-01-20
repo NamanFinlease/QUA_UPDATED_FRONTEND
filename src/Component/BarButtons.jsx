@@ -25,8 +25,8 @@ const BarButtons = ({barButtonOptions,currentPage,setCurrentPage}) => {
                     backgroundColor: status.toLowerCase() === currentPage.toLowerCase() ? colors.primary[400] : colors.white[100],
                     border: status.toLowerCase() === currentPage.toLowerCase() ? `2px solid ${colors.primary[400]}` : `2px solid ${colors.primary[400]}`,
                     color: status.toLowerCase() === currentPage.toLowerCase() ? colors.white[100] : colors.primary[400],
-                    borderTopRightRadius: '8px',
-                    borderBottomLeftRadius: '8px',
+                    borderTopRightRadius: '10px',
+                    borderBottomLeftRadius: '10px',
                     boxShadow: status.toLowerCase() === currentPage.toLowerCase() ? `0px 4px 20px ${colors.primary[400]}` : 'none', // Subtle shadow for active
                     transition: 'background-color 0.3s, box-shadow 0.3s', // Smooth transition
                     '&:hover': {

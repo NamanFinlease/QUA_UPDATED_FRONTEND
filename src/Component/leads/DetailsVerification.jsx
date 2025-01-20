@@ -391,9 +391,10 @@ const VerifyContactDetails = ({
     <Box
       sx={{
         boxShadow:"0px 0px 5px 5px rgba(0,0,0,0.1)",
-        width:"100%",
+        width:"80%",
         borderRadius:"0px 20px 0px 20px",
         padding:"20px",
+        margin:"0px auto",
       }}
     >
       <Typography 
@@ -414,6 +415,10 @@ const VerifyContactDetails = ({
           boxShadow:"0px 0px 20px rgba(0,0,0,0.2)",
           borderRadius:"0px 20px 0px 20px",
           background:colors.white[100],
+          '& .MuiTableCell-root':{
+            textAlign:"center",
+            borderBottom:`2px solid ${colors.primary[400]}`,
+          }
         }}
       >
         <Table>

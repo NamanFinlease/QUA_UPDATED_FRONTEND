@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, InputLabel, Select, MenuItem, FormControl, FormHelperText, Alert, TableContainer, TableBody, TableRow, TableCell, Table, CircularProgress } from '@mui/material';
+import { tokens } from '../../theme';
+import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, InputLabel, Select, MenuItem, FormControl, FormHelperText, Alert, TableContainer, TableBody, TableRow, TableCell, Table, CircularProgress, useTheme } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { residenceSchema } from '../../utils/validations';
@@ -7,22 +8,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useUpdatePersonalDetailsMutation } from '../../Service/applicationQueries';
 import useStore from '../../Store';
 import useAuthStore from '../store/authStore';
-
-const accordionStyles = {
-  borderRadius: '12px',
-  background: 'linear-gradient(145deg, #8cb4f5, #474e59)',
-  boxShadow: '5px 5px 10px #d1d5db, -5px -5px 10px #ffffff',
-  marginBottom: '20px'
-};
-
-const paperStyles = {
-  padding: '30px',
-  borderRadius: '15px',
-  backgroundColor: '#918f8e',
-  boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)',
-};
-
-
 
 
 const Residence = ({ residence }) => {
@@ -33,6 +18,10 @@ const Residence = ({ residence }) => {
   const [isEditingResidence, setIsEditingResidence] = useState(false);
 
   const [updatePersonalDetails, { data, isSuccess, isLoading, isError, error }] = useUpdatePersonalDetailsMutation()
+
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: yupResolver(residenceSchema), // Connect Yup with React Hook Form
@@ -67,15 +56,35 @@ const Residence = ({ residence }) => {
   };
 
   const buttonStyles = {
-    borderRadius: '8px',
+    borderRadius: '0px 10px',
     padding: '10px 20px',
-    backgroundColor: isLoading ? "#ccc" : "#1F2A40",
-    color: isLoading ? "#666" : "white",
+    backgroundColor: isLoading ? "#ccc" : colors.white[100],
+    color: isLoading ? "#666" : colors.primary[400],
     cursor: isLoading ? "not-allowed" : "pointer",
     "&:hover": {
-      backgroundColor: isLoading ? "#ccc" : "#3F4E64",
+      backgroundColor: isLoading ? "#ccc" : colors.primary[100],
     },
   };
+
+  const accordionStyles = {
+    borderRadius: '0px 20px',
+    background: colors.white[100],
+    color:colors.primary[400],
+    boxShadow: '0px 0px 10px rgb(0,0,0,0,2)',
+    marginBottom: '20px',
+  };
+  
+  const paperStyles = {
+    padding: '30px',
+    borderRadius: '0px 20px',
+    background: colors.white[100],
+    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+    '& .MuiTableCell-root':{
+      color:colors.black[100],
+    }
+  };
+  
+  
 
   useEffect(() => {
     if (isSuccess) {
@@ -99,7 +108,7 @@ const Residence = ({ residence }) => {
     <>
       <Accordion style={accordionStyles}>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon sx={{ color: '#007bb2' }} />}
+          expandIcon={<ExpandMoreIcon sx={{ color: colors.primary[400] }} />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
@@ -109,8 +118,18 @@ const Residence = ({ residence }) => {
           <Paper elevation={3} style={paperStyles}>
             {(isEditingResidence || !residence) ? (
               <form onSubmit={handleSubmit(onSubmit)}>
-                <Box display="flex" flexDirection="column" gap={2}>
-                  <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} gap={2}>
+                <Box 
+                  display="flex" 
+                  flexDirection="column" 
+                  gap={2} 
+                  sx={{
+                    color:colors.black[100],
+                    '& .MuiTableCell-root':{
+                      color:colors.black[100],
+                    }
+                  }}
+                >
+                  <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} gap={2} >
                     <Controller
                       name="address"
                       control={control}
@@ -210,7 +229,18 @@ const Residence = ({ residence }) => {
 
 
                   <Box display="flex" justifyContent="flex-end" gap={2} mt={2}>
-                    <Button variant="outlined" onClick={handleResidenceEditToggle}>
+                    <Button 
+                      sx={{
+                        color:colors.redAccent[500], 
+                        borderColor:colors.redAccent[500],
+                        background:colors.white[100],
+                        borderRadius:"0px 10px 0px 10px",
+                        ':hover':{
+                          background:colors.redAccent[500],
+                          color:colors.white[100],
+                        }
+                      }}
+                      variant="outlined" onClick={handleResidenceEditToggle}>
                       Cancel
                     </Button>
                     <Button
@@ -225,11 +255,30 @@ const Residence = ({ residence }) => {
               </form>
             ) : (
               <>
-                <TableContainer component={Paper} sx={{ borderRadius: '8px' }}>
+                <TableContainer 
+                  component={Paper} 
+                  sx={{ 
+                    borderRadius: '0px 20px', 
+                    background:colors.white[100],
+                    '& .MuiPaper-root':{
+                      background:colors.white[100],
+                    },
+                    '& .MuiTableCell-root': {
+                      background:colors.white[100],
+                      color:colors.black[100],
+                      borderBottom:`2px solid ${colors.primary[400]}`,
+                    },
+                  }}
+                >
                   <Table aria-label="personal details table">
                     <TableBody>
                       {columns?.map((row, index) => (
-                        <TableRow key={index} sx={{ '&:nth-of-type(odd)': { backgroundColor: '#918f8e' } }}>
+                        <TableRow 
+                          key={index} 
+                          sx={{ 
+                            backgroundColor: colors.primary[400], 
+                            borderBottom:`2px solid ${colors.white[100]}`,
+                            }}>
                           <TableCell align="left" sx={{ fontWeight: 500 }}>{row.label}</TableCell>
                           <TableCell align="left">{row.value || ''}</TableCell>
                           <TableCell align="left" sx={{ fontWeight: 500 }}>{row.label2}</TableCell>

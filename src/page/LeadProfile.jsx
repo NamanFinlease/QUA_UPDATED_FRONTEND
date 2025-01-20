@@ -22,7 +22,7 @@ const LeadProfile = () => {
     const { id } = useParams();
     const {empInfo,activeRole} = useAuthStore()
     const [currentPage, setCurrentPage] = useState("lead");
-    const [uploadedDocs, setUploadedDocs] = useState([]); 
+    const [uploadedDocs, setUploadedDocs] = useState([]);
     const { setLead } = useStore()
     const [leadEdit, setLeadEdit] = useState(false);
 
@@ -51,7 +51,7 @@ const LeadProfile = () => {
                 <LeadDetails leadData={leadData} setLeadEdit={setLeadEdit} />
             ) : (
                 <>
-                    <div className="p-3">
+                    <div className="p-3" style={{ width:"90%",}}>
                         <BarButtons
                             barButtonOptions={barButtonOptions}
                             currentPage={currentPage}
@@ -69,11 +69,11 @@ const LeadProfile = () => {
                                         borderBottomLeftRadius: '20px',
                                         background:colors.white[100],
                                         '& .MuiDataGrid-row:hover': {
-                                            backgroundColor: 'white',
+                                            backgroundColor: colors.white[100],
                                             cursor: 'pointer',
                                         },
                                         '& .MuiDataGrid-row': {
-                                            backgroundColor: 'white',
+                                            backgroundColor: colors.white[100],
                                         },
                                     }}
                                 >

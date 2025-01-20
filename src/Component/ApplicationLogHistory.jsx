@@ -60,18 +60,40 @@ const ApplicationLogHistory = ({ id }) => {
     };
 
     return (
-        <Box sx={{border:0,mt:3, borderRadius:"25px"}}>
-            <Accordion sx={{maxWidth:'700px', margin: '0 auto', mt:3 , background:colors.white[100], borderRadius:"25px", boxShadow:"0px 0px 5px rgb(0,0,0,0.1)"}}>
+        <>
+            <Accordion
+                variant="outlined"
+                sx={{
+                    display:"flex",
+                    flexDirection:"column",
+                    justifyContent:"center",
+                    maxWidth: '700px',
+                    background: colors.white[100],
+                    borderRadius: '25px',
+                    border: '0px',
+                    margin: '0px auto',
+                    marginTop: '20px',
+                    background:'transparent',
+                    '&.Mui-expanded': {
+                        margin: '20px auto',
+                        display: 'flex',
+                        justifyContent: 'center',
+                    },
+                }}
+            >
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon sx={{color:colors.primary[400]}} />}
                     aria-controls="application-log-content"
                     id="application-log-header"
                     sx={{
+                        display: 'flex',
+                        justifyContent: 'center',         
                         background: colors.white[100],
                         color: colors.primary[400],
                         fontWeight: 'bold',
                         borderRadius: '0px 20px 0px 20px',
                         boxShadow:"0px 0px 20px rgb(0,0,0,0.2)",
+                        margin:'0px auto',
                     }}
                 >
                     <Typography variant="h6">Application Log</Typography>
@@ -91,12 +113,14 @@ const ApplicationLogHistory = ({ id }) => {
                     </Box>
                 </AccordionDetails>
             </Accordion>
-            {isError &&
-                <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
-                    {error?.data?.message}
-                </Alert>
-            }
-        </Box>
+            <Box>
+                {isError &&
+                    <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+                        {error?.data?.message}
+                    </Alert>
+                }
+            </Box>
+        </>
     );
 };
 

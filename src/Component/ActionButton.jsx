@@ -343,8 +343,11 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                 backgroundColor: previewLoading ? "#ccc" : "#04c93f",
                                 color: previewLoading ? "#666" : "white",
                                 cursor: previewLoading ? "not-allowed" : "pointer",
+                                boxShadow: "0px 2px 5px rgb(0,0,0,0.2)",
+                                borderRadius: "0px 10px",
                                 "&:hover": {
-                                    backgroundColor: previewLoading ? "#ccc" : "#8bf7ab",
+                                    backgroundColor: previewLoading ? "#ccc" : "#04b539",
+                                    boxShadow: "0px 2px 5px 2px rgb(0,0,0,0.2)",
                                 },
                             }}
                         >
@@ -423,6 +426,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                 variant="contained"
                                 color="secondary"
                                 onClick={() => handleActionClick('sendBack')}
+                                sx={{borderRadius:"0px 10px 0px 10px", color:colors.white[100]}}
                             >
                                 Send Back
                             </Button>}
@@ -498,45 +502,47 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                     rows={3}
                                     sx={{
                                         marginBottom: 3,
-                                        color: '#000',                // Ensure text is black or dark
-                                        backgroundColor: '#aeb0af',   // Light background for text area
-                                        borderRadius: 1,
+                                        color: colors.black[100],                // Ensure text is black or dark
+                                        backgroundColor: colors.primary[400],
                                         '& .MuiOutlinedInput-root': {
                                             '& fieldset': {
-                                                borderColor: '#c4c4c4',
+                                                borderColor: colors.primary[400],
+                                                color:colors.black[100],
                                             },
                                             '&:hover fieldset': {
-                                                borderColor: '#1976d2',
+                                                borderColor: colors.primary[400],
+                                                color:colors.black[100]
                                             },
                                             '&.Mui-focused fieldset': {
-                                                borderColor: '#1976d2',
+                                                borderColor: colors.primary[400],
+                                                color:colors.black[100]
                                             },
                                         },
                                     }}
                                 />
                                 {(actionType === "sendBack") && (
                                     <>
-                                        <FormControl fullWidth sx={{ marginBottom: 3 }}>
+                                        <FormControl fullWidth sx={{ marginBottom: 3, }}>
                                             <InputLabel>Send Back to</InputLabel>
                                             <Select
                                                 value={selectedRecipient}
                                                 onChange={(e) => setSelectedRecipient(e.target.value)}
                                                 label="Send Back to"
                                                 sx={{
-                                                    color: '#000',               // Ensure text is black or dark
-                                                    backgroundColor: '#aeb0af',  // Light background for the dropdown
-                                                    borderRadius: 1,
-                                                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#c4c4c4' },
-                                                    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#1976d2' },
-                                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#1976d2' },
+                                                    color: colors.black[100],               // Ensure text is black or dark
+                                                    backgroundColor: colors.primary[400],  // Light background for the dropdown
+                                                    borderRadius: "0px 10px",
+                                                    '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
+                                                    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
+                                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                                                 }}
                                             >
-                                                <MenuItem value="" disabled>
+                                                <MenuItem value="" sx={{color:colors.black[100], background:colors.white[100]}} disabled>
                                                     Select recipient to send back
                                                 </MenuItem>
-                                                {activeRole === "creditManager" && <MenuItem value="screener">Screener</MenuItem>}
-                                                {activeRole === "sanctionHead" && <MenuItem value="creditManager">Credit Manager</MenuItem>}
-                                                {activeRole === "disbursalHead" && <MenuItem value="disbursalManager">Disbursal Manager</MenuItem>}
+                                                {activeRole === "creditManager" && <MenuItem value="screener" sx={{background:colors.white[100], color:colors.black[100], ':hover':{background:colors.primary[400], color:colors.white[100]}}}>Screener</MenuItem>}
+                                                {activeRole === "sanctionHead" && <MenuItem value="creditManager" sx={{background:colors.white[100], color:colors.black[100], ':hover':{background:colors.primary[400], color:colors.white[100]}}}>Credit Manager</MenuItem>}
+                                                {activeRole === "disbursalHead" && <MenuItem value="disbursalManager" sx={{background:colors.white[100], color:colors.black[100], ':hover':{background:colors.primary[400], color:colors.white[100]}}}>Disbursal Manager</MenuItem>}
                                             </Select>
                                         </FormControl>
                                     </>
