@@ -56,7 +56,6 @@ const CommonTable = ({
       {title && (
         <div
           style={{
-            display:"inline-block",
             padding: '10px 20px',
             margin:"20px 10px 10px 60px",
             fontWeight: 'bold',

@@ -125,7 +125,6 @@ const BankDetails = ({ id }) => {
                                             color:colors.black[100],
                                         }
                                     },
-                                    '& .MuiSelect-select': { color: colors.black[100] },
                                   }}
                             >
                                 <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} gap={2}>

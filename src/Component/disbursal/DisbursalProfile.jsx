@@ -32,7 +32,6 @@ const DisbursalProfile = () => {
   const [leadEdit, setLeadEdit] = useState(false);
 
   const { data, isSuccess, isError, error, refetch } = useDisbursalProfileQuery(id, { skip: id === null });
-  console.log('disbursal profile', id, data, error)
 
 
   useEffect(() => {
@@ -63,7 +62,7 @@ const DisbursalProfile = () => {
 
         {currentPage === "application" &&
           <>
-            {disbursalData?.application?.lead?._id &&
+            {disbursalData?.sanction?.application?.lead?._id &&
               <>
                 <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '10px' }}>
                   <ApplicantProfileData leadData={disbursalData?.sanction?.application?.lead} />
@@ -98,7 +97,7 @@ const DisbursalProfile = () => {
             }
             {currentPage === "documents" &&
               <UploadDocuments
-                leadData={disbursalData?.sanctioon?.application?.lead}
+                leadData={disbursalData?.sanction?.application?.lead}
                 setUploadedDocs={setUploadedDocs}
                 uploadedDocs={uploadedDocs}
               />

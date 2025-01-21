@@ -73,7 +73,6 @@ const ApplicationLogHistory = ({ id }) => {
                     border: '0px',
                     margin: '0px auto',
                     marginTop: '20px',
-                    background:'transparent',
                     '&.Mui-expanded': {
                         margin: '20px auto',
                         display: 'flex',
