@@ -146,7 +146,7 @@ const UploadDocuments = ({ leadData }) => {
                 ...leadData?.documents?.document?.multipleDocuments?.salarySlip,
                 ...leadData?.documents?.document?.multipleDocuments?.bankStatement,
                 ...leadData?.documents?.document?.multipleDocuments?.others,
-                ...leadData?.documents?.document?.multipleDocuments?.sanctionLetter,
+                // ...leadData?.documents?.document?.multipleDocuments?.sanctionLetter,
                 ...leadData?.documents?.document?.singleDocuments
             ];
             setUploadedDocs(merged)

@@ -335,11 +335,11 @@ const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanV
       });
       navigate(`/lead-process`)
     }
-    if (aadhaarDetails && aadhaarDetailsSuccess && !isAadhaarDetailFetching) {
+    if (aadhaarDetails && aadhaarDetailsSuccess && !isAadhaarDetailsFetching) {
       setOpenAadhaarCompare(true);
       setAadhaarData(aadhaarDetails?.data?.details);
     }
-  }, [aadhaarRes, aadhaarDetails, aadhaarDetailsSuccess, isAadhaarDetailFetching, navigate]);
+  }, [aadhaarRes, aadhaarDetails, aadhaarDetailsSuccess, isAadhaarDetailsFetching, navigate]);
 
   // Table Data
   const verificationData = [
