@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Box, Typography, TextField, Alert } from '@mui/material';
+import { Button, Box, Typography, TextField, Alert,useTheme } from '@mui/material';
+import { tokens } from '../../theme';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../../Store';
@@ -13,6 +14,10 @@ const LoanInfo = ({ disburse }) => {
   const [remarks, setRemarks] = useState(null);
   const [openRemark, setOpenRemark] = useState(false)
   const navigate = useNavigate()
+
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   console.log('profile',applicationProfile)
 
@@ -34,8 +39,6 @@ const LoanInfo = ({ disburse }) => {
     setRemarks('');
     setOpenRemark(false)
   };
-
-
 
 
   const info = [
@@ -62,15 +65,14 @@ const LoanInfo = ({ disburse }) => {
     <>
       <Box
         sx={{
-          maxWidth: '1200px',
-          margin: '10px',
+          maxWidth: '800px',
+          margin: '10px auto',
           padding: '20px',
-          border: '1px solid #ddd',
-          borderRadius: '8px',
-          backgroundColor: '#f9f9f9',
+          borderRadius: '0px 20px',
+          backgroundColor: colors.white[100],
           fontSize: '12px',
           lineHeight: '1.5',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
         }}
       >
         <Box
@@ -85,7 +87,7 @@ const LoanInfo = ({ disburse }) => {
           {info.map((field, index) => (
             <Box
               key={index}
-              sx={{ display: 'flex', alignItems: 'center', borderBottom: '1px solid #ccc', padding: '10px' }}
+              sx={{ display: 'flex', alignItems: 'center', borderBottom: `2px solid ${colors.primary[400]}`, padding: '10px' }}
             >
               <label style={{ fontWeight: 'bold', width: '50%' }}>{field.label}</label>
               <span>{field.value} {field.label === "ROI % (p.d.) Approved" && "%" }</span>

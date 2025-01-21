@@ -148,139 +148,141 @@ const handleAccordionToggle = (panel) => (event, isExpanded) => {
   return (
     <>
     <div sx={{background: colors.white[100]}}>
-      <Box
-          sx={{
-              width: isSidebarOpen ? 265 : 0,
-              height: "100vh",
-              color: colors.white[100],
-              position: "fixed",
-              top: 70,
-              left: 0,
-              display: "flex",
-              flexDirection: "column",
-              transition: "width 0.3s ease",
-              overflowY: "auto",
-              boxShadow: isSidebarOpen
-                  ? `0px 10px 10px ${colors.primary[400]}`
-                  : "none",
-              zIndex: 1001,
-              background: `linear-gradient(90deg, ${colors.white[100]}  1%, ${colors.primary[400]} 250%), ${colors.white[100]}`,
-              borderRadius : "15px",
-              borderRight: `3px solid ${colors.primary[400]}`,
-      }}
-      >
-      <IconButton 
-      onClick={toggleSidebar}
-      sx={{
-          position: "fixed",
-          top: 390,
-          left: isSidebarOpen ? 245 : 10,
-          color: colors.black[100],
-          background: colors.white[100],
-          border:`3px solid ${colors.primary[400]}`,
-          borderRadius: "15px",
-          transition: "background-color 0.3s, color 0.3s, left 0.3s",
-          zIndex: 1001,
-          ":hover":{
-              background:colors.primary[400],
-          }
-      }}
-      >
-          {isSidebarOpen ? <KeyboardDoubleArrowLeftIcon /> : <KeyboardDoubleArrowRightIcon />}
-      </IconButton>
-
-        <List>
-          {accordionItems.map((item) => {
-            if (item.roles.includes(activeRole)) {
-              return (
-                <Accordion
-                  key={item.id}
-                  expanded={expanded === item.id}
-                  onChange={handleAccordionToggle(item.id)}
-                  disableGutters
-                  elevation={0}
-                  sx={{
-                      margin:"5px 20px",
-                      color: colors.white[100],
-                      background:"white",
-                      borderRadius:"20px",
-                  }}
-                >
-                <AccordionSummary 
-                    expandIcon={<ExpandMoreIcon />}
-                    sx={{
-                        background: colors.primary[400],
-                        borderBottomLeftRadius:"20px",
-                        borderTopRightRadius:"20px",
-                        boxShadow:`0px 0px 20px ${colors.primary[400]}`,
-                        "&:hover": {
-                        background:colors.white[100],
-                        color:colors.primary[400],
-                        transform:"scale(1.02)",
-                        }
-                    }}
-                >
-                    <Box sx={{display:"flex", alignItems:"center"}}>
-                      {item.icon}
-                      <Typography sx={{marginLeft:"10px"}}>{item.title}</Typography>
-                    </Box>
-                  </AccordionSummary>
-                  <AccordionDetails
-                      sx={{
-                          boxShadow:`0px 0px 10px 1px ${colors.primary[400]}`,
-                          borderRadius:"15px 0px 15px 15px",
-                      }}>
-                      <List>
-                      {item.items.map((subItem) => (
-                          <ListItem button 
-                              component={NavLink} 
-                              to={subItem.link} 
-                              key={subItem.text}
-                              sx={{
-                                color: colors.primary[400],
-                                textDecoration: "none",
-                                padding: "10px 15px",
-                                borderTopRightRadius:"10px",
-                                borderBottomLeftRadius:"10px",
-                                border:`2px solid ${colors.white[100]}`,
-                                "&.active":{
-                                    background:`linear-gradient(90deg, ${colors.white[400]} 50%, ${colors.primary[400]} 250%)`,
-                                    fontWeight: "bold",
-                                    border:`2px solid ${colors.primary[400]}`,  
-                                    "&::after":{
-                                        content : '""',
-                                        position : "absolute",
-                                        right:"20px",
-                                        top:"20px",
-                                        width:"10px",
-                                        height:"10px",
-                                        borderRadius:"50%",
-                                        background: colors.primary[400],
-                                        animation:"blink 1s infinite",
-                                    },
-                                },
-                                "&:hover": {
-                                    border:`2px solid ${colors.primary[400]}`,
-                                    color: colors.white[100],
-                                },
-                                '@keyframes blink':{
-                                    "0%":{background:colors.white[100]},
-                                    "100%":{background:colors.primary[400]},
-                                }
-                              }}
-                          >
-                          <ListItemText sx={{color:colors.primary[400],}} primary={subItem.text} />
-                        </ListItem>
-                      ))}
-                    </List>
-                  </AccordionDetails>
-                </Accordion>
-              );
+        <Box
+            sx={{
+                width: isSidebarOpen ? 265 : 0,
+                height: "100vh",
+                color: colors.white[100],
+                position: "fixed",
+                top: 70,
+                left: 0,
+                display: "flex",
+                flexDirection: "column",
+                transition: "width 0.3s ease",
+                overflowY: "auto",
+                boxShadow: isSidebarOpen
+                    ? `0px 10px 10px ${colors.primary[400]}`
+                    : "none",
+                zIndex: 1001,
+                background: `linear-gradient(90deg, ${colors.white[100]}  1%, ${colors.primary[400]} 250%), ${colors.white[100]}`,
+                borderRadius : "15px",
+                borderRight: `3px solid ${colors.primary[400]}`,
+                '& .MuiPaper-root':{
+                    borderRadius:"20px",
+                },
+        }}
+        >
+        <IconButton 
+        onClick={toggleSidebar}
+        sx={{
+            position: "fixed",
+            top: 390,
+            left: isSidebarOpen ? 245 : 10,
+            color: colors.black[100],
+            background: colors.white[100],
+            border:`3px solid ${colors.primary[400]}`,
+            borderRadius: "15px",
+            transition: "background-color 0.3s, color 0.3s, left 0.3s",
+            zIndex: 1001,
+            ":hover":{
+                background:colors.primary[400],
             }
-            return null;
-          })}
-        </List>
-      </Box>
+        }}
+        >
+            {isSidebarOpen ? <KeyboardDoubleArrowLeftIcon /> : <KeyboardDoubleArrowRightIcon />}
+        </IconButton>
+
+            <List>
+            {accordionItems.map((item) => {
+                if (item.roles.includes(activeRole)) {
+                return (
+                    <Accordion
+                    key={item.id}
+                    expanded={expanded === item.id}
+                    onChange={handleAccordionToggle(item.id)}
+                    disableGutters
+                    elevation={0}
+                    sx={{
+                        margin:"5px 20px",
+                        color: colors.white[100],
+                        background:"white",
+                        borderRadius:"20px",
+                    }}
+                    >
+                    <AccordionSummary 
+                        expandIcon={<ExpandMoreIcon />}
+                        sx={{
+                            background: colors.primary[400],
+                            borderRadius:"0px 20px",
+                            boxShadow:`0px 0px 20px ${colors.primary[400]}`,
+                            "&:hover": {
+                                background:colors.white[100],
+                                color:colors.primary[400],
+                                transform:"scale(1.02)",
+                            }
+                        }}
+                    >
+                        <Box sx={{display:"flex", alignItems:"center"}}>
+                        {item.icon}
+                        <Typography sx={{marginLeft:"10px"}}>{item.title}</Typography>
+                        </Box>
+                    </AccordionSummary>
+                    <AccordionDetails
+                        sx={{
+                            boxShadow:`0px 0px 10px 1px ${colors.primary[400]}`,
+                            borderRadius:"15px 0px 15px 15px",
+                        }}>
+                        <List>
+                        {item.items.map((subItem) => (
+                            <ListItem button 
+                                component={NavLink} 
+                                to={subItem.link} 
+                                key={subItem.text}
+                                sx={{
+                                    color: colors.primary[400],
+                                    textDecoration: "none",
+                                    padding: "10px 15px",
+                                    borderTopRightRadius:"10px",
+                                    borderBottomLeftRadius:"10px",
+                                    border:`2px solid ${colors.white[100]}`,
+                                    "&.active":{
+                                        background:`linear-gradient(90deg, ${colors.white[400]} 50%, ${colors.primary[400]} 250%)`,
+                                        fontWeight: "bold",
+                                        border:`2px solid ${colors.primary[400]}`,  
+                                        "&::after":{
+                                            content : '""',
+                                            position : "absolute",
+                                            right:"20px",
+                                            top:"20px",
+                                            width:"10px",
+                                            height:"10px",
+                                            borderRadius:"50%",
+                                            background: colors.primary[400],
+                                            animation:"blink 1s infinite",
+                                        },
+                                    },
+                                    "&:hover": {
+                                        border:`2px solid ${colors.primary[400]}`,
+                                        color: colors.white[100],
+                                    },
+                                    '@keyframes blink':{
+                                        "0%":{background:colors.white[100]},
+                                        "100%":{background:colors.primary[400]},
+                                    }
+                                }}
+                            >
+                            <ListItemText sx={{color:colors.primary[400],}} primary={subItem.text} />
+                            </ListItem>
+                        ))}
+                        </List>
+                    </AccordionDetails>
+                    </Accordion>
+                );
+                }
+                return null;
+            })}
+            </List>
+        </Box>
       </div>
     </>
   );

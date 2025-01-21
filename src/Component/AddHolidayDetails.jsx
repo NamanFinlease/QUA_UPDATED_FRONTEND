@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { tokens } from '../theme';
+import { useTheme } from '@mui/material';
 
 const AddHolidayDetails = () => {
   const [holidayDate, setHolidayDate] = useState('');
@@ -10,11 +12,15 @@ const AddHolidayDetails = () => {
     console.log('Holiday Name:', holidayName);
   };
 
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   return (
     <div className="container mt-5">
       
-      <form onSubmit={handleSubmit} className="p-4 shadow rounded bg-light" style={{ maxWidth: '600px', margin: '0 auto' }}>
-      <h2 className="text-center mb-4" style={{color:'black'}}>Add Holiday Details</h2>
+      <form onSubmit={handleSubmit} className="p-4 shadow bg-light" style={{ maxWidth: '600px', margin: '0 auto', borderRadius:"0px 20px" }}>
+      <h3 className="text-center mb-4" style={{color:colors.primary[400]}}>Add Holiday Details</h3>
         <div className="form-group mb-3">
           <label htmlFor="holidayDate">Holiday Date</label>
           <input
@@ -39,7 +45,15 @@ const AddHolidayDetails = () => {
           />
         </div>
         <div className="d-flex justify-content-center">
-          <button type="submit" className="btn btn-success w-50">Add Holiday Details</button>
+          <button 
+            type="submit" 
+            style={{
+              borderRadius:"0px 10px",
+              background:colors.primary[400],
+            }}
+          >
+            Add Holiday
+          </button>
         </div>
       </form>
     </div>

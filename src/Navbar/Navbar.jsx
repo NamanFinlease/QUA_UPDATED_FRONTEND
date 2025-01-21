@@ -53,7 +53,7 @@ const Navbar = () => {
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: colors.primary[400],
-            cancelButtonColor: "#d33",
+            cancelButtonColor: colors.redAccent[500],
             confirmButtonText: "Yes, switch role",
         }).then((result) => {
             if (result.isConfirmed) {
@@ -161,8 +161,7 @@ const Navbar = () => {
                                 m: 1, 
                                 minWidth: 160,
                                 background:colors.primary[400], 
-                                borderTopRightRadius: 20,
-                                borderBottomLeftRadius: 20,
+                                borderRadius: "0px 20px",
                                 boxShadow:"0px 0px 20px rgb(0,0,0,0.2)",
                                 '& .MuiOutlinedInput-notchedOutline': {
                                     border: 0,
@@ -188,6 +187,14 @@ const Navbar = () => {
                                 sx={{
                                     fontWeight:700,
                                 }}
+                                MenuProps={{
+                                    PaperProps: {
+                                        sx: {
+                                            backgroundColor: colors.white[100],
+                                            borderRadius:"20px 0px",
+                                        },
+                                    },
+                                }}
                             >   
                                 {empInfo.empRole &&
                                     empInfo.empRole.map((role, i) => (
@@ -197,9 +204,10 @@ const Navbar = () => {
                                             sx={{
                                                 background: colors.white[100],
                                                 color:colors.primary[400],
+                                                borderRadius:"10px 0px",
                                                 '&:hover':{
-                                                background:`${colors.primary[400]}`,
-                                                color:`${colors.white[100]}`
+                                                    background:`${colors.primary[400]}`,
+                                                    color:`${colors.white[100]}`,
                                                 },
                                                 '&:active':{
                                                     color:colors.primary[400],

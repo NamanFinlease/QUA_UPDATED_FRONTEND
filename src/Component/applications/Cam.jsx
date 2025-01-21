@@ -80,7 +80,7 @@ const Cam = ({id}) => {
         netAdminFeeAmount: details?.netAdminFeeAmount || 0,   // Net Admin Fee Amount
         eligibleTenure: details?.eligibleTenure || '-',   // Eligible Tenure
         repaymentAmount: details?.repaymentAmount || 0,   // Repayment Amount
-        camRemarks: details?.camRemarks || " ",   // Repayment Amount
+        camRemarks: details?.camRemarks || "-",   // Repayment Amount
       });
     }
   }, [getCamSuccess, data]);

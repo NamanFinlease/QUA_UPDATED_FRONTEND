@@ -17,6 +17,8 @@ import Cam from '../applications/Cam';
 import DisburseInfo from '../disbursal/DisburseLoan';
 import ClosingRequest from './ClosingRequest';
 import Payment from '../accounts/Payment';
+import CollectionDetails from './CollectionDetails';
+import RepaymentForm from '../repayment/RepaymentForm';
 
 const CollectionProfile = () => {
     const { id } = useParams();
@@ -45,6 +47,7 @@ const CollectionProfile = () => {
         'Cam',
         'Disbursal',
         'Collection',
+        'Repayment',
         ...(activeRole === "accountExecutive" ? ["Accounts"]:[])
     ]
 
@@ -108,7 +111,9 @@ const CollectionProfile = () => {
 
                         {currentPage === "cam" && <Cam id={application?._id} />}
                         {currentPage === "disbursal" && <DisburseInfo disburse={collectionData?.disbursal?.sanction} />}
-                        {currentPage === "collection" && <ClosingRequest disburse={collectionData?.disbursal} />}
+                        {currentPage === "collection" && <CollectionDetails disburse={collectionData?.disbursal?.sanction} />}
+                        {currentPage === "repayment" && <RepaymentForm disburse={collectionData?.disbursal} />}
+                        {/* {currentPage === "repayment" && <ClosingRequest disburse={collectionData?.disbursal} />} */}
                         {currentPage === "accounts" && (
                     <>
                         {collectionData ? (
