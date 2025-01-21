@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, Box, Typography, TextField, Alert } from "@mui/material";
+import { Button, Box, Typography, TextField, Alert, useTheme } from "@mui/material";
+import { tokens } from "../../theme";
 import useStore from "../../Store";
 import { formatDate } from "../../utils/helper";
 import useAuthStore from "../store/authStore";
@@ -14,6 +15,10 @@ const DisbursalLoanInfo = ({ disburse }) => {
     const [remarks, setRemarks] = useState(null);
     const [openRemark, setOpenRemark] = useState(false);
     const navigate = useNavigate();
+
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     console.log("profile", applicationProfile);
 
@@ -86,12 +91,11 @@ const DisbursalLoanInfo = ({ disburse }) => {
                     maxWidth: "1200px",
                     margin: "10px",
                     padding: "20px",
-                    border: "1px solid #ddd",
-                    borderRadius: "8px",
-                    backgroundColor: "#f9f9f9",
+                    borderRadius: "0px 20px",
+                    backgroundColor: colors.white[100],
                     fontSize: "12px",
                     lineHeight: "1.5",
-                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
                 }}
             >
                 <Box
@@ -109,7 +113,7 @@ const DisbursalLoanInfo = ({ disburse }) => {
                             sx={{
                                 display: "flex",
                                 alignItems: "center",
-                                borderBottom: "1px solid #ccc",
+                                borderBottom: `2px solid ${colors.primary[400]}`,
                                 padding: "10px",
                             }}
                         >
@@ -130,12 +134,12 @@ const DisbursalLoanInfo = ({ disburse }) => {
                         sx={{
                             marginTop: 3,
                             padding: 4,
-                            backgroundColor: "#f9f9f9", // Light background for the entire form
-                            borderRadius: 2,
-                            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+                            backgroundColor: colors.white[100], // Light background for the entire form
+                            borderRadius: "0px 20px",
+                            boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
                         }}
                     >
-                        <Typography variant="h6" gutterBottom>
+                        <Typography variant="h4" gutterBottom>
                             Remarks
                         </Typography>
                         <TextField
@@ -147,18 +151,18 @@ const DisbursalLoanInfo = ({ disburse }) => {
                             rows={3}
                             sx={{
                                 marginBottom: 3,
-                                color: "#363535", // Ensure text is black or dark
-                                backgroundColor: "#ebebeb", // Light background for text area
+                                color: colors.black[100], // Ensure text is black or dark
+                                backgroundColor: colors.white[100], // Light background for text area
                                 borderRadius: 1,
                                 "& .MuiOutlinedInput-root": {
                                     "& fieldset": {
-                                        borderColor: "#c4c4c4",
+                                        borderColor: colors.primary[400],
                                     },
                                     "&:hover fieldset": {
-                                        borderColor: "#1976d2",
+                                        borderColor: colors.primary[400],
                                     },
                                     "&.Mui-focused fieldset": {
-                                        borderColor: "#1976d2",
+                                        borderColor: colors.primary[400],
                                     },
                                 },
                             }}
@@ -180,28 +184,30 @@ const DisbursalLoanInfo = ({ disburse }) => {
                     >
                         <Button
                             variant="outlined"
-                            color="secondary"
                             onClick={handleCancel}
                             sx={{
                                 padding: "10px 20px",
-                                borderRadius: 2,
+                                borderRadius: "0px 10px",
                                 fontWeight: "bold",
-                                backgroundColor: "#f5f5f5",
-                                ":hover": { backgroundColor: "#e0e0e0" },
+                                border:`2px solid ${colors.redAccent[500]}`,
+                                backgroundColor: colors.white[100],
+                                color:colors.redAccent[400],
+                                ":hover": { backgroundColor: colors.redAccent[500], color:colors.white[100] },
                             }}
                         >
                             Cancel
                         </Button>
                         <Button
                             variant="contained"
-                            color="primary"
                             onClick={handleSubmit}
                             sx={{
                                 padding: "10px 20px",
-                                borderRadius: 2,
+                                borderRadius: "0px 10px",
                                 fontWeight: "bold",
-                                backgroundColor: "#1976d2",
-                                ":hover": { backgroundColor: "#1565c0" },
+                                border:`2px solid ${colors.primary[400]}`,
+                                backgroundColor: colors.white[100],
+                                color:colors.primary[400],
+                                ":hover": { backgroundColor: colors.primary[400], color:colors.white[100] },
                             }}
                         >
                             Submit

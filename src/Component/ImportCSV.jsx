@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
+import { tokens } from '../theme';
+import { useTheme } from '@mui/material';
 import { useBulkUploadMutation } from '../Service/Query';
 
 const ImportCSV = () => {
 
   const [bulkUpload,{data,isSuccess,isError,error}] = useBulkUploadMutation()
   const [file, setFile] = useState(null);
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -22,7 +27,7 @@ const ImportCSV = () => {
   };
 
   return (
-    <div className="container d-flex flex-column align-items-center mt-5">
+    <div className="container d-flex flex-column align-items-center mt-5" style={{ color: colors.primary[400] }}>
       <h2 className="text-center mb-4">Import CSV File</h2>
       <form 
         onSubmit={handleSubmit} 
@@ -44,7 +49,7 @@ const ImportCSV = () => {
         <button 
           type="submit" 
           className="btn btn-primary w-100"
-          style={{ backgroundColor: '#007BFF', border: 'none' }}
+          style={{ backgroundColor: colors.primary[400], border: 'none' }}
         >
           Import CSV
         </button>

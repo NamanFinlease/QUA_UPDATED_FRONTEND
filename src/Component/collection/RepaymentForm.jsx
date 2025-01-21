@@ -7,7 +7,9 @@ import {
     Radio,
     FormLabel,
     TextField,
+    useTheme,
 } from "@mui/material";
+import { tokens } from '../../theme';
 import { Controller, useForm } from "react-hook-form";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -29,6 +31,10 @@ const RepaymentForm = ({ disburse }) => {
         disburse?.sanction?.application?.cam?.details || {};
     const [updateCollection, { data, isSuccess, isLoading, isError, error }] =
         useUpdateCollectionMutation();
+
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const defaultValues = {
         amount: "",
@@ -74,13 +80,21 @@ const RepaymentForm = ({ disburse }) => {
             onSubmit={handleSubmit(onSubmit)}
             sx={{
                 padding: "20px",
-                border: "1px solid #ddd",
-                borderRadius: "8px",
-                backgroundColor: "#949494",
+                borderRadius: "0px 20px",
+                color:colors.black[100],
                 fontSize: "12px",
                 lineHeight: "1.5",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
                 marginTop: "10px",
+                '& .MuiFormLabel-root':{
+                    color:colors.black[100],
+                },
+                '& .MuiButtonBase-root':{
+                    color:colors.black[100],
+                },
+                '& .MuiFormControl-root':{
+                    color:colors.black[100],
+                }
             }}
         >
             {/* Radio Button Group */}
@@ -110,6 +124,21 @@ const RepaymentForm = ({ disburse }) => {
                             gridTemplateColumns: "repeat(2, 1fr)",
                             gap: "16px",
                             marginTop: "16px",
+                            "& .MuiOutlinedInput-notchedOutline": {
+                                borderColor: colors.black[100],
+                            },
+                            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                borderColor: colors.black[100],
+                            },
+                            "& .MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline": {
+                                borderColor: colors.black[100],
+                            },
+                            "&:hover .MuiOutlinedInput-notchedOutline": {
+                                borderColor: colors.black[100],
+                            },
+                            "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+                                borderColor: colors.black[100],
+                            },
                         }}
                     >
                         <Controller
@@ -128,16 +157,6 @@ const RepaymentForm = ({ disburse }) => {
                                             ? fieldState?.error?.message
                                             : ""
                                     }
-                                    inputProps={{
-                                        placeholder: "Received Amount",
-                                    }}
-                                    sx={{
-                                        // backgroundColor: '#f5f5f5',
-                                        borderRadius: "8px",
-                                        "& .MuiInputBase-input::placeholder": {
-                                            color: "#363535",
-                                        },
-                                    }}
                                 />
                             )}
                         />
@@ -194,10 +213,17 @@ const RepaymentForm = ({ disburse }) => {
                     <Button
                         type="submit"
                         variant="contained"
-                        color="primary"
                         sx={{
                             marginTop: "20px",
                             width: "100%",
+                            background: colors.white[100],
+                            color: colors.primary[400],
+                            borderRadius:"0px 10px",
+                            border:`2px solid ${colors.primary[400]}`,
+                            ':hover':{
+                                background: colors.primary[400],
+                                color:colors.white[100],
+                            }
                         }}
                     >
                         Submit

@@ -1,6 +1,7 @@
 import { DataGrid } from '@mui/x-data-grid'
 import React, { useEffect } from 'react'
 import { useFetchAllEmployeeQuery } from '../Service/Query';
+import CommonTable from '../Component/CommonTable';
 
 const columns = [
   { field: 'fName', headerName: 'First Name', width: 150 },
@@ -35,19 +36,11 @@ export default function EmployeeList() {
   useEffect(() => {
   }, [])
   return (
-    <div className='crm-container'>
-      <div style={{ height: 400, width: '100%', marginTop: '20px' }}>
-        <DataGrid
-          rows={rows}
+    <CommonTable
           columns={columns}
-          pageSize={10}
-          rowsPerPageOptions={[10]}
-          pagination
-          paginationMode="server"
-        // onPageChange={(newPage) => setPage(newPage)}
-        // rowCount={totalLeads}
-        />
-      </div>
-    </div>
+          rows={rows}
+          paginationModel={{ page: 1, pageSize: 10 }}
+          title="Employees List"
+      />
   )
 }

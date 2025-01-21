@@ -107,7 +107,7 @@ const AddBankDetails = () => {
                 alignItems: "center",
                 padding: "40px",
                 backgroundColor: colors.white[100], // Light gray background
-                minHeight: "100vh",
+                minHeight: "90vh",
             }}
         >
             <Card
@@ -117,7 +117,7 @@ const AddBankDetails = () => {
                     padding: "24px 32px",
                     borderRadius: "0px 20px",
                     boxShadow: "0px 0px 25px rgba(0, 0, 0, 0.1)",
-                    backgroundColor: "#fff",
+                    backgroundColor: colors.white[100],
                     "&:hover": {
                         boxShadow: "0px 15px 30px rgba(0, 0, 0, 0.15)",
                     },
@@ -125,14 +125,14 @@ const AddBankDetails = () => {
             >
                 <form onSubmit={handleSubmit}>
                     <Typography
-                        variant="h5"
+                        variant="h4"
                         sx={{
                             fontWeight: "700",
-                            color: "#333", // Dark gray for the header
+                            color: colors.primary[400], // Dark gray for the header
                             textAlign: "center",
                             marginBottom: "24px",
-                            borderBottom: "3px solid #42a5f5",
-                            paddingBottom: "6px",
+                            borderBottom: `3px solid ${colors.primary[400]}`,
+                            paddingBottom: "16px",
                             letterSpacing: "0.5px",
                         }}
                     >
@@ -164,7 +164,7 @@ const AddBankDetails = () => {
                                                         backgroundColor: "#9e9e9e", // Matches placeholder color
                                                         borderRadius: "50%",
                                                         padding: "4px",
-                                                        color: "#fff", // Icon color if you want it to stand out on background
+                                                        color: colors.white[100], // Icon color if you want it to stand out on background
                                                     }}
                                                 />
                                             </InputAdornment>
@@ -205,9 +205,9 @@ const AddBankDetails = () => {
                                     sx={{
                                         flex: "1 1 calc(50% - 16px)", // 50% width with space
                                         padding: "8px",
-                                        borderRadius: "8px",
-                                        backgroundColor: "#f9f9f9",
-                                        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                                        borderRadius: "0px 20px",
+                                        backgroundColor: colors.white[100],
+                                        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
                                         "&:hover": {
                                             boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)",
                                         },
@@ -216,7 +216,7 @@ const AddBankDetails = () => {
                                     <Typography
                                         sx={{
                                             fontWeight: "500",
-                                            color: "#42a5f5",
+                                            color: colors.primary[400],
                                             mb: 1,
                                         }}
                                     >
@@ -234,18 +234,19 @@ const AddBankDetails = () => {
                                         InputProps={field.InputProps || {}}
                                         sx={{
                                             "& .MuiOutlinedInput-root": {
-                                                backgroundColor: "#fff",
+                                                backgroundColor: colors.white[100],
                                                 "& fieldset": {
-                                                    borderColor: "#42a5f5",
+                                                    borderColor: colors.primary[400],
                                                 },
                                                 "&:hover fieldset": {
-                                                    borderColor: "#1e88e5",
+                                                    borderColor: colors.primary[400],
                                                 },
                                                 "& input": {
-                                                    color: "#000",
+                                                    color: colors.black[100],
                                                     "&:disabled": {
-                                                        color: "#000", // Ensure black font color when disabled
-                                                        WebkitTextFillColor: "#000", // Override text fill color
+                                                        borderColor:colors.black[100],
+                                                        color: colors.black[100], // Ensure black font color when disabled
+                                                        WebkitTextFillColor: colors.black[100], // Override text fill color
                                                     },
                                                 }, // Set input text color to black
                                             },
@@ -263,10 +264,11 @@ const AddBankDetails = () => {
                                 disabled={isLoading}
                                 sx={{
                                     fontWeight: "600",
+                                    fontSize: "1rem",
                                     textTransform: "none",
                                     padding: "8px 20px",
-                                    borderRadius: "10px",
-                                    backgroundColor: "#42a5f5",
+                                    borderRadius: "0px 10px",
+                                    backgroundColor: colors.primary[400],
                                     boxShadow:
                                         "0px 4px 10px rgba(66, 165, 245, 0.3)",
                                     "&:hover": {
