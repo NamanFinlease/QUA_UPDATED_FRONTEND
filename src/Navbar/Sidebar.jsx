@@ -167,8 +167,8 @@ const handleAccordionToggle = (panel) => (event, isExpanded) => {
                 background: `linear-gradient(90deg, ${colors.white[100]}  1%, ${colors.primary[400]} 250%), ${colors.white[100]}`,
                 borderRadius : "15px",
                 borderRight: `3px solid ${colors.primary[400]}`,
-                '& .MuiPaper-root':{
-                    borderRadius:"20px",
+                "& .css-oztf1a-MuiPaper-root-MuiAccordion-root:first-of-type":{
+                    borderTopRightRadius:"20px !important",
                 },
         }}
         >
@@ -205,7 +205,7 @@ const handleAccordionToggle = (panel) => (event, isExpanded) => {
                     sx={{
                         margin:"5px 20px",
                         color: colors.white[100],
-                        background:"white",
+                        background:colors.white[100],
                         borderRadius:"20px",
                     }}
                     >

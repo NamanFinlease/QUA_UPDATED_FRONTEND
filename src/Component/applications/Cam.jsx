@@ -173,10 +173,8 @@ const Cam = ({id}) => {
                     <TableRow>
                       <TableCell>Loan Recommended</TableCell>
                       <TableCell>{formData?.loanRecommended}</TableCell>
-                      {/* <TableCell>Tenure</TableCell>
-          <TableCell>{formData?.eligibleTenure}</TableCell> */}
                       <TableCell>Final Salary To Income Ratio</TableCell>
-                      <TableCell>  {formData?.finalsalaryToIncomeRatioPercentage}%</TableCell>
+                      <TableCell>{formData?.finalsalaryToIncomeRatioPercentage}%</TableCell>
                       
                     </TableRow>
                     <TableRow>

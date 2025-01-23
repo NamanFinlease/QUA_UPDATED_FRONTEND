@@ -344,7 +344,7 @@ const Dashboard = ({ isSidebarOpen }) => {
         gridColumn="span 3"
         backgroundColor={colors.white[100]}
         display="flex"
-        minWidth="170px"
+        minWidth="200px"
         alignItems="center"
         justifyContent="center"
         onClick={() => handleNavigation(value.path)} // Navigate on click
@@ -382,12 +382,12 @@ const Dashboard = ({ isSidebarOpen }) => {
               sx={{
                 background: colors.primary[400],
                 color: colors.white[100],
-                borderTopRightRadius:"15px",
-                borderBottomLeftRadius:"15px",
+                borderRadius:"0px 15px",
                 boxShadow:`0px 0px 10px ${colors.primary[400]}`,
                 fontSize: "14px",
                 fontWeight: "bold",
                 padding: "10px 20px",
+                margin:"0px 20px",
                 border:`1px solid ${colors.primary[400]}`,
                 "&:hover":{
                   background:colors.white[100],

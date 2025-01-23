@@ -73,8 +73,7 @@ const CibilScore = ({ id }) => {
   const colors = tokens(theme.palette.mode);
 
   const accordionStyles = {
-    borderTopRightRadius: '15px',
-    borderBottomLeftRadius: '15px',
+    borderRadius: '0px 20px',
     background: colors.white[100],
     color:colors.primary[400],
     boxShadow: '0px 0px 20px #d1d5db',
@@ -83,8 +82,7 @@ const CibilScore = ({ id }) => {
 
   const paperStyles = {
     padding: '20px',
-    borderTopLeftRadius: '15px',
-    borderBottomRightRadius: '15px',
+    borderRadius: '0px 20px',
     border:`1px solid ${colors.primary[400]}`,
     backgroundColor: colors.white[100],
     boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.1)',
@@ -100,10 +98,10 @@ const CibilScore = ({ id }) => {
 
 
   return (
-    <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3 }}>
+    <Box sx={{ margin: '0 auto', mt: 3 }}>
       <Accordion style={accordionStyles}>
         <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: colors.primary[400] }} />}>
-          <Typography variant="h6" style={{ fontWeight: '600', }}>Fetch CIC Report</Typography>
+          <Typography variant="h6">Fetch CIC Report</Typography>
         </AccordionSummary>
         <AccordionDetails >
           <Paper elevation={3} style={paperStyles}>

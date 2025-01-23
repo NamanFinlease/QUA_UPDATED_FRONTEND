@@ -50,11 +50,16 @@ const Navbar = () => {
         Swal.fire({
             title: "Are you sure?",
             text: `Do you want to switch to the ${selectedRole} role?`,
-            icon: "warning",
+            icon: "question",
             showCancelButton: true,
             confirmButtonColor: colors.primary[400],
             cancelButtonColor: colors.redAccent[500],
             confirmButtonText: "Yes, switch role",
+            customClass: {
+                popup:{
+                    borderRadius:"0px 50px",
+                },
+            },
         }).then((result) => {
             if (result.isConfirmed) {
                 setActiveRole(selectedRole); // Set the new active role
@@ -134,8 +139,11 @@ const Navbar = () => {
                     borderBottom: `2px solid ${colors.primary[400]}`,
                     boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.3)",
                     height:70,
-                    borderBottomLeftRadius:20,
-                    borderTopRightRadius:20,
+                    borderRadius:"0px 20px",
+                    '& .MuiToolbar-root':{
+                        display:"flex",
+                        justifyContent:"space-between",
+                    }
                 }}
             >
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>

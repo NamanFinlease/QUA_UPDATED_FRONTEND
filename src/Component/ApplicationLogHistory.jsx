@@ -46,7 +46,7 @@ const ApplicationLogHistory = ({ id }) => {
     }, [isSuccess, data]);
 
     const rows = applicationLog.map((log, index) => ({
-        id: log.id,
+        id: log._id,
         sr: index + 1,
         borrower: log?.borrower,
         logDate: formatDateTime(log?.logDate),
@@ -67,7 +67,6 @@ const ApplicationLogHistory = ({ id }) => {
                     display:"flex",
                     flexDirection:"column",
                     justifyContent:"center",
-                    maxWidth: '700px',
                     background: colors.white[100],
                     borderRadius: '25px',
                     border: '0px',

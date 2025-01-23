@@ -88,6 +88,7 @@ function App() {
                             <div
                                 style={{
                                     marginLeft: isSidebarOpen ? "265px" : "0px",
+                                    // width: isSidebarOpen ? "0%" : "100%",
                                 }}
                             >
                                 <Routes>

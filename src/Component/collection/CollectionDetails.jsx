@@ -6,6 +6,7 @@ import useAuthStore from "../store/authStore";
 import { useActiveLeadsQuery } from "../../Service/LMSQueries";
 import CommonTable from "../CommonTable";
 import ClosingRequest from "./ClosingRequest";
+import RequestFieldVisit from "../repayment/RequestFieldVisit";
 
 const CollectionDetails = () => {
     const [activeLeads, setActiveLeads] = useState();
@@ -97,12 +98,14 @@ const CollectionDetails = () => {
                 onPageChange={handlePageChange}
             />
 
-            {/* <ClosingRequest disburse={collectionData?.disbursal} /> */}
+            
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>
                     {error?.data?.message}
                 </Alert>
             )}
+
+            <RequestFieldVisit />
         </>
     );
 };

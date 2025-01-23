@@ -274,7 +274,6 @@ const InternalDedupe = ({ id }) => {
             display:"flex",
             flexDirection:"column",
             justifyContent:"center",
-            maxWidth: '700px',
             background: colors.white[100],
             borderRadius: '25px',
             border: '0px',

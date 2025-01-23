@@ -299,6 +299,10 @@ const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanV
     });
   };
 
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
 
   const handleEmailVerification = () => {
     getEmailOtp(id)
