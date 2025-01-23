@@ -48,7 +48,7 @@ import Disbursed from "./Component/disbursal/Disbursed";
 import DisbursalHold from "./Component/disbursal/DisbursalHold";
 import RejectedDisbursal from "./Component/disbursal/RejectedDisbursal";
 import RecommendedApplications from "./Component/applications/RecommendedApplications";
-import RepaymentForm from "./Component/repayment/RepaymentForm";
+import RepaymentForm from "./Component/repayment/RepaymentDetails";
 import ActiveLeads from "./Component/collection/ActiveLeads";
 import PendingVerification from "./Component/accounts/PendingVerification";
 import CloseLeads from "./Component/accounts/CloseLeads";

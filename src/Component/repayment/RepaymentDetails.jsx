@@ -1,8 +1,30 @@
 import React, { useState } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails,Paper,Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, TextField, Box, MenuItem, Select, useTheme } from '@mui/material';
+import { 
+  Accordion, 
+  AccordionSummary, 
+  AccordionDetails,
+  Paper,
+  Button, 
+  Typography, 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableContainer, 
+  TableHead, 
+  TableRow, 
+  Checkbox, 
+  TextField, 
+  Box, 
+  MenuItem, 
+  Select,
+  FormControl,
+  InputLabel,
+  OutlinedInput, 
+  useTheme } from '@mui/material';
 import { tokens } from '../../theme';
 import useAuthStore from '../store/authStore';
 import { styled } from '@mui/system';
+import { Controller, useForm } from 'react-hook-form';
 import LoanInfo from '../collection/loanInfo';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CommonTable from '../CommonTable';
@@ -17,9 +39,22 @@ const RepaymentDetails = (disburse) => {
     blacklist: false, // State for the "Add to Blacklist" checkbox
   });
 
+  const defaultValue = {
+    paymentReceived: '',
+    referenceNumber: '',
+    paymentMode: '',
+    repaymentType: '',
+    paymentDiscount: '',
+    refund: '',
+}
+
   const [repaymentStatus, setRepaymentStatus] = useState('');
   const [remarks, setRemarks] = useState('');
   const [blacklistReason, setBlacklistReason] = useState('Select a Reason');
+
+  const { control,watch,getValues, setValue, } = useForm({
+    defaultValues: defaultValue
+  })
 
   // Color theme
   const theme = useTheme();
@@ -93,12 +128,15 @@ const RepaymentDetails = (disburse) => {
 
   return (
     <>
-      <LoanInfo disburse={disburse} />
+      {/* Loan Information */}
+      <LoanInfo disburse={disburse?.sanction?.application} />
 
-      <Paper elevation={3} sx={{margin:"30px auto", maxWidth:"800px", padding:"20px", background:colors.white[100], borderRadius:"0px 20px"}}>
+      {/* Payable and Outstanding Amount Information */}
+      <Paper elevation={3} sx={{margin:"20px auto", maxWidth:"800px", padding:"10px 20px", background:colors.white[100], borderRadius:"0px 20px"}}>
         <Box sx={{width:"100%",margin:"20px 0px"}}>
           {(activeRole === "collectionExecutive" && 
             <>
+              <Typography variant="h4" sx={{color:colors.primary[400], textAlign:"center", paddingBottom:"20px",}}>Oustanding Loan Amount</Typography>
               <Box 
                 sx={{
                   display:'flex', 
@@ -124,7 +162,7 @@ const RepaymentDetails = (disburse) => {
                       <TableRow>
                           <TableCell></TableCell>
                           <TableCell>Payable Amount</TableCell>
-                          <TableCell>Recieved Amount</TableCell>
+                          <TableCell>Received Amount</TableCell>
                           <TableCell>Discount Amount</TableCell>
                           <TableCell>Outstanding Amount</TableCell>
                       </TableRow>
@@ -173,6 +211,7 @@ const RepaymentDetails = (disburse) => {
         </Box>
       </Paper>
 
+      {/* Add to Blacklist */}
       <Paper elevation={3} 
         sx={{
           display:"flex",
@@ -260,52 +299,263 @@ const RepaymentDetails = (disburse) => {
           )}
       </Paper>
 
-      {/* <Paper elevation={3} sx={{maxWidth:"800px",margin:"20px auto", borderRadius:"0px 20px", background:colors.white[100]}}> */}
-          <Accordion 
-            sx={{
-              display:"flex",
-              flexDirection:"column",
-              justifyContent:"center",
-              maxWidth: '800px',
-              background: colors.white[100],
-              borderRadius: '0px 20px',
-              border: '0px',
-              margin: '0px auto',
-              marginTop: '20px',
-              background:'transparent',
-              '&.Mui-expanded': {
-                  margin: '20px auto',
-                  display: 'flex',
-                  justifyContent: 'center',
-              },
-              '& .MuiPaper-root-MuiAccordion-root:last-of-type':{
-                borderBottomLeftRadius:"20px",
-              }
-          }}
+      {/* Recovery History */}
+      <Accordion 
+        sx={{
+          display:"flex",
+          flexDirection:"column",
+          justifyContent:"center",
+          maxWidth: '800px',
+          background: colors.white[100],
+          borderRadius: '0px 20px',
+          border: '0px',
+          margin: '0px auto',
+          marginTop: '20px',
+          boxShadow:'0px 0px 10px rgb(0,0,0,0.2)',
+          '&.Mui-expanded': {
+              margin: '20px auto',
+              display: 'flex',
+              justifyContent: 'center',
+          },
+          '&.MuiAccordion-root:last-of-type':{
+            borderBottomLeftRadius:"20px",
+          }
+      }}
+      >
+        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{color:colors.primary[400]}}/>}>
+          <Typography variant="h6" style={{ color: colors.primary[400] }}>Recovery History</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+        <Box 
+            sx={{ 
+              background:colors.white[100],
+              color:colors.primary[400], 
+              margin:"0 auto",
+              borderRadius: "0px 20px",
+              boxShadow:"0px 0px 10px rgb(0,0,0,0.2)",
+            }}
           >
-            <AccordionSummary expandIcon={<ExpandMoreIcon sx={{color:colors.black[100]}}/>}>
-              <Typography variant="h6" style={{ color: colors.black[100] }}>Recovery History</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-            <Box 
-                sx={{ 
-                  background:colors.white[100],
-                  color:colors.primary[400], 
-                  margin:"0 auto",
-                  borderRadius: "0px 20px",
-                  boxShadow:"0px 0px 10px rgb(0,0,0,0.2)",
+            <CommonTable
+              columns={columns}
+              // rows={rows}
+              // paginationModel={paginationModel}
+              // onPageChange={handlePageChange}
+            />
+          </Box>
+        </AccordionDetails>
+      </Accordion>
+
+      {/* New Payment Recieved */}
+      <Accordion 
+        sx={{
+          display:"flex",
+          flexDirection:"column",
+          justifyContent:"center",
+          maxWidth: '800px',
+          background: colors.white[100],
+          borderRadius: '0px 20px',
+          border: '0px',
+          margin: '0px auto',
+          marginTop: '20px',
+          boxShadow:'0px 0px 10px rgb(0,0,0,0.2)',
+          '&.Mui-expanded': {
+              margin: '20px auto',
+              display: 'flex',
+              justifyContent: 'center',
+          },
+          '&.MuiAccordion-root:last-of-type':{
+            borderBottomLeftRadius:"20px",
+          }
+      }}
+      >
+        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{color:colors.primary[400]}}/>}>
+          <Typography variant="h6" style={{ color: colors.primary[400] }}>New Payment Received</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+        <Box 
+            sx={{ 
+              background:colors.white[100],
+              color:colors.primary[400], 
+              margin:"0 auto",
+              borderRadius: "0px 20px",
+              boxShadow:"0px 0px 10px rgb(0,0,0,0.2)",
+            }}
+          >
+            <Paper sx={{borderRadius:"20px"}}>
+              <Box
+                component="form"
+                noValidate
+                // onSubmit={handleSubmit(onSubmit)}
+                sx={{
+                    background: colors.white[100],
+                    color:colors.black[100],
+                    padding: '30px',
+                    borderRadius: '0px 20px',
+                    boxShadow: '0 0px 18px rgba(0,0,0,0.1)',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '20px',
+                    '& .MuiTextField-root':{
+                        color:colors.black[100],
+                    },
+                    '& .MuiInputLabel-root':{
+                        color:colors.black[100],
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: colors.primary[400],
+                    },
+                    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: colors.primary[400],
+                    },
+                    '& .MuiSelect-icon': {
+                        color: colors.black[100],
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: colors.primary[400],
+                    },
+                    '& .MuiInputBase-root': {
+                        color:colors.black[100],
+                    },
                 }}
               >
-                <CommonTable
-                  columns={columns}
-                  // rows={rows}
-                  // paginationModel={paginationModel}
-                  // onPageChange={handlePageChange}
-                />
+                <Box sx={{ flex: '1 1 45%' }}>
+                  <Controller
+                    name="paymentReceived"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        {...field}
+                        required
+                        fullWidth
+                        inputProps={{
+                          type: 'text',
+                          pattern: '[0-9]*',
+                          inputMode: 'numeric',
+                        }}
+                        label="Payment Recieved"
+                        variant="outlined"
+                        error={!!fieldState.error}
+                        helperText={fieldState.error ? fieldState.error.message : ''}
+                      />
+                    )}
+                  />
+                </Box>
+
+                <Box sx={{ flex: '1 1 45%' }}>
+                  <Controller
+                    name="referenceNumber"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        {...field}
+                        required
+                        fullWidth
+                        label="Reference No."
+                        variant="outlined"
+                        error={!!fieldState.error}
+                        helperText={fieldState.error ? fieldState.error.message : ''}
+                      />
+                    )}
+                  />
+                </Box>
+
+                <Box sx={{ flex: '1 1 45%' }}>
+                  <Controller
+                    name="paymentMode"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <FormControl variant="outlined" fullWidth required error={!!fieldState.error}>
+                        <InputLabel htmlFor="payment-select">Payment Mode</InputLabel>
+                        <Select
+                            {...field}
+                            input={<OutlinedInput label="Payment Mode" id="payment-select" />}
+                        >
+                            <MenuItem value="" disable>Select</MenuItem>
+                            <MenuItem value="upi">UPI</MenuItem>
+                            <MenuItem value="cash">Cash</MenuItem>
+                        </Select>
+                        {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
+                    </FormControl>
+                    )}
+                  />
+                </Box>
+
+                <Box sx={{ flex: '1 1 45%' }}>
+                  <Controller
+                    name="repaymentType"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <FormControl variant="outlined" fullWidth required error={!!fieldState.error}>
+                        <InputLabel htmlFor="repayment-type">Repayment Type</InputLabel>
+                        <Select
+                            {...field}
+                            input={<OutlinedInput label="Repayment Type" id="repayment-type" />}
+                        >
+                            <MenuItem value="">Select</MenuItem>
+                            <MenuItem value="repaymentClosed">Closed</MenuItem>
+                            <MenuItem value="repaymentSettled">Settled</MenuItem>
+                            <MenuItem value="repaymentWriteOff">WriteOff</MenuItem>
+                            <MenuItem value="repaymentPartPayment">Part-Payment</MenuItem>
+                        </Select>
+                        {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
+                      </FormControl>  
+                    )}
+                  />
+                </Box>
+
+                <Box sx={{ flex: '1 1 45%' }}>
+                  <Controller
+                    name="payment Discount"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        {...field}
+                        required
+                        fullWidth
+                        label="Discount"
+                        variant="outlined"
+                        error={!!fieldState.error}
+                        helperText={fieldState.error ? fieldState.error.message : ''}
+                      />
+                    )}
+                  />
+                </Box>
+
+                <Box sx={{ flex: '1 1 45%' }}>
+                  <Controller
+                    name="refund"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        {...field}
+                        required
+                        fullWidth
+                        label="Excess/Refund"
+                        variant="outlined"
+                        error={!!fieldState.error}
+                        helperText={fieldState.error ? fieldState.error.message : ''}
+                      />
+                    )}
+                  />
+                </Box>
+
+                <Button 
+                    type="submit" 
+                    variant="contained" 
+                    sx={{ 
+                        mt: 3, 
+                        background:colors.primary[400], 
+                        color: colors.white[100],
+                        borderRadius:"0px 10px",
+                        ":hover": { background: colors.primary[100] }
+                    }}>
+                    Upload Payment
+                </Button>
               </Box>
-            </AccordionDetails>
-          </Accordion>
-      {/* </Paper> */}
+            </Paper>
+          </Box>
+        </AccordionDetails>
+      </Accordion>
     </>
   );
 };
