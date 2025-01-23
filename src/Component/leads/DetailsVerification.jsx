@@ -91,17 +91,20 @@ const VerifyContactDetails = ({
 
     useEffect(() => {
         if (panRes?.isSuccess && panRes?.data && !panRes?.isFetching) {
+            console.log("data: ", panRes?.data);
             if (panRes?.data.success === false) {
                 Swal.fire({
                     text: panRes?.data.message,
                     icon: "error",
                 });
+                navigate("/lead-process");
             } else {
                 setPanModal(true);
             }
         }
     }, [panRes?.data, panRes?.isSuccess, panRes?.isFetching]);
 
+    console.log(panModal);
     useEffect(() => {
         if (emailOtpSuccess) {
             setOtp(true);
@@ -132,6 +135,8 @@ const VerifyContactDetails = ({
         isAadhaarDetailsFetching,
     ]);
 
+    console.log("isAadhaar details", isAadhaarDetailsFetching);
+
     return (
         <>
             {openAadhaarCompare && (
@@ -139,6 +144,7 @@ const VerifyContactDetails = ({
                     open={openAadhaarCompare}
                     setOpen={setOpenAadhaarCompare}
                     aadhaarDetails={aadhaarData}
+                    isAadhaarVerified={isAadhaarVerified}
                 />
             )}
             {/* {otp && <EmailVerification open={otp} setOpen={setOtp} />} */}
@@ -147,6 +153,7 @@ const VerifyContactDetails = ({
                     open={panModal}
                     setOpen={setPanModal}
                     panDetails={panRes?.data?.data}
+                    isPanVerified={isPanVerified}
                 />
             )}
             <Box sx={{ maxWidth: 700, margin: "0 auto", mt: 4 }}>
@@ -253,95 +260,138 @@ const VerifyContactDetails = ({
                                 </Typography>
 
                                 {activeRole === "screener" &&
-                                    !isAadhaarVerified && (
-                                        <>
-                                            {isAadhaarDetailsSaved ? (
-                                                <Button
-                                                    // variant="contained"
-                                                    onClick={
-                                                        handleAadhaarVerification
-                                                    }
-                                                    sx={{
+                                !isAadhaarVerified ? (
+                                    <>
+                                        {isAadhaarDetailsSaved ? (
+                                            <Button
+                                                // variant="contained"
+                                                onClick={
+                                                    handleAadhaarVerification
+                                                }
+                                                sx={{
+                                                    backgroundColor:
+                                                        isAadhaarDetailsFetching ||
+                                                        aadhaarDetailsLoading
+                                                            ? "#ccc"
+                                                            : "#1F2A40",
+                                                    color:
+                                                        isAadhaarDetailsFetching ||
+                                                        aadhaarDetailsLoading
+                                                            ? "#666"
+                                                            : "white",
+                                                    cursor:
+                                                        isAadhaarDetailsFetching ||
+                                                        aadhaarDetailsLoading
+                                                            ? "not-allowed"
+                                                            : "pointer",
+                                                    "&:hover": {
                                                         backgroundColor:
                                                             isAadhaarDetailsFetching ||
                                                             aadhaarDetailsLoading
                                                                 ? "#ccc"
-                                                                : "#1F2A40",
-                                                        color:
-                                                            isAadhaarDetailsFetching ||
-                                                            aadhaarDetailsLoading
-                                                                ? "#666"
-                                                                : "white",
-                                                        cursor:
-                                                            isAadhaarDetailsFetching ||
-                                                            aadhaarDetailsLoading
-                                                                ? "not-allowed"
-                                                                : "pointer",
-                                                        "&:hover": {
-                                                            backgroundColor:
-                                                                isAadhaarDetailsFetching ||
-                                                                aadhaarDetailsLoading
-                                                                    ? "#ccc"
-                                                                    : "#3F4E64",
-                                                        },
-                                                    }}
-                                                    disabled={isAadhaarVerified}
-                                                >
-                                                    {isAadhaarDetailsFetching ||
-                                                    aadhaarDetailsLoading ? (
-                                                        <CircularProgress
-                                                            size={20}
-                                                            color="inherit"
-                                                        />
-                                                    ) : (
-                                                        `Verify Aadhaar`
-                                                    )}
-                                                </Button>
-                                            ) : (
-                                                <Button
-                                                    // variant="contained"
-                                                    onClick={
-                                                        handleSendAadhaarLink
-                                                    }
-                                                    sx={{
+                                                                : "#3F4E64",
+                                                    },
+                                                }}
+                                                disabled={isAadhaarVerified}
+                                            >
+                                                {isAadhaarDetailsFetching ||
+                                                aadhaarDetailsLoading ? (
+                                                    <CircularProgress
+                                                        size={20}
+                                                        color="inherit"
+                                                    />
+                                                ) : (
+                                                    `Verify Aadhaar`
+                                                )}
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                // variant="contained"
+                                                onClick={
+                                                    handleAadhaarVerification
+                                                }
+                                                sx={{
+                                                    backgroundColor:
+                                                        isAadhaarDetailsFetching ||
+                                                        aadhaarDetailsLoading
+                                                            ? "#ccc"
+                                                            : "#1F2A40",
+                                                    color:
+                                                        isAadhaarDetailsFetching ||
+                                                        aadhaarDetailsLoading
+                                                            ? "#666"
+                                                            : "white",
+                                                    cursor:
+                                                        isAadhaarDetailsFetching ||
+                                                        aadhaarDetailsLoading
+                                                            ? "not-allowed"
+                                                            : "pointer",
+                                                    "&:hover": {
                                                         backgroundColor:
-                                                            aadhaarRes.isLoading ||
-                                                            aadhaarRes?.isFetching
+                                                            isAadhaarDetailsFetching ||
+                                                            aadhaarDetailsLoading
                                                                 ? "#ccc"
-                                                                : "#1F2A40",
-                                                        color:
-                                                            aadhaarRes.isLoading ||
-                                                            aadhaarRes?.isFetching
-                                                                ? "#666"
-                                                                : "white",
-                                                        cursor:
-                                                            aadhaarRes.isLoading ||
-                                                            aadhaarRes?.isFetching
-                                                                ? "not-allowed"
-                                                                : "pointer",
-                                                        "&:hover": {
-                                                            backgroundColor:
-                                                                aadhaarRes.isLoading ||
-                                                                aadhaarRes?.isFetching
-                                                                    ? "#ccc"
-                                                                    : "#3F4E64",
-                                                        },
-                                                    }}
-                                                    disabled={isAadhaarVerified}
-                                                >
-                                                    {aadhaarRes.isLoading ||
-                                                    aadhaarRes?.isFetching ? (
-                                                        <CircularProgress
-                                                            size={20}
-                                                            color="inherit"
-                                                        />
-                                                    ) : (
-                                                        `Send Link`
-                                                    )}
-                                                </Button>
-                                            )}
-                                        </>
-                                    )}
+                                                                : "#3F4E64",
+                                                    },
+                                                }}
+                                                disabled={isAadhaarVerified}
+                                            >
+                                                {isAadhaarDetailsFetching ||
+                                                aadhaarDetailsLoading ? (
+                                                    <CircularProgress
+                                                        size={20}
+                                                        color="inherit"
+                                                    />
+                                                ) : (
+                                                    `Aadhaar Details`
+                                                )}
+                                            </Button>
+                                        )}
+                                    </>
+                                ) : (
+                                    <Button
+                                        // variant="contained"
+                                        onClick={handleAadhaarVerification}
+                                        sx={{
+                                            backgroundColor:
+                                                isAadhaarDetailsFetching ||
+                                                aadhaarDetailsLoading
+                                                    ? "#ccc"
+                                                    : "#1F2A40",
+                                            color:
+                                                isAadhaarDetailsFetching ||
+                                                aadhaarDetailsLoading
+                                                    ? "#666"
+                                                    : "white",
+                                            cursor:
+                                                isAadhaarDetailsFetching ||
+                                                aadhaarDetailsLoading
+                                                    ? "not-allowed"
+                                                    : "pointer",
+                                            "&:hover": {
+                                                backgroundColor:
+                                                    isAadhaarDetailsFetching ||
+                                                    aadhaarDetailsLoading
+                                                        ? "#ccc"
+                                                        : "#3F4E64",
+                                            },
+                                        }}
+                                        disabled={
+                                            isAadhaarDetailsFetching ||
+                                            aadhaarDetailsLoading
+                                        }
+                                    >
+                                        {isAadhaarDetailsFetching ||
+                                        aadhaarDetailsLoading ? (
+                                            <CircularProgress
+                                                size={20}
+                                                color="inherit"
+                                            />
+                                        ) : (
+                                            `Aadhaar Details`
+                                        )}
+                                    </Button>
+                                )}
                             </Box>
 
                             {/* Pan Verification Section */}
@@ -371,52 +421,90 @@ const VerifyContactDetails = ({
                                     </span>
                                 </Typography>
 
-                                {activeRole === "screener" &&
-                                    !isPanVerified && (
-                                        <Button
-                                            // variant="contained"
-                                            onClick={handlePanVerification}
-                                            sx={{
+                                {activeRole === "screener" && !isPanVerified ? (
+                                    <Button
+                                        // variant="contained"
+                                        onClick={handlePanVerification}
+                                        sx={{
+                                            backgroundColor:
+                                                panRes?.isLoading ||
+                                                panRes?.isFetching
+                                                    ? "#ccc"
+                                                    : "#1F2A40",
+                                            color:
+                                                panRes?.isLoading ||
+                                                panRes?.isFetching
+                                                    ? "#666"
+                                                    : "white",
+                                            cursor:
+                                                panRes?.isLoading ||
+                                                panRes?.isFetching
+                                                    ? "not-allowed"
+                                                    : "pointer",
+                                            "&:hover": {
                                                 backgroundColor:
                                                     panRes?.isLoading ||
                                                     panRes?.isFetching
                                                         ? "#ccc"
-                                                        : "#1F2A40",
-                                                color:
+                                                        : "#3F4E64",
+                                            },
+                                        }}
+                                        disabled={isPanVerified}
+                                    >
+                                        {panRes?.isLoading ||
+                                        panRes?.isFetching ? (
+                                            <CircularProgress
+                                                size={20}
+                                                color="inherit"
+                                            />
+                                        ) : (
+                                            `Verify Pan`
+                                        )}
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        // variant="contained"
+                                        onClick={handlePanVerification}
+                                        sx={{
+                                            backgroundColor:
+                                                panRes?.isLoading ||
+                                                panRes?.isFetching
+                                                    ? "#ccc"
+                                                    : "#1F2A40",
+                                            color:
+                                                panRes?.isLoading ||
+                                                panRes?.isFetching
+                                                    ? "#666"
+                                                    : "white",
+                                            cursor:
+                                                panRes?.isLoading ||
+                                                panRes?.isFetching
+                                                    ? "not-allowed"
+                                                    : "pointer",
+                                            "&:hover": {
+                                                backgroundColor:
                                                     panRes?.isLoading ||
                                                     panRes?.isFetching
-                                                        ? "#666"
-                                                        : "white",
-                                                cursor:
-                                                    panRes?.isLoading ||
-                                                    panRes?.isFetching
-                                                        ? "not-allowed"
-                                                        : "pointer",
-                                                "&:hover": {
-                                                    backgroundColor:
-                                                        panRes?.isLoading ||
-                                                        panRes?.isFetching
-                                                            ? "#ccc"
-                                                            : "#3F4E64",
-                                                },
-                                            }}
-                                            disabled={isPanVerified}
-                                        >
-                                            {panRes?.isLoading ||
-                                            panRes?.isFetching ? (
-                                                <CircularProgress
-                                                    size={20}
-                                                    color="inherit"
-                                                />
-                                            ) : (
-                                                `Verify Pan`
-                                            )}
-                                        </Button>
-                                    )}
+                                                        ? "#ccc"
+                                                        : "#3F4E64",
+                                            },
+                                        }}
+                                    >
+                                        {panRes?.isLoading ||
+                                        panRes?.isFetching ? (
+                                            <CircularProgress
+                                                size={20}
+                                                color="inherit"
+                                            />
+                                        ) : (
+                                            `PAN Details`
+                                        )}
+                                    </Button>
+                                )}
                             </Box>
                             {/* E-Sign Verification */}
-                            {(activeRole !== "screener" ||
-                                activeRole !== "creditManager") && (
+                            {activeRole === "screener" ||
+                            activeRole === "creditManager" ? null : (
                                 <Box
                                     sx={{
                                         display: "flex",
