@@ -18,7 +18,7 @@ import DisburseInfo from '../disbursal/DisburseLoan';
 import ClosingRequest from './ClosingRequest';
 import Payment from '../accounts/Payment';
 import CollectionDetails from './CollectionDetails';
-import RepaymentForm from '../repayment/RepaymentForm';
+import RepaymentDetails from '../repayment/RepaymentDetails';
 
 const CollectionProfile = () => {
     const { id } = useParams();
@@ -114,7 +114,7 @@ const CollectionProfile = () => {
                         {currentPage === "cam" && <Cam id={application?._id} />}
                         {currentPage === "disbursal" && <DisburseInfo disburse={collectionData?.disbursal?.sanction} />}
                         {currentPage === "collection" && <CollectionDetails disburse={collectionData?.disbursal?.sanction} />}
-                        {currentPage === "repayment" && <RepaymentForm disburse={collectionData?.disbursal} />}
+                        {currentPage === "repayment" && <RepaymentDetails disburse={collectionData?.disbursal} />}
                         {/* {currentPage === "repayment" && <ClosingRequest disburse={collectionData?.disbursal} />} */}
                         {currentPage === "accounts" && (
                             <>
