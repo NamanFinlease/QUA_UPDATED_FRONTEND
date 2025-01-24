@@ -307,9 +307,7 @@ const VerifyContactDetails = ({
                                         ) : (
                                             <Button
                                                 // variant="contained"
-                                                onClick={
-                                                    handleAadhaarVerification
-                                                }
+                                                onClick={handleSendAadhaarLink}
                                                 sx={{
                                                     backgroundColor:
                                                         isAadhaarDetailsFetching ||
@@ -343,7 +341,7 @@ const VerifyContactDetails = ({
                                                         color="inherit"
                                                     />
                                                 ) : (
-                                                    `Aadhaar Details`
+                                                    `Send Link`
                                                 )}
                                             </Button>
                                         )}
