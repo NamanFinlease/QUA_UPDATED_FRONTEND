@@ -7,6 +7,7 @@ import { useActiveLeadsQuery } from "../../Service/LMSQueries";
 import CommonTable from "../CommonTable";
 import ClosingRequest from "./ClosingRequest";
 import RequestFieldVisit from "../repayment/RequestFieldVisit";
+import OutstandingLoanAmount from "./OutstandingLoanAmount";
 
 const CollectionDetails = () => {
     const [activeLeads, setActiveLeads] = useState();
@@ -90,6 +91,7 @@ const CollectionDetails = () => {
 
     return (
         <>
+            <OutstandingLoanAmount />
             <CommonTable
                 columns={columns}
                 // rows={rows}
