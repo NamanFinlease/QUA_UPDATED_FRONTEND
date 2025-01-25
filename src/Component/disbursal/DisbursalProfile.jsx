@@ -93,6 +93,7 @@ const DisbursalProfile = () => {
                 isPanVerified={disbursalData?.sanction?.application?.lead?.isPanVerified}
                 isESignPending={disbursalData?.sanction?.eSignPending}
                 isESigned={disbursalData?.sanction?.eSigned}
+                leadId={disbursalData?.sanction?.application?.lead?._id}
               />
             }
             {currentPage === "documents" &&

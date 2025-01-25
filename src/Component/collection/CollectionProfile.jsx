@@ -103,6 +103,7 @@ const CollectionProfile = () => {
                                 isPanVerified={lead?.isPanVerified}
                                 isESignPending={collectionData?.disbursal?.sanction?.eSignPending}
                                 isESigned={collectionData?.disbursal?.sanction?.eSigned}
+                                leadId={lead?._id}
                             />
                         }
                         {currentPage === "documents" && lead &&

@@ -22,7 +22,7 @@ const barButtonOptions = ['Application', 'Documents', 'Personal', 'Banking', 'Ve
 const ApplicationProfile = () => {
   const { id } = useParams();
   const { empInfo, activeRole } = useAuthStore()
-  const { setApplicationProfile } = useStore();
+  const { setApplicationProfile,setLead } = useStore();
   const navigate = useNavigate();
   const [uploadedDocs, setUploadedDocs] = useState([]);
   const [currentPage, setCurrentPage] = useState("application");
@@ -37,6 +37,7 @@ const ApplicationProfile = () => {
   useEffect(() => {
     if (applicationSuccess) {
       setApplicationProfile(applicationData);
+      setLead(applicationData?.lead)
     }
     if (applicationSuccess && applicationData?.lead?.document?.length) {
       setUploadedDocs(applicationData?.lead?.document.map(doc => doc.type));
@@ -108,6 +109,7 @@ const ApplicationProfile = () => {
                     isAadhaarVerified={applicationData?.lead?.isAadhaarVerified}
                     isAadhaarDetailsSaved={applicationData?.lead?.isAadhaarDetailsSaved}
                     isPanVerified={applicationData?.lead?.isPanVerified}
+                    leadId={applicationData?.lead?._id}
                   />
                 }
                 {currentPage === "documents" &&

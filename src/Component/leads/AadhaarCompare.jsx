@@ -21,14 +21,16 @@ import useStore from "../../Store";
 import { useVerifyAadhaarMutation } from "../../Service/Query";
 import { useNavigate } from "react-router-dom";
 import { compareDates, formatDate } from "../../utils/helper";
+import useAuthStore from "../store/authStore";
 
 const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
   const navigate = useNavigate()
+  const {activeRole} = useAuthStore()
   const { lead } = useStore();
   const [verifyAadhaar, { data, isSuccess, isError, error }] = useVerifyAadhaarMutation()
 
   // Handle close modal
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {setOpen(false);console.log('handle close') };
 
 
   // Utility function to compare values and return "Matched" or "Unmatched"
@@ -69,6 +71,8 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
 
   // Fields to be compared
   const getComparisonFields = (lead, aadhaarDetails) => {
+
+    console.log('aadhaar detail',aadhaarDetails)
     const { house, po, dist, state, country, street, pc } = aadhaarDetails?.address
 
     const formatAddress = (...parts) => parts.filter(Boolean).join(", "); // Join only non-empty values with commas
@@ -85,85 +89,15 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
     return comparisonFields
   }
 
+  console.log('lead',lead,open)
+
   // Function to render table rows dynamically
   useEffect(() => {
-    if (isSuccess)
-      setOpen(false)
-    navigate(`/lead-profile/${lead._id}`)
+    console.log('useEffect',isSuccess)
+    if (isSuccess) setOpen(false)
+    // navigate(`/lead-profile/${lead._id}`)
   }, [isSuccess])
 
-
-  const renderRow = ({ label, leadValue, aadhaarValue }) => {
-    const result = compareValues(label, leadValue, aadhaarValue);
-    const textColor = getTextColor(result);
-
-
-    return (
-
-      <TableRow
-        key={label}
-        sx={{
-          "&:nth-of-type(odd)": {
-            backgroundColor: "#f5f5f5",
-          },
-        }}
-      >
-        <TableCell
-          sx={{
-            padding: "16px 24px",
-            fontSize: 14,
-            textAlign: "center",
-            color: "#424242",
-            fontWeight: "500",
-          }}
-        >
-          {label}:
-        </TableCell>
-        <TableCell
-          sx={{
-            padding: "16px 24px",
-            fontSize: 14,
-            textAlign: "center",
-            color: "#424242",
-          }}
-        >
-          {leadValue}
-        </TableCell>
-        <TableCell
-          sx={{
-            padding: "16px 24px",
-            fontSize: 14,
-            textAlign: "center",
-            color: "#424242",
-          }}
-        >
-          {aadhaarValue}
-        </TableCell>
-        <TableCell
-          sx={{
-            color: textColor,
-            fontWeight: "bold",
-            textAlign: "center",
-            fontSize: 14,
-            padding: "16px 24px",
-          }}
-        >
-          {result === "Matched" ? (
-            <>
-              <CheckCircleOutlineIcon fontSize="small" sx={{ mr: 1, color: "#00796b" }} />
-              Matched
-            </>
-          ) : (
-            <>
-              <HighlightOffIcon fontSize="small" sx={{ mr: 1 }} />
-              Unmatched
-            </>
-          )}
-        </TableCell>
-
-      </TableRow>
-    );
-  };
 
   return (
     <Dialog open={open} maxWidth="md" fullWidth>
@@ -324,7 +258,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
         >
           Close
         </Button>
-        <Button
+        {activeRole === "screener" && <Button
           onClick={handleSubmit}
           variant="contained"
           color="primary"
@@ -336,7 +270,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
           }}
         >
           Verify
-        </Button>
+        </Button>}
       </DialogActions>
     </Dialog>
   );

@@ -273,7 +273,7 @@ import PanCompare from './PanCompare';
 import useAuthStore from '../store/authStore';
 import AadhaarCompare from './AadhaarCompare';
 
-const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerified, isESignPending, isESigned }) => {
+const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerified, isESignPending, isESigned, leadId }) => {
   const { id } = useParams()
   const { activeRole } = useAuthStore()
   const navigate = useNavigate()
@@ -315,7 +315,8 @@ const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanV
   };
 
   const handleAadhaarVerification = () => {
-    checkDetails(id);
+    console.log('handle verification')
+    checkDetails(leadId);
   };
 
   // Effects
@@ -325,11 +326,11 @@ const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanV
     }
   }, [panRes?.data, panRes?.isSuccess, panRes?.isFetching]);
 
-  useEffect(() => {
-    if (emailOtpSuccess) {
-      setOtp(true);
-    }
-  }, [emailOtpSuccess]);
+  // useEffect(() => {
+  //   if (emailOtpSuccess) {
+  //     setOtp(true);
+  //   }
+  // }, [emailOtpSuccess]);
 
   useEffect(() => {
     if (aadhaarRes?.isSuccess && aadhaarRes && !aadhaarRes?.isFetching) {
@@ -343,7 +344,7 @@ const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanV
       setOpenAadhaarCompare(true);
       setAadhaarData(aadhaarDetails?.data?.details);
     }
-  }, [aadhaarRes, aadhaarDetails, aadhaarDetailsSuccess, isAadhaarDetailsFetching, navigate]);
+  }, [aadhaarRes, aadhaarDetails, aadhaarDetailsSuccess, isAadhaarDetailsFetching]);
 
   console.log('Is aadhaar verified', isAadhaarVerified)
   // Table Data
@@ -395,6 +396,8 @@ const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanV
       ),
     },
   ];
+
+  console.log('open aadhaar',openAadhaarCompare)
 
   return (
     <Box
@@ -451,7 +454,8 @@ const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanV
       </TableContainer>
 
       {panModal && <PanCompare open={panModal} setOpen={setPanModal} />}
-      {openAadhaarCompare && <AadhaarCompare open={openAadhaarCompare} setOpen={setOpenAadhaarCompare} aadhaarData={aadhaarData} />}
+      {openAadhaarCompare && <AadhaarCompare open={openAadhaarCompare} setOpen={setOpenAadhaarCompare} aadhaarDetails={aadhaarData} />}
+      
     </Box>
   );
 };

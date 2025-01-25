@@ -148,6 +148,7 @@ const SanctionProfile = () => {
                     isPanVerified={data?.application?.lead?.isPanVerified}
                     isESignPending={data?.eSignPending}
                     isESigned={data?.eSigned}
+                    leadId={data?.application?.lead?._id}
                   />
                 }
 
