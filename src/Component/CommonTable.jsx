@@ -147,7 +147,7 @@ const CommonTable = ({
             borderBottomLeftRadius:"30px",
             boxShadow:"0px 0px 20px rgb(0,0,0,0.3)",
             color: colors.primary[400], // Default text color for rows
-            '& .MuiDataGrid-columnHeaders .css-yseucu-MuiDataGrid-columnHeaderRow': {
+            '& .MuiDataGrid-columnHeaders ': {
               background: colors.primary[100], // Optional: Header background color
               color: colors.white[100], // White text for the headers
             },

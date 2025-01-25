@@ -14,7 +14,7 @@ import VerifyContactDetails from "../leads/DetailsVerification";
 import UploadDocuments from "../UploadDocuments";
 import Cam from "../applications/Cam";
 import DisburseInfo from "../disbursal/DisburseLoan";
-import Payment from './Payment';
+// import Payment from './Payment';
 import ClosingRequest from "../collection/ClosingRequest";
 
 const barButtonOptions = [
@@ -127,7 +127,7 @@ function PaymentVerification() {
 
                     </>
                 )}
-                {currentPage === "accounts" && (
+                {/* {currentPage === "accounts" && (
                     <>
                         {collectionData ? (
                             <Payment
@@ -144,7 +144,7 @@ function PaymentVerification() {
                             </Alert>
                         )}
                     </>
-                )}
+                )} */}
 
                 {isError && (
                     <Alert severity="error" style={{ marginTop: "10px" }}>

@@ -31,8 +31,7 @@ const LoanInfo = ({ disburse }) => {
         lead: { fName, mName, lName } = {} 
       } = {} 
     } = {} 
-  } = applicationProfile?.disbursal || {};
-
+  } = applicationProfile || {};
 
   const handleCancel = () => {
     // Reset all states to go back to initial state

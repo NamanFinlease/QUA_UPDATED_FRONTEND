@@ -15,7 +15,7 @@ import { useDisburseLoanMutation } from '../../Service/applicationQueries';
 import { disburseSchema } from '../../utils/validations';
 import useStore from '../../Store';
 import { useUpdateCollectionMutation } from '../../Service/LMSQueries';
-import RepaymentForm from './RepaymentForm';
+import RepaymentDetails from '../repayment/RepaymentDetails';
 
 const ClosingRequest = ({ disburse }) => {
   const { id } = useParams()
@@ -119,7 +119,7 @@ const ClosingRequest = ({ disburse }) => {
             {/* Form that appears when the header is clicked */}
             {showForm &&
               (
-                <RepaymentForm disburse={disburse} />
+                <RepaymentDetails disburse={disburse} />
               )}
             {/* Submit button */}
 

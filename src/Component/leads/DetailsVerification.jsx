@@ -273,7 +273,7 @@ import PanCompare from './PanCompare';
 import useAuthStore from '../store/authStore';
 import AadhaarCompare from './AadhaarCompare';
 
-const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerified,isESignPending,isESigned }) => {
+const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerified, isESignPending, isESigned }) => {
   const { id } = useParams()
   const { activeRole } = useAuthStore()
   const navigate = useNavigate()
@@ -345,6 +345,7 @@ const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanV
     }
   }, [aadhaarRes, aadhaarDetails, aadhaarDetailsSuccess, isAadhaarDetailsFetching, navigate]);
 
+  console.log('Is aadhaar verified', isAadhaarVerified)
   // Table Data
   const verificationData = [
     {
@@ -353,20 +354,20 @@ const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanV
       action: (
         <Button
           variant="contained"
-          onClick={handleAadhaarVerification}
-          disabled={isAadhaarVerified}
+          onClick={!isAadhaarVerified ? handleSendAadhaarLink : handleAadhaarVerification}
+          disabled={isAadhaarDetailsFetching || aadhaarDetailsLoading || aadhaarRes?.isLoading || aadhaarRes?.isFetching}
           sx={{
-            background:colors.white[100],
+            background: colors.white[100],
             color: colors.primary[400],
             border: colors.primary[400],
-            borderRadius:"0px 10px 0px 10px",
+            borderRadius: "0px 10px 0px 10px",
             ":hover": {
               background: colors.primary[400],
               color: colors.white[100],
             }
           }}
         >
-          Verify Aadhaar
+          {isAadhaarVerified ? "Show Details" : isAadhaarDetailsSaved ? "Verify Aadhaar" : "Send Link"}
         </Button>
       ),
     },
@@ -379,10 +380,10 @@ const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanV
           onClick={handlePanVerification}
           disabled={isPanVerified}
           sx={{
-            background:colors.white[100],
+            background: colors.white[100],
             color: colors.primary[400],
             border: colors.primary[400],
-            borderRadius:"0px 10px 0px 10px",
+            borderRadius: "0px 10px 0px 10px",
             ":hover": {
               background: colors.primary[400],
               color: colors.white[100],
@@ -398,50 +399,50 @@ const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanV
   return (
     <Box
       sx={{
-        boxShadow:"0px 0px 5px 5px rgba(0,0,0,0.1)",
-        width:"80%",
-        borderRadius:"0px 20px 0px 20px",
-        padding:"20px",
-        margin:"0px auto",
+        boxShadow: "0px 0px 5px 5px rgba(0,0,0,0.1)",
+        width: "80%",
+        borderRadius: "0px 20px 0px 20px",
+        padding: "20px",
+        margin: "0px auto",
       }}
     >
-      <Typography 
+      <Typography
         variant="h3"
         sx={{
-          display:"flex",
-          justifyContent:"center",
-          padding:"20px 0px",
-          color:colors.primary[400]
+          display: "flex",
+          justifyContent: "center",
+          padding: "20px 0px",
+          color: colors.primary[400]
         }}
       >Verify Details
       </Typography>
-      <TableContainer 
-        component={Paper} 
+      <TableContainer
+        component={Paper}
         sx={{
-          display:"flex", 
-          justifyContent:"center", 
-          boxShadow:"0px 0px 20px rgba(0,0,0,0.2)",
-          borderRadius:"0px 20px 0px 20px",
-          background:colors.white[100],
-          '& .MuiTableCell-root':{
-            textAlign:"center",
-            borderBottom:`2px solid ${colors.primary[400]}`,
+          display: "flex",
+          justifyContent: "center",
+          boxShadow: "0px 0px 20px rgba(0,0,0,0.2)",
+          borderRadius: "0px 20px 0px 20px",
+          background: colors.white[100],
+          '& .MuiTableCell-root': {
+            textAlign: "center",
+            borderBottom: `2px solid ${colors.primary[400]}`,
           }
         }}
       >
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{color:colors.black[100]}}>Document Type</TableCell>
-              <TableCell sx={{color:colors.black[100]}}>Status</TableCell>
-              <TableCell sx={{color:colors.black[100]}}>Action</TableCell>
+              <TableCell sx={{ color: colors.black[100] }}>Document Type</TableCell>
+              <TableCell sx={{ color: colors.black[100] }}>Status</TableCell>
+              <TableCell sx={{ color: colors.black[100] }}>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {verificationData.map((row, index) => (
               <TableRow key={index}>
-                <TableCell sx={{color:colors.black[100]}}>{row.type}</TableCell>
-                <TableCell><Typography sx={{color : row.status == 'Verified' ? `green` : 'red'}}>{row.status}</Typography></TableCell>
+                <TableCell sx={{ color: colors.black[100] }}>{row.type}</TableCell>
+                <TableCell><Typography sx={{ color: row.status == 'Verified' ? `green` : 'red' }}>{row.status}</Typography></TableCell>
                 <TableCell>{row.action}</TableCell>
               </TableRow>
             ))}
