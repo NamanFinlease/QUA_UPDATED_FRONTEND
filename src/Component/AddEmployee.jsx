@@ -1,8 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { Box, TextField, Typography, Button, MenuItem, FormControl, InputLabel, Select, OutlinedInput } from '@mui/material';
-import { Controller, useForm } from 'react-hook-form';
-import { useAddEmployeeMutation } from '../Service/Query';
-import Swal from 'sweetalert2';
+import React, { useEffect, useState } from "react";
+import {
+    Box,
+    TextField,
+    Typography,
+    Button,
+    MenuItem,
+    FormControl,
+    InputLabel,
+    Select,
+    OutlinedInput,
+} from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
+import { useAddEmployeeMutation } from "../Service/Query";
+import Swal from "sweetalert2";
 
 const roleOptions = [
     { value: "screener", label: "Screener" },
@@ -11,51 +21,59 @@ const roleOptions = [
     { value: "disbursalManager", label: "Disbursal Manager" },
     { value: "disbursalHead", label: "Disbursal Head" },
     { value: "collectionExecutive", label: "Collection Executive" },
+    { value: "collectionHead", label: "Collection Head" },
     { value: "accountExecutive", label: "Account Executive" },
 ];
 
-
-
-
 const AddEmployee = () => {
-    const [addEmployee, { data, isSuccess, isError, error: addEmployeeError }] = useAddEmployeeMutation();
-    const [roles, setRoles] = useState(roleOptions)
-    const [selectedRoles, setSelectedRoles] = useState([])
+    const [addEmployee, { data, isSuccess, isError, error: addEmployeeError }] =
+        useAddEmployeeMutation();
+    const [roles, setRoles] = useState(roleOptions);
+    const [selectedRoles, setSelectedRoles] = useState([]);
     const defaultValue = {
-        fName: '',
-        lName: '',
-        email: '',
-        gender: '',
-        mobile: '',
-        password: '',
-        confPassword: '',
+        fName: "",
+        lName: "",
+        email: "",
+        gender: "",
+        mobile: "",
+        password: "",
+        confPassword: "",
         empRole: [],
-        empId: ''
-    }
-    const [error, setError] = useState('');
-    
-    const { handleSubmit, control,watch,getValues, setValue, } = useForm({
-        defaultValues: defaultValue
-    })
+        empId: "",
+    };
+    const [error, setError] = useState("");
 
+    const { handleSubmit, control, watch, getValues, setValue } = useForm({
+        defaultValues: defaultValue,
+    });
 
     const onSubmit = (data) => {
-        addEmployee(data)
-    }
+        addEmployee(data);
+    };
     useEffect(() => {
         if (isSuccess) {
             Swal.fire({
                 text: "Employee added successfully!",
-                icon: "success"
+                icon: "success",
             });
         }
-
     }, [isSuccess]);
 
     return (
         <>
-            <Box sx={{ padding: '40px', backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
-                <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
+            <Box
+                sx={{
+                    padding: "40px",
+                    backgroundColor: "#f4f6f8",
+                    minHeight: "100vh",
+                }}
+            >
+                <Typography
+                    variant="h4"
+                    align="center"
+                    gutterBottom
+                    sx={{ fontWeight: "bold", color: "#3f51b5" }}
+                >
                     Add Employee
                 </Typography>
 
@@ -64,16 +82,16 @@ const AddEmployee = () => {
                     noValidate
                     onSubmit={handleSubmit(onSubmit)}
                     sx={{
-                        backgroundColor: '#9c9b98',
-                        padding: '30px',
-                        borderRadius: '10px',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: '20px',
+                        backgroundColor: "#9c9b98",
+                        padding: "30px",
+                        borderRadius: "10px",
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: "20px",
                     }}
                 >
-                    <Box sx={{ flex: '1 1 45%' }}>
+                    <Box sx={{ flex: "1 1 45%" }}>
                         <Controller
                             name="fName"
                             control={control}
@@ -85,12 +103,16 @@ const AddEmployee = () => {
                                     label="First Name"
                                     variant="outlined"
                                     error={!!fieldState.error}
-                                    helperText={fieldState.error ? fieldState.error.message : ''}
+                                    helperText={
+                                        fieldState.error
+                                            ? fieldState.error.message
+                                            : ""
+                                    }
                                 />
                             )}
                         />
                     </Box>
-                    <Box sx={{ flex: '1 1 45%' }}>
+                    <Box sx={{ flex: "1 1 45%" }}>
                         <Controller
                             name="lName"
                             control={control}
@@ -101,33 +123,52 @@ const AddEmployee = () => {
                                     label="Last Name"
                                     variant="outlined"
                                     error={!!fieldState.error}
-                                    helperText={fieldState.error ? fieldState.error.message : ''}
+                                    helperText={
+                                        fieldState.error
+                                            ? fieldState.error.message
+                                            : ""
+                                    }
                                 />
                             )}
                         />
                     </Box>
 
-
-                    <Box sx={{ flex: '1 1 45%' }}>
+                    <Box sx={{ flex: "1 1 45%" }}>
                         <Controller
                             name="gender"
                             control={control}
                             render={({ field, fieldState }) => (
-                                <FormControl variant="outlined" fullWidth required error={!!fieldState.error}>
-                                    <InputLabel htmlFor="gender-select">Gender</InputLabel>
+                                <FormControl
+                                    variant="outlined"
+                                    fullWidth
+                                    required
+                                    error={!!fieldState.error}
+                                >
+                                    <InputLabel htmlFor="gender-select">
+                                        Gender
+                                    </InputLabel>
                                     <Select
                                         {...field}
-                                        input={<OutlinedInput label="Gender" id="gender-select" />}
+                                        input={
+                                            <OutlinedInput
+                                                label="Gender"
+                                                id="gender-select"
+                                            />
+                                        }
                                     >
                                         <MenuItem value="M">Male</MenuItem>
                                         <MenuItem value="F">Female</MenuItem>
                                     </Select>
-                                    {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
+                                    {fieldState.error && (
+                                        <Typography color="error">
+                                            {fieldState.error.message}
+                                        </Typography>
+                                    )}
                                 </FormControl>
                             )}
                         />
                     </Box>
-                    <Box sx={{ flex: '1 1 45%' }}>
+                    <Box sx={{ flex: "1 1 45%" }}>
                         <Controller
                             name="email"
                             control={control}
@@ -138,15 +179,19 @@ const AddEmployee = () => {
                                     fullWidth
                                     label="Email"
                                     variant="outlined"
-                                    InputLabelProps={{shrink:true}}
+                                    InputLabelProps={{ shrink: true }}
                                     error={!!fieldState.error}
-                                    helperText={fieldState.error ? fieldState.error.message : ''}
+                                    helperText={
+                                        fieldState.error
+                                            ? fieldState.error.message
+                                            : ""
+                                    }
                                 />
                             )}
                         />
                     </Box>
 
-                    <Box sx={{ flex: '1 1 45%' }}>
+                    <Box sx={{ flex: "1 1 45%" }}>
                         <Controller
                             name="password"
                             control={control}
@@ -157,17 +202,21 @@ const AddEmployee = () => {
                                         required
                                         fullWidth
                                         label="Password"
-                                        type='password'
+                                        type="password"
                                         variant="outlined"
-                                        InputLabelProps={{shrink:true}}
+                                        InputLabelProps={{ shrink: true }}
                                         error={!!fieldState.error}
-                                        helperText={fieldState.error ? fieldState.error.message : ''}
+                                        helperText={
+                                            fieldState.error
+                                                ? fieldState.error.message
+                                                : ""
+                                        }
                                     />
-                                )
+                                );
                             }}
                         />
                     </Box>
-                    <Box sx={{ flex: '1 1 45%' }}>
+                    <Box sx={{ flex: "1 1 45%" }}>
                         <Controller
                             name="confPassword"
                             control={control}
@@ -180,12 +229,16 @@ const AddEmployee = () => {
                                     label="Confirm Password"
                                     variant="outlined"
                                     error={!!fieldState.error}
-                                    helperText={fieldState.error ? fieldState.error.message : ''}
+                                    helperText={
+                                        fieldState.error
+                                            ? fieldState.error.message
+                                            : ""
+                                    }
                                 />
                             )}
                         />
                     </Box>
-                    <Box sx={{ flex: '1 1 45%' }}>
+                    <Box sx={{ flex: "1 1 45%" }}>
                         <Controller
                             name="mobile"
                             control={control}
@@ -198,13 +251,17 @@ const AddEmployee = () => {
                                     label="Mobile"
                                     variant="outlined"
                                     error={!!fieldState.error}
-                                    helperText={fieldState.error ? fieldState.error.message : ''}
+                                    helperText={
+                                        fieldState.error
+                                            ? fieldState.error.message
+                                            : ""
+                                    }
                                 />
                             )}
                         />
                     </Box>
 
-                    <Box sx={{ flex: '1 1 45%' }}>
+                    <Box sx={{ flex: "1 1 45%" }}>
                         <Controller
                             name="empId"
                             control={control}
@@ -217,9 +274,13 @@ const AddEmployee = () => {
                                         label="Employee ID"
                                         variant="outlined"
                                         error={!!fieldState.error}
-                                        helperText={fieldState.error ? fieldState.error.message : ''}
+                                        helperText={
+                                            fieldState.error
+                                                ? fieldState.error.message
+                                                : ""
+                                        }
                                     />
-                                )
+                                );
                             }}
                         />
                     </Box>
@@ -228,8 +289,15 @@ const AddEmployee = () => {
                         name="empRole"
                         control={control}
                         render={({ field, fieldState }) => (
-                            <FormControl variant="outlined" fullWidth required error={!!fieldState.error}>
-                                <InputLabel htmlFor="emp-role">Employee Role</InputLabel>
+                            <FormControl
+                                variant="outlined"
+                                fullWidth
+                                required
+                                error={!!fieldState.error}
+                            >
+                                <InputLabel htmlFor="emp-role">
+                                    Employee Role
+                                </InputLabel>
                                 <Select
                                     {...field}
                                     multiple
@@ -238,12 +306,24 @@ const AddEmployee = () => {
                                         const selectedValues = e.target.value;
                                         field.onChange(selectedValues);
                                     }}
-                                    input={<OutlinedInput id="emp-role" label="Employee Role" />}
+                                    input={
+                                        <OutlinedInput
+                                            id="emp-role"
+                                            label="Employee Role"
+                                        />
+                                    }
                                     renderValue={(selected) =>
-                                        selected.map((value) => {
-                                            const selectedRole = roles.find(role => role.value === value);
-                                            return selectedRole ? selectedRole.label : value;
-                                        }).join(', ')
+                                        selected
+                                            .map((value) => {
+                                                const selectedRole = roles.find(
+                                                    (role) =>
+                                                        role.value === value
+                                                );
+                                                return selectedRole
+                                                    ? selectedRole.label
+                                                    : value;
+                                            })
+                                            .join(", ")
                                     }
                                 >
                                     {roles.map((role, i) => (
@@ -252,7 +332,11 @@ const AddEmployee = () => {
                                         </MenuItem>
                                     ))}
                                 </Select>
-                                {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
+                                {fieldState.error && (
+                                    <Typography color="error">
+                                        {fieldState.error.message}
+                                    </Typography>
+                                )}
                             </FormControl>
                         )}
                     />
@@ -275,7 +359,15 @@ const AddEmployee = () => {
                             )}
                         />
                     </Box> */}
-                    <Button type="submit" variant="contained" sx={{ mt: 3, backgroundColor: '#007bff', color: '#fff' }}>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        sx={{
+                            mt: 3,
+                            backgroundColor: "#007bff",
+                            color: "#fff",
+                        }}
+                    >
                         Save Employee
                     </Button>
                 </Box>
