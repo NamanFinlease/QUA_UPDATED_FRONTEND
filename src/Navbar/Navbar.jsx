@@ -15,6 +15,7 @@ import {
     Select,
     Box,
     useTheme,
+    useMediaQuery,
 } from "@mui/material";
 import { Logout, Person } from "@mui/icons-material";
 import useStore from "../Store";
@@ -32,6 +33,11 @@ const Navbar = () => {
     //color theme
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+
+    // Media Queries for responsive design
+    const isDesktop = useMediaQuery('(max-width:1024px)');
+    const isTablet = useMediaQuery('(max-width:768px)');
+    const isMobile = useMediaQuery('(max-width:450px)');
 
     const [logout, { isSuccess, isError, error }] = useLogoutMutation();
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
@@ -151,7 +157,11 @@ const Navbar = () => {
                         variant="h6"
                         component={Link}
                         to="/"
-                        sx={{ ml: 5, }}
+                        sx={{ 
+                            marginLeft: isMobile ? 0 : "5px" ,
+                            position: isMobile ? "relative" : "none",
+                            left: isMobile ? "-10px" : "none",
+                        }}
                     >
                         {/* Qualoan */}
                         <Box 
@@ -162,7 +172,7 @@ const Navbar = () => {
                         />
                     </Typography>
 
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 2,}}>
                         <FormControl
                             variant="outlined"
                             sx={{ 

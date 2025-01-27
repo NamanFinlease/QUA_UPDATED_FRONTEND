@@ -180,9 +180,17 @@ const UploadDocuments = ({ leadData }) => {
             </Typography>
 
                     <Box display="flex" flexDirection="column" gap={2}>
-                        <Box display="flex" alignItems="center" gap={2}>
+                        <Box display="flex" flexWrap="wrap" justifyContent="center" alignItems="center" gap={2}>
                             {['aadhaarFront', 'aadhaarBack', 'panCard', 'salarySlip', 'bankStatement', 'others'].map((key) => (
-                                <Box key={key} display="flex" alignItems="center" gap={1}>
+                                <Box 
+                                    key={key} 
+                                    sx={{
+                                        display: 'flex',
+                                        flexWrap:"wrap",
+                                        alignItems:"center",
+                                        gap:"1",
+                                    }}
+                                >
                                     <Checkbox
                                         checked={selectedDocType === key}
                                         onChange={(e) => {

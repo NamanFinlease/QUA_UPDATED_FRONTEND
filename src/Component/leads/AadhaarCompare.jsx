@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { tokens } from '../../theme'
 import {
   Button,
   Dialog,
@@ -14,6 +15,7 @@ import {
   Paper,
   Typography,
   Box,
+  useTheme,
 } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -32,6 +34,9 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
   // Handle close modal
   const handleClose = () => {setOpen(false);console.log('handle close') };
 
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   // Utility function to compare values and return "Matched" or "Unmatched"
   const compareValues = (label, value1, value2) => {
@@ -66,7 +71,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
   const getTextColor = (result) => (result === "Matched" ? "#00796b" : "#d32f2f");
   const handleSubmit = () => {
     verifyAadhaar({ id: lead._id, details: aadhaarDetails })
-
+    
   }
 
   // Fields to be compared
@@ -100,68 +105,63 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
 
 
   return (
-    <Dialog open={open} maxWidth="md" fullWidth>
+    <Dialog 
+      open={open} 
+      maxWidth="lg" 
+      fullWidth 
+      sx={{
+        '& .MuiDialog-paper':{
+          background:colors.white[100],
+          borderRadius:"0px 20px",
+          color:colors.primary[400],
+        },
+      }}
+    >
       <DialogTitle>
-        <Typography variant="h6" align="center" sx={{ fontWeight: "bold", mb: 2 }}>
+        <Typography variant="h4" align="center" sx={{ fontWeight: "bold", m: 2 }}>
           Compare Lead and Aadhaar details
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <Box sx={{ p: 2 }}>
+        <Box sx={{ p: 2,  }}>
           <TableContainer
             component={Paper}
             elevation={3}
             sx={{
-              borderRadius: 2,
-              border: "1px solid #e0e0e0",
-              backgroundColor: "#fafafa",
+              borderRadius: "0px 20px",
+              backgroundColor: colors.white[100],
+              '& .MuiTableCell-root': {
+                borderBottom: `2px solid ${colors.primary[400]}`,
+                padding: "16px 24px",
+                fontSize: 14,
+                fontWeight: "500",
+              },
+              '& .MuiTableHead-root': {
+                background: colors.primary[400],
+                color: colors.white[100],
+              },
+              '& .MuiTableCell-head': {
+                color: colors.white[100],
+                fontWeight: 600,
+                textAlign: "center",  
+                fontSize: "15px",
+                padding: "12px", 
+              },
             }}
           >
             <Table>
-              <TableHead sx={{ backgroundColor: "#eceff1" }}>
+              <TableHead>
                 <TableRow>
-                  <TableCell
-                    sx={{
-                      fontWeight: "bold",
-                      fontSize: 15,
-                      color: "#37474f",
-                      textAlign: "center",
-                      padding: "12px",
-                    }}
-                  >
+                  <TableCell>
                     Field
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      fontWeight: "bold",
-                      fontSize: 15,
-                      color: "#37474f",
-                      textAlign: "center",
-                      padding: "12px",
-                    }}
-                  >
+                  <TableCell>
                     Lead
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      fontWeight: "bold",
-                      fontSize: 15,
-                      color: "#37474f",
-                      textAlign: "center",
-                      padding: "12px",
-                    }}
-                  >
+                  <TableCell>
                     Aadhaar Details
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      fontWeight: "bold",
-                      fontSize: 15,
-                      color: "#37474f",
-                      textAlign: "center",
-                      padding: "12px",
-                    }}
-                  >
+                  <TableCell>
                     Comparison
                   </TableCell>
                 </TableRow>
@@ -174,20 +174,13 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
 
                   return (
 
-                    <TableRow
-                      key={label}
-                      sx={{
-                        "&:nth-of-type(odd)": {
-                          backgroundColor: "#f5f5f5",
-                        },
-                      }}
-                    >
+                    <TableRow key={label}>
                       <TableCell
                         sx={{
                           padding: "16px 24px",
                           fontSize: 14,
                           textAlign: "center",
-                          color: "#424242",
+                          color: colors.black[100],
                           fontWeight: "500",
                         }}
                       >
@@ -198,7 +191,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
                           padding: "16px 24px",
                           fontSize: 14,
                           textAlign: "center",
-                          color: "#424242",
+                          color: colors.black[100],
                         }}
                       >
                         {leadValue}
@@ -208,7 +201,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
                           padding: "16px 24px",
                           fontSize: 14,
                           textAlign: "center",
-                          color: "#424242",
+                          color: colors.black[100],
                         }}
                       >
                         {aadhaarValue}
@@ -247,13 +240,17 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
       <DialogActions sx={{ justifyContent: "space-between", px: 3, pb: 3 }}>
         <Button
           onClick={handleClose}
-          variant="outlined"
+          variant="contained"
           sx={{
-            borderColor: "#00796b",
-            color: "#00796b",
+            background:colors.white[100],
+            color: colors.redAccent[500],
+            border: `1px solid ${colors.redAccent[500]}`,
             fontWeight: "bold",
-            textTransform: "none",
-            "&:hover": { backgroundColor: "#e0f7fa", borderColor: "#00796b" },
+            borderRadius:"0px 10px",
+            '&:hover':{
+              backgroundColor:colors.redAccent[500],
+              color:colors.white[100],
+            }
           }}
         >
           Close
@@ -261,12 +258,16 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
         {activeRole === "screener" && <Button
           onClick={handleSubmit}
           variant="contained"
-          color="primary"
           sx={{
-            backgroundColor: "#00796b",
+            background:colors.white[100],
+            color: colors.primary[400],
+            border: `1px solid ${colors.primary[400]}`,
             fontWeight: "bold",
-            textTransform: "none",
-            "&:hover": { backgroundColor: "#004d40" },
+            borderRadius:"0px 10px",
+            '&:hover':{
+              backgroundColor:colors.primary[400],
+              color:colors.white[100],
+            }
           }}
         >
           Verify

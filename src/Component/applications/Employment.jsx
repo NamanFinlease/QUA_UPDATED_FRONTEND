@@ -103,7 +103,7 @@ const Employment = ({ employmentData }) => {
   };
 
   const paperStyles = {
-    // padding: '30px',
+    padding: '30px',
     borderRadius: '0px 20px',
     backgroundColor: colors.white[100],
     color:colors.black[100],
@@ -114,11 +114,13 @@ const Employment = ({ employmentData }) => {
   const buttonStyles = {
     borderRadius: '0px 10px',
     padding: '10px 20px',
-    backgroundColor: isLoading ? "#ccc" : colors.white[100],
-    color: isLoading ? "#666" : colors.primary[400],
+    border:`1px solid ${colors.primary[400]}`,
+    background: isLoading ? "#ccc" : colors.primary[400],
+    color: isLoading ? "#666" : colors.white[100],
     cursor: isLoading ? "not-allowed" : "pointer",
-    "&:hover": {
+    ":hover": {
       backgroundColor: isLoading ? "#ccc" : colors.primary[100],
+      boxShadow:'0px 5px 10px rgb(0,0,0,0.3)',
     },
   };
 
@@ -136,7 +138,29 @@ const Employment = ({ employmentData }) => {
           {(isEditingEmployment || !employmentData) ? (
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <Box display="flex" flexDirection="column" gap={2}>
+                <Box display="flex" flexDirection="column" gap={2}
+                  sx={{
+                    color:colors.black[100],
+                    '& .MuiInputBase-root':{
+                      color:colors.black[100],
+                    },
+                    '& .MuiOutlinedInput-notchedOutline':{
+                      borderColor:colors.black[100],
+                    },
+                    '& .MuiInputLabel-root': { 
+                      color: colors.black[100] 
+                    },
+                    '& .MuiPaper-root':{
+                      color:colors.white[100],
+                    },
+                    '& .MuiSelect-icon': { 
+                      color: colors.black[100] 
+                    },
+                    '&:hover':{
+                      '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.black[100] },
+                    },
+                  }}
+                >
                   <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} gap={2}>
                     <Controller
                       name="companyName"
@@ -267,10 +291,10 @@ const Employment = ({ employmentData }) => {
 
                   <Box display="flex" justifyContent="flex-end" gap={2} mt={2}>
                     <Button 
-                      variant="outlined" 
+                      variant="contained" 
                       sx={{
                         background:colors.white[100],
-                        // borderColor:colors.redAccent[500],
+                        borderColor:colors.redAccent[500],
                         color:colors.redAccent[500],
                         borderRadius:"0px 10px",
                         "&:hover": {
@@ -282,7 +306,7 @@ const Employment = ({ employmentData }) => {
                     >
                       Cancel
                     </Button>
-                    <Button style={buttonStyles} type="submit">
+                    <Button variant="contained" style={buttonStyles} type="submit">
                     {isLoading ? <CircularProgress size={20} color="inherit" /> : "Save"}
                     </Button>
                   </Box>
@@ -291,18 +315,21 @@ const Employment = ({ employmentData }) => {
             </LocalizationProvider>
           ) : (
             <>
-              <TableContainer sx={{'& .MuiTableCell-root':{color:colors.black[100], borderBottom:`2px solid ${colors.primary[400]}`,}}}>
-                <Table>
-                  <TableBody>
-                    {columns?.map((column, index) => (
-                      <TableRow key={index}>
-                        <TableCell><strong>{column.label}:</strong> {column.value}</TableCell>
-                        <TableCell><strong>{column.label2}:</strong> {column.value2}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <Paper elevation={3} sx={{background:colors.white[100], borderRadius:"0px 20px"}}>
+                <TableContainer sx={{'& .MuiTableCell-root':{color:colors.black[100],}}}>
+                  <Table>
+                    <TableBody>
+                      {columns?.map((column, index) => (
+                        <TableRow key={index} sx={{borderBottom:`2px solid ${colors.primary[400]}`}}>
+                          <TableCell><strong>{column.label}:</strong> {column.value}</TableCell>
+                          <TableCell><strong>{column.label2}:</strong> {column.value2}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Paper>
+              <Divider sx={{ my: 2 }} />
 
               {(activeRole === "creditManager"  ) && <Box display="flex" justifyContent="flex-end">
                 <Button

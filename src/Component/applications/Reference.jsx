@@ -66,7 +66,9 @@ const Reference = ({ reference }) => {
     padding: '30px',
     borderRadius: '0px 20px',
     backgroundColor: colors.white[100],
-    boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)',
+    color:colors.black[100],
+    boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.1)',
+    margin:0,
   };
 
   return (
@@ -83,7 +85,21 @@ const Reference = ({ reference }) => {
           <Paper elevation={3} style={paperStyles}>
             {(Object.keys(reference).length === 0 || openEdit) ? (
               <form onSubmit={handleSubmit(onSubmit)}>
-                <Box display="flex" flexDirection="column" gap={4}>
+                <Box display="flex" flexDirection="column" gap={4} 
+                  sx={{
+                    color:colors.black[100],
+                    '& .MuiInputLabel-root': { 
+                      color: colors.black[100] 
+                    },
+                    '& .MuiSelect-icon': { 
+                      color: colors.black[100] 
+                    },
+                    '& .MuiInputBase-root': {
+                      borderBottom: `2px solid ${colors.black[100]}`,
+                      color:colors.black[100],
+                    },
+                  }}
+                >
                   {/* Reference 1 */}
                   <Box display="flex" flexDirection="column" gap={2}>
                     <Typography variant="h6">Reference 1</Typography>
@@ -210,7 +226,7 @@ const Reference = ({ reference }) => {
                   {/* Submit Button */}
                   <Box display="flex" justifyContent="flex-end" gap={2} mt={2}>
                     <Button
-                      variant="outlined" 
+                      variant="contained" 
                       sx={{
                         background:colors.white[100],
                         borderRadius:"0px 10px",
@@ -224,16 +240,14 @@ const Reference = ({ reference }) => {
                     >Cancel
                     </Button>
                     <Button
+                      variant='contained'
                       type="submit"
                       sx={{
 
-                        backgroundColor: isLoading ? "#ccc" : colors.white[100],
-                        color: isLoading ? "#666" : colors.primary[400],
+                        backgroundColor: isLoading ? "#ccc" : colors.primary[400],
+                        color: isLoading ? "#666" : colors.white[100],
                         cursor: isLoading ? "not-allowed" : "pointer",
                         borderRadius: "0px 10px",
-                        "&:hover": {
-                          boxShadow: isLoading ? "#ccc" : "0px 0px 10px rgba(0, 0, 0, 0.2)",
-                        },
                       }}>
                       {isLoading ? <CircularProgress size={20} color="inherit" /> : "Save"}
                     </Button>
@@ -270,15 +284,13 @@ const Reference = ({ reference }) => {
                 <Divider sx={{ my: 2 }} />
                 {(activeRole === "creditManager") && <Box display="flex" justifyContent="flex-end" sx={{ my: 2 }}>
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     onClick={() => setOpenEdit(true)}
                     sx={{
-                      backgroundColor: colors.white[100],
-                      color: colors.primary[400],
+                      backgroundColor: colors.primary[400],
+                      color: colors.white[100],
+                      borderRadius:"0px 10px",
                       padding: '10px 20px',
-                      '&:hover': {
-                        boxShadow:"0px 0px 10px rgb(0,0,0,0.2)",
-                      },
                     }}
                   >
                     Edit

@@ -197,10 +197,25 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
             navigate("/rejected-leads")
         }
         if (recommendLeadSuccess && recommendLeadData) {
-            Swal.fire({
-                text: "Lead Forwarded!",
-                icon: "success"
-            });
+            // Swal.fire({
+            //     text: "Lead Forwarded!",
+            //     icon: "success"
+            // });
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                }
+              });
+              Toast.fire({
+                icon: "success",
+                title: "Lead Forwarded to Credit Manager!`"
+              });
             navigate("/lead-process")
         }
         setActionType('');
@@ -358,7 +373,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                         {!applicationProfile?.isApproved ?
 
                                             <Button
-                                                // variant="contained"
+                                                variant="contained"
                                                 disabled={sanctionApproveLoading}
                                                 color="success"
                                                 onClick={() => handleSanctionApprove()}
@@ -366,8 +381,9 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                     backgroundColor: sanctionApproveLoading ? "#ccc" : "#04c93f",
                                                     color: sanctionApproveLoading ? "#666" : "white",
                                                     cursor: sanctionApproveLoading ? "not-allowed" : "pointer",
+                                                    borderRadius:"0px 10px",
                                                     "&:hover": {
-                                                        backgroundColor: sanctionApproveLoading ? "#ccc" : "#8bf7ab",
+                                                        backgroundColor: sanctionApproveLoading ? "#ccc" : "#069130",
                                                     },
                                                 }}
                                             >
@@ -375,7 +391,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                             </Button>
                                             :
                                             <Button
-                                                // variant="contained"
+                                                variant="contained"
                                                 disabled={previewLoading}
                                                 color="success"
                                                 onClick={() => handlePreview()}
@@ -383,11 +399,11 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                     backgroundColor: previewLoading ? "#ccc" : "#04c93f",
                                                     color: previewLoading ? "#666" : "white",
                                                     cursor: previewLoading ? "not-allowed" : "pointer",
-                                boxShadow: "0px 2px 5px rgb(0,0,0,0.2)",
-                                borderRadius: "0px 10px",
+                                                    boxShadow: "0px 2px 5px rgb(0,0,0,0.2)",
+                                                    borderRadius: "0px 10px",
                                                     "&:hover": {
                                                         backgroundColor: previewLoading ? "#ccc" : "#04b539",
-                                    boxShadow: "0px 2px 5px 2px rgb(0,0,0,0.2)",
+                                                        boxShadow: "0px 2px 5px 2px rgb(0,0,0,0.2)",
                                                     },
                                                 }}
                                             >
@@ -409,6 +425,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                 color="success"
                                                 onClick={() => handleActionClick('recommend')}
                                                 sx={{
+                                                    borderRadius:"0px 10px",    
                                                     backgroundColor: "#04c93f",
                                                     color: "white",
                                                     cursor: "pointer",
@@ -459,7 +476,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                             color="error"
                             onClick={() => handleActionClick('reject')}
                             sx={{
-                                borderRadius: "0px 10px 0px 10px",
+                                borderRadius: "0px 10px",
                                 '&:hover': {
                                     background: colors.redAccent[500] , // Set hover colors based on `isHold`
                                 },
@@ -472,7 +489,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                 variant="contained"
                                 color="secondary"
                                 onClick={() => handleActionClick('sendBack')}
-                                sx={{borderRadius:"0px 10px 0px 10px", color:colors.white[100]}}
+                                sx={{borderRadius:"0px 10px", color:colors.white[100]}}
                             >
                                 Send Back
                             </Button>}
@@ -604,7 +621,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                     padding: '10px 20px',
                                     border:`1px solid ${colors.redAccent[500]}`,
                                     color:colors.redAccent[500],
-                                    borderRadius: "0px 15px 0px 15px",
+                                    borderRadius: "0px 15px",
                                     fontWeight: 'bold',
                                     backgroundColor: colors.white[100],
                                     ':hover': { 

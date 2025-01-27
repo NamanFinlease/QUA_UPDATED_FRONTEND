@@ -58,12 +58,9 @@ const Residence = ({ residence }) => {
   const buttonStyles = {
     borderRadius: '0px 10px',
     padding: '10px 20px',
-    backgroundColor: isLoading ? "#ccc" : colors.white[100],
-    color: isLoading ? "#666" : colors.primary[400],
+    background: isLoading ? "#ccc" : colors.primary[400],
+    color: isLoading ? "#666" : colors.white[100],
     cursor: isLoading ? "not-allowed" : "pointer",
-    "&:hover": {
-      backgroundColor: isLoading ? "#ccc" : colors.primary[100],
-    },
   };
 
   const accordionStyles = {
@@ -124,9 +121,24 @@ const Residence = ({ residence }) => {
                   gap={2} 
                   sx={{
                     color:colors.black[100],
-                    '& .MuiTableCell-root':{
+                    '& .MuiInputBase-root':{
                       color:colors.black[100],
-                    }
+                    },
+                    '& .MuiOutlinedInput-notchedOutline':{
+                      borderColor:colors.black[100],
+                    },
+                    '& .MuiInputLabel-root': { 
+                      color: colors.black[100] 
+                    },
+                    '& .MuiPaper-root':{
+                      color:colors.white[100],
+                    },
+                    '& .MuiSelect-icon': { 
+                      color: colors.black[100] 
+                    },
+                    '&:hover':{
+                      '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.black[100] },
+                    },
                   }}
                 >
                   <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} gap={2} >
@@ -240,11 +252,20 @@ const Residence = ({ residence }) => {
                           color:colors.white[100],
                         }
                       }}
-                      variant="outlined" onClick={handleResidenceEditToggle}>
+                      variant="contained" onClick={handleResidenceEditToggle}>
                       Cancel
                     </Button>
                     <Button
-                      style={buttonStyles}
+                      variant='contained'
+                      sx={{
+                        color:colors.white[100],
+                        background:colors.primary[400],
+                        borderRadius:"0px 10px",
+                        border:`1px solid ${colors.primary[400]}`,
+                        ':hover':{
+                          boxShadow:'0px 5px 10px rgba(0,0,0,0.2)',
+                        },
+                      }}
                       type="submit"
                     >
                       {isLoading ? <CircularProgress size={20} color="inherit" /> : "Save"}

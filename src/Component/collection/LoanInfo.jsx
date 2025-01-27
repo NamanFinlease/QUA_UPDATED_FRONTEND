@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Box, Typography, TextField, Alert,useTheme } from '@mui/material';
+import { Button, Box, Paper, Typography, TextField, Alert,useTheme } from '@mui/material';
 import { tokens } from '../../theme';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
@@ -75,18 +75,24 @@ const LoanInfo = ({ disburse }) => {
         }}
       >
         <Box
+          component={Paper}
+          elevation={3}
           sx={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr', // Two columns
             gap: '0',
             borderCollapse: 'collapse',
+            background: colors.white[100],
+            color:colors.black[100],
+            borderRadius: '0px 20px',
+            lineHeight: '2.5',
           }}
         >
           {/* Map over the data array to create each field in a row */}
           {info.map((field, index) => (
             <Box
               key={index}
-              sx={{ display: 'flex', alignItems: 'center', borderBottom: `2px solid ${colors.primary[400]}`, padding: '10px' }}
+              sx={{ display: 'flex', alignItems: 'center', borderBottom: `2px solid ${colors.primary[400]}`, padding: '10px', }}
             >
               <label style={{ fontWeight: 'bold', width: '50%' }}>{field.label}</label>
               <span>{field.value} {field.label === "ROI % (p.d.) Approved" && "%" }</span>

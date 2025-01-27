@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Accordion, 
   AccordionSummary, 
@@ -20,7 +20,10 @@ import {
   FormControl,
   InputLabel,
   OutlinedInput, 
-  useTheme } from '@mui/material';
+  useTheme,
+  IconButton,
+  Stack, } from '@mui/material';
+import CloseIcon from "@mui/icons-material/Close";
 import { tokens } from '../../theme';
 import useAuthStore from '../store/authStore';
 import { styled } from '@mui/system';
@@ -47,6 +50,8 @@ const RepaymentDetails = (disburse) => {
     repaymentType: '',
     paymentDiscount: '',
     refund: '',
+    paymentRemarks: '',
+    paymentUpload: '',
 }
 
   const [repaymentStatus, setRepaymentStatus] = useState('');
@@ -67,6 +72,14 @@ const RepaymentDetails = (disburse) => {
       ...prevCheckedFields,
       [name]: checked,
     }));
+  };
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [key, setKey] = useState(0);
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
   };
 
   const columns = [
@@ -122,6 +135,22 @@ const RepaymentDetails = (disburse) => {
     setBlacklistReason(event.target.value);
   };
 
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    setKey((prevKey) => prevKey + 1);
+    // if (fileInputRef.current) {
+    //   fileInputRef.current.value = ""; // Ensures file input is reset
+    // }
+  };
+
+  const handleClickChooseFile = () => {
+    // Reset the file input value before triggering the file picker
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+    fileInputRef.current.click();
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle form submission logic here
@@ -160,7 +189,7 @@ const RepaymentDetails = (disburse) => {
             Add to Blacklist
           </Typography>
           {checkedFields.blacklist && (
-            <Box component={Paper} elevation={4} sx={{minWidth:"400px", marginTop: "20px", background:colors.white[100], padding:"10px 10px", borderRadius:"0px 20px"}}>
+            <Box component={Paper} elevation={4} sx={{maxWidth:"400px", marginTop: "20px", background:colors.white[100], padding:"10px 10px", borderRadius:"0px 20px"}}>
               <Typography variant="body2" style={{ color: colors.black[100] }}>
                 Reason for Blacklisting:
               </Typography>
@@ -342,7 +371,7 @@ const RepaymentDetails = (disburse) => {
                     },
                 }}
               >
-                <Box sx={{ flex: '1 1 45%' }}>
+                <Box sx={{ flex:{ xs: '1 1 100%', sm: '1 1 45%' } }}>
                   <Controller
                     name="paymentReceived"
                     control={control}
@@ -365,7 +394,7 @@ const RepaymentDetails = (disburse) => {
                   />
                 </Box>
 
-                <Box sx={{ flex: '1 1 45%' }}>
+                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
                   <Controller
                     name="referenceNumber"
                     control={control}
@@ -383,7 +412,7 @@ const RepaymentDetails = (disburse) => {
                   />
                 </Box>
 
-                <Box sx={{ flex: '1 1 45%' }}>
+                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
                   <Controller
                     name="paymentMode"
                     control={control}
@@ -404,7 +433,7 @@ const RepaymentDetails = (disburse) => {
                   />
                 </Box>
 
-                <Box sx={{ flex: '1 1 45%' }}>
+                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
                   <Controller
                     name="repaymentType"
                     control={control}
@@ -427,7 +456,7 @@ const RepaymentDetails = (disburse) => {
                   />
                 </Box>
 
-                <Box sx={{ flex: '1 1 45%' }}>
+                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
                   <Controller
                     name="payment Discount"
                     control={control}
@@ -445,7 +474,7 @@ const RepaymentDetails = (disburse) => {
                   />
                 </Box>
 
-                <Box sx={{ flex: '1 1 45%' }}>
+                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
                   <Controller
                     name="refund"
                     control={control}
@@ -463,18 +492,77 @@ const RepaymentDetails = (disburse) => {
                   />
                 </Box>
 
-                <Button 
-                    type="submit" 
-                    variant="contained" 
-                    sx={{ 
-                        mt: 3, 
+                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 100%' } }}>
+                  <Controller
+                    name="paymentRemarks"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        {...field}
+                        required
+                        fullWidth
+                        label="Remarks"
+                        variant="outlined"
+                        error={!!fieldState.error}
+                        helperText={fieldState.error ? fieldState.error.message : ''}
+                      />
+                    )}
+                  />
+                </Box>
+
+                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 100%' },}}>
+                  <Stack spacing={1} alignItems="center">
+                    <input
+                      type="file"
+                      id="paymentUpload"
+                      style={{ display: "none" }}
+                      onChange={handleFileChange}
+                    />
+                      <label htmlFor="paymentUpload">
+                        <Button 
+                          variant="contained" 
+                          sx={{
+                            color:colors.white[100], 
+                            background:colors.primary[400], 
+                            borderRadius:"0px 10px"
+                          }} 
+                          onClick={handleClickChooseFile}
+                          component="span"
+                        >
+                          Upload Screenshot *
+                        </Button>
+                      </label>
+                      {/* Display Selected File */}
+                      {selectedFile && (
+                        <Stack
+                          direction="row"
+                          spacing={1}
+                          alignItems="center"
+                          paddingLeft="10px"
+                        >
+                          <Typography>Selected File: {selectedFile.name}</Typography>
+                          <IconButton color="error" onClick={handleRemoveFile}>  
+                            <CloseIcon />
+                          </IconButton>
+                        </Stack>
+                      )}
+                    </Stack>
+                </Box>
+
+                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 100%' }, display:'flex', justifyContent:'flex-end', }}>
+                  <Button 
+                      type="submit" 
+                      variant="contained" 
+                      sx={{ 
                         background:colors.primary[400], 
                         color: colors.white[100],
                         borderRadius:"0px 10px",
                         ":hover": { background: colors.primary[100] }
-                    }}>
-                    Upload Payment
-                </Button>
+                      }}>
+                      Upload Payment
+                  </Button>
+                </Box>
+
               </Box>
             </Paper>
           </Box>

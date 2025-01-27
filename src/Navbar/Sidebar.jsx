@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { tokens } from "../theme";
 import {
   Box,
@@ -12,6 +12,7 @@ import {
   IconButton,
   Tooltip,
   useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { NavLink, Link } from "react-router-dom";
 import useAuthStore from "../Component/store/authStore";
@@ -124,6 +125,15 @@ const accordionItems = [
   },
 ];
 
+// Color theme
+const theme = useTheme();
+const colors = tokens(theme.palette.mode);
+
+// Media Queries for responsive design
+const isDesktop = useMediaQuery('(max-width:1024px)');
+const isTablet = useMediaQuery('(max-width:768px)');
+const isMobile = useMediaQuery('(max-width:450px)');
+
 // Find the first accordion item that matches the active role
 const firstAccordionForRole = accordionItems.find((item) =>
   item.roles.includes(activeRole)
@@ -132,13 +142,16 @@ const firstAccordionForRole = accordionItems.find((item) =>
 // State to control the expanded accordions
 const [expanded, setExpanded] = useState(firstAccordionForRole);
 
+// Automatically close sidebar on mobile devices
+useEffect(() => {
+  if (isMobile) {
+    setIsSidebarOpen(false); // Start closed on mobile
+  }
+}, [isMobile, setIsSidebarOpen]);
+
 const toggleSidebar = () => {
   setIsSidebarOpen(!isSidebarOpen);
 };
-
-// Color theme
-const theme = useTheme();
-const colors = tokens(theme.palette.mode);
 
 // Function to handle accordion toggle
 const handleAccordionToggle = (panel) => (event, isExpanded) => {
@@ -148,16 +161,29 @@ const handleAccordionToggle = (panel) => (event, isExpanded) => {
   return (
     <>
     <div sx={{background: colors.white[100]}}>
+      {/* Backdrop for mobile */}
+      {isMobile && isSidebarOpen && (
+        <Box
+          onClick={() => setIsSidebarOpen(false)}
+          sx={{
+            position: "fixed",
+            // top: 40,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 1000,
+          }}
+        />
+      )}
         <Box
             sx={{
-                width: isSidebarOpen ? 265 : 0,
-                height: "100vh",
+                width: isSidebarOpen ? 265 : 0 ,
+                height: "100%",
                 color: colors.white[100],
                 position: "fixed",
-                top: 70,
-                left: 0,
-                display: "flex",
-                flexDirection: "column",
+                // top: 70,
+                // left: 0,
                 transition: "width 0.3s ease",
                 overflowY: "auto",
                 boxShadow: isSidebarOpen
@@ -165,29 +191,30 @@ const handleAccordionToggle = (panel) => (event, isExpanded) => {
                     : "none",
                 zIndex: 1001,
                 background: `linear-gradient(90deg, ${colors.white[100]}  1%, ${colors.primary[400]} 250%), ${colors.white[100]}`,
-                borderRadius : "15px",
+                borderRadius : "0px 15px",
                 borderRight: `3px solid ${colors.primary[400]}`,
                 "& .css-oztf1a-MuiPaper-root-MuiAccordion-root:first-of-type":{
                     borderTopRightRadius:"20px !important",
                 },
         }}
         >
-        <IconButton 
-        onClick={toggleSidebar}
-        sx={{
+        <IconButton
+          onClick={toggleSidebar}
+          sx={{
             position: "fixed",
-            top: 390,
+            top: isMobile ? "100px" : "50%",
             left: isSidebarOpen ? 245 : 10,
+            transform: "translateY(-50%)",
             color: colors.black[100],
             background: colors.white[100],
-            border:`3px solid ${colors.primary[400]}`,
+            border: `3px solid ${colors.primary[400]}`,
             borderRadius: "15px",
             transition: "background-color 0.3s, color 0.3s, left 0.3s",
-            zIndex: 1001,
-            ":hover":{
-                background:colors.primary[400],
-            }
-        }}
+            zIndex: 1002,
+            ":hover": {
+              background: colors.primary[400],
+            },
+          }}
         >
             {isSidebarOpen ? <KeyboardDoubleArrowLeftIcon /> : <KeyboardDoubleArrowRightIcon />}
         </IconButton>

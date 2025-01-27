@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-
+import { regexPatterns } from './regex';
 
 
 export const residenceSchema = Yup.object().shape({
@@ -157,6 +157,34 @@ export const bankDetailsSchema = Yup.object().shape({
       .oneOf(['savings', 'current'], 'Invalid Account Type'),
 });
 
-  
+ 
+export const camSchema = Yup.object().shape({
+  salaryAmount1: Yup.string()
+  .matches(regexPatterns.onlyNumbers, 'Invalid salary amount'),
+  salaryAmount2: Yup.string()
+  .matches(regexPatterns.onlyNumbers, 'Invalid salary amount'),
+  salaryAmount3: Yup.string()
+  .matches(regexPatterns.onlyNumbers, 'Invalid salary amount'),
+  averageSalary: Yup.string()
+  .matches(regexPatterns.onlyNumbers, 'Invalid salary amount'),
+  actualNetSalary: Yup.string()
+  .required('Actual Net Salary is required')
+  .matches(regexPatterns.onlyNumbers, 'Invalid salary amount'),
+  salaryToIncomeRatio: Yup.string()
+  .required('Salary to Income Ratio is required')
+  .matches(regexPatterns.onlyNumbers, 'Invalid Ratio'),
+  loanRecommended: Yup.string()
+  .required('Loan Recommended is required')
+  .matches(regexPatterns.onlyNumbers, 'Invalid Recommended Loan'),
+  roi: Yup.string()
+  .required('ROI is required')
+  .matches(regexPatterns.onlyNumbers, 'Invalid ROI'),
+  adminFeePercentage: Yup.string()
+  .required('Processing Fee is required')
+  .matches(regexPatterns.onlyNumbers, 'Invalid Processing Fee'),
+  finalsalaryToIncomeRatioPercentage: Yup.string()
+  .required('Ratio is required')
+  .matches(regexPatterns.onlyNumbers, 'Invalid Ratio'),
+});
 
   

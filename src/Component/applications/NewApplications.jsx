@@ -115,12 +115,12 @@ const NewApplications = () => {
           columns={columns}
           rows={rows}
           totalRows={totalApplications}
-          paginationModel={{ page: 1, pageSize: 10 }}
+          paginationModel={{ paginationModel }}
           onPageChange={handlePageChange}
-          // onRowClick={handleRowClick}
           title="New Applications"
           actionButton={true}
           actionButtonText="Allocate Leads"
+          onAllocateButtonClick={handleAllocate}
           // onActionButtonClick={handleActionButtonClick}
       />
     </>

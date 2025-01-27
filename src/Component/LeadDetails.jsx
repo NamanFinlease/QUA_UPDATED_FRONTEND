@@ -64,7 +64,8 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
         noValidate
         onSubmit={handleSubmit(onSubmit)}
         sx={{
-          backgroundColor: colors.black[100],
+          backgroundColor: colors.white[100],
+          color:colors.white[100],
           padding: '30px',
           marginBottom:"20px",
           borderRadius: '0px 30px',
@@ -73,16 +74,22 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
           display: 'flex',
           flexWrap: 'wrap',
           gap: '20px',
+          '& .MuiInputLabel-root': {
+            color: colors.primary[400],
+          },
+          '& .MuiOutlinedInput-root': {
+            color: colors.black[100],
+          },
+          '& .MuiOutlinedInput-notchedOutline': { 
+            borderColor: colors.black[100] 
+          },
+          '&:hover':{
+            '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.black[100] },
+          }
         }}
       >
         <Box 
-          sx={{ 
-            flex: '1 1 45%', 
-            color:colors.black[100],
-            '& .MuiBox-root':{
-              background:`${colors.black[100]} !important`,
-            }
-          }}
+          sx={{ flex: '1 1 45%', }}
         >
           <Controller
             name="fName"

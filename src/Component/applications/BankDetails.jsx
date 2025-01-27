@@ -111,13 +111,15 @@ const BankDetails = ({ id }) => {
                                 sx={{
                                     '& .MuiOutlinedInput-root': {
                                         color:colors.black[100],
-                                      '& .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: colors.primary[400],
-                                      },
+                                        '& .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: colors.primary[400],
+                                            '&:hover': {
+                                                borderColor: colors.primary[400],
+                                            },
+                                        },
                                     },
                                     '& .MuiSelect-select': {
                                         color:colors.black[100],
-                                        padding: '10px',
                                     },
                                     '& .MuiInputLabel-root': { 
                                         color: colors.black[100],
@@ -210,7 +212,8 @@ const BankDetails = ({ id }) => {
                                                 fullWidth
                                                 sx={{ 
                                                     '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[100] },
-                                                    '& .MuiInputLabel-root': { color: colors.black[100] },
+                                                    '& .MuiInputLabel-root': { color: colors.black[100],},
+                                                    '& .MuiInputBase-root':{ height:"53px", },
                                                     '& .MuiSelect-select': { color: colors.black[100] },
                                                     '& .MuiSelect-icon': { color: colors.black[100] },
                                                     '&:hover':{
@@ -224,7 +227,7 @@ const BankDetails = ({ id }) => {
                                                     {...field}
                                                     label="Account Type"
                                                 >
-                                                    {/* <MenuItem value="">Select Account Type</MenuItem> */}
+                                                    <MenuItem value="" disabled>Select Account Type</MenuItem>
                                                     <MenuItem value="savings">Savings</MenuItem>
                                                     <MenuItem value="current">Current</MenuItem>
                                                 </Select>
@@ -240,7 +243,7 @@ const BankDetails = ({ id }) => {
 
                             <Box display="flex" justifyContent="flex-end" marginTop="20px">
                                 <Button
-                                    variant="outlined"
+                                    variant="contained"
                                     sx={{ 
                                         marginRight: '10px', 
                                         borderColor:colors.redAccent[500],
@@ -259,7 +262,7 @@ const BankDetails = ({ id }) => {
                                 </Button>
                                 <Button
                                     disabled={addBankRes?.isLoading || updateLoading}
-                                    variant="outlined"
+                                    variant="contained"
                                     type="submit"
                                     sx={{
                                         backgroundColor: (addBankRes?.isLoading || updateLoading) ? "#ccc" : colors.white[100],
@@ -337,15 +340,16 @@ const BankDetails = ({ id }) => {
 
                         {(activeRole === "creditManager") && <Box display="flex" justifyContent="flex-end" marginTop="20px">
                             <Button
-                                variant="outlined"
+                                variant="contained"
                                 onClick={() => handleOpenForm()}
                                 sx={{
-                                    backgroundColor: colors.white[100],
+                                    background: colors.white[100],
                                     color: colors.primary[400],
                                     borderRadius:"0px 10px",
-                                    padding: '10px 20px',
+                                    border:`2px solid ${colors.primary[400]}`,
                                     '&:hover': {
-                                        boxShadow:"0px 0px 15px rgb(0,0,0,0.3)",
+                                        background:colors.primary[400],
+                                        color:colors.white[100],
                                     },
                                 }}
                             >

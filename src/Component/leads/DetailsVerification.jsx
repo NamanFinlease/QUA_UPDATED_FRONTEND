@@ -403,7 +403,7 @@ const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanV
     <Box
       sx={{
         boxShadow: "0px 0px 5px 5px rgba(0,0,0,0.1)",
-        width: "80%",
+        width: "100%",
         borderRadius: "0px 20px 0px 20px",
         padding: "20px",
         margin: "0px auto",
