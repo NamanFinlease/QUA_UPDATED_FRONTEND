@@ -75,9 +75,6 @@ const Residence = ({ residence }) => {
     borderRadius: '0px 20px',
     background: colors.white[100],
     boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
-    '& .MuiTableCell-root':{
-      color:colors.black[100],
-    }
   };
   
   
@@ -102,7 +99,7 @@ const Residence = ({ residence }) => {
 
   return (
     <>
-      <Accordion style={accordionStyles}>
+      <Accordion style={accordionStyles} sx={{boxShadow:"0px 0px 10px rgb(0,0,0,0.2)",}}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon sx={{ color: colors.primary[400] }} />}
           aria-controls="panel1a-content"
@@ -124,7 +121,7 @@ const Residence = ({ residence }) => {
                       color:colors.black[100],
                     },
                     '& .MuiOutlinedInput-notchedOutline':{
-                      borderColor:colors.black[100],
+                      borderColor:colors.primary[400],
                     },
                     '& .MuiInputLabel-root': { 
                       color: colors.black[100] 
@@ -136,7 +133,7 @@ const Residence = ({ residence }) => {
                       color: colors.black[100] 
                     },
                     '&:hover':{
-                      '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.black[100] },
+                      '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                     },
                   }}
                 >

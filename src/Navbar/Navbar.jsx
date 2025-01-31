@@ -61,11 +61,6 @@ const Navbar = () => {
             confirmButtonColor: colors.primary[400],
             cancelButtonColor: colors.redAccent[500],
             confirmButtonText: "Yes, switch role",
-            customClass: {
-                popup:{
-                    borderRadius:"0px 50px",
-                },
-            },
         }).then((result) => {
             if (result.isConfirmed) {
                 setActiveRole(selectedRole); // Set the new active role

@@ -145,7 +145,7 @@ const Employment = ({ employmentData }) => {
                       color:colors.black[100],
                     },
                     '& .MuiOutlinedInput-notchedOutline':{
-                      borderColor:colors.black[100],
+                      borderColor:colors.primary[400],
                     },
                     '& .MuiInputLabel-root': { 
                       color: colors.black[100] 
@@ -157,7 +157,7 @@ const Employment = ({ employmentData }) => {
                       color: colors.black[100] 
                     },
                     '&:hover':{
-                      '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.black[100] },
+                      '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                     },
                   }}
                 >
