@@ -50,7 +50,7 @@ const Cam = ({id}) => {
 
   useEffect(() => {
     if (getCamSuccess && data?.details) {
-      const details = data.details.details;  // Access the deeply nested object
+      const details = data.details;  // Access the deeply nested object
       setFormData({
         leadId: data.details?.leadId || 0,                // Lead ID
         salaryDate1: details?.salaryDate1 || '',          // Salary Date 1
@@ -72,7 +72,7 @@ const Cam = ({id}) => {
         netDisbursalAmount: details?.netDisbursalAmount || 0,         // Loan Amount
         loanRecommended: details?.loanRecommended || 0,   // Loan Recommended
         disbursalDate: details?.disbursalDate && formatDate(details?.disbursalDate) || '-',     // Disbursal Date
-        finalsalaryToIncomeRatioPercentage: details?.finalsalaryToIncomeRatioPercentage || '-',     // Disbursal Date
+        finalSalaryToIncomeRatioPercentage: details?.finalSalaryToIncomeRatioPercentage || '-',     // Disbursal Date
         repaymentDate: details?.repaymentDate && formatDate(details?.repaymentDate) || '-',     // Repayment Date
         adminFeePercentage: details?.adminFeePercentage || '',  // Admin Fee Inc. GST (%)
         totalAdminFeeAmount: details?.totalAdminFeeAmount || '0',  // Admin Fee Inc. GST (%)
@@ -174,7 +174,7 @@ const Cam = ({id}) => {
                       <TableCell>Loan Recommended</TableCell>
                       <TableCell>{formData?.loanRecommended}</TableCell>
                       <TableCell>Final Salary To Income Ratio</TableCell>
-                      <TableCell>{formData?.finalsalaryToIncomeRatioPercentage}%</TableCell>
+                      <TableCell>{formData?.finalSalaryToIncomeRatioPercentage}%</TableCell>
                       
                     </TableRow>
                     <TableRow>
