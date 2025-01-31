@@ -203,7 +203,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
             // });
             const Toast = Swal.mixin({
                 toast: true,
-                position: "top-end",
+                position: "bottom-end",
                 showConfirmButton: false,
                 timer: 3000,
                 timerProgressBar: true,
@@ -214,7 +214,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
               });
               Toast.fire({
                 icon: "success",
-                title: "Lead Forwarded to Credit Manager!`"
+                title: "Lead Forwarded!`"
               });
             navigate("/lead-process")
         }
@@ -364,7 +364,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
 
                 {/* Render buttons if no action is selected */}
                 {(!actionType && !applicationProfile?.eSigned && !applicationProfile?.isDisbursed) && (
-                    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: 2 }}>
+                    <Box sx={{ display: 'flex',flexWrap:"wrap", justifyContent: 'center', gap: 2, marginTop: 2 }}>
                         {
                             activeRole === "sanctionHead" &&
                             <>

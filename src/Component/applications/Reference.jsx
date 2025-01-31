@@ -24,8 +24,30 @@ const Reference = ({ reference }) => {
   const [updatePersonalDetails, { data, isSuccess, isLoading, isError, error }] = useUpdatePersonalDetailsMutation();
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
-    resolver: yupResolver(referenceSchema)
+    resolver: yupResolver(referenceSchema),
+    defaultValues: {
+      reference1: referenceDetails?.[0] || { name: '', mobile: '', relation: '' },
+      reference2: referenceDetails?.[1] || { name: '', mobile: '', relation: '' },
+    },
   });
+
+  useEffect(() => {
+    if (reference.length > 0) {
+      setReferenceDetails(reference);
+      reset({
+        reference1: reference[0] || { name: '', mobile: '', relation: '' },
+        reference2: reference[1] || { name: '', mobile: '', relation: '' },
+      });
+    }
+  }, [reference, reset]);
+  
+  const handleEdit = () => {
+    reset({
+      reference1: referenceDetails?.[0] || { name: '', mobile: '', relation: '' },
+      reference2: referenceDetails?.[1] || { name: '', mobile: '', relation: '' },
+    });
+    setOpenEdit(true);
+  };
 
   const onSubmit = (data) => {
     const newData = { reference: [{ ...data.reference1 }, { ...data.reference2 }] };
@@ -35,6 +57,7 @@ const Reference = ({ reference }) => {
     updatePersonalDetails({ id, updates: newData })
     setOpenEdit(false)
   };
+  
 
   useEffect(() => {
     if (isSuccess) {
@@ -95,9 +118,11 @@ const Reference = ({ reference }) => {
                       color: colors.black[100] 
                     },
                     '& .MuiInputBase-root': {
-                      borderBottom: `2px solid ${colors.black[100]}`,
                       color:colors.black[100],
                     },
+                    '& .MuiOutlinedInput-notchedOutline':{
+                      borderColor:colors.primary[400],
+                    }
                   }}
                 >
                   {/* Reference 1 */}
@@ -111,7 +136,7 @@ const Reference = ({ reference }) => {
                           <TextField
                             label="Name"
                             fullWidth
-                            variant="standard"
+                            variant="outlined"
                             error={!!errors.reference1?.name}
                             helperText={errors.reference1?.name?.message}
                             {...field}
@@ -125,7 +150,7 @@ const Reference = ({ reference }) => {
                           <TextField
                             label="Mobile"
                             fullWidth
-                            variant="standard"
+                            variant="outlined"
                             error={!!errors.reference1?.mobile}
                             helperText={errors.reference1?.mobile?.message}
                             {...field}
@@ -138,7 +163,7 @@ const Reference = ({ reference }) => {
                         render={({ field }) => (
                           <FormControl
                             fullWidth
-                            variant="standard"
+                            variant="outlined"
                             error={!!errors.reference1?.relation}
                           >
                             <InputLabel>Relation</InputLabel>
@@ -146,6 +171,7 @@ const Reference = ({ reference }) => {
                               {...field}
                               label="Relation"
                             >
+                              <MenuItem value="" disabled>Select Relation</MenuItem>
                               <MenuItem value="Friend">Friend</MenuItem>
                               <MenuItem value="Colleague">Colleague</MenuItem>
                               <MenuItem value="Relative">Relative</MenuItem>
@@ -169,7 +195,7 @@ const Reference = ({ reference }) => {
                           <TextField
                             label="Name"
                             fullWidth
-                            variant="standard"
+                            variant="outlined"
                             error={!!errors.reference2?.name}
                             helperText={errors.reference2?.name?.message}
                             {...field}
@@ -183,7 +209,7 @@ const Reference = ({ reference }) => {
                           <TextField
                             label="Mobile"
                             fullWidth
-                            variant="standard"
+                            variant="outlined"
                             error={!!errors.reference2?.mobile}
                             helperText={errors.reference2?.mobile?.message}
                             {...field}
@@ -196,7 +222,7 @@ const Reference = ({ reference }) => {
                         render={({ field }) => (
                           <FormControl
                             fullWidth
-                            variant="standard"
+                            variant="outlined"
                             error={!!errors.reference2?.relation}
                           >
                             <InputLabel>Relation</InputLabel>
@@ -204,6 +230,7 @@ const Reference = ({ reference }) => {
                               {...field}
                               label="Relation"
                             >
+                              <MenuItem value="" disabled>Select Relation</MenuItem>
                               <MenuItem value="Friend">Friend</MenuItem>
                               <MenuItem value="Colleague">Colleague</MenuItem>
                               <MenuItem value="Relative">Relative</MenuItem>
@@ -236,7 +263,10 @@ const Reference = ({ reference }) => {
                           color:colors.white[100],
                         }
                       }}
-                      onClick={() => reset()}
+                      onClick={() =>{
+                        reset();
+                        setOpenEdit(false);
+                      }}
                     >Cancel
                     </Button>
                     <Button
@@ -285,7 +315,7 @@ const Reference = ({ reference }) => {
                 {(activeRole === "creditManager") && <Box display="flex" justifyContent="flex-end" sx={{ my: 2 }}>
                   <Button
                     variant="contained"
-                    onClick={() => setOpenEdit(true)}
+                    onClick={handleEdit}
                     sx={{
                       backgroundColor: colors.primary[400],
                       color: colors.white[100],

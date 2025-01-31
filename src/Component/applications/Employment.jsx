@@ -315,12 +315,12 @@ const Employment = ({ employmentData }) => {
             </LocalizationProvider>
           ) : (
             <>
-              <Paper elevation={3} sx={{background:colors.white[100], borderRadius:"0px 20px"}}>
+              <Paper elevation={3} sx={{background:colors.white[100], borderRadius:"0px 20px", overflow: 'hidden', }}>
                 <TableContainer sx={{'& .MuiTableCell-root':{color:colors.black[100],}}}>
                   <Table>
                     <TableBody>
                       {columns?.map((column, index) => (
-                        <TableRow key={index} sx={{borderBottom:`2px solid ${colors.primary[400]}`}}>
+                        <TableRow key={index} sx={{borderBottom:`2px solid ${colors.primary[400]}`,}}>
                           <TableCell><strong>{column.label}:</strong> {column.value}</TableCell>
                           <TableCell><strong>{column.label2}:</strong> {column.value2}</TableCell>
                         </TableRow>

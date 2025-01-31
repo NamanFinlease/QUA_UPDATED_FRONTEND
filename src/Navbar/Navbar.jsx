@@ -267,6 +267,7 @@ const Navbar = () => {
                                 ".MuiPaper-root": {
                                     background: colors.white[100],
                                     color: colors.primary[400],
+                                    borderRadius: "20px 0px",
                                 },
                             }}
                         >

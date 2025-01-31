@@ -196,6 +196,9 @@ const handleAccordionToggle = (panel) => (event, isExpanded) => {
                 "& .css-oztf1a-MuiPaper-root-MuiAccordion-root:first-of-type":{
                     borderTopRightRadius:"20px !important",
                 },
+                "& .css-oztf1a-MuiPaper-root-MuiAccordion-root:last-of-type":{
+                    borderBottomRightRadius:"15px !important",
+                },
         }}
         >
         <IconButton

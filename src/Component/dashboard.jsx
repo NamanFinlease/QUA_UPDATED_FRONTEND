@@ -424,7 +424,7 @@
 
 
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, useTheme, useMediaQuery } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
@@ -438,6 +438,7 @@ import useStore from '../Store';
 import Header from "./Header";
 import GlobalBox from './GlobalBox';
 // import Responsive from '../utils/Responsive';
+import Swal from 'sweetalert2';
 import { useGetEmployeesQuery, useGetLeadTotalRecordsQuery, useGetTotalRecordsForSupervisorQuery } from '../Service/Query';
 
 const Dashboard = () => {
@@ -446,6 +447,9 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const [toastShown, setToastShown] = useState(false);
+    
 
   // Media Queries for responsive design
   const isDesktop = useMediaQuery('(max-width:1024px)');
@@ -456,7 +460,35 @@ const Dashboard = () => {
   const { data } = useGetLeadTotalRecordsQuery();
   const { data: supData } = useGetTotalRecordsForSupervisorQuery();
 
-  console.log("The active log is ",activeRole);
+  // Toast configuration
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "bottom-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  });
+
+  // Show toast notification on successful login
+  useEffect(() => {
+    let login = true
+    if (login && !toastShown) {
+      Toast.fire({
+        icon: "success",
+        color: colors.primary[500],
+        title: "Logged in Successfully!!!"
+
+      });
+      setToastShown(true); // Set the state to true after showing the toast
+    }
+  }, [login, toastShown]);
+
+
+  console.log("The active log is",activeRole);
   if( activeRole === 'supervisor'){
     const  data = useGetTotalRecordsForSupervisorQuery();
     console.log("The data is ",data)
@@ -470,7 +502,7 @@ const Dashboard = () => {
   admin: {
     leadNew: {
       icon: <NewReleasesIcon className='mt-3'
-      sx={{ color: colors.primary[400], width:'100%' }} />, // Green color
+      sx={{ color: colors.primary[400], width:'100%' }} />,
       path: "/lead-new",
       title: 'New Leads',
       no : data?.leads?.newLeads || 0,
@@ -479,50 +511,50 @@ const Dashboard = () => {
       icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/lead-process",
       title: 'Leads In Process',
-      no : 10
+      no : data?.leads?.allocatedLeads || 0
     },
     leadHold: {
       icon: <PauseIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/lead-hold",
       title: 'Leads Held',
-      no : 10
+      no : data?.leads?.heldLeads || 0
     },
     leadRejected: {
       icon: <CancelIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/rejected-leads",
       title: 'Leads Rejected',
-      no : 10
+      no : data?.leads?.rejectedLeads || 0
     },
     newApplication: {
       icon: <NewReleasesIcon className='mt-3'
-      sx={{ color: colors.primary[400], width:'100%', }} />, // Green color
+      sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/new-applications",
       title: 'New Applications',
-      no : 10
+      no : data?.applications?.newApplications || 0
     },
     applicationProcess: {
       icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/application-process",
       title: 'Applications In Process',
-      no : 10
+      no : data?.applications?.allocatedApplications || 0
     },
     applicationHold: {
       icon: <PauseIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/applications-held",
       title: 'Applications Held',
-      no : 10
+      no : data?.applications?.heldApplications || 0
     },
     applicationRejected: {
       icon: <CancelIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/rejected-applications",
       title: 'Applications Rejected',
-      no : 10
+      no : data?.applications?.rejectedApplications || 0
     },
   },
   screener: {
     leadNew: {
       icon: <NewReleasesIcon className='mt-3'
-      sx={{ color: colors.primary[400], width:'100%', }} />, // Green color
+      sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/lead-new",
       title: 'New Leads',
       no : data?.leads?.newLeads || 0
@@ -551,7 +583,7 @@ const Dashboard = () => {
   creditManager: {
     newApplication: {
       icon: <NewReleasesIcon className='mt-3'
-      sx={{ color: colors.primary[400], width:'100%',  }} />, // Green color
+      sx={{ color: colors.primary[400], width:'100%',  }} />,
       path: "/new-applications",
       title: 'New Applications',
       no : data?.applications?.newApplications || 0
@@ -580,7 +612,7 @@ const Dashboard = () => {
   sanctionHead: {
     leadNew: {
       icon: <NewReleasesIcon className='mt-3'
-      sx={{ color: colors.primary[400], width:'100%',  }} />, // Green color
+      sx={{ color: colors.primary[400], width:'100%',  }} />,
       path: "/lead-new",
       title: 'New Leads',
       no : data?.leads?.newLeads || 0
@@ -607,7 +639,7 @@ const Dashboard = () => {
     },
     newApplication: {
       icon: <NewReleasesIcon className='mt-3'
-      sx={{ color: colors.primary[400], width:'100%', }} />, // Green color
+      sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/new-applications",
       title: 'New Applications',
       no : data?.applications?.newApplications || 0
@@ -648,7 +680,7 @@ const Dashboard = () => {
   disbursalManager: {
     leadNew: {
       icon: <NewReleasesIcon className='mt-3'
-      sx={{ color: colors.primary[400], width:'100%', }} />, // Green color
+      sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/disbursal-new",
       title: 'New ',
       no : data?.disbursal?.newDisbursals || 0
@@ -665,7 +697,7 @@ const Dashboard = () => {
   disbursalHead: {
     newDisbursal: {
       icon: <NewReleasesIcon className='mt-3'
-      sx={{ color: colors.primary[400], width:'100%', }} />, // Green color
+      sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/disbursal-new",
       title: 'New Disburse ',
       no : data?.disbursal?.newDisbursals || 0
@@ -678,7 +710,7 @@ const Dashboard = () => {
     },
     disbursePending: {
       icon: <NewReleasesIcon className='mt-3'
-      sx={{ color: colors.primary[400], width:'100%', }} />, // Green color
+      sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/disbursal-pending",
       title: 'Disbursal Pending',
       no : data?.disbursal?.pendingDisbursals || 0
@@ -697,7 +729,7 @@ const Dashboard = () => {
     
       leadNew: {
         icon: <NewReleasesIcon className='mt-3'
-        sx={{ color: colors.primary[400], width:'100%',}} />, // Green color
+        sx={{ color: colors.primary[400], width:'100%',}} />,
         path: "/lead-new",
         title: 'Todays Leads',
         no : supData?.leadsGeneratedToday
@@ -718,7 +750,7 @@ const Dashboard = () => {
         icon: <CancelIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
         path: "/rejected-leads",
         title: 'Leads Rejected',
-        no : 10
+        no : data?.leads?.rejectedleads || 0
       },
     },
 
@@ -726,7 +758,7 @@ const Dashboard = () => {
     
       leadNew: {
         icon: <NewReleasesIcon className='mt-3'
-        sx={{ color: colors.primary[400], width:'100%', }} />, // Green color
+        sx={{ color: colors.primary[400], width:'100%', }} />,
         path: "/pending-verification",
         title: 'Pending verification',
         no : supData?.leadsGeneratedToday
@@ -742,7 +774,7 @@ const Dashboard = () => {
         icon: <CancelIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
         path: "/rejected-leads",
         title: 'Leads Rejected',
-        no : 10
+        no : data?.leads?.rejectedleads || 0
       },
     }
   

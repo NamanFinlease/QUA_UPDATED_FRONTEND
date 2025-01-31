@@ -86,6 +86,7 @@ const LoanInfo = ({ disburse }) => {
             color:colors.black[100],
             borderRadius: '0px 20px',
             lineHeight: '2.5',
+            overflow: 'hidden',
           }}
         >
           {/* Map over the data array to create each field in a row */}

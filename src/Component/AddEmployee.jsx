@@ -397,7 +397,7 @@ const AddEmployee = () => {
 
     return (
         <>
-            <Box sx={{ padding: '20px', background: colors.white[100], minHeight: '80vh' }}>
+            <Box sx={{ margin:"20px", padding: '30px', background: colors.white[100], boxShadow: '0 0px 20px rgba(0,0,0,0.1)', borderRadius: '0px 20px' }}>
                 <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bold', color: colors.primary[400] }}>
                     Add Employee
                 </Typography>
@@ -408,10 +408,10 @@ const AddEmployee = () => {
                     onSubmit={handleSubmit(onSubmit)}
                     sx={{
                         background: colors.white[100],
-                        border:`1px solid ${colors.primary[400]}`,
                         padding: '30px',
-                        borderRadius: '10px',
-                        boxShadow: '0 0px 18px rgba(0,0,0,0.1)',
+                        margin: '20px auto',
+                        borderRadius: '0px 20px',
+                        boxShadow: '0 0 20px rgba(0,0,0,0.1)',
                         display: 'flex',
                         flexWrap: 'wrap',
                         gap: '20px',
@@ -590,7 +590,12 @@ const AddEmployee = () => {
                         name="empRole"
                         control={control}
                         render={({ field, fieldState }) => (
-                            <FormControl variant="outlined" fullWidth required error={!!fieldState.error}>
+                            <FormControl 
+                                variant="outlined"
+                                fullWidth 
+                                required 
+                                error={!!fieldState.error}
+                            >
                                 <InputLabel htmlFor="emp-role">Employee Role</InputLabel>
                                 <Select
                                     {...field}
@@ -607,8 +612,6 @@ const AddEmployee = () => {
                                         <Box 
                                             sx={{ 
                                                 display: 'flex',
-                                                color:colors.black[100],
-                                                background:colors.white[100], 
                                                 flexWrap: 'wrap', 
                                                 gap: 0.5,
                                             }}
@@ -620,8 +623,8 @@ const AddEmployee = () => {
                                                     key={value}
                                                     label={selectedRole.label}
                                                     sx={{
-                                                        color:colors.black[100],
-                                                        background:colors.grey[300],
+                                                        color:colors.white[100],
+                                                        background:colors.primary[100],
                                                     }}
                                                     onDelete={() => {
                                                         const newSelectedRoles = selected.filter(role => role !== value);
@@ -630,6 +633,7 @@ const AddEmployee = () => {
                                                     }}
                                                     deleteIcon={
                                                         <CancelIcon
+                                                            style={{color:colors.white[100]}}
                                                             onMouseDown={(e) => e.stopPropagation()}
                                                         />
                                                     }
@@ -676,6 +680,7 @@ const AddEmployee = () => {
                         variant="contained" 
                         sx={{ 
                             mt: 3, 
+                            borderRadius:"0px 10px",
                             background:colors.primary[400], 
                             color: colors.white[100],
                             ":hover": { background: colors.primary[100] }

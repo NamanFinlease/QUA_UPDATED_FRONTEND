@@ -385,50 +385,11 @@ const RepaymentDetails = (disburse) => {
                           pattern: '[0-9]*',
                           inputMode: 'numeric',
                         }}
-                        label="Payment Recieved"
+                        label="Payment Received"
                         variant="outlined"
                         error={!!fieldState.error}
                         helperText={fieldState.error ? fieldState.error.message : ''}
                       />
-                    )}
-                  />
-                </Box>
-
-                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
-                  <Controller
-                    name="referenceNumber"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                      <TextField
-                        {...field}
-                        required
-                        fullWidth
-                        label="Reference No."
-                        variant="outlined"
-                        error={!!fieldState.error}
-                        helperText={fieldState.error ? fieldState.error.message : ''}
-                      />
-                    )}
-                  />
-                </Box>
-
-                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
-                  <Controller
-                    name="paymentMode"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                      <FormControl variant="outlined" fullWidth required error={!!fieldState.error}>
-                        <InputLabel htmlFor="payment-select">Payment Mode</InputLabel>
-                        <Select
-                            {...field}
-                            input={<OutlinedInput label="Payment Mode" id="payment-select" />}
-                        >
-                            <MenuItem value="" disable>Select</MenuItem>
-                            <MenuItem value="upi">UPI</MenuItem>
-                            <MenuItem value="cash">Cash</MenuItem>
-                        </Select>
-                        {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
-                    </FormControl>
                     )}
                   />
                 </Box>
@@ -452,6 +413,47 @@ const RepaymentDetails = (disburse) => {
                         </Select>
                         {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
                       </FormControl>  
+                    )}
+                  />
+                </Box>
+
+                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%',} }}>
+                  <Controller
+                    name="paymentMode"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <FormControl variant="outlined" fullWidth required error={!!fieldState.error}>
+                        <InputLabel htmlFor="payment-select">Payment Mode</InputLabel>
+                        <Select
+                            {...field}
+                            input={<OutlinedInput label="Payment Mode" id="payment-select" />}
+                        >
+                            <MenuItem value="" disable>Select</MenuItem>
+                            <MenuItem value="upi" name="upiPayment">UPI</MenuItem>
+                            <MenuItem value="cash" name="cashpayment">Cash</MenuItem>
+                            <MenuItem value="cheque" name="chequePayment">Cheque</MenuItem>
+                            <MenuItem value="Bank Transfer" name="bankTransferPayment">Bank Transfer</MenuItem>
+                        </Select>
+                        {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
+                    </FormControl>
+                    )}
+                  />
+                </Box>
+
+                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
+                  <Controller
+                    name="referenceNumber"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        {...field}
+                        required
+                        fullWidth
+                        label="Reference No."
+                        variant="outlined"
+                        error={!!fieldState.error}
+                        helperText={fieldState.error ? fieldState.error.message : ''}
+                      />
                     )}
                   />
                 </Box>
@@ -511,7 +513,7 @@ const RepaymentDetails = (disburse) => {
                 </Box>
 
                 <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 100%' },}}>
-                  <Stack spacing={1} alignItems="center">
+                  <Stack spacing={1} flexDirection="row" flexWrap="wrap" alignItems="center">
                     <input
                       type="file"
                       id="paymentUpload"
@@ -522,9 +524,10 @@ const RepaymentDetails = (disburse) => {
                         <Button 
                           variant="contained" 
                           sx={{
-                            color:colors.white[100], 
-                            background:colors.primary[400], 
-                            borderRadius:"0px 10px"
+                            color:colors.black[100], 
+                            background:colors.white[100], 
+                            borderRadius:"0px 10px",
+                            border:`1px solid ${colors.primary[400]}`,
                           }} 
                           onClick={handleClickChooseFile}
                           component="span"
@@ -536,7 +539,6 @@ const RepaymentDetails = (disburse) => {
                       {selectedFile && (
                         <Stack
                           direction="row"
-                          spacing={1}
                           alignItems="center"
                           paddingLeft="10px"
                         >
@@ -559,7 +561,7 @@ const RepaymentDetails = (disburse) => {
                         borderRadius:"0px 10px",
                         ":hover": { background: colors.primary[100] }
                       }}>
-                      Upload Payment
+                      Add Payment
                   </Button>
                 </Box>
 

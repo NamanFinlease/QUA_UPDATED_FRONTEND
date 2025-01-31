@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { tokens } from '../theme';
-import { useTheme } from '@mui/material';
+import { useTheme, Button } from '@mui/material';
 
 const AddHolidayDetails = () => {
   const [holidayDate, setHolidayDate] = useState('');
@@ -19,14 +19,15 @@ const AddHolidayDetails = () => {
   return (
     <div className="container mt-5">
       
-      <form onSubmit={handleSubmit} className="p-4 shadow bg-light" style={{ maxWidth: '600px', margin: '0 auto', borderRadius:"0px 20px" }}>
-      <h3 className="text-center mb-4" style={{color:colors.primary[400]}}>Add Holiday Details</h3>
+      <form onSubmit={handleSubmit} className="p-4" style={{ maxWidth: '600px', margin: '0 auto', borderRadius:"0px 20px", boxShadow:"0px 0px 20px rgb(0,0,0,0.1)" }}>
+      <h4 className="text-center mb-4" style={{color:colors.primary[400]}}>Add Holiday Details</h4>
         <div className="form-group mb-3">
           <label htmlFor="holidayDate">Holiday Date</label>
           <input
             type="date"
             className="form-control"
             id="holidayDate"
+            style={{borderColor:colors.primary[400]}}
             value={holidayDate}
             onChange={(e) => setHolidayDate(e.target.value)}
             required
@@ -38,6 +39,7 @@ const AddHolidayDetails = () => {
             type="text"
             className="form-control"
             id="holidayName"
+            style={{borderColor:colors.primary[400]}}
             value={holidayName}
             onChange={(e) => setHolidayName(e.target.value)}
             placeholder="Enter Holiday Name"
@@ -45,15 +47,16 @@ const AddHolidayDetails = () => {
           />
         </div>
         <div className="d-flex justify-content-center">
-          <button 
+          <Button 
             type="submit" 
-            style={{
+            variant="contained"
+            sx={{
               borderRadius:"0px 10px",
               background:colors.primary[400],
             }}
           >
             Add Holiday
-          </button>
+          </Button>
         </div>
       </form>
     </div>

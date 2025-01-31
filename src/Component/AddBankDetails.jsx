@@ -133,7 +133,6 @@ const AddBankDetails = () => {
                             marginBottom: "24px",
                             borderBottom: `3px solid ${colors.primary[400]}`,
                             paddingBottom: "16px",
-                            letterSpacing: "0.5px",
                         }}
                     >
                         Add Bank Details
@@ -203,14 +202,12 @@ const AddBankDetails = () => {
                                 <Box
                                     key={index}
                                     sx={{
-                                        flex: "1 1 calc(50% - 16px)", // 50% width with space
+                                        // flex: "1 1 calc(50% - 16px)", // 50% width with space
+                                        flex: "1 1 100%", // Full width
                                         padding: "8px",
                                         borderRadius: "0px 20px",
                                         backgroundColor: colors.white[100],
                                         boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-                                        "&:hover": {
-                                            boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)",
-                                        },
                                     }}
                                 >
                                     <Typography
@@ -233,6 +230,9 @@ const AddBankDetails = () => {
                                         disabled={field.disabled} // Conditionally disable
                                         InputProps={field.InputProps || {}}
                                         sx={{
+                                            '& .MuiOutlinedInput-notchedOutline':{
+                                                borderColor:colors.primary[400],
+                                            },
                                             "& .MuiOutlinedInput-root": {
                                                 backgroundColor: colors.white[100],
                                                 "& fieldset": {
@@ -245,10 +245,13 @@ const AddBankDetails = () => {
                                                     color: colors.black[100],
                                                     "&:disabled": {
                                                         borderColor:colors.black[100],
-                                                        color: colors.black[100], // Ensure black font color when disabled
-                                                        WebkitTextFillColor: colors.black[100], // Override text fill color
+                                                        color: colors.black[100],
+                                                        WebkitTextFillColor: colors.black[100], 
+                                                        '&:hover':{
+                                                            borderColor:colors.black[100],
+                                                        }
                                                     },
-                                                }, // Set input text color to black
+                                                },
                                             },
                                         }}
                                     />
@@ -260,20 +263,13 @@ const AddBankDetails = () => {
                             <Button
                                 type="submit"
                                 variant="contained"
-                                color="primary"
                                 disabled={isLoading}
                                 sx={{
                                     fontWeight: "600",
-                                    fontSize: "1rem",
+                                    fontSize: "14px",
                                     textTransform: "none",
-                                    padding: "8px 20px",
                                     borderRadius: "0px 10px",
                                     backgroundColor: colors.primary[400],
-                                    boxShadow:
-                                        "0px 4px 10px rgba(66, 165, 245, 0.3)",
-                                    "&:hover": {
-                                        backgroundColor: "#1e88e5",
-                                    },
                                 }}
                             >
                                 {isLoading ? <CircularProgress size={20} color="inherit" /> : "Submit"}

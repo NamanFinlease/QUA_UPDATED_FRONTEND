@@ -50,7 +50,6 @@ const Residence = ({ residence }) => {
         residingSince: residence?.residingSince.split(" ")[0] || '',
       })
     } else {
-
       reset();
     }
   };
@@ -112,7 +111,7 @@ const Residence = ({ residence }) => {
           <Typography variant="h6" style={{ fontWeight: '600' }}>Residence Information</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Paper elevation={3} style={paperStyles}>
+          <Paper style={paperStyles}>
             {(isEditingResidence || !residence) ? (
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Box 

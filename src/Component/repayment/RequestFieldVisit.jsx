@@ -120,8 +120,6 @@ const RequestFieldVisit = () => {
               <TextField
                 label="Visit Type"
                 name="visitType"
-                type="date"
-                InputLabelProps={{ shrink: true }}
                 fullWidth
                 value={formData.visitType}
                 // onChange={handleChange}
@@ -179,7 +177,7 @@ const RequestFieldVisit = () => {
                 // onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={6}>
               <TextField
                 label="Action"
                 name="visitAction"

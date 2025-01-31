@@ -66,7 +66,7 @@ const LoginPage = () => {
         alignItems: 'center',
         minHeight: '100vh',
         // backgroundColor: colors.white[100],
-        backgroundImage: 'url("../../src/assets/image/loginbackground.jpg")', // Replace with the actual image URL
+        backgroundImage: 'url("../../src/assets/image/loginbackground.jpg")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
@@ -88,8 +88,9 @@ const LoginPage = () => {
           },
         }}
       >
-        <Typography variant="h4" gutterBottom color={colors.black[100]} align="center">
-          Login
+        <img src="../../src/assets/image/Qua_logo.png" alt="background" width="100px" />
+        <Typography variant="h4" gutterBottom color={colors.black[100]} margin="20px 0px" align="center">
+          CRM Login
         </Typography>
         <form noValidate onSubmit={handleSubmit}>
           <Box sx={{ mb: 2 }}>
@@ -104,8 +105,8 @@ const LoginPage = () => {
               InputProps={{ style: { color: colors.primary[400] } }}
               sx={{
                 '& input:-webkit-autofill': {
-                  WebkitBoxShadow: '0 0 0 100px #424242 inset',
-                  WebkitTextFillColor: '#fff',
+                  WebkitBoxShadow: '0 0 0 100px rgb(255, 255, 255) inset',
+                  WebkitTextFillColor: colors.primary[400],
                   transition: 'background-color 5000s ease-in-out 0s',
                 },
               }}
@@ -145,6 +146,7 @@ const LoginPage = () => {
          
           <Button
             type="submit"
+            variant='contained'
             fullWidth
             disabled={isLoading}
             sx={{

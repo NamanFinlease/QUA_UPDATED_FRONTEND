@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { tokens } from '../theme';
-import { useTheme } from '@mui/material';
+import { useTheme, Button } from '@mui/material';
 import { useBulkUploadMutation } from '../Service/Query';
 
 const ImportCSV = () => {
@@ -27,11 +27,11 @@ const ImportCSV = () => {
   };
 
   return (
-    <div className="container d-flex flex-column align-items-center mt-5" style={{ color: colors.primary[400] }}>
-      <h2 className="text-center mb-4">Import CSV File</h2>
+    <div className="container d-flex flex-column align-items-center mt-5" style={{ color: colors.primary[400],borderRadius:'0px 20px', boxShadow:'0px 0px 20px rgba(0,0,0,0.2)' }} >
+      <h4 className="text-center pb-3" style={{borderBottom:`3px solid ${colors.primary[400]}`, width:'80%'}}>Import CSV File</h4>
       <form 
         onSubmit={handleSubmit} 
-        className="p-4 shadow rounded bg-light" 
+        className="p-4" 
         style={{ width: '400px' }}
       >
         <div className="form-group mb-3">
@@ -39,20 +39,25 @@ const ImportCSV = () => {
             Choose CSV File
           </label>
           <input 
-            type="file" 
+            type="file"
+            style={{borderColor:colors.primary[400]}}
             className="form-control" 
             id="csvInput" 
             accept=".csv" 
             onChange={handleFileChange} 
           />
         </div>
-        <button 
-          type="submit" 
-          className="btn btn-primary w-100"
-          style={{ backgroundColor: colors.primary[400], border: 'none' }}
+        <Button 
+          type="submit"
+          variant='contained'
+          sx={{ 
+            backgroundColor: colors.primary[400], 
+            color: colors.white[100],
+            borderRadius: '0px 10px',
+          }}
         >
           Import CSV
-        </button>
+        </Button>
       </form>
     </div>
   );
