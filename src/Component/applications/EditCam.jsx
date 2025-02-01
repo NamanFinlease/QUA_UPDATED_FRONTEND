@@ -15,6 +15,12 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+// import DatePicker from 'react-datepicker'; // Import react-datepicker
+// import "react-datepicker/dist/react-datepicker.css";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 import { useUpdateCamDetailsMutation } from '../../Service/applicationQueries';
 import Swal from 'sweetalert2';
 import { useParams } from 'react-router-dom';
@@ -30,6 +36,8 @@ const EditCam = ({ camData, setIsEditing }) => {
   // Color theme
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const today = new Date();
 
   const [updateCamDetails, { data, isLoading, isSuccess, isError, error }] = useUpdateCamDetailsMutation();
 
@@ -80,6 +88,7 @@ const EditCam = ({ camData, setIsEditing }) => {
     }
 };
 
+  // console.log(formData)
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => {
@@ -595,10 +604,84 @@ const EditCam = ({ camData, setIsEditing }) => {
             InputLabelProps={{ shrink: true }}
             required
           />
-        </Box>
-
+        </Box>  
       {/* Eighth Row (4 items) */}
-      
+        {/* <Box flex="1 1 46%">
+          <DatePicker
+            selected={formData.disbursalDate ? new Date(formData.disbursalDate) : null}
+            onChange={(date) => setFormData((prev) => ({ ...prev, disbursalDate: date }))}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="Disbursal Date"
+            customInput={
+              <TextField
+                label="Disbursal Date"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                required
+              />
+            }
+          />
+        </Box>
+        <Box flex="1 1 46%">
+          <DatePicker
+            selected={formData.repaymentDate ? new Date(formData.repaymentDate) : null}
+            onChange={(date) => setFormData((prev) => ({ ...prev, repaymentDate: date }))}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="Repayment Date"
+            customInput={
+              <TextField
+                label="Repayment Date"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                required
+              />
+            }
+          />
+        </Box> */}
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Box flex="1 1 46%" sx={{'& .MuiButtonBase-root':{ color:colors.black[100]}}}>
+            <DatePicker
+                sx={{
+                  width: '100%',
+                }}
+                format="DD/MM/YYYY"
+                name='disbursalDate'
+                label="Disbursal Date"
+                value={formData.disbursalDate ? dayjs(formData.disbursalDate, 'DD/MM/YYYY') : null}
+                onChange={(newValue) => {
+                  setFormData((prev) => ({ ...prev, disbursalDate: newValue }));
+                  // console.log(newValue)
+                }}
+                // onChange={handleChange}
+                renderInput={(params) => (
+                  <TextField {...params} />
+                )}
+                required
+              />
+          </Box>
+        </LocalizationProvider>
+        {/* {console.log(formData.disbursalDate)} */}
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Box flex="1 1 46%" sx={{'& .MuiButtonBase-root':{ color:colors.black[100]}}}>
+            <DatePicker
+              sx={{
+                width: '100%',
+              }}
+              label="Repayment Date"
+              name='repaymentDate'
+              format="DD/MM/YYYY"
+              value={formData.repaymentDate ? dayjs(formData.repaymentDate, 'DD/MM/YYYY') : null}
+              onChange={(newValue) => {
+                setFormData((prev) => ({ ...prev, repaymentDate: newValue }));
+              }}
+              // onChange={handleChange}
+              renderInput={(params) => (
+                <TextField {...params} />
+              )}
+              required
+            />
+          </Box>
+        </LocalizationProvider> */}
         <Box flex="1 1 46%">
           <TextField
             label="Disbursal Date"

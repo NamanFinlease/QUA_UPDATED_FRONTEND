@@ -112,8 +112,13 @@ const Cam = ({id}) => {
                 <Table>
                   <TableBody >
                     <TableRow>
-                      <TableCell colSpan={5} align="center">
-                        Lead ID: {formData?.leadId}
+                      <TableCell colSpan={4} align="center">
+                        <b>Lead ID: {formData?.leadId}</b>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell colSpan={4} align="center">
+                        Credit Bureau Score: {formData?.creditBureauScore}
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -143,62 +148,58 @@ const Cam = ({id}) => {
                     <TableRow>
                       <TableCell>Net Salary</TableCell>
                       <TableCell>{formData?.actualNetSalary}</TableCell>
-                      <TableCell>Credit Bureau Score</TableCell>
-                      <TableCell>{formData?.creditBureauScore}</TableCell>
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Customer Type</TableCell>
                       <TableCell>{formData?.customerType}</TableCell>
+                    </TableRow>
+                    <TableRow>
                       <TableCell>Dedupe Check</TableCell>
                       <TableCell>{formData?.dedupeCheck}</TableCell>
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Customer Category</TableCell>
                       <TableCell>{formData?.customerCategory}</TableCell>
+                    </TableRow>
+                    <TableRow>
                       <TableCell>Obligations (Rs)</TableCell>
                       <TableCell>{formData?.obligations}</TableCell>
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Initial Salary To Income Ratio</TableCell>
                       <TableCell>  {formData?.salaryToIncomeRatio}%</TableCell>
+                    </TableRow>
+                    <TableRow>
                       <TableCell>ROI</TableCell>
                       <TableCell>{formData?.roi}%</TableCell>
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Processing Fee Inc. Gst(%)</TableCell> 
                       <TableCell>{formData?.adminFeePercentage}%</TableCell>
+                    </TableRow>
+                    <TableRow>
                       <TableCell>Eligible Loan</TableCell>
                       <TableCell>{formData?.eligibleLoan}</TableCell>
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Loan Recommended</TableCell>
                       <TableCell>{formData?.loanRecommended}</TableCell>
+                    </TableRow>
+                    <TableRow>
                       <TableCell>Final Salary To Income Ratio</TableCell>
                       <TableCell>{formData?.finalSalaryToIncomeRatioPercentage}%</TableCell>
-                      
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Net Disbursal Amount</TableCell>
                       <TableCell>{formData?.netDisbursalAmount}</TableCell>
+                    </TableRow>
+                    <TableRow>
                       <TableCell>Disbursal Date</TableCell>
                       <TableCell>{formData?.disbursalDate}</TableCell>
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Repayment Date</TableCell>
                       <TableCell>{formData?.repaymentDate}</TableCell>
+                    </TableRow>
+                    <TableRow>
                       <TableCell>Eligible Tenure</TableCell>
                       <TableCell>{formData?.eligibleTenure}</TableCell>
-                    </TableRow>
-                    {/* Additional missing fields based on your formData? object */}
-                    <TableRow>
                       <TableCell>Processing Fee Amount</TableCell>
                       <TableCell>{formData?.netAdminFeeAmount}</TableCell>
-                      <TableCell>Repayment Amount</TableCell>
-                      <TableCell>{formData?.repaymentAmount}</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell colSpan={1} align="center"  >Remarks</TableCell>
-                      <TableCell colSpan={3} align="center"  >{formData?.camRemarks}</TableCell>
+                      <TableCell colSpan={4} align='center'>
+                        <b>Repayment Amount: {formData?.repaymentAmount}</b>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell colSpan={4} align="center">Remarks: {formData?.camRemarks}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>

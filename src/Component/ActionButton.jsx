@@ -439,7 +439,6 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                             :
                                             <Button
                                                 variant="contained"
-                                                color="success"
                                                 onClick={() => handleApprove('')}
                                                 disabled={recommendApplicationLoading || recommendLeadloading}
                                                 sx={{
