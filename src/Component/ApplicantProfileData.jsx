@@ -26,6 +26,9 @@ const ApplicantProfileData = ({leadData}) => {
                 borderRadius: '0px 20px 0px 20px',
                 background: colors.white[100],
                 boxShadow:'0px 0px 30px rgba(0,0,0,0.1)',
+                '& .MuiPaper-root':{
+                    background:colors.white[100],
+                },
                 '& .MuiTableCell-root': {
                     color: colors.black[100], // Text color for table cells
                     borderBottom: '1px solid rgba(255, 255, 255, 0.2)', // Optional: Customize cell borders

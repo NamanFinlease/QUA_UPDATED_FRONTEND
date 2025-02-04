@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Paper, Box, Alert } from '@mui/material';
+import { Paper, Box, Alert, useTheme } from '@mui/material';
+import { tokens } from '../../theme';
 import { useNavigate, useParams } from 'react-router-dom';
 import ApplicantProfileData from '../applicantProfileData';
 import InternalDedupe from '../InternalDedupe';
@@ -16,6 +17,7 @@ import useAuthStore from '../store/authStore';
 import useStore from '../../Store';
 import DisburseLoan from './DisburseLoan';
 import ActionButton from '../ActionButton';
+import { cleanDigitSectionValue } from '@mui/x-date-pickers/internals/hooks/useField/useField.utils';
 
 
 
@@ -25,7 +27,7 @@ const DisbursalProfile = () => {
   const { id } = useParams();
   const [disbursalData, setDisbursalData] = useState()
   const { empInfo, activeRole } = useAuthStore()
-  const { setApplicationProfile } = useStore();
+  const { setApplicationProfile,setLead } = useStore();
   const navigate = useNavigate();
   const [uploadedDocs, setUploadedDocs] = useState([]);
   const [currentPage, setCurrentPage] = useState("application");
@@ -33,11 +35,15 @@ const DisbursalProfile = () => {
 
   const { data, isSuccess, isError, error, refetch } = useDisbursalProfileQuery(id, { skip: id === null });
 
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   useEffect(() => {
     if (isSuccess && data) {
-      setDisbursalData(data?.disbursal?.sanction)
+      setDisbursalData(data?.disbursal)
       setApplicationProfile(data?.disbursal);
+      setLead(data?.disbursal?.sanction?.application?.lead)
     }
     if (isSuccess && data?.sanction?.application?.lead?.document?.length) {
       setUploadedDocs(data?.sanction?.application?.lead?.document.map(doc => doc.type));
@@ -51,9 +57,9 @@ const DisbursalProfile = () => {
   }, [id, refetch]);
 
   return (
-    <div className="crm-container" style={{ padding: '10px' }}>
+    <div className="crm-container" style={{display:"flex", justifyContent:"center",}}>
 
-      <div className='p-3'>
+      <div className='p-3' style={{ width:"90%",}}>
         <BarButtons
           barButtonOptions={barButtonOptions}
           currentPage={currentPage}
@@ -62,9 +68,25 @@ const DisbursalProfile = () => {
 
         {currentPage === "application" &&
           <>
+          {console.log("disbursal",disbursalData)}
             {disbursalData?.sanction?.application?.lead?._id &&
               <>
-                <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '10px' }}>
+                <Paper 
+                  elevation={3} 
+                  sx={{ 
+                    padding: '20px', 
+                    marginTop: '20px', 
+                    borderRadius: '0px 20px',
+                    backgroundColor: colors.white[100],
+                    '& .MuiDataGrid-row': {
+                      backgroundColor: colors.white[100],
+                    },
+                    '& .MuiDataGrid-row:hover': {
+                      backgroundColor: colors.white[100],
+                      cursor: 'pointer',
+                    },
+                  }}
+                >
                   <ApplicantProfileData leadData={disbursalData?.sanction?.application?.lead} />
                 </Paper>
                 <InternalDedupe id={disbursalData?.sanction?.application?.lead?._id} />
@@ -105,7 +127,7 @@ const DisbursalProfile = () => {
             }
 
             {currentPage === "cam" && <Cam id={disbursalData?.sanction?.application?._id} />}
-            {currentPage === "disbursal" && <DisburseLoan disburse={disbursalData?.sanction} />}
+            {currentPage === "disbursal" && <DisburseLoan disburse={disbursalData} />}
 
           </>
 

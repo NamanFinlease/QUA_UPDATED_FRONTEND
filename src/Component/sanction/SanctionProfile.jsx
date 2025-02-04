@@ -24,7 +24,7 @@ const barButtonOptions = ['Application', 'Documents', 'Personal', 'Banking', 'Ve
 const SanctionProfile = () => {
   const { id } = useParams();
   const { empInfo } = useAuthStore()
-  const { setApplicationProfile } = useStore();
+  const { setApplicationProfile,setLead } = useStore();
   const [previewSanction, setPreviewSanction] = useState(false)
   const [forceRender, setForceRender] = useState(false)
   const navigate = useNavigate();
@@ -32,7 +32,9 @@ const SanctionProfile = () => {
   const [currentPage, setCurrentPage] = useState("application");
 
   const { data, isSuccess, isError, error } = useSanctionProfileQuery(id, { skip: id === null });
-  const [sanctionPreview, { data: previewData, isSuccess: previewSuccess, isLoading: previewLoading, reset, isError: isPreviewError, error: previewError }] = useLazySanctionPreviewQuery()
+  const [sanctionPreview, { data: previewData, isSuccess: previewSuccess, isLoading: previewLoading, isFetching:previewFetching, reset, isError: isPreviewError, error: previewError }] = useLazySanctionPreviewQuery()
+
+  console.log("Data totalInterest", previewData)
 
   // Color theme
   const theme = useTheme();
@@ -41,6 +43,7 @@ const SanctionProfile = () => {
   useEffect(() => {
     if (isSuccess) {
       setApplicationProfile(data);
+      setLead(data?.application?.lead)
     }
     if (isSuccess && data?.application?.lead?.document?.length) {
       setUploadedDocs(data?.application?.lead?.document.map(doc => doc.type));
@@ -54,23 +57,27 @@ const SanctionProfile = () => {
     }
 
   }, [previewSuccess, previewData, forceRender]);
-  console.log('loading', previewLoading)
+
+  // Check if previewData is available
+  if (!previewData && previewSanction) {
+    return <div>Loading...</div>; // Show loading state
+}
+  console.log('loading', previewLoading,previewFetching)
   return (
     <div className="crm-container" style={{display:"flex", justifyContent:"center", }} key={forceRender}>
-      {previewSanction ? previewLoading ? <h1> .....Loading data</h1>:
-        <LoanSanctionPreview 
-        id={id} 
-        preview={previewSanction} 
-        setPreview={setPreviewSanction} 
-        previewData={previewData} 
-        />
-        // <SanctionLetterPreview
+      {previewSanction ? (previewLoading || previewFetching) ? <h1> .....Loading data</h1>:
+        // <LoanSanctionPreview 
         // id={id} 
         // preview={previewSanction} 
         // setPreview={setPreviewSanction} 
         // previewData={previewData} 
-
         // />
+        <SanctionLetterPreview
+          id={id} 
+          preview={previewSanction} 
+          setPreview={setPreviewSanction} 
+          previewData={previewData} 
+        />
         :
         <>
 

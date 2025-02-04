@@ -34,6 +34,8 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
   // Handle close modal
   const handleClose = () => {setOpen(false);console.log('handle close') };
 
+  console.log("Aaadhar data",data)
+
   // Color theme
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -78,6 +80,8 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
   const getComparisonFields = (lead, aadhaarDetails) => {
 
     console.log('aadhaar detail',aadhaarDetails)
+    console.log('lead detail',lead)
+
     const { house, po, dist, state, country, street, pc } = aadhaarDetails?.address
 
     const formatAddress = (...parts) => parts.filter(Boolean).join(", "); // Join only non-empty values with commas
@@ -99,7 +103,8 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
   // Function to render table rows dynamically
   useEffect(() => {
     console.log('useEffect',isSuccess)
-    if (isSuccess) setOpen(false)
+    if (isSuccess) 
+      setOpen(false)
     // navigate(`/lead-profile/${lead._id}`)
   }, [isSuccess])
 

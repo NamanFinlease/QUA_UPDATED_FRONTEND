@@ -29,7 +29,7 @@ const loanRejectReasons = [
 ];
 
 const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRender }) => {
-    console.log('sanction', sanctionPreview)
+    console.log('sanction :', sanctionPreview)
 
     const navigate = useNavigate()
     const { empInfo, activeRole } = useAuthStore()
@@ -563,12 +563,14 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                     multiline
                                     rows={3}
                                     sx={{
+                                        marginTop:2,
                                         marginBottom: 3,
                                         color: colors.black[100],                // Ensure text is black or dark
-                                        backgroundColor: colors.primary[400],
+                                        backgroundColor: colors.white[100],
                                         '& .MuiOutlinedInput-root': {
                                             '& fieldset': {
                                                 borderColor: colors.primary[400],
+                                                borderRadius:'0px 10px',
                                                 color:colors.black[100],
                                             },
                                             '&:hover fieldset': {
@@ -579,6 +581,12 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                 borderColor: colors.primary[400],
                                                 color:colors.black[100]
                                             },
+                                        },
+                                        '& .MuiFormLabel-root':{
+                                            color: colors.black[100],
+                                        },
+                                        '& .MuiInputBase-root':{
+                                            color:colors.black[100]
                                         },
                                     }}
                                 />
@@ -592,14 +600,25 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                 label="Send Back to"
                                                 sx={{
                                                     color: colors.black[100],               // Ensure text is black or dark
-                                                    backgroundColor: colors.primary[400],  // Light background for the dropdown
+                                                    backgroundColor: colors.white[100],  // Light background for the dropdown
                                                     borderRadius: "0px 10px",
                                                     '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
+                                                    '& .MuiSvgIcon-root':{color:colors.black[100]},
                                                     '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                                                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                                                 }}
                                             >
-                                                <MenuItem value="" sx={{color:colors.black[100], background:colors.white[100]}} disabled>
+                                                <MenuItem 
+                                                    value="" 
+                                                    sx={{
+                                                        color:colors.black[100], 
+                                                        background:colors.white[100],
+                                                        '& .MuiPaper-root-MuiPopover-paper-MuiMenu-paper':{
+                                                            background:colors.white[100],
+                                                        }
+                                                    }} 
+                                                    disabled
+                                                >
                                                     Select recipient to send back
                                                 </MenuItem>
                                                 {activeRole === "creditManager" && <MenuItem value="screener" sx={{background:colors.white[100], color:colors.black[100], ':hover':{background:colors.primary[400], color:colors.white[100]}}}>Screener</MenuItem>}
@@ -614,14 +633,13 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
 
                         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: 3 }}>
                             <Button
-                                variant="outlined"
+                                variant="contained"
                                 onClick={handleCancel}
                                 sx={{
                                     padding: '10px 20px',
                                     border:`1px solid ${colors.redAccent[500]}`,
                                     color:colors.redAccent[500],
-                                    borderRadius: "0px 15px",
-                                    fontWeight: 'bold',
+                                    borderRadius: "0px 10px",
                                     backgroundColor: colors.white[100],
                                     ':hover': { 
                                         backgroundColor: colors.redAccent[500],
@@ -639,7 +657,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                     backgroundColor: (sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "#95bdf0" : colors.white[100],
                                     color: (sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "#666" : colors.primary[400],
                                     border: (sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "#666" : `1px solid ${colors.primary[400]}`,
-                                    borderRadius: (sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "0px 15px 0px 15px" : "0px 15px 0px 15px",
+                                    borderRadius: (sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "0px 10px" : "0px 10px",
                                     cursor: (sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "not-allowed" : "pointer",
                                     "&:hover": {
                                         backgroundColor: (sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "#95bdf0" : colors.primary[400],
