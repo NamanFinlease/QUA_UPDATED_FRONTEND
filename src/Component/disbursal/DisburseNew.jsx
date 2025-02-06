@@ -27,10 +27,6 @@ const DisburseNew = () => {
   const [exportSanctioned, { data: exportData, isLoading: isExportLoading, isSuccess: isExportSuccess, isFetching: isExportFetching, isError: isExportErro, error: exportError }] = useLazyExportSanctionedQuery();
   const { data: allApplication, isSuccess: applicationSuccess, isError, error, refetch } = useAllDisbursalsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
 
-
-
-
-
   const handleAllocate = async () => {
     allocateApplication(selectedApplication);
 
@@ -40,6 +36,7 @@ const DisburseNew = () => {
     console.log("Export click");
     // Replace with your actual API call
     exportSanctioned();
+    console.log(exportSanctioned())
   };
 
   const handleCheckboxChange = (id) => {

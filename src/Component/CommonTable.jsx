@@ -40,7 +40,7 @@ const CommonTable = ({
     if (param === "allocate") {
       onAllocateButtonClick();
       console.log(onAllocateButtonClick())
-    }else{
+    }else if (param === "exportCSV"){
       onExportButtonClick();
       console.log(onExportButtonClick())
     }

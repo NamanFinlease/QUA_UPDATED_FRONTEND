@@ -117,7 +117,7 @@ const RepaymentDetails = (disburse) => {
     { field: 'paymentMode', headerName: 'Payment Mode', width: 150 },
     { field: 'paymentAmount', headerName: 'Payment Amount', width: 150 },
     { field: 'recoveryDiscount', headerName: 'Discount', width: 150 },
-    { field: 'recoveryDiscountType', headerName: 'Discount Type', width: 150 },
+    // { field: 'recoveryDiscountType', headerName: 'Discount Type', width: 150 },
     { field: 'recoveryRefund', headerName: 'Refund', width: 150 },
     { field: 'recoveryReferenceNumber', headerName: 'Reference No', width: 150 },
     { field: 'recoveryDate', headerName: 'Recovery Date', width: 150 },
@@ -219,16 +219,16 @@ const RepaymentDetails = (disburse) => {
                   color:colors.black[100],
                   borderColor:colors.black[100],
                   '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: colors.black[100], // Black border color
+                    borderColor: colors.black[100],
                   },
                   '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: colors.black[100], // Black border color on hover
+                    borderColor: colors.black[100],
                   },
                   '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: colors.black[100], // Black border color when focused
+                    borderColor: colors.black[100],
                   },
                   '& .MuiSelect-select': {
-                    color: colors.black[100], // Ensure the selected value text is black
+                    color: colors.black[100],
                   },
                 }}
               >
@@ -250,10 +250,10 @@ const RepaymentDetails = (disburse) => {
                   color:colors.black[100],
                   borderColor:colors.black[100],
                   '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: colors.black[100], // Black border color
+                    borderColor: colors.black[100],
                   },
                   '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: colors.black[100], // Black border color on hover
+                    borderColor: colors.black[100],
                   },
                 }}
               />
@@ -479,7 +479,7 @@ const RepaymentDetails = (disburse) => {
                   />
                 </Box>
 
-                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
+                {/* <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
                   <Controller
                     name="discountType"
                     control={control}
@@ -504,7 +504,7 @@ const RepaymentDetails = (disburse) => {
                       </FormControl>
                     )}
                   />
-                </Box>
+                </Box> */}
 
                 <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
                   <Controller
@@ -514,7 +514,7 @@ const RepaymentDetails = (disburse) => {
                       <TextField
                         {...field}
                         onKeyDown={handleKeyDown}
-                        disabled={!selectedDiscountType}
+                        // disabled={!selectedDiscountType}
                         fullWidth
                         label="Discount Amount"
                         variant="outlined"
@@ -524,45 +524,6 @@ const RepaymentDetails = (disburse) => {
                     )}
                   />
                 </Box>
-                {/* <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
-                  <Controller
-                    name="discountType"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                      <FormControl variant="outlined" fullWidth error={!!fieldState.error}>
-                        <InputLabel htmlFor="discount-type">Discount Type</InputLabel>
-                        <Select
-                            {...field}
-                            input={<OutlinedInput label="Discount Type" id="discount-type" />}
-                        >
-                            <MenuItem value="" disable>Select</MenuItem>
-                            <MenuItem>Penalty Discount</MenuItem>
-                            <MenuItem>Principle Discount</MenuItem>
-                            <MenuItem>Interest Discount</MenuItem>
-                        </Select>
-                        {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
-                      </FormControl>  
-                    )}
-                  />
-                </Box>
-
-                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
-                  <Controller
-                    name="payment Discount"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                      <TextField
-                        {...field}
-                        disabled
-                        fullWidth
-                        label="Discount Amount"
-                        variant="outlined"
-                        error={!!fieldState.error}
-                        helperText={fieldState.error ? fieldState.error.message : ''}
-                      />
-                    )}
-                  />
-                </Box> */}
 
                 <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
                   <Controller
