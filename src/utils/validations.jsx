@@ -1,5 +1,8 @@
 import * as Yup from 'yup';
 import { regexPatterns } from './regex';
+import moment from 'moment';
+
+const today = moment().format('DD/MM/YYYY');
 
 
 export const residenceSchema = Yup.object().shape({
@@ -185,6 +188,33 @@ export const camSchema = Yup.object().shape({
   finalsalaryToIncomeRatioPercentage: Yup.string()
   .required('Ratio is required')
   .matches(regexPatterns.onlyNumbers, 'Invalid Ratio'),
+});
+
+
+export const paymentReceivedSchema = Yup.object().shape({
+  paymentReceived : Yup.string()
+  .required('Payment amount is required'),
+  paymentReceivedDate : Yup.string()
+  .matches(
+    /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/,
+    'Date must be in DD/MM/YYYY format'
+  )
+  .test(
+    'is-valid-date',
+    'Invalid date',
+    (value) => moment(value, 'DD/MM/YYYY', true).isValid()
+  )
+  .test(
+    'is-before-today',
+    `Date must be before ${today}`,
+    (value) => moment(value, 'DD/MM/YYYY').isBefore(moment().add(1, 'day'))
+  ),
+  closingType : Yup.string()
+  .required('Choose Payment Type'),
+  paymentMode : Yup.string()
+  .required('Choose Payment Mode'),
+  referenceNumber : Yup.string()
+  .required('Reference Number is required'),
 });
 
   

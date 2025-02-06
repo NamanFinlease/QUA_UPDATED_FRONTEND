@@ -5,13 +5,7 @@ import {
   AccordionDetails,
   Paper,
   Button, 
-  Typography, 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableContainer, 
-  TableHead, 
-  TableRow, 
+  Typography,  
   Checkbox, 
   TextField, 
   Box, 
@@ -26,12 +20,17 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { tokens } from '../../theme';
 import useAuthStore from '../store/authStore';
-import { fontStyle, styled } from '@mui/system';
 import { Controller, useForm } from 'react-hook-form';
 import LoanInfo from '../collection/loanInfo';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import OutstandingLoanAmount from '../collection/OutstandingLoanAmount';
 import CommonTable from '../CommonTable';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { paymentReceivedSchema } from '../../utils/validations';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from "dayjs";
 
 const RepaymentDetails = (disburse) => {
   const { activeRole } = useAuthStore()
@@ -59,8 +58,10 @@ const RepaymentDetails = (disburse) => {
   const [blacklistReason, setBlacklistReason] = useState('Select a Reason');
   const [selectedDiscountType, setSelectedDiscountType] = useState('');
 
-  const { control,watch,getValues, setValue, } = useForm({
-    defaultValues: defaultValue
+  const {handleSubmit, control, setValue } = useForm({
+    resolver: yupResolver(paymentReceivedSchema),
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
   })
 
   // Color theme
@@ -88,6 +89,7 @@ const RepaymentDetails = (disburse) => {
     }
   };
 
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [key, setKey] = useState(0);
   const fileInputRef = useRef(null);
@@ -97,20 +99,6 @@ const RepaymentDetails = (disburse) => {
   };
 
   const columns = [
-    {
-      field: 'select',
-      headerName: '',
-      width: 50,
-      renderCell: (params) => (
-        activeRole === "screener" &&
-        <input
-          type="checkbox"
-          checked={selectedLeads === params.row.id}
-
-          onChange={() => handleCheckboxChange(params.row.id)}
-        />
-      ),
-    },
     { field: 'sno', headerName: 'S.No', width: 50 },
     { field: 'loanNo', headerName: 'Loan No.', width: 150 },
     { field: 'recoveryRemarks', headerName: 'Remarks', width: 150 },
@@ -153,20 +141,16 @@ const RepaymentDetails = (disburse) => {
   const handleRemoveFile = () => {
     setSelectedFile(null);
     setKey((prevKey) => prevKey + 1);
-    // if (fileInputRef.current) {
-    //   fileInputRef.current.value = ""; // Ensures file input is reset
-    // }
   };
 
   const handleClickChooseFile = () => {
-    // Reset the file input value before triggering the file picker
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
     fileInputRef.current.click();
   };
 
-  const handleSubmit = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault();
     // Handle form submission logic here
   };
@@ -292,7 +276,7 @@ const RepaymentDetails = (disburse) => {
       }}
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon sx={{color:colors.primary[400]}}/>}>
-          <Typography variant="h6" style={{ color: colors.primary[400] }}>Recovery History</Typography>
+          <Typography variant="h6" style={{ color: colors.primary[400] }}>Payment History</Typography>
         </AccordionSummary>
         <AccordionDetails>
         <Box 
@@ -354,7 +338,7 @@ const RepaymentDetails = (disburse) => {
               <Box
                 component="form"
                 noValidate
-                // onSubmit={handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(onSubmit)}
                 sx={{
                     background: colors.white[100],
                     color:colors.black[100],
@@ -414,22 +398,43 @@ const RepaymentDetails = (disburse) => {
                   />
                 </Box>
 
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Box sx={{flex: { xs: '1 1 100%', sm: '1 1 45%' }, "& .MuiButtonBase-root": { color: "black" } }}>
+                    <Controller
+                      name="paymentReceivedDate"
+                      control={control}
+                      render={({ field, fieldState }) => (
+                        <DatePicker
+                          {...field}
+                          required
+                          maxDate={dayjs()}
+                          slotProps={{ textField: { format: "DD/MM/YYYY" } }}
+                          label="Payment Receive Date"
+                          error={!!fieldState.error}
+                          helperText={fieldState.error ? fieldState.error.message : ''}
+                          sx={{ width: "100%" }}
+                        />
+                      )}
+                    />
+                  </Box>
+                </LocalizationProvider>
+
                 <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
                   <Controller
-                    name="repaymentType"
+                    name="closingType"
                     control={control}
                     render={({ field, fieldState }) => (
                       <FormControl variant="outlined" fullWidth required error={!!fieldState.error}>
-                        <InputLabel htmlFor="repayment-type">Repayment Type</InputLabel>
+                        <InputLabel htmlFor="closing-type">Closing Type</InputLabel>
                         <Select
                             {...field}
-                            input={<OutlinedInput label="Repayment Type" id="repayment-type" />}
+                            input={<OutlinedInput label="Closing Type" id="closing-type" />}
                         >
                             <MenuItem value="">Select</MenuItem>
-                            <MenuItem value="repaymentClosed">Closed</MenuItem>
-                            <MenuItem value="repaymentSettled">Settled</MenuItem>
-                            <MenuItem value="repaymentWriteOff">WriteOff</MenuItem>
-                            <MenuItem value="repaymentPartPayment">Part-Payment</MenuItem>
+                            <MenuItem value="closed">Closed</MenuItem>
+                            <MenuItem value="settled">Settled</MenuItem>
+                            <MenuItem value="writeOff">WriteOff</MenuItem>
+                            <MenuItem value="partPayment">Part-Payment</MenuItem>
                         </Select>
                         {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
                       </FormControl>  
@@ -467,7 +472,6 @@ const RepaymentDetails = (disburse) => {
                     render={({ field, fieldState }) => (
                       <TextField
                         {...field}
-                        onKeyDown={handleKeyDown}
                         required
                         fullWidth
                         label="Reference No."
@@ -604,7 +608,8 @@ const RepaymentDetails = (disburse) => {
                 <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 100%' }, display:'flex', justifyContent:'flex-end', }}>
                   <Button 
                       type="submit" 
-                      variant="contained" 
+                      variant="contained"
+                      onClick={handleSubmit}
                       sx={{ 
                         background:colors.primary[400], 
                         color: colors.white[100],
