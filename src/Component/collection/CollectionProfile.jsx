@@ -33,6 +33,8 @@ const CollectionProfile = () => {
     const { lead } = collectionData?.disbursal?.sanction?.application ?? {}
     const { application } = collectionData?.disbursal?.sanction ?? {}
 
+    console.log(data)
+
     // Color theme
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);

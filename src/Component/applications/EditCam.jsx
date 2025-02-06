@@ -86,7 +86,7 @@ const EditCam = ({ camData, setIsEditing }) => {
     if (e.key === "." && e.target.value.includes(".")) {
         e.preventDefault();
     }
-};
+  };
 
   // console.log(formData)
   const handleChange = (e) => {

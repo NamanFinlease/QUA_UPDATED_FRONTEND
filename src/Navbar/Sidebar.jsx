@@ -86,8 +86,8 @@ const accordionItems = [
       { text: "Disbursals In Process", link: "/disbursal-process" },
       { text: "Hold", link: "/disbursal-hold" },
       { text: "Rejected", link: "/rejected-disbursals" },
-      { text: "Pending Disbursals", link: "/disbursal-pending" },
-      { text: "Disbursed", link: "/disbursed" },
+      ...(["disbursalHead","admin"].includes(activeRole) ?[{ text: "Pending Disbursals", link: "/disbursal-pending" },
+      { text: "Disbursed", link: "/disbursed" }]:[])
     ],
     roles: ["disbursalManager", "disbursalHead", "admin"],
   },

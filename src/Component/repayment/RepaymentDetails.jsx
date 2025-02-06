@@ -26,7 +26,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { tokens } from '../../theme';
 import useAuthStore from '../store/authStore';
-import { styled } from '@mui/system';
+import { fontStyle, styled } from '@mui/system';
 import { Controller, useForm } from 'react-hook-form';
 import LoanInfo from '../collection/loanInfo';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -57,6 +57,7 @@ const RepaymentDetails = (disburse) => {
   const [repaymentStatus, setRepaymentStatus] = useState('');
   const [remarks, setRemarks] = useState('');
   const [blacklistReason, setBlacklistReason] = useState('Select a Reason');
+  const [selectedDiscountType, setSelectedDiscountType] = useState('');
 
   const { control,watch,getValues, setValue, } = useForm({
     defaultValues: defaultValue
@@ -72,6 +73,19 @@ const RepaymentDetails = (disburse) => {
       ...prevCheckedFields,
       [name]: checked,
     }));
+  };
+
+  const handleKeyDown = (e) => {
+    if (
+        e.key.length === 1 &&
+        !(e.key >= "0" && e.key <= "9") &&
+        e.key !== "."
+    ) {
+        e.preventDefault();
+    }
+    if (e.key === "." && e.target.value.includes(".")) {
+        e.preventDefault();
+    }
   };
 
   const [selectedFile, setSelectedFile] = useState(null);
@@ -103,6 +117,7 @@ const RepaymentDetails = (disburse) => {
     { field: 'paymentMode', headerName: 'Payment Mode', width: 150 },
     { field: 'paymentAmount', headerName: 'Payment Amount', width: 150 },
     { field: 'recoveryDiscount', headerName: 'Discount', width: 150 },
+    { field: 'recoveryDiscountType', headerName: 'Discount Type', width: 150 },
     { field: 'recoveryRefund', headerName: 'Refund', width: 150 },
     { field: 'recoveryReferenceNumber', headerName: 'Reference No', width: 150 },
     { field: 'recoveryDate', headerName: 'Recovery Date', width: 150 },
@@ -160,6 +175,7 @@ const RepaymentDetails = (disburse) => {
     <>
       {/* Loan Information */}
       <LoanInfo disburse={disburse?.sanction?.application} />
+      {console.log(disburse)}
 
       {/* Payable and Outstanding Amount Information */}
       <OutstandingLoanAmount />
@@ -369,6 +385,14 @@ const RepaymentDetails = (disburse) => {
                     '& .MuiInputBase-root': {
                         color:colors.black[100],
                     },
+                    '& .Mui-disabled':{
+                      color:colors.black[100],
+                      background:colors.grey[100],
+                      borderRadius:"3px",
+                      '& .MuiOutlinedInput-notchedOutline':{
+                        borderColor:colors.primary[400],
+                      }
+                    },
                 }}
               >
                 <Box sx={{ flex:{ xs: '1 1 100%', sm: '1 1 45%' } }}>
@@ -379,12 +403,8 @@ const RepaymentDetails = (disburse) => {
                       <TextField
                         {...field}
                         required
+                        onKeyDown={handleKeyDown}
                         fullWidth
-                        inputProps={{
-                          type: 'text',
-                          pattern: '[0-9]*',
-                          inputMode: 'numeric',
-                        }}
                         label="Payment Received"
                         variant="outlined"
                         error={!!fieldState.error}
@@ -447,6 +467,7 @@ const RepaymentDetails = (disburse) => {
                     render={({ field, fieldState }) => (
                       <TextField
                         {...field}
+                        onKeyDown={handleKeyDown}
                         required
                         fullWidth
                         label="Reference No."
@@ -460,14 +481,42 @@ const RepaymentDetails = (disburse) => {
 
                 <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
                   <Controller
-                    name="payment Discount"
+                    name="discountType"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <FormControl variant="outlined" fullWidth error={!!fieldState.error}>
+                        <InputLabel htmlFor="discount-type">Discount Type</InputLabel>
+                        <Select
+                          {...field}
+                          value={selectedDiscountType}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            setSelectedDiscountType(e.target.value);
+                          }}
+                          input={<OutlinedInput label="Discount Type" id="discount-type" />}
+                        >
+                          <MenuItem >Select</MenuItem>
+                          <MenuItem value="PENALTY_DISCOUNT">Penalty Discount</MenuItem>
+                          <MenuItem value="PRINCIPAL_DISCOUNT">Principle Discount</MenuItem>
+                          <MenuItem value="INTEREST_DISCOUNT">Interest Discount</MenuItem>
+                        </Select>
+                        {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
+                      </FormControl>
+                    )}
+                  />
+                </Box>
+
+                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
+                  <Controller
+                    name="paymentDiscount"
                     control={control}
                     render={({ field, fieldState }) => (
                       <TextField
                         {...field}
-                        required
+                        onKeyDown={handleKeyDown}
+                        disabled={!selectedDiscountType}
                         fullWidth
-                        label="Discount"
+                        label="Discount Amount"
                         variant="outlined"
                         error={!!fieldState.error}
                         helperText={fieldState.error ? fieldState.error.message : ''}
@@ -475,6 +524,45 @@ const RepaymentDetails = (disburse) => {
                     )}
                   />
                 </Box>
+                {/* <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
+                  <Controller
+                    name="discountType"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <FormControl variant="outlined" fullWidth error={!!fieldState.error}>
+                        <InputLabel htmlFor="discount-type">Discount Type</InputLabel>
+                        <Select
+                            {...field}
+                            input={<OutlinedInput label="Discount Type" id="discount-type" />}
+                        >
+                            <MenuItem value="" disable>Select</MenuItem>
+                            <MenuItem>Penalty Discount</MenuItem>
+                            <MenuItem>Principle Discount</MenuItem>
+                            <MenuItem>Interest Discount</MenuItem>
+                        </Select>
+                        {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
+                      </FormControl>  
+                    )}
+                  />
+                </Box>
+
+                <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
+                  <Controller
+                    name="payment Discount"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        {...field}
+                        disabled
+                        fullWidth
+                        label="Discount Amount"
+                        variant="outlined"
+                        error={!!fieldState.error}
+                        helperText={fieldState.error ? fieldState.error.message : ''}
+                      />
+                    )}
+                  />
+                </Box> */}
 
                 <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 45%' } }}>
                   <Controller
@@ -483,8 +571,8 @@ const RepaymentDetails = (disburse) => {
                     render={({ field, fieldState }) => (
                       <TextField
                         {...field}
-                        required
                         fullWidth
+                        onKeyDown={handleKeyDown}
                         label="Excess/Refund"
                         variant="outlined"
                         error={!!fieldState.error}
@@ -501,7 +589,6 @@ const RepaymentDetails = (disburse) => {
                     render={({ field, fieldState }) => (
                       <TextField
                         {...field}
-                        required
                         fullWidth
                         label="Remarks"
                         variant="outlined"
@@ -532,7 +619,7 @@ const RepaymentDetails = (disburse) => {
                           onClick={handleClickChooseFile}
                           component="span"
                         >
-                          Upload Screenshot *
+                          Upload Screenshot
                         </Button>
                       </label>
                       {/* Display Selected File */}
@@ -550,6 +637,8 @@ const RepaymentDetails = (disburse) => {
                       )}
                     </Stack>
                 </Box>
+
+                <Typography variant="h6" sx={{fontStyle:"italic", color:colors.grey[400]}}>( * ) Mandatory Fields are Required</Typography>
 
                 <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 100%' }, display:'flex', justifyContent:'flex-end', }}>
                   <Button 

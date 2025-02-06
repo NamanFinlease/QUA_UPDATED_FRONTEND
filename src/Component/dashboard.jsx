@@ -460,6 +460,8 @@ const Dashboard = () => {
   const { data } = useGetLeadTotalRecordsQuery();
   const { data: supData } = useGetTotalRecordsForSupervisorQuery();
 
+  console.log(data)
+
   // Toast configuration
   const Toast = Swal.mixin({
     toast: true,
@@ -723,6 +725,27 @@ const Dashboard = () => {
     },
   
     
+  },
+  collectionExecutive: {
+    activeLeads: {
+      icon: <NewReleasesIcon className='mt-3'
+      sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/activeLeads",
+      title: 'Active Leads ',
+      no : 0
+    },
+    pendingVerification: {
+      icon: <PauseIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/pending-verification",
+      title: 'Verification Pending',
+      no : 0
+    },
+    closedLeads: {
+      icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/closed-leads",
+      title: 'Closed Leads',
+      no : 0
+    },
   },
   
   supervisor :{

@@ -177,7 +177,7 @@ const RequestFieldVisit = () => {
                 // onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={6}>
+            <Grid item xs={12} sm={12} md={6}>
               <TextField
                 label="Action"
                 name="visitAction"
@@ -193,15 +193,17 @@ const RequestFieldVisit = () => {
             </Grid>
 
             {/* Save and Cancel Buttons */}
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={12} md={12}>
               <Button
                 type="submit"
+                variant="contained"
                 sx={{
                   backgroundColor: colors.white[100],
                   color: colors.primary[400],
                   border: `2px solid ${colors.primary[400]}`,
                   borderRadius: '0px 10px',
                   cursor:'pointer',
+                  margin:"10px",
                   '&:hover': {
                     backgroundColor:colors.primary[400],
                     color:colors.white[100],
@@ -211,14 +213,14 @@ const RequestFieldVisit = () => {
                 Request
               </Button>
               <Button
-                variant="outlined"
+                variant="contained"
                 // onClick={handleCancel}
-                style={{ marginLeft: '10px' }}
                 sx={{
                   background: colors.white[100],
                   color: colors.redAccent[500],
                   border: `2px solid ${colors.redAccent[500]}`,
                   borderRadius: '0px 10px',
+                  margin:"10px",
                   ':hover': {
                     color: colors.white[100],
                     backgroundColor: colors.redAccent[500],
