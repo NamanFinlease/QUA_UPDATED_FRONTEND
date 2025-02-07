@@ -34,7 +34,9 @@ export const lmsQueries = createApi({
         }),
 
         pendingVerification: builder.query({
-            query: () => `/accounts/active/verify/?role=${role()}`,
+            query: (loanNo) => {
+                console.log('loan',loanNo)
+                return `/accounts/pendingPaymentVerificationList/?role=${role()}`},
             providesTags:["leadProfile","ActiveLeads"]
         }),
         verifyPendingLead: builder.mutation({

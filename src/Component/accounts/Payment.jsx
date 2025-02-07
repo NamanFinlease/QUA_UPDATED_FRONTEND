@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Paper,
     Typography,
@@ -8,14 +8,22 @@ import {
     TableRow,
     TableCell,
     Alert,
+    useTheme,
 } from "@mui/material";
-import { useVerifyPendingLeadMutation } from "../../Service/LMSQueries";
+import { tokens } from '../../theme'
+import { useVerifyPendingLeadMutation, usePendingVerificationQuery } from "../../Service/LMSQueries";
 
 import { Select, MenuItem, Button } from "@mui/material";
 import Swal from "sweetalert2";
+import { useParams } from "react-router-dom";
 
 const PaymentRow = ({ payment, onUpdateStatus }) => {
     const [selectedStatus, setSelectedStatus] = useState("");
+
+
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const formatCamelCaseToTitle = (text) => {
         return text
@@ -49,10 +57,14 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
 
     return (
         <tr>
+            {console.log(payment)}
             <td>{payment.date ? formatDateToIST(payment.date) : "N/A"}</td>
             <td>{payment.amount || "N/A"}</td>
+            <td>{payment.closingType || "N/A"}</td>
+            <td>{payment.paymentMode || "N/A"}</td>
+            <td>{payment.transactionId || "N/A"}</td>
+            <td>{payment.discountAmount || "N/A"}</td>
             <td>{payment.isPartlyPaid ? "Verified" : "Pending"}</td>
-            <td>{payment.utr || "N/A"}</td>
             <td>
                 {payment.requestedStatus
                     ? formatCamelCaseToTitle(payment.requestedStatus)
@@ -62,6 +74,17 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                 <>
                     <td>
                         <Select
+                            variant="outlined"
+                            sx={{
+                                color:colors.black[100],
+                                padding:"10px 0px",
+                                '& .MuiOutlinedInput-notchedOutline':{
+                                    borderColor: colors.primary[400],
+                                },
+                                '& .MuiSelect-icon':{
+                                    color:colors.primary[100],
+                                },
+                            }}
                             value={selectedStatus}
                             onChange={handleStatusChange}
                             displayEmpty
@@ -82,12 +105,31 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                     <td>
                         <Button
                             variant="contained"
-                            color="primary"
+                            sx={{
+                                background:colors.primary[400],
+                                color:colors.white[100],
+                                borderRadius:'0px 10px',
+                                margin:"5px 1px",
+                            }}
                             size="small"
                             onClick={handleSubmit}
-                            disabled={!selectedStatus}
+                            // disabled={!selectedStatus}
                         >
-                            Update
+                            Approve
+                        </Button>
+                        <Button
+                            variant="contained"
+                            sx={{
+                                background:colors.redAccent[500],
+                                color:colors.white[100],
+                                borderRadius:'0px 10px',
+                                margin:"5px 1px",
+                            }}
+                            size="small"
+                            onClick={handleSubmit}
+                            // disabled={!selectedStatus}
+                        >
+                            Reject
                         </Button>
                     </td>
                 </>
@@ -97,6 +139,8 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
 };
 
 const Payment = ({ collectionData, leadId, activeRole }) => {
+    const {id} = useParams();
+    console.log('params',id)
     if (!collectionData) {
         return <div>Loading...</div>;
     }
@@ -104,11 +148,26 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
     const [verifyPendingLead, isLoading, isSuccess, isError] =
         useVerifyPendingLeadMutation();
 
+    const {paymentData, isLoading:verifyPaymentLoading, isSuccess:verifyPaymentSuccess, isError:verifyPaymentError} =
+        usePendingVerificationQuery(id,{skip : id === null});
+
+    useEffect(()=>{
+       if (verifyPaymentSuccess && paymentData){
+        console.log(paymentData)
+       } 
+    })
+
+    
+
     console.log(collectionData);
 
-    const paymentInfo =
-        collectionData.partialPaid.length > 0
-            ? collectionData.partialPaid
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+
+    const paymentInfo = collectionData
+        collectionData?.partialPaid?.length > 0
+            ? collectionData?.partialPaid
             : collectionData;
 
     console.log(paymentInfo);
@@ -142,18 +201,51 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
     };
 
     return (
-        <Paper elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
+        <Paper 
+            elevation={3} 
+            sx={{ 
+                padding: "20px", 
+                background: colors.white[100],
+                color:colors.black[100],
+                borderRadius:"0px 20px",
+                width:"100%",
+                overflowX:"auto",
+                '& .MuiTableCell-root':{
+                    color:colors.white[100],
+                },
+            }}
+        >
             <Typography variant="h5" gutterBottom>
                 Payment Verification for Lead ID: {leadId}
             </Typography>
             <Typography variant="subtitle1">Role: {activeRole}</Typography>
-            <Table style={{ marginTop: "20px" }}>
+            <Table 
+                component={Paper}
+                sx={{ 
+                    marginTop: "20px",
+                    background:colors.white[100],
+                    color:colors.black[100],
+                    borderRadius:"0px 20px",
+                    overflowY:"scroll",
+                    textAlign:"center",
+                    padding:"20px",
+                    '& .MuiTableHead-root':{
+                        background:colors.primary[400],
+                        color:colors.white[100],
+                    },
+                    '& .MuiTableCell-root':{
+                        outline:`1px solid ${colors.white[100]}`,
+                    },
+                }}>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Date (IST)</TableCell>
-                        <TableCell>Amount</TableCell>
+                        <TableCell>Payment Receive Date (IST)</TableCell>
+                        <TableCell>Received Amount</TableCell>
+                        <TableCell>Closing Type</TableCell>
+                        <TableCell>Payment Mode</TableCell>
+                        <TableCell>Transaction ID</TableCell>
+                        <TableCell>Discount Amount</TableCell>
                         <TableCell>Status</TableCell>
-                        <TableCell>UTR</TableCell>
                         <TableCell>Requested Status</TableCell>
                         <TableCell>Update Status</TableCell>
                         <TableCell>Action</TableCell>

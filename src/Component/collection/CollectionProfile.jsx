@@ -50,7 +50,8 @@ const CollectionProfile = () => {
         'Disbursal',
         'Collection',
         'Repayment',
-        ...(activeRole === "accountExecutive" ? ["Accounts"]:[])
+        'accounts',
+        // ...(activeRole === "accountExecutive" ? ["Accounts"]:[])
     ]
 
     useEffect(() => {
