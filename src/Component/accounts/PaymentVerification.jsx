@@ -128,7 +128,7 @@ function PaymentVerification() {
 
                     </>
                 )}
-                {/* {currentPage === "accounts" && (
+                {currentPage === "accounts" && (
                     <>
                         {collectionData ? (
                             <Payment
@@ -145,7 +145,7 @@ function PaymentVerification() {
                             </Alert>
                         )}
                     </>
-                )} */}
+                )}
 
                 {isError && (
                     <Alert severity="error" style={{ marginTop: "10px" }}>

@@ -5,6 +5,7 @@ import {
     usePendingVerificationQuery,
     useVerifyPendingLeadMutation,
 } from "../../Service/LMSQueries";
+import { Alert } from '@mui/material'
 import { DataGrid } from "@mui/x-data-grid";
 import CommonTable from "../CommonTable";
 

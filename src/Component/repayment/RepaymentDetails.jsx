@@ -406,10 +406,11 @@ const RepaymentDetails = (disburse) => {
                       render={({ field, fieldState }) => (
                         <DatePicker
                           {...field}
-                          required
                           maxDate={dayjs()}
-                          slotProps={{ textField: { format: "DD/MM/YYYY" } }}
+                          slotProps={{ textField: { format: "DD/MM/YYYY", InputLabelProps: { shrink: true } } }} 
                           label="Payment Receive Date"
+                          required
+                          onChange={(date) => field.onChange(date)}
                           error={!!fieldState.error}
                           helperText={fieldState.error ? fieldState.error.message : ''}
                           sx={{ width: "100%" }}
