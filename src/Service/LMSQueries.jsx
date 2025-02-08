@@ -13,7 +13,7 @@ export const lmsQueries = createApi({
       return headers;
     },
   }),
-  tagTypes: ["activeLeads", "leadProfile"],
+  tagTypes: ["activeLeads", "leadProfile", "collectionProfile"],
   endpoints: (builder) => ({
     updateCollection: builder.mutation({
       query: ({ loanNo, data }) => ({
@@ -22,6 +22,14 @@ export const lmsQueries = createApi({
         body: { data },
       }),
       providesTags: ["activeLeads", "leadProfile"],
+    }),
+    verifyPayment : builder.mutation({
+        query: ({ loanNo, transactionId }) => ({
+            url: `/accounts/payment/verify/${loanNo}/?transactionId=${transactionId}&role=accountExecutive`,
+            method: "PATCH",
+            // body: { data },
+        }),
+        invalidatesTags: ["collectionProfile"]
     }),
     addPayment: builder.mutation({
       query: ({ id, data }) => {
@@ -43,10 +51,8 @@ export const lmsQueries = createApi({
     }),
 
         pendingVerification: builder.query({
-            query: (loanNo) => {
-                console.log('loan',loanNo)
-                return `/accounts/pendingPaymentVerificationList/?role=${role()}`},
-            providesTags:["leadProfile","activeLeads"]
+            query: (loanNo) =>  `/accounts/pendingPaymentVerification/${loanNo}/?role=${role()}`,
+            providesTags:["collectionProfile"]
         }),
         verifyPendingLead: builder.mutation({
             query: ({ loanNo, utr, status }) => ({
@@ -71,4 +77,5 @@ export const {
   usePendingVerificationQuery,
   useVerifyPendingLeadMutation,
   useClosedLeadsQuery,
+  useVerifyPaymentMutation,
 } = lmsQueries;

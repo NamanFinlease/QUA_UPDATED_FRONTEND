@@ -9,16 +9,33 @@ import {
     TableCell,
     Alert,
     useTheme,
+    Select,
+    MenuItem,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    TextField,
 } from "@mui/material";
-import { tokens } from '../../theme'
-import { useVerifyPendingLeadMutation, usePendingVerificationQuery } from "../../Service/LMSQueries";
-
-import { Select, MenuItem, Button } from "@mui/material";
+import { tokens } from '../../theme';
+import { useVerifyPendingLeadMutation, usePendingVerificationQuery, useVerifyPaymentMutation, } from "../../Service/LMSQueries";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 
 const PaymentRow = ({ payment, onUpdateStatus }) => {
     const [selectedStatus, setSelectedStatus] = useState("");
+    const [open, setOpen] = useState(false);
+    const [actionType, setActionType] = useState("");
+    const [remarks, setRemarks] = useState("");
+    const { id } = useParams();
+
+    const [verifyPayment, {data , isSuccess, isError, error}] =
+        useVerifyPaymentMutation();
+
+    console.log(data)
+    console.log(id)
 
 
     // Color theme
@@ -48,28 +65,52 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
         setSelectedStatus(event.target.value);
     };
 
-    const handleSubmit = () => {
-        if (selectedStatus) {
-            onUpdateStatus(payment.utr, selectedStatus); // Pass UTR and new status to parent
-        }
+    const handleOpen = (type) => {
+        setActionType(type);
+        setOpen(true);
     };
+
+    const handleClose = () => {
+        setOpen(false);
+        setRemarks("");
+    };
+
+    const handleConfirm = () => {
+        if (actionType === "Approve"){
+            verifyPayment({loanNo : id, transactionId: payment.transactionId})
+        }else {
+
+        }
+        handleClose();
+    }
+
+    useEffect(() => {
+        if(isSuccess && verifyPayment){
+            Swal.fire({
+                text: "Payment Verified",
+                icon: "success"
+            });
+        }
+    }, [isSuccess, ])
+
+    // const handleSubmit = () => {
+    //     if (selectedStatus) {
+    //         onUpdateStatus(payment.utr, selectedStatus); // Pass UTR and new status to parent
+    //     }
+    // };
 
 
     return (
         <tr>
             {console.log(payment)}
-            <td>{payment.date ? formatDateToIST(payment.date) : "N/A"}</td>
-            <td>{payment.amount || "N/A"}</td>
+            <td>{payment.paymentDate ? formatDateToIST(payment.paymentDate) : "N/A"}</td>
+            <td>{payment.receivedAmount || "N/A"}</td>
             <td>{payment.closingType || "N/A"}</td>
             <td>{payment.paymentMode || "N/A"}</td>
             <td>{payment.transactionId || "N/A"}</td>
-            <td>{payment.discountAmount || "N/A"}</td>
-            <td>{payment.isPartlyPaid ? "Verified" : "Pending"}</td>
-            <td>
-                {payment.requestedStatus
-                    ? formatCamelCaseToTitle(payment.requestedStatus)
-                    : "N/A"}
-            </td>
+            <td>{payment.discount || 0}</td>
+            <td>{payment.isPaymentVerified ? "Verified" : "Pending"}</td>
+            <td>{payment.paymentRemarks || "-"}</td>
             {!payment.isPartlyPaid &&
                 <>
                     <td>
@@ -112,7 +153,9 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                                 margin:"5px 1px",
                             }}
                             size="small"
-                            onClick={handleSubmit}
+                            onClick={() => handleOpen("Approve")}
+                            // onClick={handleSubmit}
+                            disabled={payment.isPaymentVerified} 
                             // disabled={!selectedStatus}
                         >
                             Approve
@@ -126,7 +169,9 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                                 margin:"5px 1px",
                             }}
                             size="small"
-                            onClick={handleSubmit}
+                            onClick={() => handleOpen("Reject")}
+                            // onClick={handleSubmit}
+                            disabled={payment.isPaymentVerified} 
                             // disabled={!selectedStatus}
                         >
                             Reject
@@ -134,6 +179,63 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                     </td>
                 </>
             }
+            <Dialog
+                open={open} 
+                onClose={handleClose}
+                PaperProps={{ 
+                    style: { 
+                        // backgroundColor: colors.grey[100], 
+                        // color:colors.black[100] ,
+                        borderRadius:"0px 20px",
+                    } 
+                }}
+            >
+                <DialogTitle>Confirm Action</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to {actionType.toLowerCase()} this payment?
+                    </DialogContentText>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        label="Remarks"
+                        type="text"
+                        fullWidth
+                        variant="outlined"
+                        value={remarks}
+                        onChange={(e) => setRemarks(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button 
+                        variant="contained" 
+                        onClick={handleClose} 
+                        sx={{
+                            color:colors.white[100],
+                            background:colors.redAccent[500],
+                            borderRadius:"0px 10px",
+                        }}
+                    >
+                        Cancel
+                    </Button>
+                    <Button 
+                        onClick={handleConfirm} 
+                        autoFocus
+                        sx={{
+                            color:colors.white[100],
+                            background:colors.primary[400],
+                            borderRadius:"0px 10px",
+                        }}
+                    >
+                        Confirm
+                    </Button>
+                </DialogActions>
+            {isError &&
+                <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+                    {error?.data?.message}
+                </Alert>
+            }
+            </Dialog>
         </tr>
     );
 };
@@ -141,43 +243,36 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
 const Payment = ({ collectionData, leadId, activeRole }) => {
     const {id} = useParams();
     console.log('params',id)
+    const [paymentInfo, setPaymentInfo] = useState([]);
     if (!collectionData) {
         return <div>Loading...</div>;
     }
 
-    const [verifyPendingLead, isLoading, isSuccess, isError] =
-        useVerifyPendingLeadMutation();
-
-    const {paymentData, isLoading:verifyPaymentLoading, isSuccess:verifyPaymentSuccess, isError:verifyPaymentError} =
+    const {data:paymentHistory, isLoading:verifyPaymentLoading, isSuccess:verifyPaymentSuccess, isError:verifyPaymentError} =
         usePendingVerificationQuery(id,{skip : id === null});
 
-    useEffect(()=>{
-       if (verifyPaymentSuccess && paymentData){
-        console.log(paymentData)
-       } 
-    })
+    useEffect(() => {
+        if (verifyPaymentSuccess && paymentHistory) {
+            const paymentList = paymentHistory.paymentList?.flatMap(item => item.paymentHistory) || [];
+            setPaymentInfo(paymentList);
+        }
+    }, [verifyPaymentSuccess, paymentHistory]);
 
-    
-
-    console.log(collectionData);
+    // Loading and error states
+    if (verifyPaymentLoading) return <div>Loading...</div>;
+    if (verifyPaymentError) return <Alert severity="error">Failed to fetch payment data.</Alert>;
 
     // Color theme
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
-    const paymentInfo = collectionData
-        collectionData?.partialPaid?.length > 0
-            ? collectionData?.partialPaid
-            : collectionData;
-
-    console.log(paymentInfo);
-
-    const handleUpdateStatus = async (utr, newStatus) => {
+    const handleUpdateStatus = async (utr, newStatus, remarks = "") => {
         try {
             const response = await verifyPendingLead({
                 loanNo: collectionData.loanNo, // ID of the CAM (assuming this is passed as a prop)
                 utr: utr,
                 status: newStatus, // The updated data from the form
+                remarks,
             }).unwrap();
 
             if (response?.success) {
@@ -246,7 +341,7 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
                         <TableCell>Transaction ID</TableCell>
                         <TableCell>Discount Amount</TableCell>
                         <TableCell>Status</TableCell>
-                        <TableCell>Requested Status</TableCell>
+                        <TableCell>Remarks</TableCell>
                         <TableCell>Update Status</TableCell>
                         <TableCell>Action</TableCell>
                     </TableRow>

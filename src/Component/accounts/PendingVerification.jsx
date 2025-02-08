@@ -8,9 +8,10 @@ import {
 import { Alert } from '@mui/material'
 import { DataGrid } from "@mui/x-data-grid";
 import CommonTable from "../CommonTable";
+import moment from 'moment';
 
 function PendingVerification() {
-    const [pendingLeads, setPendingLeads] = useState();
+    const [pendingLeads, setPendingLeads] = useState([]);
     const [totalPendingLeads, setTotalPendingLeads] = useState();
     const { empInfo, activeRole } = useAuthStore();
     const navigate = useNavigate();
@@ -24,74 +25,62 @@ function PendingVerification() {
             limit: paginationModel.pageSize,
         });
 
+    console.log(data?.paymentList)
+
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel);
     };
 
     const handleLeadClick = (disbursal) => {
-        navigate(`/collection-profile/${disbursal.id}`);
+        console.log(disbursal)
+        navigate(`/collection-profile/${disbursal?.row?.loanNo}`);
     };
+
     const columns = [
         { field: "name", headerName: "Full Name", width: 200 },
+        { field: "loanNo", headerName: "Loan No", width: 150 },
+        { field: "panNo", headerName: "Pan No.", width: 150 },
         { field: "mobile", headerName: "Mobile", width: 150 },
-        { field: "aadhaar", headerName: "Aadhaar No.", width: 150 },
-        { field: "pan", headerName: "PAN No.", width: 150 },
-        { field: "city", headerName: "City", width: 150 },
-        { field: "state", headerName: "State", width: 150 },
-        { field: "loanAmount", headerName: "Loan Amount", width: 150 },
-        { field: "salary", headerName: "Salary", width: 150 },
-        { field: "source", headerName: "Source", width: 150 },
-        ...(activeRole === "collectionHead" || activeRole === "admin"
-            ? [
-                  {
-                      field: "disbursalHead",
-                      headerName: "Disbursed By",
-                      width: 150,
-                  },
-              ]
-            : []),
+        { field: "paymentTransactionId", headerName: "Transaction ID", width: 150 },
+        { field: "receivedAmount", headerName: "Received Amount", width: 150 },
+        { field: "paymentDate", headerName: "Payment Date", width: 150 },
     ];
-    // console.log("The pending Leads id is",pendingLeads[0].data[0].loanNo)
-    const rows = pendingLeads?.map((activeLead) => ({
-        id: activeLead?.data?.loanNo || 0,
-        name: ` ${activeLead?.data?.disbursal?.sanction?.application?.lead?.fName}  ${activeLead?.data?.disbursal?.sanction?.application?.lead?.mName} ${activeLead?.data?.disbursal?.sanction?.application?.lead?.lName}`,
-        mobile: activeLead?.data?.disbursal?.sanction?.application?.lead
-            ?.mobile,
-        aadhaar:
-            activeLead?.data?.disbursal?.sanction?.application?.lead?.aadhaar,
-        pan: activeLead?.data?.disbursal?.sanction?.application?.lead?.pan,
-        city: activeLead?.data?.disbursal?.sanction?.application?.lead?.city,
-        state: activeLead?.data?.disbursal?.sanction?.application?.lead?.state,
-        loanAmount:
-            activeLead?.data?.disbursal?.sanction?.application?.lead
-                ?.loanAmount,
-        salary: activeLead?.data?.disbursal?.sanction?.application?.lead
-            ?.salary,
-        source: activeLead?.data?.disbursal?.sanction?.application?.lead
-            ?.source,
-        ...((activeRole === "accountExecutive" || activeRole === "admin") && {
-            disbursalHead: `${activeLead?.data?.disbursal?.disbursedBy?.fName}${
-                activeLead?.data?.disbursal?.disbursedBy?.mName
-                    ? ` ${activeLead?.data?.disbursal?.disbursedBy?.mName}`
-                    : ``
-            } ${activeLead?.data?.disbursal?.disbursedBy?.lName}`,
-        }),
+
+    const rows = pendingLeads?.map((lead, index) => ({
+        id: `${lead._id}-${index}`,
+        name: `${lead?.firstName} ${lead?.mName} ${lead?.lName}`,
+        loanNo: lead?.loanNo,
+        panNo: lead?.pan,
+        mobile: lead?.mobile,
+        receivedAmount: lead?.receivedAmount,
+        paymentDate: moment(lead?.paymenDate).format("DD-MM-YYYY"),  
     }));
+    
 
     useEffect(() => {
-        refetch({
-            page: paginationModel.page + 1,
-            limit: paginationModel.pageSize,
-        });
+    if (isSuccess && data) {
+        const uniqueLeads = [...new Map(data?.paymentList.map(lead => [lead._id, lead])).values()];
+        setPendingLeads(uniqueLeads);
+        setTotalPendingLeads(uniqueLeads.length);
+    }
+}, [isSuccess, data]);
+
+    useEffect(() => {
+        if (paginationModel.page >= 0) {
+            refetch({
+                page: paginationModel.page + 1,
+                limit: paginationModel.pageSize,
+            });
+        }
     }, [paginationModel]);
 
     useEffect(() => {
-        if (data) {
-            setPendingLeads(data?.leadsToVerify);
-            setTotalPendingLeads(data?.totalActiveLeadsToVerify);
+        if (isSuccess && data) {
+            setPendingLeads(data?.paymentList);
+            setTotalPendingLeads(data?.paymentList.length || 0);
         }
     }, [isSuccess, data]);
-
+    
     return (
         <>
             <CommonTable

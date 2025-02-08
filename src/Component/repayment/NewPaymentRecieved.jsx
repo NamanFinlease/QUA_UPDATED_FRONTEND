@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
+import Swal from 'sweetalert2';
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CloseIcon from "@mui/icons-material/Close";
@@ -57,12 +58,14 @@ const NewPaymentRecieved = () => {
     repaymentDocs: "",
   };
 
-  const { handleSubmit, control, setValue, getValues } = useForm({
+  const { handleSubmit, control, setValue, getValues, watch } = useForm({
     defaultValues: defaultValue,
     // resolver: yupResolver(paymentReceivedSchema),
     // mode: "onBlur",
     // reValidateMode: "onChange",
   });
+
+  const closingType = watch("closingType");
 
   const submitPayment = async (data) => {
     try {
@@ -120,8 +123,14 @@ const NewPaymentRecieved = () => {
   useEffect(() => {
     if (isSuccess) {
       console.log("Payment Added Successfully");
+      Swal.fire({
+          text: "Payment Added successfully",
+          icon: "success"
+      });
     }
   }, [data, isSuccess]);
+
+
 
   return (
     <Accordion
@@ -405,6 +414,7 @@ const NewPaymentRecieved = () => {
                     <TextField
                       {...field}
                       onKeyDown={handleKeyDown}
+                      disabled={closingType === "partPayment"}
                       // disabled={!selectedDiscountType}
                       fullWidth
                       label="Discount Amount"
