@@ -24,11 +24,13 @@ export const lmsQueries = createApi({
       providesTags: ["activeLeads", "leadProfile"],
     }),
     addPayment: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/collections/updatePayment/:${id}`,
-        method: "POST",
-        body: { data },
-      }),
+      query: ({ id, data }) => {
+        return {
+          url: `/collections/updatePayment/${id}/?role=${role()}`,
+          method: "POST",
+          body: data,
+        };
+      },
       invalidatesTags: ["activeLeads"],
     }),
     activeLeads: builder.query({
