@@ -12,7 +12,7 @@
 // import useAuthStore from '../store/authStore';
 // import AadhaarCompare from './AadhaarCompare';
 
-// const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVerified,isAadhaarDetailsSaved, isPanVerified }) => {
+// const EKycVerification = ({ isMobileVerified, isEmailVerified, isAadhaarVerified,isAadhaarDetailsSaved, isPanVerified }) => {
 //   const { id } = useParams()
 //   const {setCodeVerifier,setFwdp,activeRole} = useAuthStore()
 //   const navigate = useNavigate()
@@ -240,7 +240,7 @@
 //    );
 // };
 
-// export default VerifyContactDetails;
+// export default EKycVerification;
 
 
 import React, { useEffect, useState } from 'react';
@@ -273,7 +273,7 @@ import PanCompare from './PanCompare';
 import useAuthStore from '../store/authStore';
 import AadhaarCompare from './AadhaarCompare';
 
-const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerified, isESignPending, isESigned, leadId }) => {
+const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerified, isESignPending, isESigned, leadId }) => {
   const { id } = useParams()
   const { activeRole } = useAuthStore()
   const navigate = useNavigate()
@@ -460,4 +460,4 @@ const VerifyContactDetails = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanV
   );
 };
 
-export default VerifyContactDetails;
+export default EKycVerification;

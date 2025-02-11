@@ -11,7 +11,7 @@ import InternalDedupe from '../InternalDedupe';
 import ApplicationLogHistory from '../ApplicationLogHistory';
 import PersonalDetails from '../applications/PersonalDetails';
 import BankDetails from '../applications/BankDetails';
-import VerifyContactDetails from '../leads/DetailsVerification';
+import EKycVerification from '../leads/DetailsVerification';
 import UploadDocuments from '../UploadDocuments';
 import Cam from '../applications/Cam';
 import DisburseInfo from '../disbursal/DisburseLoan';
@@ -98,7 +98,7 @@ const CollectionProfile = () => {
                         {currentPage === "banking" && <BankDetails id={application?.applicant} />}
 
                         {currentPage === "verification" &&
-                            <VerifyContactDetails
+                            <EKycVerification
                                 isMobileVerified={lead?.isMobileVerified}
                                 isEmailVerified={lead?.isEmailVerified}
                                 isAadhaarVerified={lead?.isAadhaarVerified}

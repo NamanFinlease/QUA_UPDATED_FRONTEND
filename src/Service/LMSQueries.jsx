@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "./BaseURL";
+import { idID } from "@mui/material/locale";
 
 const role = () =>
   JSON.parse(localStorage.getItem("auth-storage")).state.activeRole;
@@ -45,37 +46,47 @@ export const lmsQueries = createApi({
       query: ({ page, limit }) => `/collections/active/?role=${role()}`,
       providesTags: ["activeLeads"],
     }),
+    allocateCollections: builder.query({
+      query: ( id ) =>  `/collections/allocate/${id}/?role=${role()}`,
+      providesTags: ["activeLeads"],
+    }),
+    allocatedCollectionsList: builder.query({
+      query: ( {page, limit} ) =>  `/collections/allocatedList/?role=${role()}`,
+      providesTags: ["activeLeads"],
+    }),
     fetchActiveLead: builder.query({
       query: (loanNo) => `/collections/active/${loanNo}/?role=${role()}`,
       providesTags: ["activeLeads", "leadProfile"],
     }),
 
-        pendingVerification: builder.query({
-            query: (loanNo) =>  `/accounts/pendingPaymentVerification/${loanNo}/?role=${role()}`,
-            providesTags:["collectionProfile"]
+    pendingVerification: builder.query({
+        query: (loanNo) =>  `/accounts/pendingPaymentVerification/${loanNo}/?role=${role()}`,
+        providesTags:["collectionProfile"]
+    }),
+    verifyPendingLead: builder.mutation({
+        query: ({ loanNo, utr, status }) => ({
+            url: `/accounts/active/verify/${loanNo}/?role=${role()}`,
+            method: "PATCH",
+            body: { utr, status },
         }),
-        verifyPendingLead: builder.mutation({
-            query: ({ loanNo, utr, status }) => ({
-                url: `/accounts/active/verify/${loanNo}/?role=${role()}`,
-                method: "PATCH",
-                body: { utr, status },
-            }),
-            invalidatesTags:["leadProfile","activeLeads"]
-        }),
-        closedLeads: builder.query({
-            query: ({ page, limit }) =>
-                `/collections/closed/?role=${role()}`,
-            // providesTags: ["activeLeads"],
-        }),
+        invalidatesTags:["leadProfile","activeLeads"]
+    }),
+    closedLeads: builder.query({
+        query: ({ page, limit }) =>
+            `/collections/closed/?role=${role()}`,
+        // providesTags: ["activeLeads"],
+    }),
     }),
 });
 export const {
   useUpdateCollectionMutation,
   useAddPaymentMutation,
   useActiveLeadsQuery,
+  useAllocatedCollectionsListQuery,
   useFetchActiveLeadQuery,
   usePendingVerificationQuery,
   useVerifyPendingLeadMutation,
   useClosedLeadsQuery,
   useVerifyPaymentMutation,
+  useLazyAllocateCollectionsQuery,
 } = lmsQueries;

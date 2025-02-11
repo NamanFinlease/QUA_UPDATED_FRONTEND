@@ -9,7 +9,7 @@ import BarButtons from '../BarButtons';
 import LeadDetails from '../LeadDetails';
 import PersonalDetails from '../applications/PersonalDetails';
 import BankDetails from '../applications/BankDetails';
-import VerifyContactDetails from '../leads/DetailsVerification';
+import EKycVerification from '../leads/DetailsVerification';
 import UploadDocuments from '../UploadDocuments';
 import Cam from '../applications/Cam';
 import { useDisbursalProfileQuery } from '../../Service/applicationQueries';
@@ -107,7 +107,7 @@ const DisbursalProfile = () => {
               <BankDetails id={disbursalData?.sanction?.application?.applicant} />}
 
             {currentPage === "verification" &&
-              <VerifyContactDetails
+              <EKycVerification
                 isMobileVerified={disbursalData?.sanction?.application?.lead?.isMobileVerified}
                 isEmailVerified={disbursalData?.sanction?.application?.lead?.isEmailVerified}
                 isAadhaarVerified={disbursalData?.sanction?.application?.lead?.isAadhaarVerified}

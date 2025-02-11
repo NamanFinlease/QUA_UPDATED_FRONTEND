@@ -5,6 +5,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from './store/authStore';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import AddTaskIcon from '@mui/icons-material/AddTask';
 
 const CommonTable = ({
   columns,
@@ -109,7 +110,7 @@ const CommonTable = ({
             display: 'inline-block',
           }}
         >
-          {(activeRole === "screener" || activeRole === "creditManager" || activeRole === "disbursalManager") && <Button
+          {(activeRole === "screener" || activeRole === "creditManager" || activeRole === "disbursalManager" || activeRole === "collectionExecutive") && <Button
             onClick={() => handleActionButtonClick('allocate')}
             sx={{
                 fontWeight: 'bold',
@@ -130,6 +131,7 @@ const CommonTable = ({
                 }
             }}
           >
+            <AddTaskIcon style={{ marginRight: '5px' }}/>
             Allocate
           </Button>}
         </div>

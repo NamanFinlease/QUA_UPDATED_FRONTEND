@@ -154,9 +154,7 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                             }}
                             size="small"
                             onClick={() => handleOpen("Approve")}
-                            // onClick={handleSubmit}
-                            disabled={payment.isPaymentVerified} 
-                            // disabled={!selectedStatus}
+                            disabled={payment.isPaymentVerified}
                         >
                             Approve
                         </Button>
@@ -170,9 +168,7 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                             }}
                             size="small"
                             onClick={() => handleOpen("Reject")}
-                            // onClick={handleSubmit}
-                            disabled={payment.isPaymentVerified} 
-                            // disabled={!selectedStatus}
+                            disabled={payment.isPaymentVerified}
                         >
                             Reject
                         </Button>

@@ -231,11 +231,9 @@ const LeadNew = () => {
         totalRows={totalLeads}
         paginationModel={paginationModel}
         onPageChange={handlePageChange}
-        onRowClick={handleRowClick}
         title="New Leads"
         actionButton={true}
         onAllocateButtonClick={handleAllocate}
-        // onActionButtonClick={handleActionButtonClick}
       />
       </>
   );

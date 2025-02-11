@@ -14,7 +14,7 @@ import ActionButton from '../ActionButton';
 import InternalDedupe from '../InternalDedupe';
 import ApplicationLogHistory from '../ApplicationLogHistory';
 import useAuthStore from '../store/authStore';
-import VerifyContactDetails from '../leads/DetailsVerification';
+import EKycVerification from '../leads/DetailsVerification';
 import ApplicantProfileData from '../applicantProfileData';
 
 const barButtonOptions = ['Application', 'Documents', 'Personal', 'Banking', 'Verification', 'Cam']
@@ -103,7 +103,7 @@ const ApplicationProfile = () => {
                   <BankDetails id={applicationData?.applicant} />}
 
                 {currentPage === "verification" &&
-                  <VerifyContactDetails
+                  <EKycVerification
                     isMobileVerified={applicationData?.lead?.isMobileVerified}
                     isEmailVerified={applicationData?.lead?.isEmailVerified}
                     isAadhaarVerified={applicationData?.lead?.isAadhaarVerified}

@@ -97,7 +97,7 @@ const accordionItems = [
     icon: <FolderSpecialRoundedIcon/>,
     items: [
       { text: "Active Leads", link: "/activeLeads" },
-      // { text: "Allocated Leads", link: "/allocatedLeads" },
+      { text: "Allocated Leads", link: "/allocatedCollectionLeads" },
       { text: "Verification Pending", link: "/pending-verification" },
       { text: "Closed Leads", link: "/closed-leads" },
     ],
@@ -109,7 +109,7 @@ const accordionItems = [
     icon: <CollectionsBookmarkRoundedIcon/>,
     items: [
       { text: "Active Leads", link: "/activeLeads" },
-      // { text: "Allocated Leads", link: "/allocatedLeads" },
+      { text: "Allocated Leads", link: "/allocatedCollectionLeads" },
       { text: "Verification Pending", link: "/pending-verification" },
       { text: "Closed Leads", link: "/closed-leads" },
     ],

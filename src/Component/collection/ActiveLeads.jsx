@@ -3,32 +3,59 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
 import useAuthStore from "../store/authStore";
-import { useActiveLeadsQuery } from "../../Service/LMSQueries";
+import { useActiveLeadsQuery, useLazyAllocateCollectionsQuery } from "../../Service/LMSQueries";
 import CommonTable from "../CommonTable";
 
 const ActiveLeads = () => {
     const [activeLeads, setActiveLeads] = useState();
     const [totalActiveLeads, setTotalActiveLeads] = useState();
     const { empInfo, activeRole } = useAuthStore();
+    const [selectedLeads, setSelectedLeads] = useState(null); // Stores selected leads
     const navigate = useNavigate();
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
         pageSize: 10,
     });
 
-    const { data, isSuccess, isError, error, refetch } = useActiveLeadsQuery({
+    const { data , isSuccess, isError, error, refetch } = useActiveLeadsQuery({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
     });
-    const handlePageChange = (newPaginationModel) => {
-        setPaginationModel(newPaginationModel);
+
+    const [ allocateCollections, { data: collection, isSuccess: isAllocateSuccess, isError: isAllocateError, error: allocateError }] = useLazyAllocateCollectionsQuery();
+
+    const handleCheckboxChange = (id) => {
+        setSelectedLeads(selectedLeads === id ? null : id);
+    }
+
+    const handleAllocate = async () => {
+        console.log(selectedLeads)
+        if (selectedLeads) {
+            await allocateCollections(selectedLeads);
+        } else {
+            console.warn("No lead selected for allocation.");
+        }
     };
 
-    const handleLeadClick = (disbursal) => {
-        console.log("The disbursal", disbursal);
-        navigate(`/collection-profile/${disbursal.id}`);
+    const handlePageChange = (newPaginationModel) => {
+        setPaginationModel(newPaginationModel)
     };
+
     const columns = [
+        {
+            field: 'select',
+            headerName: '',
+            width: 50,
+            renderCell: (params) => (
+              activeRole === "collectionExecutive" &&
+              <input
+                type="checkbox"
+                checked={selectedLeads === params.row.id}
+      
+                onChange={() => handleCheckboxChange(params.row.id)}
+              />
+            ),
+          },
         { field: "name", headerName: "Full Name", width: 200 },
         { field: "mobile", headerName: "Mobile", width: 150 },
         { field: "aadhaar", headerName: "Aadhaar No.", width: 150 },
@@ -49,34 +76,35 @@ const ActiveLeads = () => {
             : []),
     ];
 
-    const rows = activeLeads?.map((activeLead) => {
-        const { lead } = activeLead?.data?.disbursal?.sanction?.application;
-        return {
-            id: activeLead?.data?.loanNo,
-            name: ` ${lead?.fName}  ${lead?.mName} ${lead?.lName}`,
-            mobile: lead?.mobile,
-            aadhaar: lead?.aadhaar,
-            pan: lead?.pan,
-            city: lead?.city,
-            state: lead?.state,
-            loanAmount: lead?.loanAmount,
-            salary: lead?.salary,
-            source: lead?.source,
-            ...((activeRole === "collectionHead" || activeRole === "admin") && {
-                disbursalHead: `${active?.data?.disbursal?.disbursedBy?.fName}${
-                    active?.data?.disbursal?.disbursedBy?.mName
-                        ? ` ${active?.data?.disbursal?.disbursedBy?.mName}`
-                        : ``
-                } ${active?.data?.disbursal?.disbursedBy?.lName}`,
-            }),
-        };
-    });
+    const rows = activeLeads?.map((activeLead) => ({
+        
+        id: activeLead?._id,
+        name: ` ${activeLead?.fName}  ${activeLead?.mName} ${activeLead?.lName}`,
+        mobile: activeLead?.mobile,
+        aadhaar: activeLead?.aadhaar,
+        pan: activeLead?.pan,
+        city: activeLead?.city,
+        state: activeLead?.state,
+        loanAmount: activeLead?.loanAmount,
+        salary: activeLead?.salary,
+        source: activeLead?.source,
+        ...((activeRole === "collectionHead" || activeRole === "admin") && {
+            disbursalHead: `${activeLead?.fName}${
+                activeLead?.mName
+                    ? ` ${activeLead?.mName}`
+                    : ``
+            } ${activeLead?.lName}`,
+        }),
+    }));
+
+    // useEffect(() => {
+    //     if (isSuccess) {
+    //       navigate("/allocatedCollectionLeads")
+    //     }
+    //   }, [isSuccess])
 
     useEffect(() => {
-        refetch({
-            page: paginationModel.page + 1,
-            limit: paginationModel.pageSize,
-        });
+        refetch();
     }, [paginationModel]);
 
     useEffect(() => {
@@ -95,8 +123,10 @@ const ActiveLeads = () => {
                 totalRows={totalActiveLeads}
                 paginationModel={paginationModel}
                 onPageChange={handlePageChange}
-                onRowClick={handleLeadClick}
+                // onRowClick={handleLeadClick}
                 title="Active Leads"
+                actionButton={true}
+                onAllocateButtonClick={handleAllocate}
             />
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>

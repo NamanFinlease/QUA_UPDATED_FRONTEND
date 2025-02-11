@@ -3,14 +3,13 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./Component/LoginPage";
 import Dashboard from "./Component/dashboard";
 import DynamicTable from "./Component/DynamicTable";
-import TableForm from "./Component/TableForm"; // Import the new TableForm component
+import TableForm from "./Component/TableForm";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
-
 import "bootstrap-icons/font/bootstrap-icons.css";
 import SearchForm from "./Component/SearchForm";
 import ExportForm from "./Component/ExportForm";
-import Navbar from "./Navbar/Navbar";
+import Navbar from "./Navbar/Navbar";   
 import Sidebar from "./Navbar/Sidebar";
 import { useEffect, useState } from "react";
 import MISReport from "./Component/MisReort";
@@ -50,6 +49,7 @@ import RejectedDisbursal from "./Component/disbursal/RejectedDisbursal";
 import RecommendedApplications from "./Component/applications/RecommendedApplications";
 import RepaymentDetails from "./Component/repayment/RepaymentDetails";
 import ActiveLeads from "./Component/collection/ActiveLeads";
+import AllocatedCollectionLeads from "./Component/collection/AllocatedCollectionLeads";
 import PendingVerification from "./Component/accounts/PendingVerification";
 import CloseLeads from "./Component/accounts/CloseLeads";
 import CollectionProfile from "./Component/collection/CollectionProfile";
@@ -238,6 +238,10 @@ function App() {
                                     <Route
                                         path="/activeLeads"
                                         element={<ActiveLeads />}
+                                    />
+                                    <Route
+                                        path="/allocatedCollectionLeads"
+                                        element={<AllocatedCollectionLeads />}
                                     />
                                     <Route
                                         path="/collection-profile/:id"

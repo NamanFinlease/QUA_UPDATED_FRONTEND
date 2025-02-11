@@ -16,7 +16,7 @@ import Cam from '../applications/Cam'
 import LoanSanctionPreview from './LoanSanctionPreview'
 import ApplicantProfileData from '../applicantProfileData';
 import SanctionLetterPreview from './SanctionLetterPreview';
-import VerifyContactDetails from '../leads/DetailsVerification';
+import EKycVerification from '../leads/DetailsVerification';
 
 
 const barButtonOptions = ['Application', 'Documents', 'Personal', 'Banking', 'Verification', 'Cam']
@@ -149,7 +149,7 @@ const SanctionProfile = () => {
                 {currentPage === "banking" &&
                   <BankDetails id={data?.application?.applicant} />}
                 {currentPage === "verification" &&
-                  <VerifyContactDetails
+                  <EKycVerification
                     isAadhaarVerified={data?.application?.lead?.isAadhaarVerified}
                     isAadhaarDetailsSaved={data?.applicationData?.lead?.isAadhaarDetailsSaved}
                     isPanVerified={data?.application?.lead?.isPanVerified}

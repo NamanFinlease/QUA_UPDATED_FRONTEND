@@ -7,7 +7,7 @@ import LeadDetails from '../Component/LeadDetails';
 import InternalDedupe from '../Component/InternalDedupe';
 import UploadDocuments from '../Component/UploadDocuments';
 import ApplicationLogHistory from '../Component/ApplicationLogHistory';
-import VerifyContactDetails from '../Component/leads/DetailsVerification';
+import EKycVerification from '../Component/leads/DetailsVerification';
 import CibilScorePage from '../Component/leads/CibilScore';
 import useStore from '../Store';
 import ActionButton from '../Component/ActionButton';
@@ -125,7 +125,7 @@ const LeadProfile = () => {
                         {leadData?._id &&
                             <>
                                 {currentPage === "verification" &&
-                                    <VerifyContactDetails
+                                    <EKycVerification
                                         isMobileVerified={leadData?.isMobileVerified}
                                         isEmailVerified={leadData?.isEmailVerified}
                                         isAadhaarVerified={leadData?.isAadhaarVerified}

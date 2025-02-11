@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './SearchForm.css'; // Ensure you create this CSS file for styling
-import Navbar from '../Navbar/NavBar';
+import Navbar from '../Navbar/Navbar';
 import Sidebar from '../Navbar/Sidebar';
 
 const SearchForm = () => {

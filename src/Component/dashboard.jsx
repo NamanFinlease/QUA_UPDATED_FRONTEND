@@ -429,6 +429,7 @@ import { Box, Button, useTheme, useMediaQuery } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -437,7 +438,6 @@ import useAuthStore from './store/authStore';
 import useStore from '../Store';
 import Header from "./Header";
 import GlobalBox from './GlobalBox';
-// import Responsive from '../utils/Responsive';
 import Swal from 'sweetalert2';
 import { useGetEmployeesQuery, useGetLeadTotalRecordsQuery, useGetTotalRecordsForSupervisorQuery } from '../Service/Query';
 
@@ -732,6 +732,13 @@ const Dashboard = () => {
       sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/activeLeads",
       title: 'Active Leads ',
+      no : 0
+    },
+    allocatedLeads: {
+      icon: <CheckCircleIcon className='mt-3'
+      sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/allocatedCollectionLeads",
+      title: 'Allocated Leads',
       no : 0
     },
     pendingVerification: {
