@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState,useEffect, useRef } from "react";
 import {
   Accordion,
   AccordionSummary,
@@ -12,6 +12,7 @@ import {
   MenuItem,
   Select,
   useTheme,
+  Alert
 } from "@mui/material";
 import { tokens } from "../../theme";
 import useAuthStore from "../store/authStore";
@@ -22,10 +23,10 @@ import OutstandingLoanAmount from "../collection/OutstandingLoanAmount";
 import CommonTable from "../CommonTable";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { paymentReceivedSchema } from "../../utils/validations";
-import { useAddPaymentMutation } from "../../Service/LMSQueries";
+import { useFetchRepaymentDetailsQuery, useAddPaymentMutation } from "../../Service/LMSQueries";
 import NewPaymentRecieved from "./NewPaymentRecieved";
 
-const RepaymentDetails = (disburse) => {
+const RepaymentDetails = ({repaymentId}) => {
   const [checkedFields, setCheckedFields] = useState({
     loanNo: false,
     loanAmount: false,
@@ -34,7 +35,22 @@ const RepaymentDetails = (disburse) => {
     blacklist: false, // State for the "Add to Blacklist" checkbox
   });
   const [remarks, setRemarks] = useState("");
+  const [repaymentDetails, setRepaymentDetails] = useState([]);
   const [blacklistReason, setBlacklistReason] = useState("Select a Reason");
+
+  const id = repaymentId;
+  console.log(id)
+
+  const { data:fetchRepaymentDetails, isSuccess, isError, error} = useFetchRepaymentDetailsQuery(id, {skip:id === null});
+  
+  console.log(fetchRepaymentDetails);
+
+  useEffect(() => {
+    if(repaymentDetails && isSuccess){
+      console.log("Repayment Details", repaymentDetails);
+      setRepaymentDetails(fetchRepaymentDetails);
+    }
+  },[repaymentDetails, isSuccess])
 
   // Color theme
   const theme = useTheme();
@@ -89,7 +105,10 @@ const RepaymentDetails = (disburse) => {
       headerName: "Payment Verified On",
       width: 150,
     },
-    { field: "recoveryAction", headerName: "Action", width: 150 },
+    { field: "recoveryAction", 
+      headerName: "Action", 
+      width: 150 
+    },
   ];
 
   const handleSaveBlacklist = () => {
@@ -116,7 +135,7 @@ const RepaymentDetails = (disburse) => {
       {console.log(disburse)}
 
       {/* Payable and Outstanding Amount Information */}
-      <OutstandingLoanAmount />
+      <OutstandingLoanAmount repaymentDetails={fetchRepaymentDetails}/>
 
       {/* Add to Blacklist */}
       <Paper
@@ -275,6 +294,11 @@ const RepaymentDetails = (disburse) => {
 
       {/* New Payment Recieved */}
       <NewPaymentRecieved />
+      {isError &&
+        <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+            {error?.data?.message}
+        </Alert>
+      }
     </>
   );
 };

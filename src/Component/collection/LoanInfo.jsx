@@ -47,7 +47,7 @@ const LoanInfo = ({ disburse }) => {
     { label: "Repayment Date", value: cam?.repaymentDate && formatDate(cam?.repaymentDate) },
     { label: "Repayment Amount", value: cam?.repaymentAmount },
     { label: "Actual Repayment Amount", value: cam?.repaymentAmount },
-    { label: "ROI % (p.d.) Approved", value: cam?.roi },
+    { label: "ROI % (per day)", value: cam?.roi },
     { label: "Processing Fee", value: cam?.netAdminFeeAmount },
     { label: "Tenure", value: cam?.eligibleTenure },
     { label: "DPD", value: cam?.eligibleTenure },

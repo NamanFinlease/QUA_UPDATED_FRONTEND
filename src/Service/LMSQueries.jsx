@@ -58,6 +58,10 @@ export const lmsQueries = createApi({
       query: (loanNo) => `/collections/active/${loanNo}/?role=${role()}`,
       providesTags: ["activeLeads", "leadProfile"],
     }),
+    fetchRepaymentDetails: builder.query({
+      query: ( id ) => `/collections/repayment/${id}/?role=${role()}`,
+      providesTags: ["collectionProfile"]
+    }),
 
     pendingVerification: builder.query({
         query: (loanNo) =>  `/accounts/pendingPaymentVerification/${loanNo}/?role=${role()}`,
@@ -89,4 +93,5 @@ export const {
   useClosedLeadsQuery,
   useVerifyPaymentMutation,
   useLazyAllocateCollectionsQuery,
+  useFetchRepaymentDetailsQuery,
 } = lmsQueries;

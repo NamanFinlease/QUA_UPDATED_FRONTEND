@@ -36,7 +36,7 @@ const AllocatedCollectionLeads = () => {
         { field: "pan", headerName: "PAN No.", width: 150 },
         { field: "city", headerName: "City", width: 150 },
         { field: "state", headerName: "State", width: 150 },
-        { field: "sanctionAmount", headerName: "Loan Amount", width: 150 },
+        { field: "sanctionAmount", headerName: "Sanction Amount", width: 150 },
         { field: "loanNo", headerName: "Loan Number", width: 150 },
         { field: "salary", headerName: "Salary", width: 150 },
         { field: "source", headerName: "Source", width: 150 },

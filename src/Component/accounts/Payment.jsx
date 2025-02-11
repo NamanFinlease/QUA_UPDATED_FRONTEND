@@ -31,10 +31,10 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
     const [remarks, setRemarks] = useState("");
     const { id } = useParams();
 
-    const [verifyPayment, {data , isSuccess, isError, error}] =
+    const [verifyPayment, { isSuccess, isError, error}] =
         useVerifyPaymentMutation();
 
-    console.log(data)
+    
     console.log(id)
 
 
@@ -92,13 +92,6 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
             });
         }
     }, [isSuccess, ])
-
-    // const handleSubmit = () => {
-    //     if (selectedStatus) {
-    //         onUpdateStatus(payment.utr, selectedStatus); // Pass UTR and new status to parent
-    //     }
-    // };
-
 
     return (
         <tr>
@@ -330,7 +323,7 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
                 }}>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Payment Receive Date (IST)</TableCell>
+                        <TableCell>Payment Receive Date</TableCell>
                         <TableCell>Received Amount</TableCell>
                         <TableCell>Closing Type</TableCell>
                         <TableCell>Payment Mode</TableCell>

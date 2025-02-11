@@ -12,10 +12,12 @@ import {
 } from '@mui/material';
 import { tokens } from '../../theme';
 
-const OutstandingLoanAmount = () => {
+const OutstandingLoanAmount = ({outstandingDetails}) => {
   // Color theme
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  console.log(outstandingDetails?.repaymentDetails.interest)
 
   return (
     <Paper
@@ -70,23 +72,23 @@ const OutstandingLoanAmount = () => {
                 </TableRow>
                 <TableRow>
                   <TableCell>Interest Amount</TableCell>
-                  <TableCell>0</TableCell>
-                  <TableCell>0</TableCell>
-                  <TableCell>0</TableCell>
+                  <TableCell>{outstandingDetails?.repaymentDetails.interest}</TableCell>
+                  <TableCell>{outstandingDetails?.repaymentDetails.interestReceived}</TableCell>
+                  <TableCell>{outstandingDetails?.repaymentDetails.interestDiscount}</TableCell>
                   <TableCell>0</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Principle Amount</TableCell>
-                  <TableCell>0</TableCell>
-                  <TableCell>0</TableCell>
-                  <TableCell>0</TableCell>
+                  <TableCell>{outstandingDetails?.repaymentDetails.principalAmount}</TableCell>
+                  <TableCell>{outstandingDetails?.repaymentDetails.principalReceived}</TableCell>
+                  <TableCell>{outstandingDetails?.repaymentDetails.principalDiscount}</TableCell>
                   <TableCell>0</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Penalty Amount</TableCell>
-                  <TableCell>0</TableCell>
-                  <TableCell>0</TableCell>
-                  <TableCell>0</TableCell>
+                  <TableCell>{outstandingDetails?.repaymentDetails.penalty}</TableCell>
+                  <TableCell>{outstandingDetails?.repaymentDetails.penaltyReceived}</TableCell>
+                  <TableCell>{outstandingDetails?.repaymentDetails.penaltyDiscount}</TableCell>
                   <TableCell>0</TableCell>
                 </TableRow>
                 <TableRow>
@@ -94,7 +96,7 @@ const OutstandingLoanAmount = () => {
                   <TableCell>0</TableCell>
                   <TableCell>0</TableCell>
                   <TableCell>0</TableCell>
-                  <TableCell>0</TableCell>
+                  <TableCell>{outstandingDetails?.repaymentDetails.outstandingAmount}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
