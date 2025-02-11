@@ -372,7 +372,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                     <>
                                         {!applicationProfile?.isApproved ?
 
-                                            <Button
+<Button
                                                 variant="contained"
                                                 disabled={sanctionApproveLoading}
                                                 color="success"
@@ -386,33 +386,33 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                         backgroundColor: sanctionApproveLoading ? "#ccc" : "#069130",
                                                     },
                                                 }}
-                                            >
+                                                >
                                                 {sanctionApproveLoading ? <CircularProgress size={20} color="inherit" /> : "Approve"}
                                             </Button>
                                             :
                                             <Button
-                                                variant="contained"
-                                                disabled={previewLoading}
-                                                color="success"
-                                                onClick={() => handlePreview()}
-                                                sx={{
-                                                    backgroundColor: previewLoading ? "#ccc" : "#04c93f",
-                                                    color: previewLoading ? "#666" : "white",
-                                                    cursor: previewLoading ? "not-allowed" : "pointer",
-                                                    boxShadow: "0px 2px 5px rgb(0,0,0,0.2)",
-                                                    borderRadius: "0px 10px",
-                                                    "&:hover": {
-                                                        backgroundColor: previewLoading ? "#ccc" : "#04b539",
-                                                        boxShadow: "0px 2px 5px 2px rgb(0,0,0,0.2)",
-                                                    },
-                                                }}
+                                            variant="contained"
+                                            disabled={previewLoading}
+                                            color="success"
+                                            onClick={() => handlePreview()}
+                                            sx={{
+                                                backgroundColor: previewLoading ? "#ccc" : "#04c93f",
+                                                color: previewLoading ? "#666" : "white",
+                                                cursor: previewLoading ? "not-allowed" : "pointer",
+                                                boxShadow: "0px 2px 5px rgb(0,0,0,0.2)",
+                                                borderRadius: "0px 10px",
+                                                "&:hover": {
+                                                    backgroundColor: previewLoading ? "#ccc" : "#04b539",
+                                                    boxShadow: "0px 2px 5px 2px rgb(0,0,0,0.2)",
+                                                },
+                                            }}
                                             >
                                                 {previewLoading ? <CircularProgress size={20} color="inherit" /> : "Preview"}
                                             </Button>}
                                     </>
 
 
-                                }
+}
                             </>
                         }
                         {(activeRole !== "sanctionHead" && activeRole !== "admin") &&
@@ -494,7 +494,6 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                             </Button>}
                     </Box>
                 )}
-
                 {/* Render dropdown, input, and submit/cancel buttons when Hold or Reject is selected */}
 
                 {(actionType === 'hold' || actionType === "unhold" || actionType === 'reject' || actionType === "sendBack" || actionType === "recommend") && (

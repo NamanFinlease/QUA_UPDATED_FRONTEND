@@ -26,7 +26,7 @@ import { paymentReceivedSchema } from "../../utils/validations";
 import { useFetchRepaymentDetailsQuery, useAddPaymentMutation } from "../../Service/LMSQueries";
 import NewPaymentRecieved from "./NewPaymentRecieved";
 
-const RepaymentDetails = ({repaymentId}) => {
+const RepaymentDetails = ({disburse, repaymentId}) => {
   const [checkedFields, setCheckedFields] = useState({
     loanNo: false,
     loanAmount: false,
@@ -41,16 +41,16 @@ const RepaymentDetails = ({repaymentId}) => {
   const id = repaymentId;
   console.log(id)
 
-  const { data:fetchRepaymentDetails, isSuccess, isError, error} = useFetchRepaymentDetailsQuery(id, {skip:id === null});
+  const { data: fetchRepaymentDetails, isSuccess: isFetchRepaymentSuccess, isError: isFetchRepaymentError, error: FetchRepaymenterror, } = 
+          useFetchRepaymentDetailsQuery( id, {skip:id ===null});
   
   console.log(fetchRepaymentDetails);
 
-  useEffect(() => {
-    if(repaymentDetails && isSuccess){
-      console.log("Repayment Details", repaymentDetails);
-      setRepaymentDetails(fetchRepaymentDetails);
+  useEffect(()=>{
+    if(fetchRepaymentDetails && isFetchRepaymentSuccess){
+        setRepaymentDetails(fetchRepaymentDetails)
     }
-  },[repaymentDetails, isSuccess])
+  },[fetchRepaymentDetails, isFetchRepaymentSuccess])
 
   // Color theme
   const theme = useTheme();
@@ -135,7 +135,7 @@ const RepaymentDetails = ({repaymentId}) => {
       {console.log(disburse)}
 
       {/* Payable and Outstanding Amount Information */}
-      <OutstandingLoanAmount repaymentDetails={fetchRepaymentDetails}/>
+      <OutstandingLoanAmount outstandingDetails={repaymentDetails}/>
 
       {/* Add to Blacklist */}
       <Paper
@@ -294,11 +294,6 @@ const RepaymentDetails = ({repaymentId}) => {
 
       {/* New Payment Recieved */}
       <NewPaymentRecieved />
-      {isError &&
-        <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
-            {error?.data?.message}
-        </Alert>
-      }
     </>
   );
 };
