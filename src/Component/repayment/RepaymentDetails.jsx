@@ -12,7 +12,7 @@ import {
   MenuItem,
   Select,
   useTheme,
-  Alert
+  Alert,
 } from "@mui/material";
 import { tokens } from "../../theme";
 import useAuthStore from "../store/authStore";
@@ -25,6 +25,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { paymentReceivedSchema } from "../../utils/validations";
 import { useFetchRepaymentDetailsQuery, useAddPaymentMutation } from "../../Service/LMSQueries";
 import NewPaymentRecieved from "./NewPaymentRecieved";
+import moment from 'moment';
 
 const RepaymentDetails = ({disburse, repaymentId}) => {
   const [checkedFields, setCheckedFields] = useState({
@@ -37,6 +38,10 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
   const [remarks, setRemarks] = useState("");
   const [repaymentDetails, setRepaymentDetails] = useState([]);
   const [blacklistReason, setBlacklistReason] = useState("Select a Reason");
+  const [paginationModel, setPaginationModel] = useState({
+      page: 0,
+      pageSize: 10,
+    });
 
   const id = repaymentId;
   console.log(id)
@@ -45,6 +50,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
           useFetchRepaymentDetailsQuery( id, {skip:id ===null});
   
   console.log(fetchRepaymentDetails);
+  // console.log(fetchRepaymentDetails.repaymentDetails.paymentHistory);
 
   useEffect(()=>{
     if(fetchRepaymentDetails && isFetchRepaymentSuccess){
@@ -65,51 +71,28 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
   };
 
   const columns = [
-    { field: "sno", headerName: "S.No", width: 50 },
+    // { field: "sno", headerName: "S.No", width: 50 },
     { field: "loanNo", headerName: "Loan No.", width: 150 },
-    { field: "recoveryRemarks", headerName: "Remarks", width: 150 },
-    { field: "paymentMode", headerName: "Payment Mode", width: 150 },
+    { field: "paymentDate", headerName: "Payment Date", width: 150 },
     { field: "paymentAmount", headerName: "Payment Amount", width: 150 },
-    { field: "recoveryDiscount", headerName: "Discount", width: 150 },
+    { field: "paymentReferenceNumber", headerName: "Reference No", width: 150 },
+    { field: "paymentStatus", headerName: "Payment Verification Status", width: 150 },
+    { field: "paymentMode", headerName: "Payment Mode", width: 150 },
+    { field: "paymentDiscount", headerName: "Discount", width: 150 },
     // { field: 'recoveryDiscountType', headerName: 'Discount Type', width: 150 },
-    { field: "recoveryRefund", headerName: "Refund", width: 150 },
-    {
-      field: "recoveryReferenceNumber",
-      headerName: "Reference No",
-      width: 150,
-    },
-    { field: "recoveryDate", headerName: "Recovery Date", width: 150 },
-    { field: "loanStatus", headerName: "Loan Status", width: 150 },
-    {
-      field: "paymentVerification",
-      headerName: "Payment Verification",
-      width: 150,
-    },
-    {
-      field: "paymentUploadedBy",
-      headerName: "Payment Uploaded By",
-      width: 150,
-    },
-    {
-      field: "paymentUploadedOn",
-      headerName: "Payment Uploaded On",
-      width: 150,
-    },
-    {
-      field: "paymentVerifiedBy",
-      headerName: "Payment Verified By",
-      width: 150,
-    },
-    {
-      field: "paymentVerifiedOn",
-      headerName: "Payment Verified On",
-      width: 150,
-    },
-    { field: "recoveryAction", 
-      headerName: "Action", 
-      width: 150 
-    },
+    // { field: "recoveryRemarks", headerName: "Remarks", width: 150 },
   ];
+
+  const rows = fetchRepaymentDetails?.repaymentDetails?.paymentHistory?.map((paymentHistory) => ({
+    id: paymentHistory?._id,
+    loanNo: id,
+    paymentMode: paymentHistory?.paymentMode,
+    paymentAmount: paymentHistory?.receivedAmount,
+    paymentDiscount : paymentHistory?.discount || 0,
+    paymentReferenceNumber : paymentHistory?.transactionId,
+    paymentStatus : paymentHistory?.isPaymentVerified === true ? "Verified" : "Pending",
+    paymentDate : moment(paymentHistory?.paymentDate).format("DD-MM-YYYY"),
+  })) || [];
 
   const handleSaveBlacklist = () => {
     // Handle save logic here
@@ -127,12 +110,16 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
     setBlacklistReason(event.target.value);
   };
 
+  const handlePageChange = (newPaginationModel) => {
+    setPaginationModel(newPaginationModel)
+    refetch({ page: newPaginationModel.page +1, limit: newPaginationModel.pageSize});
+  };
+
 
   return (
     <>
       {/* Loan Information */}
       <LoanInfo disburse={disburse?.sanction?.application} />
-      {console.log(disburse)}
 
       {/* Payable and Outstanding Amount Information */}
       <OutstandingLoanAmount outstandingDetails={repaymentDetails}/>
@@ -242,7 +229,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
         )}
       </Paper>
 
-      {/* Recovery History */}
+      {/* Payment History */}
       <Accordion
         sx={{
           display: "flex",
@@ -284,9 +271,9 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
           >
             <CommonTable
               columns={columns}
-              // rows={rows}
-              // paginationModel={paginationModel}
-              // onPageChange={handlePageChange}
+              rows={rows}
+              paginationModel={paginationModel}
+              onPageChange={handlePageChange}
             />
           </Box>
         </AccordionDetails>

@@ -17,6 +17,14 @@ const OutstandingLoanAmount = ({outstandingDetails}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const data = outstandingDetails?.repaymentDetails;
+
+  const interestPayable = data?.interest + data?.interestDiscount + data?.interestReceived;
+  const penaltyPayable = data?.penalty + data?.penaltyDiscount + data?.penaltyReceived;
+  const grandPayableAmount = interestPayable + penaltyPayable + data?.sanctionedAmount;
+  const grandReceivedAmount = data?.interestReceived + data?.penaltyReceived + data?.principalReceived;
+  const grandDiscountAmount = data?.interestDiscount + data?.penaltyDiscount + data?.principalDiscount;
+
   return (
     <Paper
       elevation={3}
@@ -70,31 +78,31 @@ const OutstandingLoanAmount = ({outstandingDetails}) => {
                 </TableRow>
                 <TableRow>
                   <TableCell>Interest Amount</TableCell>
-                  <TableCell>{outstandingDetails?.repaymentDetails?.interest}</TableCell>
-                  <TableCell>{outstandingDetails?.repaymentDetails?.interestReceived}</TableCell>
-                  <TableCell>{outstandingDetails?.repaymentDetails?.interestDiscount}</TableCell>
-                  <TableCell>0</TableCell>
+                  <TableCell style={{fontWeight:"700"}}>{interestPayable}</TableCell>
+                  <TableCell style={{color:"green"}}>{data?.interestReceived}</TableCell>
+                  <TableCell style={{color:"grey"}}>{data?.interestDiscount}</TableCell>
+                  <TableCell style={{color:"red"}}>{data?.interest}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Principle Amount</TableCell>
-                  <TableCell>{outstandingDetails?.repaymentDetails?.principalAmount}</TableCell>
-                  <TableCell>{outstandingDetails?.repaymentDetails?.principalReceived}</TableCell>
-                  <TableCell>{outstandingDetails?.repaymentDetails?.principalDiscount}</TableCell>
-                  <TableCell>0</TableCell>
+                  <TableCell>Principal Amount</TableCell>
+                  <TableCell style={{fontWeight:"700"}}>{data?.sanctionedAmount}</TableCell>
+                  <TableCell style={{color:"green"}}>{data?.principalReceived}</TableCell>
+                  <TableCell style={{color:"grey"}}>{data?.principalDiscount}</TableCell>
+                  <TableCell style={{color:"red"}}>{data?.principalAmount}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Penalty Amount</TableCell>
-                  <TableCell>{outstandingDetails?.repaymentDetails?.penalty}</TableCell>
-                  <TableCell>{outstandingDetails?.repaymentDetails?.penaltyReceived}</TableCell>
-                  <TableCell>{outstandingDetails?.repaymentDetails?.penaltyDiscount}</TableCell>
-                  <TableCell>0</TableCell>
+                  <TableCell style={{fontWeight:"700"}}>{penaltyPayable}</TableCell>
+                  <TableCell style={{color:"green"}}>{data?.penaltyReceived}</TableCell>
+                  <TableCell style={{color:"grey"}}>{data?.penaltyDiscount}</TableCell>
+                  <TableCell style={{color:"red"}}>{data?.penalty}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Grand Total</TableCell>
-                  <TableCell>0</TableCell>
-                  <TableCell>0</TableCell>
-                  <TableCell>0</TableCell>
-                  <TableCell>{outstandingDetails?.repaymentDetails?.outstandingAmount}</TableCell>
+                  <TableCell style={{fontWeight:"700"}}>{grandPayableAmount}</TableCell>
+                  <TableCell style={{color:"green"}}>{grandReceivedAmount}</TableCell>
+                  <TableCell style={{color:"grey"}}>{grandDiscountAmount}</TableCell>
+                  <TableCell style={{color:"red"}}>{data?.outstandingAmount}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

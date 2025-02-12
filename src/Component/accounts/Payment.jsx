@@ -234,7 +234,7 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
     console.log('params',id)
     const [paymentInfo, setPaymentInfo] = useState([]);
     if (!collectionData) {
-        return <div>Loading...</div>;
+        return <div style={{textAlign:"center"}}>Loading...</div>;
     }
 
     const {data:paymentHistory, isLoading:verifyPaymentLoading, isSuccess:verifyPaymentSuccess, isError:verifyPaymentError} =
