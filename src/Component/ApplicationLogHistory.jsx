@@ -30,7 +30,7 @@ const ApplicationLogHistory = ({ id }) => {
     const [applicationLog, setApplicationLog] = useState([]);
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
-        pageSize: 5,
+        pageSize: 10,
     });
 
     // Color theme
@@ -45,9 +45,9 @@ const ApplicationLogHistory = ({ id }) => {
         }
     }, [isSuccess, data]);
 
-    const rows = applicationLog.map((log, index) => ({
+    const rows = applicationLog.map((log, index, arr) => ({
         id: log.id,
-        sr: index + 1,
+        sr: arr.length - index,
         borrower: log?.borrower,
         logDate: formatDateTime(log?.logDate),
         status: log?.status,

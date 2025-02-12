@@ -20,6 +20,11 @@ function CloseLeads() {
         limit: paginationModel.pageSize,
     });
 
+    // const handleLeadClick = (disbursal) => {
+    //     console.log("The disbursal", disbursal.row.loanNo);
+    //     navigate(`/collection-profile/${disbursal.row.loanNo}`);
+    // };
+
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel);
     };

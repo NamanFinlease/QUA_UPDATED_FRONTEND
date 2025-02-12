@@ -53,3 +53,11 @@ export function formatDateTime(dateString) {
 
     return date1.getTime() === date2.getTime()
 };
+
+export function formatFullName(fName = "", mName = "", lName = "") {
+  return [fName, mName, lName]
+      .map((name) => name?.trim())
+      .filter((name) => name)
+      .join(" ")
+      .trim();
+}

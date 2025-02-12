@@ -417,8 +417,7 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
 
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', width: '100%' }}>
           <Button
-            variant="outlined"
-            color="gray"
+            variant="contained"
             onClick={() => setLeadEdit(false)}
             sx={{
               backgroundColor: colors.white[100],

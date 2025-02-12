@@ -22,7 +22,7 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import useStore from "../../Store";
 import { useVerifyAadhaarMutation } from "../../Service/Query";
 import { useNavigate } from "react-router-dom";
-import { compareDates, formatDate } from "../../utils/helper";
+import { compareDates, formatDate, formatFullName } from "../../utils/helper";
 import useAuthStore from "../store/authStore";
 
 const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
@@ -89,7 +89,8 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
     const leadAddress = formatAddress(lead?.city, lead?.state, lead?.pinCode)
 
     const comparisonFields = [
-      { label: "Name", leadValue: `${lead?.fName.trim()} ${lead?.mName.trim()} ${lead?.lName.trim()}`, aadhaarValue: aadhaarDetails?.name.trim() },
+      { label: "Name", leadValue: formatFullName(lead?.fName, lead?.mName,lead?.lName), aadhaarValue: aadhaarDetails?.name.trim() },
+      // { label: "Name", leadValue: `${lead?.fName.trim()} ${lead?.mName.trim()} ${lead?.lName.trim()}`, aadhaarValue: aadhaarDetails?.name.trim() },
       { label: "DOB", leadValue: lead?.dob && formatDate(lead?.dob), aadhaarValue: aadhaarDetails?.dob },
       { label: "Gender", leadValue: lead?.gender, aadhaarValue: aadhaarDetails?.gender },
       { label: "Masked Aadhaar ", leadValue: `xxxxxxxx${lead?.aadhaar.slice(-4)}`, aadhaarValue: aadhaarDetails?.maskedAdharNumber },
@@ -260,7 +261,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
         >
           Close
         </Button>
-        {activeRole === "screener" && <Button
+        {/* {activeRole === "screener" && <Button
           onClick={handleSubmit}
           variant="contained"
           sx={{
@@ -276,7 +277,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
           }}
         >
           Verify
-        </Button>}
+        </Button>} */}
       </DialogActions>
     </Dialog>
   );

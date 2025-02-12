@@ -8,7 +8,7 @@ import useAuthStore from '../store/authStore';
 import { useRecommendLoanMutation } from '../../Service/applicationQueries';
 import { formatDate } from '../../utils/helper';
 
-const LoanInfo = ({ disburse }) => {
+const LoanInfo = ({ repaymentDetails }) => {
   const { applicationProfile } = useStore()
   const { activeRole } = useAuthStore()
   const [remarks, setRemarks] = useState(null);
@@ -43,14 +43,14 @@ const LoanInfo = ({ disburse }) => {
   const info = [
     { label: "Loan No.", value: applicationProfile?.loanNo },
     { label: "Customer Name", value: `${fName}${mName ? ` ${mName}` : ``} ${lName}` },
-    { label: "Principle Amount", value: cam?.loanRecommended },
+    { label: "Sanctioned Amount", value: repaymentDetails?.repaymentDetails?.sanctionedAmount },
     { label: "Repayment Date", value: cam?.repaymentDate && formatDate(cam?.repaymentDate) },
     { label: "Repayment Amount", value: cam?.repaymentAmount },
-    { label: "Actual Repayment Amount", value: cam?.repaymentAmount },
+    { label: "Repayment Amount (as on today)", value: repaymentDetails?.repaymentDetails?.outstandingAmount },
     { label: "ROI % (per day)", value: cam?.roi },
     { label: "Processing Fee", value: cam?.netAdminFeeAmount },
     { label: "Tenure", value: cam?.eligibleTenure },
-    { label: "DPD", value: cam?.eligibleTenure },
+    { label: "DPD", value: repaymentDetails?.repaymentDetails?.dpd },
     // ...(applicationProfile.isDisbursed ? [
     //   { label: "Disbursed From", value: applicationProfile?.payableAccount },
     //   { label: "Disbursed On", value: applicationProfile?.disbursedBy && formatDate(applicationProfile?.disbursedAt) },

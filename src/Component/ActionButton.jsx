@@ -370,7 +370,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                             <>
                                 {applicationProfile?.eSignPending ? null :
                                     <>
-                                        {!applicationProfile?.isApproved ?
+                                        {!applicationProfile?.eSigned ?
 
 <Button
                                                 variant="contained"
@@ -396,14 +396,14 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                             color="success"
                                             onClick={() => handlePreview()}
                                             sx={{
-                                                backgroundColor: previewLoading ? "#ccc" : "#04c93f",
+                                                background: "#04c93f",
+                                                // background: previewLoading ? "#ccc" : "#04c93f",
                                                 color: previewLoading ? "#666" : "white",
                                                 cursor: previewLoading ? "not-allowed" : "pointer",
-                                                boxShadow: "0px 2px 5px rgb(0,0,0,0.2)",
-                                                borderRadius: "0px 10px",
+                                                boxShadow: previewLoading ? "0px 2px 5px 2px rgb(0,0,0,0.2)" : "0px 2px 5px rgb(0,0,0,0.2)",
+                                                borderRadius: previewLoading ? "0px 10px" : "0px 10px",
                                                 "&:hover": {
-                                                    backgroundColor: previewLoading ? "#ccc" : "#04b539",
-                                                    boxShadow: "0px 2px 5px 2px rgb(0,0,0,0.2)",
+                                                    background: previewLoading ? "#ccc" : "#04b539",
                                                 },
                                             }}
                                             >
@@ -483,7 +483,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                         >
                             Reject
                         </Button>
-                        {(activeRole !== "screener" && activeRole !== "disbursalManager" && !isHold) &&
+                        {(activeRole !== "screener" && activeRole !== "disbursalManager" && !isHold) || applicationProfile.eSigned &&
                             <Button
                                 variant="contained"
                                 color="secondary"

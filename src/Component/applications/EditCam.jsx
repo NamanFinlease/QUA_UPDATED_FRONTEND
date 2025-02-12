@@ -767,7 +767,7 @@ const EditCam = ({ camData, setIsEditing }) => {
             type="text"
             fullWidth
             height="20"
-            value={formData.camRemarks}
+            value={formData.remarks}
             onChange={handleChange}
           />
         </Box>

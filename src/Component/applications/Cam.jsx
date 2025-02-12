@@ -45,7 +45,7 @@ const Cam = ({id}) => {
     netAdminFeeAmount: '',     // Net Admin Fee Amount
     eligibleTenure: '',        // Eligible Tenure
     repaymentAmount: '',       // Repayment Amount
-    camRemarks: '',            // Cam Remarks
+    remarks: '',               // Cam Remarks
   });
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const Cam = ({id}) => {
         netAdminFeeAmount: details?.netAdminFeeAmount || 0,   // Net Admin Fee Amount
         eligibleTenure: details?.eligibleTenure || '-',   // Eligible Tenure
         repaymentAmount: details?.repaymentAmount || 0,   // Repayment Amount
-        camRemarks: details?.camRemarks || "-",   // Repayment Amount
+        remarks: details?.remarks || "-",   // Remarks
       });
     }
   }, [getCamSuccess, data]);
@@ -199,7 +199,7 @@ const Cam = ({id}) => {
                       </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell colSpan={4} align="center">Remarks: {formData?.camRemarks}</TableCell>
+                      <TableCell colSpan={4} align="center">Remarks: {formData?.remarks}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>

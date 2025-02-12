@@ -46,7 +46,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
   const id = repaymentId;
   console.log(id)
 
-  const { data: fetchRepaymentDetails, isSuccess: isFetchRepaymentSuccess, isError: isFetchRepaymentError, error: FetchRepaymenterror, } = 
+  const { data: fetchRepaymentDetails, isSuccess: isFetchRepaymentSuccess, isError: isFetchRepaymentError, error: fetchRepaymenterror, } = 
           useFetchRepaymentDetailsQuery( id, {skip:id ===null});
   
   console.log(fetchRepaymentDetails);
@@ -119,7 +119,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
   return (
     <>
       {/* Loan Information */}
-      <LoanInfo disburse={disburse?.sanction?.application} />
+      <LoanInfo repaymentDetails={repaymentDetails} />
 
       {/* Payable and Outstanding Amount Information */}
       <OutstandingLoanAmount outstandingDetails={repaymentDetails}/>
@@ -277,6 +277,11 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
             />
           </Box>
         </AccordionDetails>
+        {isFetchRepaymentError &&
+          <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+              {fetchRepaymenterror?.message}
+          </Alert>
+        }
       </Accordion>
 
       {/* New Payment Recieved */}
