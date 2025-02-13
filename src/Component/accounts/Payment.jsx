@@ -47,71 +47,71 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
         }));
     };
 
-    console.log("selected status", selectedStatus);
-
     const handleSubmit = () => {
         if (selectedStatus) {
             onUpdateStatus(selectedStatus); // Pass UTR and new status to parent
         }
     };
 
-    console.log("partial paymentttttt", payment);
-
     return (
         <>
-            <tr>
-                <td>{payment.date ? formatDateToIST(payment.date) : "N/A"}</td>
-                <td>{payment.amount || "N/A"}</td>
-                <td>{payment.isClosed ? "Verified" : "Pending"}</td>
-                <td>{payment.utr || "N/A"}</td>
-                <td>
-                    {payment.requestedStatus
-                        ? formatCamelCaseToTitle(payment.requestedStatus)
-                        : "N/A"}
-                </td>
-                {!payment.isClosed && (
-                    <>
-                        <td>
-                            <Select
-                                value={
-                                    selectedStatus.utr === payment.utr
-                                        ? selectedStatus.status
-                                        : ""
-                                }
-                                onChange={(event) =>
-                                    handleStatusChange(event, payment.utr)
-                                }
-                                displayEmpty
-                                fullWidth
-                                size="small"
-                            >
-                                <MenuItem value="" disabled>
-                                    Select Status
-                                </MenuItem>
+            {payment.requestedStatus && (
+                <tr>
+                    <td>
+                        {payment.date ? formatDateToIST(payment.date) : "N/A"}
+                    </td>
+                    <td>{payment.amount}</td>
+                    <td>{payment.isClosed ? "Verified" : "Pending"}</td>
+                    <td>{payment.utr || "N/A"}</td>
+                    <td>
+                        {payment.requestedStatus
+                            ? formatCamelCaseToTitle(payment.requestedStatus)
+                            : "N/A"}
+                    </td>
+                    {!payment.isClosed && (
+                        <>
+                            <td>
+                                <Select
+                                    value={
+                                        selectedStatus.utr === payment.utr
+                                            ? selectedStatus.status
+                                            : ""
+                                    }
+                                    onChange={(event) =>
+                                        handleStatusChange(event, payment.utr)
+                                    }
+                                    displayEmpty
+                                    fullWidth
+                                    size="small"
+                                >
+                                    <MenuItem value="" disabled>
+                                        Select Status
+                                    </MenuItem>
 
-                                <MenuItem value={payment.requestedStatus}>
-                                    {payment.requestedStatus
-                                        ? formatCamelCaseToTitle(
-                                              payment.requestedStatus
-                                          )
-                                        : "N/A"}
-                                </MenuItem>
-                            </Select>
-                        </td>
-                        <td>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                size="small"
-                                onClick={handleSubmit}
-                                disabled={!selectedStatus}
-                            >
-                                Update
-                            </Button>
-                        </td>
-                    </>
-                )}
-            </tr>
+                                    <MenuItem value={payment.requestedStatus}>
+                                        {payment.requestedStatus
+                                            ? formatCamelCaseToTitle(
+                                                  payment.requestedStatus
+                                              )
+                                            : "N/A"}
+                                    </MenuItem>
+                                </Select>
+                            </td>
+                            <td>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
+                                    onClick={handleSubmit}
+                                    disabled={!selectedStatus}
+                                >
+                                    Update
+                                </Button>
+                            </td>
+                        </>
+                    )}
+                </tr>
+            )}
             {payment.partialPaid.map((payments, index) =>
                 !payments.isPartlyPaid ? (
                     <tr>
@@ -135,7 +135,11 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                             </td>
                             <td index={index}>
                                 <Select
-                                    value={selectedStatus}
+                                    value={
+                                        selectedStatus.utr === payments.utr
+                                            ? selectedStatus.status
+                                            : ""
+                                    }
                                     onChange={(event) =>
                                         handleStatusChange(event, payments.utr)
                                     }
