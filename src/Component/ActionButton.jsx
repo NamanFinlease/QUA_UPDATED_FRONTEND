@@ -368,9 +368,10 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                         {
                             activeRole === "sanctionHead" &&
                             <>
+                            {console.log("Application Profile", applicationProfile?.eSigned, applicationProfile.eSignPending)}
                                 {applicationProfile?.eSignPending ? null :
                                     <>
-                                        {!applicationProfile?.eSigned ?
+                                        {applicationProfile?.eSigned ?
 
 <Button
                                                 variant="contained"
@@ -483,15 +484,16 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                         >
                             Reject
                         </Button>
-                        {(activeRole !== "screener" && activeRole !== "disbursalManager" && !isHold) || applicationProfile.eSigned &&
+                        {(activeRole !== "screener" && activeRole !== "disbursalManager" && !isHold) || applicationProfile?.eSigned &&
                             <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={() => handleActionClick('sendBack')}
-                                sx={{borderRadius:"0px 10px", color:colors.white[100]}}
+                            variant="contained"
+                            color="secondary"
+                            onClick={() => handleActionClick('sendBack')}
+                            sx={{borderRadius:"0px 10px", color:colors.white[100]}}
                             >
                                 Send Back
                             </Button>}
+                        {console.log(applicationProfile)}
                     </Box>
                 )}
                 {/* Render dropdown, input, and submit/cancel buttons when Hold or Reject is selected */}

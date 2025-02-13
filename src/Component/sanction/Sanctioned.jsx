@@ -33,10 +33,12 @@ const Sanctioned = () => {
     }
 
     const columns = [
+        { field: 'leadNo', headerName: 'Lead Number', width: 200 },
         { field: 'name', headerName: 'Full Name', width: 200 },
         { field: 'mobile', headerName: 'Mobile', width: 150 },
         { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },
         { field: 'pan', headerName: 'PAN No.', width: 150 },
+        { field: 'loanNo', headerName: 'Loan Number', width: 150 },
         { field: 'city', headerName: 'City', width: 150 },
         { field: 'state', headerName: 'State', width: 150 },
         { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },
@@ -48,10 +50,12 @@ const Sanctioned = () => {
 
     const rows = applications?.map(sanction => ({
         id: sanction?._id, // Unique ID for each lead
+        leadNo: sanction?.application?.lead?.leadNo,
         name: `${sanction?.application?.lead?.fName} ${sanction?.application?.lead?.mName} ${sanction?.application?.lead?.lName}`,
         mobile: sanction?.application?.lead?.mobile,
         aadhaar: sanction?.application?.lead?.aadhaar,
         pan: sanction?.application?.lead?.pan,
+        loanNo: sanction?.loanNo,
         city: sanction?.application?.lead?.city,
         state: sanction?.application?.lead?.state,
         loanAmount: sanction?.application?.lead?.loanAmount,

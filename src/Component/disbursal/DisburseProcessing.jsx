@@ -31,10 +31,12 @@ const DisbursalProcess = () => {
 
 
     const columns = [
+        { field: 'leadNo', headerName: 'Lead Number', width: 200 },
         { field: 'name', headerName: 'Full Name', width: 200 },
         { field: 'mobile', headerName: 'Mobile', width: 150 },
         { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },
         { field: 'pan', headerName: 'PAN No.', width: 150 },
+        { field: 'loanNo', headerName: 'Loan Number', width: 150 },
         { field: 'city', headerName: 'City', width: 150 },
         { field: 'state', headerName: 'State', width: 150 },
         { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },
@@ -47,10 +49,12 @@ const DisbursalProcess = () => {
 
     const rows = disbursals?.map(disbursal => ({
         id: disbursal?._id,
+        leadNo: disbursal?.sanction?.application?.lead?.leadNo,
         name: ` ${disbursal?.sanction?.application?.lead?.fName}  ${disbursal?.sanction?.application?.lead?.mName} ${disbursal?.sanction?.application?.lead?.lName}`,
         mobile: disbursal?.sanction?.application?.lead?.mobile,
         aadhaar: disbursal?.sanction?.application?.lead?.aadhaar,
         pan: disbursal?.sanction?.application?.lead?.pan,
+        loanNo: disbursal?.sanction?.loanNo,
         city: disbursal?.sanction?.application?.lead?.city,
         state: disbursal?.sanction?.application?.lead?.state,
         loanAmount: disbursal?.sanction?.application?.lead?.loanAmount,

@@ -56,13 +56,15 @@ const ActiveLeads = () => {
               />
             ),
           },
+        { field: "leadNo", headerName: "Loan Number", width: 200 },
         { field: "name", headerName: "Full Name", width: 200 },
         { field: "mobile", headerName: "Mobile", width: 150 },
         { field: "aadhaar", headerName: "Aadhaar No.", width: 150 },
         { field: "pan", headerName: "PAN No.", width: 150 },
+        { field: "loanNo", headerName: "Loan Number", width: 150 },
         { field: "city", headerName: "City", width: 150 },
         { field: "state", headerName: "State", width: 150 },
-        { field: "loanAmount", headerName: "Loan Amount", width: 150 },
+        { field: "sanctionAmount", headerName: "Sanction Amount", width: 150 },
         { field: "salary", headerName: "Salary", width: 150 },
         { field: "source", headerName: "Source", width: 150 },
         ...(activeRole === "collectionHead" || activeRole === "admin"
@@ -77,15 +79,16 @@ const ActiveLeads = () => {
     ];
 
     const rows = activeLeads?.map((activeLead) => ({
-        
         id: activeLead?._id,
+        leadNo: activeLead?.leadNo,
         name: ` ${activeLead?.fName}  ${activeLead?.mName} ${activeLead?.lName}`,
         mobile: activeLead?.mobile,
         aadhaar: activeLead?.aadhaar,
         pan: activeLead?.pan,
+        loanNo: activeLead?.loanNo,
         city: activeLead?.city,
         state: activeLead?.state,
-        loanAmount: activeLead?.loanAmount,
+        sanctionAmount: activeLead?.sanctionAmount,
         salary: activeLead?.salary,
         source: activeLead?.source,
         ...((activeRole === "collectionHead" || activeRole === "admin") && {

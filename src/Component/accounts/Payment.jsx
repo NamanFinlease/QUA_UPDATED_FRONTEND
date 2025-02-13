@@ -109,6 +109,7 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                     <td>
                         <Select
                             variant="outlined"
+                            name="updatePaymentStatus"
                             sx={{
                                 color:colors.black[100],
                                 padding:"10px 0px",
@@ -118,12 +119,16 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                                 '& .MuiSelect-icon':{
                                     color:colors.primary[100],
                                 },
+                                '& .MuiSelect-icon:disabled':{
+                                    color:colors.white[100],
+                                }
                             }}
                             value={selectedStatus}
                             onChange={handleStatusChange}
                             displayEmpty
                             fullWidth
                             size="small"
+                            disabled={payment.isPaymentVerified}
                         >
                             <MenuItem value="" disabled>
                                 Select Status
@@ -134,6 +139,9 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                                     ? formatCamelCaseToTitle(payment.requestedStatus)
                                     : "N/A"}
                             </MenuItem>
+                            <MenuItem value="Settled">Settled</MenuItem>
+                            <MenuItem value="WriteOff">Write Off</MenuItem>
+                            <MenuItem value="Closed">Closed</MenuItem>
                         </Select>
                     </td>
                     <td>
@@ -366,154 +374,3 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
 };
 
 export default Payment;
-
-// import React , {useState} from "react";
-// import {
-//     Paper,
-//     Typography,
-//     Table,
-//     TableBody,
-//     TableHead,
-//     TableRow,
-//     TableCell,
-//     Alert,
-// } from "@mui/material";
-// import PaymentRow from "./PaymentRow";
-// import React, { useState } from "react";
-// import { Select, MenuItem, Button } from "@mui/material";
-
-// const PaymentRow = ({ payment, onUpdateStatus }) => {
-//     const [selectedStatus, setSelectedStatus] = useState("");
-//     const [isUpdating, setIsUpdating] = useState(false);
-
-//     const formatDateToIST = (dateString) => {
-//         const options = {
-//             timeZone: "Asia/Kolkata",
-//             year: "numeric",
-//             month: "2-digit",
-//             day: "2-digit",
-//             hour: "2-digit",
-//             minute: "2-digit",
-//             second: "2-digit",
-//         };
-//         return new Intl.DateTimeFormat("en-IN", options).format(new Date(dateString));
-//     };
-
-//     const handleStatusChange = (event) => {
-//         setSelectedStatus(event.target.value);
-//     };
-
-//     const handleSubmit = async () => {
-//         if (selectedStatus) {
-//             setIsUpdating(true);
-//             try {
-//                 await onUpdateStatus(payment.utr, selectedStatus);
-//                 alert(`Status successfully updated to "${selectedStatus}" for UTR: ${payment.utr}`);
-//             } catch (error) {
-//                 alert("Failed to update status. Please try again.");
-//             } finally {
-//                 setIsUpdating(false);
-//             }
-//         }
-//     };
-
-//     return (
-//         <tr>
-//             <td>{payment.date ? formatDateToIST(payment.date) : "N/A"}</td>
-//             <td>{payment.amount || "N/A"}</td>
-//             <td>{payment.status || "N/A"}</td>
-//             <td>{payment.utr || "N/A"}</td>
-//             <td>{payment.collectionStatusRequested || "N/A"}</td>
-//             <td>
-//                 <Select
-//                     value={selectedStatus}
-//                     onChange={handleStatusChange}
-//                     displayEmpty
-//                     fullWidth
-//                     size="small"
-//                 >
-//                     <MenuItem value="" disabled>
-//                         Select Status
-//                     </MenuItem>
-//                     <MenuItem value="Settled">Settled</MenuItem>
-//                     <MenuItem value="Write-Off">Write-Off</MenuItem>
-//                     <MenuItem value="Partly Paid">Partly Paid</MenuItem>
-//                     <MenuItem value="Closed">Closed</MenuItem>
-//                 </Select>
-//             </td>
-//             <td>
-//                 <Button
-//                     variant="contained"
-//                     color="primary"
-//                     size="small"
-//                     onClick={handleSubmit}
-//                     disabled={!selectedStatus || isUpdating}
-//                 >
-//                     {isUpdating ? "Updating..." : "Update"}
-//                 </Button>
-//             </td>
-//         </tr>
-//     );
-// };
-
-// const Payment = ({ collectionData, leadId, activeRole }) => {
-//     if (!collectionData) {
-//         return <div>Loading...</div>;
-//     }
-
-//     const paymentInfo = collectionData.partialPaid || [];
-
-//     const handleUpdateStatus = async (utr, newStatus) => {
-//         try {
-//             console.log(`Updating status for UTR: ${utr}, New Status: ${newStatus}`);
-//             // Call your API here to update the status
-//             // Example:
-//             // await api.patch(`/api/accounts/active/verify/${utr}`, { status: newStatus });
-//         } catch (error) {
-//             throw new Error("Error updating status");
-//         }
-//     };
-
-//     return (
-//         <Paper elevation={3} sx={{ padding: 3, marginBottom: 3 }}>
-//             <Typography variant="h5" gutterBottom>
-//                 Payment Verification for Lead ID: {leadId}
-//             </Typography>
-//             <Typography variant="subtitle1" gutterBottom>
-//                 Role: {activeRole}
-//             </Typography>
-//             <Table sx={{ marginTop: 2 }}>
-//                 <TableHead>
-//                     <TableRow>
-//                         <TableCell>Date (IST)</TableCell>
-//                         <TableCell>Amount</TableCell>
-//                         <TableCell>Status</TableCell>
-//                         <TableCell>UTR</TableCell>
-//                         <TableCell>Requested Status</TableCell>
-//                         <TableCell>Update Status</TableCell>
-//                         <TableCell>Action</TableCell>
-//                     </TableRow>
-//                 </TableHead>
-//                 <TableBody>
-//                     {paymentInfo.length > 0 ? (
-//                         paymentInfo.map((payment, index) => (
-//                             <PaymentRow
-//                                 key={index}
-//                                 payment={payment}
-//                                 onUpdateStatus={handleUpdateStatus}
-//                             />
-//                         ))
-//                     ) : (
-//                         <TableRow>
-//                             <TableCell colSpan={7}>
-//                                 <Alert severity="info">No payment data available.</Alert>
-//                             </TableCell>
-//                         </TableRow>
-//                     )}
-//                 </TableBody>
-//             </Table>
-//         </Paper>
-//     );
-// };
-
-// export default Payment;

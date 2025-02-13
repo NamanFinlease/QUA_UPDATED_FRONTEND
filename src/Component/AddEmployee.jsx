@@ -421,6 +421,9 @@ const AddEmployee = () => {
                         '& .MuiInputLabel-root':{
                             color:colors.black[100],
                         },
+                        '& .MuiInputBase-root':{
+                            color : colors.black[100],
+                        },
                         '& .MuiOutlinedInput-notchedOutline': {
                             borderColor: colors.primary[400],
                         },

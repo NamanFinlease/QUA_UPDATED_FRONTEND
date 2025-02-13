@@ -30,14 +30,15 @@ const AllocatedCollectionLeads = () => {
         navigate(`/collection-profile/${disbursal.row.loanNo}`);
     };
     const columns = [
+        { field: "leadNo", headerName: "Loan Number", width: 200 },
         { field: "name", headerName: "Full Name", width: 200 },
         { field: "mobile", headerName: "Mobile", width: 150 },
         { field: "aadhaar", headerName: "Aadhaar No.", width: 150 },
         { field: "pan", headerName: "PAN No.", width: 150 },
+        { field: "loanNo", headerName: "Loan Number", width: 150 },
         { field: "city", headerName: "City", width: 150 },
         { field: "state", headerName: "State", width: 150 },
         { field: "sanctionAmount", headerName: "Sanction Amount", width: 150 },
-        { field: "loanNo", headerName: "Loan Number", width: 150 },
         { field: "salary", headerName: "Salary", width: 150 },
         { field: "source", headerName: "Source", width: 150 },
         ...(activeRole === "collectionHead" || activeRole === "admin"
@@ -61,14 +62,15 @@ const AllocatedCollectionLeads = () => {
     const rows = allocatedLeads?.map((allocatedLeads) => ({
         
         id: allocatedLeads._id,
+        leadNo: allocatedLeads?.leadNo,
         name: ` ${allocatedLeads.fName}  ${allocatedLeads.mName} ${allocatedLeads.lName}`,
         mobile: allocatedLeads.mobile,
         aadhaar: allocatedLeads.aadhaar,
         pan: allocatedLeads.pan,
+        loanNo: allocatedLeads.loanNo,
         city: allocatedLeads.city,
         state: allocatedLeads.state,
         sanctionAmount: allocatedLeads.sanctionAmount,
-        loanNo: allocatedLeads.loanNo,
         salary: allocatedLeads.salary,
         source: allocatedLeads.source,
         ...((activeRole === "collectionHead" || activeRole === "admin") && {

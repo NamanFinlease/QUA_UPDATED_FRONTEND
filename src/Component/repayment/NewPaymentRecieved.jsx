@@ -29,7 +29,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { yupResolver } from "@hookform/resolvers/yup";
-
 import { useAddPaymentMutation } from "../../Service/LMSQueries";
 import { paymentReceivedSchema } from "../../utils/validations";
 import { tokens } from "../../theme";
@@ -58,7 +57,7 @@ const NewPaymentRecieved = () => {
     repaymentDocs: "",
   };
 
-  const { handleSubmit, control, setValue, getValues, watch } = useForm({
+  const { handleSubmit, control, setValue, getValues, watch, reset } = useForm({
     defaultValues: defaultValue,
     // resolver: yupResolver(paymentReceivedSchema),
     // mode: "onBlur",
@@ -85,6 +84,9 @@ const NewPaymentRecieved = () => {
       for (var pair of formData.entries()) {
         console.log("key <>>> ", pair[0] + ", " + pair[1]);
       }
+      // await addPayment({ id, data: formData });
+      // reset();
+      // setSelectedFile(null);
       addPayment({ id, data: formData });
     } catch (error) {
       console.error("Error submitting payment:", error);
@@ -98,6 +100,7 @@ const NewPaymentRecieved = () => {
   const handleRemoveFile = () => {
     setSelectedFile(null);
     setKey((prevKey) => prevKey + 1);
+    fileInputRef.current.value = "";
   };
 
   const handleClickChooseFile = () => {
@@ -127,6 +130,8 @@ const NewPaymentRecieved = () => {
           text: "Payment Added successfully",
           icon: "success"
       });
+      reset();
+      setSelectedFile(null);
     }
   }, [data, isSuccess]);
 
@@ -480,6 +485,7 @@ const NewPaymentRecieved = () => {
                     id="paymentUpload"
                     style={{ display: "none" }}
                     onChange={handleFileChange}
+                    ref={fileInputRef}
                   />
                   <label htmlFor="paymentUpload">
                     <Button
