@@ -33,21 +33,23 @@ export const lmsQueries = createApi({
         invalidatesTags: ["collectionProfile"]
     }),
     addPayment: builder.mutation({
-      query: ({ id, data }) => {
-        return {
+      query: ({ id, data }) => ({
           url: `/collections/updatePayment/${id}/?role=${role()}`,
           method: "POST",
           body: data,
-        };
-      },
+        
+      }),
+      invalidatesTags: ["activeLeads"],
+    }),
+    allocateCollections: builder.mutation({
+      query: ( id ) =>  ({
+        url:`/collections/allocate/${id}/?role=${role()}`,
+        method:"PATCH"
+      }),
       invalidatesTags: ["activeLeads"],
     }),
     activeLeads: builder.query({
       query: ({ page, limit }) => `/collections/active/?role=${role()}`,
-      providesTags: ["activeLeads"],
-    }),
-    allocateCollections: builder.query({
-      query: ( id ) =>  `/collections/allocate/${id}/?role=${role()}`,
       providesTags: ["activeLeads"],
     }),
     allocatedCollectionsList: builder.query({
@@ -92,6 +94,6 @@ export const {
   useVerifyPendingLeadMutation,
   useClosedLeadsQuery,
   useVerifyPaymentMutation,
-  useLazyAllocateCollectionsQuery,
+  useAllocateCollectionsMutation,
   useFetchRepaymentDetailsQuery,
 } = lmsQueries;

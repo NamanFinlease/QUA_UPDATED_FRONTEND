@@ -3,7 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
 import useAuthStore from "../store/authStore";
-import { useActiveLeadsQuery, useLazyAllocateCollectionsQuery } from "../../Service/LMSQueries";
+import { useActiveLeadsQuery, useAllocateCollectionsMutation } from "../../Service/LMSQueries";
 import CommonTable from "../CommonTable";
 
 const ActiveLeads = () => {
@@ -22,7 +22,7 @@ const ActiveLeads = () => {
         limit: paginationModel.pageSize,
     });
 
-    const [ allocateCollections, { data: collection, isSuccess: isAllocateSuccess, isError: isAllocateError, error: allocateError }] = useLazyAllocateCollectionsQuery();
+    const [ allocateCollections, { data: collection, isSuccess: isAllocateSuccess, isError: isAllocateError, error: allocateError }] = useAllocateCollectionsMutation();
 
     const handleCheckboxChange = (id) => {
         setSelectedLeads(selectedLeads === id ? null : id);
