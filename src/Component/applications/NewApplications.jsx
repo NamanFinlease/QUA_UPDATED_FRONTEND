@@ -79,6 +79,7 @@ const NewApplications = () => {
         />
       ),
     },
+    { field: 'leadNo', headerName: 'Lead Number', width: 200 },
     { field: 'name', headerName: 'Full Name', width: 200 },
     { field: 'mobile', headerName: 'Mobile', width: 150 },
     { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },
@@ -95,6 +96,7 @@ const NewApplications = () => {
 
   const rows = applications?.applications?.map(application => ({
     id: application?._id, // Unique ID for each lead
+    leadNo: application?.leadNo,
     name: `${application?.lead?.fName} ${application?.lead?.mName} ${application?.lead?.lName}`,
     mobile: application?.lead?.mobile,
     aadhaar: application?.lead?.aadhaar,

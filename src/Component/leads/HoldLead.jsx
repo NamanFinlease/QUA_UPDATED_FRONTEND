@@ -42,6 +42,7 @@ const HoldLead = () => {
         }
     }, [isSuccess, data])
     const columns = [
+        { field: 'leadNo', headerName: 'Lead Number', width: 200 },
         { field: 'name', headerName: 'Full Name', width: 200 },
         { field: 'mobile', headerName: 'Mobile', width: 150 },
         { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },
@@ -59,6 +60,7 @@ const HoldLead = () => {
 
     const rows = holdLeads?.leads?.map(lead => ({
         id: lead?._id, 
+        leadNo: lead?.leadNo, 
         name: ` ${lead?.fName}  ${lead?.mName} ${lead?.lName}`,
         mobile: lead?.mobile,
         aadhaar: lead?.aadhaar,

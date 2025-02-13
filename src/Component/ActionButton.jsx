@@ -208,14 +208,14 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                 timer: 3000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
-                  toast.onmouseenter = Swal.stopTimer;
-                  toast.onmouseleave = Swal.resumeTimer;
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
                 }
-              });
-              Toast.fire({
+            });
+            Toast.fire({
                 icon: "success",
                 title: "Lead Forwarded!`"
-              });
+            });
             navigate("/lead-process")
         }
         setActionType('');
@@ -364,16 +364,15 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
 
                 {/* Render buttons if no action is selected */}
                 {(!actionType && !applicationProfile?.eSigned && !applicationProfile?.isDisbursed) && (
-                    <Box sx={{ display: 'flex',flexWrap:"wrap", justifyContent: 'center', gap: 2, marginTop: 2 }}>
+                    <Box sx={{ display: 'flex', flexWrap: "wrap", justifyContent: 'center', gap: 2, marginTop: 2 }}>
                         {
                             activeRole === "sanctionHead" &&
                             <>
-                            {console.log("Application Profile", applicationProfile?.eSigned, applicationProfile.eSignPending)}
-                                {applicationProfile?.eSignPending ? null :
-                                    <>
-                                        {applicationProfile?.eSigned ?
+                            {console.log('approve check',applicationProfile)}
+                                
+                                        {(!applicationProfile?.isApproved) ?
 
-<Button
+                                            <Button
                                                 variant="contained"
                                                 disabled={sanctionApproveLoading}
                                                 color="success"
@@ -382,39 +381,40 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                     backgroundColor: sanctionApproveLoading ? "#ccc" : "#04c93f",
                                                     color: sanctionApproveLoading ? "#666" : "white",
                                                     cursor: sanctionApproveLoading ? "not-allowed" : "pointer",
-                                                    borderRadius:"0px 10px",
+                                                    borderRadius: "0px 10px",
                                                     "&:hover": {
                                                         backgroundColor: sanctionApproveLoading ? "#ccc" : "#069130",
                                                     },
                                                 }}
-                                                >
+                                            >
                                                 {sanctionApproveLoading ? <CircularProgress size={20} color="inherit" /> : "Approve"}
                                             </Button>
                                             :
+                                            (!applicationProfile.eSignPending) ?
+
                                             <Button
-                                            variant="contained"
-                                            disabled={previewLoading}
-                                            color="success"
-                                            onClick={() => handlePreview()}
-                                            sx={{
-                                                background: "#04c93f",
-                                                // background: previewLoading ? "#ccc" : "#04c93f",
-                                                color: previewLoading ? "#666" : "white",
-                                                cursor: previewLoading ? "not-allowed" : "pointer",
-                                                boxShadow: previewLoading ? "0px 2px 5px 2px rgb(0,0,0,0.2)" : "0px 2px 5px rgb(0,0,0,0.2)",
-                                                borderRadius: previewLoading ? "0px 10px" : "0px 10px",
-                                                "&:hover": {
-                                                    background: previewLoading ? "#ccc" : "#04b539",
-                                                },
-                                            }}
+                                                variant="contained"
+                                                disabled={previewLoading}
+                                                color="success"
+                                                onClick={() => handlePreview()}
+                                                sx={{
+                                                    background: "#04c93f",
+                                                    // background: previewLoading ? "#ccc" : "#04c93f",
+                                                    color: previewLoading ? "#666" : "white",
+                                                    cursor: previewLoading ? "not-allowed" : "pointer",
+                                                    boxShadow: previewLoading ? "0px 2px 5px 2px rgb(0,0,0,0.2)" : "0px 2px 5px rgb(0,0,0,0.2)",
+                                                    borderRadius: previewLoading ? "0px 10px" : "0px 10px",
+                                                    "&:hover": {
+                                                        background: previewLoading ? "#ccc" : "#04b539",
+                                                    },
+                                                }}
                                             >
                                                 {previewLoading ? <CircularProgress size={20} color="inherit" /> : "Preview"}
-                                            </Button>}
+                                            </Button>:null
+                                            }
                                     </>
 
 
-}
-                            </>
                         }
                         {(activeRole !== "sanctionHead" && activeRole !== "admin") &&
                             <>
@@ -426,7 +426,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                 color="success"
                                                 onClick={() => handleActionClick('recommend')}
                                                 sx={{
-                                                    borderRadius:"0px 10px",    
+                                                    borderRadius: "0px 10px",
                                                     backgroundColor: "#04c93f",
                                                     color: "white",
                                                     cursor: "pointer",
@@ -478,7 +478,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                             sx={{
                                 borderRadius: "0px 10px",
                                 '&:hover': {
-                                    background: colors.redAccent[500] , // Set hover colors based on `isHold`
+                                    background: colors.redAccent[500], // Set hover colors based on `isHold`
                                 },
                             }}
                         >
@@ -486,10 +486,10 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                         </Button>
                         {(activeRole !== "screener" && activeRole !== "disbursalManager" && !isHold) || applicationProfile?.eSigned &&
                             <Button
-                            variant="contained"
-                            color="secondary"
-                            onClick={() => handleActionClick('sendBack')}
-                            sx={{borderRadius:"0px 10px", color:colors.white[100]}}
+                                variant="contained"
+                                color="secondary"
+                                onClick={() => handleActionClick('sendBack')}
+                                sx={{ borderRadius: "0px 10px", color: colors.white[100] }}
                             >
                                 Send Back
                             </Button>}
@@ -511,7 +511,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                         {(actionType === "hold" || actionType === "reject") && (
                             <>
                                 <FormControl fullWidth sx={{ marginBottom: 3, }}>
-                                    <InputLabel sx={{color:colors.black[100]}}>Select a Reason</InputLabel>
+                                    <InputLabel sx={{ color: colors.black[100] }}>Select a Reason</InputLabel>
                                     <Select
                                         value={selectedReason}
                                         onChange={handleReasonChange}
@@ -531,16 +531,16 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                             Select a reason
                                         </MenuItem> */}
                                         {reasonList && reasonList.length > 0 && reasonList.map((reason, index) => (
-                                            <MenuItem 
+                                            <MenuItem
                                                 sx={{
-                                                    background:colors.white[100], 
-                                                    color:colors.primary[400],
-                                                    '&:hover': { 
+                                                    background: colors.white[100],
+                                                    color: colors.primary[400],
+                                                    '&:hover': {
                                                         background: colors.primary[400],
-                                                        color:colors.white[100],
+                                                        color: colors.white[100],
                                                     },
-                                                }} 
-                                                key={index} 
+                                                }}
+                                                key={index}
                                                 value={reason.label}
                                             >
                                                 {reason.label}
@@ -564,30 +564,30 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                     multiline
                                     rows={3}
                                     sx={{
-                                        marginTop:2,
+                                        marginTop: 2,
                                         marginBottom: 3,
                                         color: colors.black[100],                // Ensure text is black or dark
                                         backgroundColor: colors.white[100],
                                         '& .MuiOutlinedInput-root': {
                                             '& fieldset': {
                                                 borderColor: colors.primary[400],
-                                                borderRadius:'0px 10px',
-                                                color:colors.black[100],
+                                                borderRadius: '0px 10px',
+                                                color: colors.black[100],
                                             },
                                             '&:hover fieldset': {
                                                 borderColor: colors.primary[400],
-                                                color:colors.black[100]
+                                                color: colors.black[100]
                                             },
                                             '&.Mui-focused fieldset': {
                                                 borderColor: colors.primary[400],
-                                                color:colors.black[100]
+                                                color: colors.black[100]
                                             },
                                         },
-                                        '& .MuiFormLabel-root':{
+                                        '& .MuiFormLabel-root': {
                                             color: colors.black[100],
                                         },
-                                        '& .MuiInputBase-root':{
-                                            color:colors.black[100]
+                                        '& .MuiInputBase-root': {
+                                            color: colors.black[100]
                                         },
                                     }}
                                 />
@@ -604,27 +604,27 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                     backgroundColor: colors.white[100],  // Light background for the dropdown
                                                     borderRadius: "0px 10px",
                                                     '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
-                                                    '& .MuiSvgIcon-root':{color:colors.black[100]},
+                                                    '& .MuiSvgIcon-root': { color: colors.black[100] },
                                                     '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                                                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                                                 }}
                                             >
-                                                <MenuItem 
-                                                    value="" 
+                                                <MenuItem
+                                                    value=""
                                                     sx={{
-                                                        color:colors.black[100], 
-                                                        background:colors.white[100],
-                                                        '& .MuiPaper-root-MuiPopover-paper-MuiMenu-paper':{
-                                                            background:colors.white[100],
+                                                        color: colors.black[100],
+                                                        background: colors.white[100],
+                                                        '& .MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
+                                                            background: colors.white[100],
                                                         }
-                                                    }} 
+                                                    }}
                                                     disabled
                                                 >
                                                     Select recipient to send back
                                                 </MenuItem>
-                                                {activeRole === "creditManager" && <MenuItem value="screener" sx={{background:colors.white[100], color:colors.black[100], ':hover':{background:colors.primary[400], color:colors.white[100]}}}>Screener</MenuItem>}
-                                                {activeRole === "sanctionHead" && <MenuItem value="creditManager" sx={{background:colors.white[100], color:colors.black[100], ':hover':{background:colors.primary[400], color:colors.white[100]}}}>Credit Manager</MenuItem>}
-                                                {activeRole === "disbursalHead" && <MenuItem value="disbursalManager" sx={{background:colors.white[100], color:colors.black[100], ':hover':{background:colors.primary[400], color:colors.white[100]}}}>Disbursal Manager</MenuItem>}
+                                                {activeRole === "creditManager" && <MenuItem value="screener" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Screener</MenuItem>}
+                                                {activeRole === "sanctionHead" && <MenuItem value="creditManager" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Credit Manager</MenuItem>}
+                                                {activeRole === "disbursalHead" && <MenuItem value="disbursalManager" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Disbursal Manager</MenuItem>}
                                             </Select>
                                         </FormControl>
                                     </>
@@ -638,13 +638,13 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                 onClick={handleCancel}
                                 sx={{
                                     padding: '10px 20px',
-                                    border:`1px solid ${colors.redAccent[500]}`,
-                                    color:colors.redAccent[500],
+                                    border: `1px solid ${colors.redAccent[500]}`,
+                                    color: colors.redAccent[500],
                                     borderRadius: "0px 10px",
                                     backgroundColor: colors.white[100],
-                                    ':hover': { 
+                                    ':hover': {
                                         backgroundColor: colors.redAccent[500],
-                                        color:colors.white[100] 
+                                        color: colors.white[100]
                                     },
                                 }}
                             >

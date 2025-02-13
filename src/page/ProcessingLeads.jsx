@@ -24,6 +24,7 @@ const ProcessingLeads = () => {
 
     const handleRowClick = (lead) => {
         setId(lead.id)
+        // navigate(`/lead-profile/${lead.id}`, { state: { title: "Leads In Process" } });
         navigate(`/lead-profile/${lead.id}`)
     }
 
@@ -35,6 +36,7 @@ const ProcessingLeads = () => {
     };
     
     const columns = [
+        { field: 'leadNo', headerName: 'Lead Number', width: 200 },
         { field: 'name', headerName: 'Full Name', width: 200 },
         { field: 'mobile', headerName: 'Mobile', width: 150 },
         { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },
@@ -52,6 +54,7 @@ const ProcessingLeads = () => {
 
     const rows = processingLeads?.leads?.map(lead => ({
         id: lead?._id,
+        leadNo: lead?.leadNo,
         name: ` ${lead?.fName}  ${lead?.mName} ${lead?.lName}`,
         mobile: lead?.mobile,
         aadhaar: lead?.aadhaar,
@@ -87,9 +90,6 @@ const ProcessingLeads = () => {
                 onPageChange={handlePageChange}
                 onRowClick={handleRowClick}
                 title="Leads In Process"
-                // actionButton={true}
-                // actionButtonText="Allocate Leads"
-                // onActionButtonClick={handleActionButtonClick}
             />
         </>
     )

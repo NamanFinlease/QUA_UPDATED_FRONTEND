@@ -31,6 +31,7 @@ const LeadProfile = () => {
     const colors = tokens(theme.palette.mode);
 
     const { data: leadData, isSuccess: leadSuccess, isError, error } = useFetchSingleLeadQuery(id, { skip: id === null });
+    console.log(leadData?.isRejected)
 
     useEffect(() => {
         if (leadSuccess) {
@@ -45,7 +46,12 @@ const LeadProfile = () => {
     }, [leadSuccess, leadData])
 
     return (
-        <div className="crm-container" style={{ display: "flex", justifyContent: "center", }}>
+        <div className="crm-container" style={{ display: "flex", flexDirection:"column", justifyContent: "center", }}>
+        {/* <div className="crm-container" style={{ display: "flex", justifyContent: "center", }}> */}
+            {/* <p>{leadData.isRejected === true ? leadData.onHold === true ? "Rejected Leads" : "Leads In Process"}</p> */}
+            <div className="pageTitle" style={{color:colors.primary[400], fontWeight:700, fontSize: 24}}>
+                {/* {leadData.isRejected === true ? leadData.onHold === true ? "Lead : Rejected" : "Lead : Hold" : "Lead : In Processing"} */}
+            </div>
 
             {leadEdit ? (
                 <LeadDetails leadData={leadData} setLeadEdit={setLeadEdit} />

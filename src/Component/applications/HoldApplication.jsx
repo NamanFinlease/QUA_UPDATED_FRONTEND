@@ -39,6 +39,7 @@ const HoldApplication = () => {
 
 
     const columns = [
+        { field: 'leadNo', headerName: 'Lead Number', width: 200 },
         { field: 'name', headerName: 'Full Name', width: 200 },
         { field: 'mobile', headerName: 'Mobile', width: 150 },
         { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },
@@ -55,6 +56,7 @@ const HoldApplication = () => {
 
     const rows = holdApplications?.map(application => ({
         id: application?._id, 
+        leadNo: application?.leadNo, 
         name: ` ${application?.lead?.fName}  ${application?.lead?.mName} ${application?.lead?.lName}`,
         mobile: application?.lead?.mobile,
         aadhaar: application?.lead?.aadhaar,
