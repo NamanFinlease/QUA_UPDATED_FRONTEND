@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { tokens } from '../theme';
-import {  Button, Paper, Box, Alert, useTheme } from '@mui/material';
+import { Button, Paper, Box, Alert, useTheme } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useFetchSingleLeadQuery, } from '../Service/Query';
 import LeadDetails from '../Component/LeadDetails';
@@ -20,7 +20,7 @@ const barButtonOptions = ['Lead', 'Documents', 'Verification',]
 
 const LeadProfile = () => {
     const { id } = useParams();
-    const {empInfo,activeRole} = useAuthStore()
+    const { empInfo, activeRole } = useAuthStore()
     const [currentPage, setCurrentPage] = useState("lead");
     const [uploadedDocs, setUploadedDocs] = useState([]);
     const { setLead } = useStore()
@@ -45,13 +45,13 @@ const LeadProfile = () => {
     }, [leadSuccess, leadData])
 
     return (
-        <div className="crm-container" style={{display:"flex", justifyContent:"center",}}>
+        <div className="crm-container" style={{ display: "flex", justifyContent: "center", }}>
 
             {leadEdit ? (
                 <LeadDetails leadData={leadData} setLeadEdit={setLeadEdit} />
             ) : (
                 <>
-                    <div className="p-3" style={{ width:"90%",}}>
+                    <div className="p-3" style={{ width: "90%", }}>
                         <BarButtons
                             barButtonOptions={barButtonOptions}
                             currentPage={currentPage}
@@ -67,7 +67,7 @@ const LeadProfile = () => {
                                         marginTop: '20px',
                                         borderTopRightRadius: '20px',
                                         borderBottomLeftRadius: '20px',
-                                        background:colors.white[100],
+                                        background: colors.white[100],
                                         '& .MuiDataGrid-row:hover': {
                                             backgroundColor: colors.white[100],
                                             cursor: 'pointer',
@@ -89,16 +89,16 @@ const LeadProfile = () => {
                                             variant="outlined"
                                             onClick={() => setLeadEdit(true)}
                                             sx={{
-                                                border:`3px solid ${colors.primary[400]}`,
-                                                borderTopRightRadius:"10px",
-                                                borderBottomLeftRadius:"10px",
+                                                border: `3px solid ${colors.primary[400]}`,
+                                                borderTopRightRadius: "10px",
+                                                borderBottomLeftRadius: "10px",
                                                 background: colors.white[100],
                                                 color: colors.primary[400],
                                                 padding: '10px 20px',
                                                 transition: "all 0.3s ease",
                                                 '&:hover': {
                                                     backgroundColor: colors.primary[400],
-                                                    color:colors.white[100]
+                                                    color: colors.white[100]
                                                 },
                                             }}
                                         >
@@ -114,7 +114,7 @@ const LeadProfile = () => {
                                         <InternalDedupe id={leadData._id} />
                                         <ApplicationLogHistory id={leadData._id} />
                                         {/* Action Buttons */}
-                                        {(!leadData?.isRejected && activeRole !== "sanctionHead" && activeRole !== "admin" ) &&
+                                        {(!leadData?.isRejected && activeRole !== "sanctionHead" && activeRole !== "admin") &&
                                             <div className='my-3  d-flex justify-content-center'>
                                                 <ActionButton id={leadData._id} isHold={leadData.onHold} />
                                             </div>}
