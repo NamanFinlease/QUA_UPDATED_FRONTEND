@@ -69,6 +69,10 @@ export const lmsQueries = createApi({
         query: (loanNo) =>  `/accounts/pendingPaymentVerification/${loanNo}/?role=${role()}`,
         providesTags:["collectionProfile"]
     }),
+    pendingVerificationList: builder.query({
+        query: (page, limit) =>  `/accounts/pendingPaymentVerificationList/?role=${role()}`,
+        providesTags:["collectionProfile"]
+    }),
     verifyPendingLead: builder.mutation({
         query: ({ loanNo, utr, status }) => ({
             url: `/accounts/active/verify/${loanNo}/?role=${role()}`,
@@ -95,4 +99,5 @@ export const {
   useVerifyPaymentMutation,
   useAllocateCollectionsMutation,
   useFetchRepaymentDetailsQuery,
+  usePendingVerificationListQuery,
 } = lmsQueries;
