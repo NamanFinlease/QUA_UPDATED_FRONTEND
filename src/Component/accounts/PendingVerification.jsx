@@ -3,6 +3,7 @@ import useAuthStore from "../store/authStore";
 import { useNavigate } from "react-router-dom";
 import {
     usePendingVerificationQuery,
+    usePendingVerificationListQuery,
     useVerifyPendingLeadMutation,
 } from "../../Service/LMSQueries";
 import { Alert } from '@mui/material'
@@ -20,12 +21,9 @@ function PendingVerification() {
         pageSize: 10,
     });
     const { data, isSuccess, isError, error, refetch } =
-        usePendingVerificationQuery({
-            page: paginationModel.page + 1,
-            limit: paginationModel.pageSize,
-        });
+        usePendingVerificationListQuery();
 
-    console.log(data?.paymentList)
+    console.log(data)
 
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel);
@@ -48,10 +46,11 @@ function PendingVerification() {
 
     const rows = pendingLeads?.map((lead, index) => ({
         id: `${lead._id}-${index}`,
-        name: `${lead?.firstName} ${lead?.mName} ${lead?.lName}`,
+        name: `${lead?.fName} ${lead?.mName} ${lead?.lName}`,
         loanNo: lead?.loanNo,
         panNo: lead?.pan,
         mobile: lead?.mobile,
+        paymentTransactionId: lead?.transactionId,
         receivedAmount: lead?.receivedAmount,
         paymentDate: moment(lead?.paymenDate).format("DD-MM-YYYY"),  
     }));
