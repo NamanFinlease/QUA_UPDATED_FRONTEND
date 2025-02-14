@@ -59,20 +59,24 @@ const CollectionProfile = () => {
             setCollectionData(data?.data)
             setApplicationProfile(data?.data?.disbursal);
         }
-        // if (isSuccess && data?.sanction?.application?.lead?.document?.length) {
-        // }
     }, [isSuccess, data]);
 
     return (
         <div className="crm-container" style={{display:"flex", justifyContent:"center", }}>
-
             <div className='p-3' style={{ width:"90%",}}>
+                {data?.data?.isActive ?
+                <h1 style={{color:colors.primary[400]}}>Lead : Active</h1>
+                :
+                data?.data?.isClosed ?
+                <h1 style={{color:colors.primary[400]}}>Lead : Closed</h1>
+                :
+                <h1 style={{color:colors.primary[400]}}>Lead : Pending Payment Verification</h1>
+                }
                 <BarButtons
                     barButtonOptions={barButtonOptions}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
-                />
-
+                    />
                 {currentPage === "application" &&
                     <>
                         {lead?._id &&

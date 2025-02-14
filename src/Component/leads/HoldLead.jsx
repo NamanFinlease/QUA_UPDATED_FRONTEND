@@ -22,7 +22,7 @@ const HoldLead = () => {
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel)
         setPaginationModel(newPaginationModel)
-        refetch({ page: newPaginationModel.page +1, limit: newPaginationModel.pageSize}); // Adjust this according to your data fetching logic
+        refetch({ page: newPaginationModel.page +1, limit: newPaginationModel.pageSize});
     }
 
     const handleRowClick = (lead) => {

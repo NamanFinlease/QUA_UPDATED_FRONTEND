@@ -83,9 +83,9 @@ const SanctionProfile = () => {
 
           <div className='p-3' style={{ width:"90%",}}>
             {data?.isApproved ? 
-            <h1 style={{color:colors.primary[400]}}>Sanctioned Application</h1>
+            <h1 style={{color:colors.primary[400]}}>Application : Sanctioned</h1>
             :
-            <h1 style={{color:colors.primary[400]}}>Pending Application</h1>
+            <h1 style={{color:colors.primary[400]}}>Application : Pending</h1>
             }
             <BarButtons
               barButtonOptions={barButtonOptions}

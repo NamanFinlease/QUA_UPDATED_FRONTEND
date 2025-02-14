@@ -220,10 +220,15 @@ const LeadNew = () => {
 
   const handlePageChange = (newPaginationModel) => {
     // setPage(newPaginationModel);
-    // Fetch new data based on the new page
     setPaginationModel(newPaginationModel)
-    refetch({ page: newPaginationModel.page +1, limit: newPaginationModel.pageSize}); // Adjust this according to your data fetching logic
+    refetch({ page: newPaginationModel.page +1, limit: newPaginationModel.pageSize});
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/lead-process")
+    }
+  }, [isSuccess, allLeads])
 
   return (
     <>

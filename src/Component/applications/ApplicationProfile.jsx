@@ -57,6 +57,14 @@ const ApplicationProfile = () => {
       ) : (
         <>
           <div className='p-3' style={{ width:"90%",}}>
+            {applicationData?.isRejected ?
+            <h1 style={{color:colors.primary[400]}}>Application : Rejected</h1>
+            :
+            applicationData?.onHold ?
+            <h1 style={{color:colors.primary[400]}}>Application : On Hold</h1>
+            :
+            <h1 style={{color:colors.primary[400]}}>Application : In Process</h1>
+            }
             <BarButtons
               barButtonOptions={barButtonOptions}
               currentPage={currentPage}

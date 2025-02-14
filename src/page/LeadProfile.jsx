@@ -47,17 +47,20 @@ const LeadProfile = () => {
 
     return (
         <div className="crm-container" style={{ display: "flex", flexDirection:"column", justifyContent: "center", }}>
-        {/* <div className="crm-container" style={{ display: "flex", justifyContent: "center", }}> */}
-            {/* <p>{leadData.isRejected === true ? leadData.onHold === true ? "Rejected Leads" : "Leads In Process"}</p> */}
-            <div className="pageTitle" style={{color:colors.primary[400], fontWeight:700, fontSize: 24}}>
-                {/* {leadData.isRejected === true ? leadData.onHold === true ? "Lead : Rejected" : "Lead : Hold" : "Lead : In Processing"} */}
-            </div>
-
+        
             {leadEdit ? (
                 <LeadDetails leadData={leadData} setLeadEdit={setLeadEdit} />
             ) : (
                 <>
                     <div className="p-3" style={{ width: "90%", }}>
+                        {leadData?.isRejected ?
+                        <h1 style={{color:colors.primary[400]}}>Lead : Rejected</h1>
+                        :
+                        leadData?.onHold ?
+                        <h1 style={{color:colors.primary[400]}}>Lead : On Hold</h1>
+                        :
+                        <h1 style={{color:colors.primary[400]}}>Lead : In Process</h1>
+                        }
                         <BarButtons
                             barButtonOptions={barButtonOptions}
                             currentPage={currentPage}

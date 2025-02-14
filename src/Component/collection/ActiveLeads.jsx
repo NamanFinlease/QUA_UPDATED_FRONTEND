@@ -100,11 +100,11 @@ const ActiveLeads = () => {
         }),
     }));
 
-    // useEffect(() => {
-    //     if (isSuccess) {
-    //       navigate("/allocatedCollectionLeads")
-    //     }
-    //   }, [isSuccess])
+    useEffect(() => {
+        if (isAllocateSuccess) {
+          navigate("/allocatedCollectionLeads")
+        }
+      }, [isAllocateSuccess, collection])
 
     useEffect(() => {
         refetch();
@@ -126,7 +126,6 @@ const ActiveLeads = () => {
                 totalRows={totalActiveLeads}
                 paginationModel={paginationModel}
                 onPageChange={handlePageChange}
-                // onRowClick={handleLeadClick}
                 title="Active Leads"
                 actionButton={true}
                 onAllocateButtonClick={handleAllocate}

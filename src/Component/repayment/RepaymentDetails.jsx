@@ -48,9 +48,6 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
 
   const { data: fetchRepaymentDetails, isSuccess: isFetchRepaymentSuccess, isError: isFetchRepaymentError, error: fetchRepaymenterror, } = 
           useFetchRepaymentDetailsQuery( id, {skip:id ===null});
-  
-  console.log(fetchRepaymentDetails);
-  // console.log(fetchRepaymentDetails.repaymentDetails.paymentHistory);
 
   useEffect(()=>{
     if(fetchRepaymentDetails && isFetchRepaymentSuccess){
@@ -75,6 +72,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
     { field: "loanNo", headerName: "Loan No.", width: 150 },
     { field: "paymentDate", headerName: "Payment Date", width: 150 },
     { field: "paymentAmount", headerName: "Payment Amount", width: 150 },
+    { field: "closingType", headerName: "Closing Type", width: 150 },
     { field: "paymentReferenceNumber", headerName: "Reference No", width: 150 },
     { field: "paymentStatus", headerName: "Payment Verification Status", width: 150 },
     { field: "paymentMode", headerName: "Payment Mode", width: 150 },
@@ -88,6 +86,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
     loanNo: id,
     paymentMode: paymentHistory?.paymentMode,
     paymentAmount: paymentHistory?.receivedAmount,
+    closingType: paymentHistory?.closingType,
     paymentDiscount : paymentHistory?.discount || 0,
     paymentReferenceNumber : paymentHistory?.transactionId,
     paymentStatus : paymentHistory?.isPaymentVerified === true ? "Verified" : "Pending",

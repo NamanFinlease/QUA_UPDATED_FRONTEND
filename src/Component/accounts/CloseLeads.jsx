@@ -20,25 +20,31 @@ function CloseLeads() {
         limit: paginationModel.pageSize,
     });
 
-    // const handleLeadClick = (disbursal) => {
-    //     console.log("The disbursal", disbursal.row.loanNo);
-    //     navigate(`/collection-profile/${disbursal.row.loanNo}`);
-    // };
+    console.log(data?.closedList)
+    console.log(data?.closedList?.fName)
+    console.log(data?.closedList?.isSettled)
+
+    const handleLeadClick = (disbursal) => {
+        console.log("The disbursal", disbursal.row.loanNo);
+        navigate(`/collection-profile/${disbursal.row.loanNo}`);
+    };
 
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel);
     };
 
     const columns = [
+        { field: "leadNo", headerName: "Lead Number", width: 180 },
+        { field: "loanNo", headerName: "Loan Number", width: 150 },
+        // { field: "loanAmount", headerName: "Loan Amount", width: 150 },
         { field: "name", headerName: "Full Name", width: 200 },
+        { field: "gender", headerName: "Gender", width: 100 },
         { field: "mobile", headerName: "Mobile", width: 150 },
-        { field: "aadhaar", headerName: "Aadhaar No.", width: 150 },
+        { field: "email", headerName: "E-Mail", width: 150 },
         { field: "pan", headerName: "PAN No.", width: 150 },
         { field: "city", headerName: "City", width: 150 },
         { field: "state", headerName: "State", width: 150 },
-        { field: "loanAmount", headerName: "Loan Amount", width: 150 },
-        { field: "salary", headerName: "Salary", width: 150 },
-        { field: "source", headerName: "Source", width: 150 },
+        // { field: "repaymentAmount", headerName: "Repayment Amount", width: 150 },
         ...(activeRole === "collectionHead" || activeRole === "admin"
             ? [
                   {
@@ -49,30 +55,21 @@ function CloseLeads() {
               ]
             : []),
     ];
-    let subrows;
-    const rows = closedLeads?.map((closedLead) => {
-        subrows = closedLead?.data.map((lead) => ({
-            id: lead?.loanNo || 0,
-            name: ` ${lead?.disbursal?.sanction?.application?.lead?.fName}  ${lead?.disbursal?.sanction?.application?.lead?.mName} ${lead?.disbursal?.sanction?.application?.lead?.lName}`,
-            mobile: lead?.disbursal?.sanction?.application?.lead?.mobile,
-            aadhaar: lead?.disbursal?.sanction?.application?.lead?.aadhaar,
-            pan: lead?.disbursal?.sanction?.application?.lead?.pan,
-            city: lead?.disbursal?.sanction?.application?.lead?.city,
-            state: lead?.disbursal?.sanction?.application?.lead?.state,
-            loanAmount:
-                lead?.disbursal?.sanction?.application?.lead?.loanAmount,
-            salary: lead?.disbursal?.sanction?.application?.lead?.salary,
-            source: lead?.disbursal?.sanction?.application?.lead?.source,
-            ...((activeRole === "accountExecutive" ||
-                activeRole === "admin") && {
-                disbursalHead: `${lead?.disbursal?.disbursedBy?.fName}${
-                    lead?.disbursal?.disbursedBy?.mName
-                        ? ` ${lead?.disbursal?.disbursedBy?.mName}`
-                        : ``
-                } ${lead?.disbursal?.disbursedBy?.lName}`,
-            }),
-        }));
-    });
+
+    const rows = data?.closedList.map((closedLead) => ({
+        id : closedLead?.leadNo,
+        leadNo : closedLead?.leadNo,
+        loanNo : closedLead?.loanNo,
+        name : `${closedLead?.fName} ${closedLead?.mName} ${closedLead?.lName}`,
+        gender : closedLead?.gender,
+        mobile : closedLead?.mobile,
+        email : closedLead?.email,
+        pan : closedLead?.pan,
+        city : closedLead?.city,
+        state : closedLead?.state,
+        // loanAmount : closedLead?.amount,
+
+    }))
 
     useEffect(() => {
         refetch({
@@ -92,7 +89,7 @@ function CloseLeads() {
         <>
             <CommonTable
             columns={columns}
-            rows={subrows}
+            rows={rows}
             totalRows={totalClosedLeads}
             paginationModel={paginationModel}
             onPageChange={handlePageChange}

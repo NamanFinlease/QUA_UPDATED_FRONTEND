@@ -65,14 +65,14 @@ const Cam = ({id}) => {
         creditBureauScore: details?.cibilScore || '-',    // Credit Bureau Score
         customerType: details?.customerType || 'NEW',     // Customer Type
         dedupeCheck: details?.dedupeCheck || 'NO',        // Dedupe Check
-        customerCategory: details?.customerCategory || '-',  // Dedupe Check
+        customerCategory: details?.customerCategory || '-',  // Customer Category
         obligations: details?.obligations || 0,         // Obligations (Rs)
         salaryToIncomeRatio: details?.salaryToIncomeRatio || '',  // Salary to Income Ratio
-        eligibleLoan: details?.eligibleLoan || 0,         // Loan Amount
-        netDisbursalAmount: details?.netDisbursalAmount || 0,         // Loan Amount
+        eligibleLoan: details?.eligibleLoan || 0,         // Eligible Loan
+        netDisbursalAmount: details?.netDisbursalAmount || 0,         // Net Disbursal Amount
         loanRecommended: details?.loanRecommended || 0,   // Loan Recommended
         disbursalDate: details?.disbursalDate && formatDate(details?.disbursalDate) || '-',     // Disbursal Date
-        finalSalaryToIncomeRatioPercentage: details?.finalSalaryToIncomeRatioPercentage || '-',     // Disbursal Date
+        finalSalaryToIncomeRatioPercentage: details?.finalSalaryToIncomeRatioPercentage || '-',     // Final Salary to income ratio
         repaymentDate: details?.repaymentDate && formatDate(details?.repaymentDate) || '-',     // Repayment Date
         adminFeePercentage: details?.adminFeePercentage || '',  // Admin Fee Inc. GST (%)
         totalAdminFeeAmount: details?.totalAdminFeeAmount || '0',  // Admin Fee Inc. GST (%)

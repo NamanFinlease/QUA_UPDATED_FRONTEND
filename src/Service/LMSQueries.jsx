@@ -78,9 +78,8 @@ export const lmsQueries = createApi({
         invalidatesTags:["leadProfile","activeLeads"]
     }),
     closedLeads: builder.query({
-        query: ({ page, limit }) =>
-            `/collections/closed/?role=${role()}`,
-        // providesTags: ["activeLeads"],
+        query: ({ page, limit }) =>`/collections/closedList/?role=${role()}`,
+        providesTags: ["activeLeads"],
     }),
     }),
 });
