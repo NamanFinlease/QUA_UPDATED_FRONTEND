@@ -36,7 +36,7 @@ function CloseLeads() {
     const columns = [
         { field: "leadNo", headerName: "Lead Number", width: 180 },
         { field: "loanNo", headerName: "Loan Number", width: 150 },
-        { field: "loanAmount", headerName: "Loan Amount", width: 150 },
+        // { field: "loanAmount", headerName: "Loan Amount", width: 150 },
         { field: "name", headerName: "Full Name", width: 200 },
         { field: "gender", headerName: "Gender", width: 100 },
         { field: "mobile", headerName: "Mobile", width: 150 },
@@ -67,7 +67,7 @@ function CloseLeads() {
         pan : closedLead?.pan,
         city : closedLead?.city,
         state : closedLead?.state,
-        loanAmount : closedLead?.amount,
+        // loanAmount : closedLead?.amount,
 
     }))
 

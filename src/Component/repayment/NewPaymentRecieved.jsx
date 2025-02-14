@@ -296,7 +296,7 @@ const NewPaymentRecieved = () => {
                           />
                         }
                       >
-                        <MenuItem value="">Select</MenuItem>
+                        <MenuItem value="" disabled>Select</MenuItem>
                         <MenuItem value="closed">Closed</MenuItem>
                         <MenuItem value="settled">Settled</MenuItem>
                         <MenuItem value="writeOff">WriteOff</MenuItem>
@@ -419,7 +419,7 @@ const NewPaymentRecieved = () => {
                     <TextField
                       {...field}
                       onKeyDown={handleKeyDown}
-                      disabled={closingType === "partPayment"}
+                      disabled={closingType === "partPayment" || closingType === ""}
                       // disabled={!selectedDiscountType}
                       fullWidth
                       label="Discount Amount"

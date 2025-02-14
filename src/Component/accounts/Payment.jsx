@@ -34,9 +34,8 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
     const [verifyPayment, { isSuccess, isError, error}] =
         useVerifyPaymentMutation();
 
-    
-    console.log(id)
-
+    console.log(selectedStatus)
+    console.log(setSelectedStatus)
 
     // Color theme
     const theme = useTheme();
@@ -77,7 +76,12 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
 
     const handleConfirm = () => {
         if (actionType === "Approve"){
-            verifyPayment({loanNo : id, transactionId: payment.transactionId})
+            verifyPayment({
+                loanNo : id, 
+                transactionId: payment.transactionId, 
+                closingType : selectedStatus,
+                remarks : remarks
+            })
         }else {
 
         }
@@ -139,6 +143,7 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                                     ? formatCamelCaseToTitle(payment.requestedStatus)
                                     : "N/A"}
                             </MenuItem>
+                            <MenuItem value="Part Payment">Part Payment</MenuItem>
                             <MenuItem value="Settled">Settled</MenuItem>
                             <MenuItem value="WriteOff">Write Off</MenuItem>
                             <MenuItem value="Closed">Closed</MenuItem>
@@ -333,7 +338,7 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
                     <TableRow>
                         <TableCell>Payment Receive Date</TableCell>
                         <TableCell>Received Amount</TableCell>
-                        <TableCell>Closing Type</TableCell>
+                        <TableCell>Payment Type</TableCell>
                         <TableCell>Payment Mode</TableCell>
                         <TableCell>Transaction ID</TableCell>
                         <TableCell>Discount Amount</TableCell>
