@@ -34,7 +34,7 @@ const DisbursalProfile = () => {
   const [leadEdit, setLeadEdit] = useState(false);
 
   const { data, isSuccess, isError, error, refetch } = useDisbursalProfileQuery(id, { skip: id === null });
-
+  console.log(disbursalData?.isRejected)
   // Color theme
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -60,6 +60,20 @@ const DisbursalProfile = () => {
     <div className="crm-container" style={{display:"flex", justifyContent:"center",}}>
 
       <div className='p-3' style={{ width:"90%",}}>
+        {disbursalData?.isRejected ?
+        <h1 style={{color:colors.primary[400]}}>Disbursal : Rejected</h1>
+        :
+        disbursalData?.onHold ?
+        <h1 style={{color:colors.primary[400]}}>Disbursal : On Hold</h1>
+        :
+        disbursalData?.isDisbursed ?
+        <h1 style={{color:colors.primary[400]}}>Disbursal : Disbursed</h1>
+        :
+        !disbursalData?.isDisbursed ?
+        <h1 style={{color:colors.primary[400]}}>Disbursal : Pending</h1>
+        :
+        <h1 style={{color:colors.primary[400]}}>Disbursal : In Process</h1>
+        }
         <BarButtons
           barButtonOptions={barButtonOptions}
           currentPage={currentPage}

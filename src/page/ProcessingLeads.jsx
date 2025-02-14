@@ -24,7 +24,6 @@ const ProcessingLeads = () => {
 
     const handleRowClick = (lead) => {
         setId(lead.id)
-        // navigate(`/lead-profile/${lead.id}`, { state: { title: "Leads In Process" } });
         navigate(`/lead-profile/${lead.id}`)
     }
 

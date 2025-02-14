@@ -37,8 +37,6 @@ const EditCam = ({ camData, setIsEditing }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const today = new Date();
-
   const [updateCamDetails, { data, isLoading, isSuccess, isError, error }] = useUpdateCamDetailsMutation();
 
   const calculateDaysDifference = (disbursalDate, repaymentDate) => {
@@ -763,7 +761,7 @@ const EditCam = ({ camData, setIsEditing }) => {
         <Box flex="1 1 100%">
           <TextField
             label="Remarks"
-            name="camRemarks"
+            name="remarks"
             type="text"
             fullWidth
             height="20"

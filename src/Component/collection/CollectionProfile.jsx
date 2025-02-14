@@ -71,7 +71,15 @@ const CollectionProfile = () => {
                     barButtonOptions={barButtonOptions}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
-                />
+                    />
+                {data?.data?.isActive ?
+                <h1 style={{color:colors.primary[400]}}>Lead : Active</h1>
+                :
+                data?.data?.isClosed ?
+                <h1 style={{color:colors.primary[400]}}>Lead : Closed</h1>
+                :
+                <h1 style={{color:colors.primary[400]}}>Lead : Pending Payment Verification</h1>
+                }
 
                 {currentPage === "application" &&
                     <>
