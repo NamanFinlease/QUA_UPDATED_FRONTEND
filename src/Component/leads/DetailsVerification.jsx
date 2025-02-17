@@ -281,6 +281,7 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
   const [openAadhaarCompare, setOpenAadhaarCompare] = useState()
   const [aadhaarData, setAadhaarData] = useState()
   const [otpAadhaar, setOtpAadhaar] = useState(false)
+  const [panData, setPanData] = useState(false)
   const [panModal, setPanModal] = useState(false)
   const [otpPan, setOtpPan] = useState(false)
   const [mobileVerified, setMobileVerified] = useState(false);
@@ -322,9 +323,15 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
   // Effects
   useEffect(() => {
     if (panRes?.isSuccess && panRes?.data && !panRes?.isFetching) {
+      setPanData(panRes.data.details);
       setPanModal(true);
     }
   }, [panRes?.data, panRes?.isSuccess, panRes?.isFetching]);
+  // useEffect(() => {
+  //   if (panRes?.isSuccess && panRes?.data && !panRes?.isFetching) {
+  //     setPanModal(true);
+  //   }
+  // }, [panRes?.data, panRes?.isSuccess, panRes?.isFetching]);
 
   // useEffect(() => {
   //   if (emailOtpSuccess) {
@@ -378,8 +385,9 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
       action: (
         <Button
           variant="contained"
-          onClick={handlePanVerification}
-          disabled={isPanVerified}
+          // onClick={handlePanVerification}
+          onClick={isPanVerified ? () => setPanModal(true) : handlePanVerification}
+          // disabled={isPanVerified}
           sx={{
             background: colors.white[100],
             color: colors.primary[400],
@@ -391,13 +399,17 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
             }
           }}
         >
-          Verify PAN
+          {isPanVerified ? "Show Details" : "Send Link"}
+          {/* {isPanVerified ? "Show Details" : isPanDetailsSaved ? "Verify Pan" : "Send Link"} */}
+          {/* Verify PAN */}
         </Button>
       ),
     },
   ];
 
   console.log('open aadhaar',openAadhaarCompare)
+  console.log('Pan Modal',panModal)
+
 
   return (
     <Box
@@ -453,7 +465,7 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
         </Table>
       </TableContainer>
 
-      {panModal && <PanCompare open={panModal} setOpen={setPanModal} />}
+      {panModal && <PanCompare open={panModal} setOpen={setPanModal} panDetails={panData} />}
       {openAadhaarCompare && <AadhaarCompare open={openAadhaarCompare} setOpen={setOpenAadhaarCompare} aadhaarDetails={aadhaarData} />}
       
     </Box>

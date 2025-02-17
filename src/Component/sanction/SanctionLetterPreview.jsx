@@ -95,7 +95,15 @@ const SanctionLetterPreview = ({
                 <Box sx={modalStyle}>
                     <Box>
                         <Typography variant="h3" sx={{ color: colors.primary[400], marginBottom:3, textAlign:'center',fontWeight:'600'}} >Sanction Letter Preview</Typography>
+                        {/* Key Fact Statement */}
                         <Box component={Paper} sx={{ width: "100%", margin: "0px auto", padding: "10px" }}>
+                            <Box sx={{ textAlign: 'center' }}>
+                                <img
+                                    src="https://ramleela.s3.ap-south-1.amazonaws.com/QUALOAN+Header+Footer+/Header.webp"
+                                    alt="Sanctionletter-header"
+                                    style={{ width: '100%', height: '135px' }}
+                                />
+                            </Box>
                             <table style={{ textAlign: "left", borderCollapse: "collapse", }} sx={{ border: "1px solid", width: "60%", margin: "2px auto", padding: "10px", textAlign: "left", }}>
                                 <tbody>
                                     <tr>
@@ -172,7 +180,8 @@ const SanctionLetterPreview = ({
                                     <tr>
                                         <td style={{ border: "1px solid", padding: "5px" }}>(XV)</td>
                                         <td style={{ border: "1px solid", padding: "5px" }}>Rate of annualized penal charges in case of delayed payments (if any)</td>
-                                        <td style={{ border: "1px solid", padding: "5px" }}>Double the (III)</td>
+                                        <td style={{ border: "1px solid", padding: "5px" }}>2 %</td>
+                                        {/* <td style={{ border: "1px solid", padding: "5px" }}>Double the (III)</td> */}
                                     </tr>
                                     <tr>
                                         <th colspan="3" sx={{ textAlign: "left" }} style={{ border: "1px solid", padding: "5px" }}>Details about Contingent Charges</th>
@@ -189,6 +198,13 @@ const SanctionLetterPreview = ({
                                     </tr>
                                 </tbody>
                             </table>
+                            <Box sx={{ textAlign: 'center', marginTop: '10px' }}>
+                                <img
+                                    src="https://ramleela.s3.ap-south-1.amazonaws.com/QUALOAN+Header+Footer+/letterhead_footer.webp"
+                                    alt="Sanctionletter-footer"
+                                    style={{ width: '100%', height: '110px' }}
+                                />
+                            </Box>
                         </Box>
                     </Box>
 

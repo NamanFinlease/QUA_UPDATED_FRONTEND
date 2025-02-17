@@ -18,6 +18,7 @@ import useStore from '../../Store';
 import DisburseLoan from './DisburseLoan';
 import ActionButton from '../ActionButton';
 import { cleanDigitSectionValue } from '@mui/x-date-pickers/internals/hooks/useField/useField.utils';
+import CommonRemarks from '../commonRemarks';
 
 
 
@@ -105,6 +106,7 @@ const DisbursalProfile = () => {
                 </Paper>
                 <InternalDedupe id={disbursalData?.sanction?.application?.lead?._id} />
                 <ApplicationLogHistory id={disbursalData?.sanction?.application?.lead?._id} />
+                {(activeRole === "disbursalHead") && <CommonRemarks />}
 
               </>
 

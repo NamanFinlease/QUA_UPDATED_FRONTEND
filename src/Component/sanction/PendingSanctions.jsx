@@ -42,6 +42,7 @@ const handleLeadClick = (lead) => {
   navigate(`/sanction-profile/${lead.id}`)
 }
   const columns = [
+    { field: 'leadNo', headerName: 'Lead Number', width: 200 },
     { field: 'name', headerName: 'Full Name', width: 200 },
     { field: 'mobile', headerName: 'Mobile', width: 150 },
     { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },
@@ -57,6 +58,7 @@ const handleLeadClick = (lead) => {
   const rows = applications?.map(sanction => {
     return ({
     id: sanction?._id, // Unique ID for each lead
+    leadNo: sanction?.application?.lead?.leadNo,
     name: `${sanction?.application?.lead?.fName} ${sanction?.application?.lead?.mName} ${sanction?.application?.lead?.lName}`,
     mobile: sanction?.application?.lead?.mobile,
     aadhaar: sanction?.application?.lead?.aadhaar,

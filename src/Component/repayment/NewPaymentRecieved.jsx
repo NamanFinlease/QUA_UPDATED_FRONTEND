@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import Swal from 'sweetalert2';
-
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -57,7 +56,7 @@ const NewPaymentRecieved = () => {
     repaymentDocs: "",
   };
 
-  const { handleSubmit, control, setValue, getValues, watch, reset } = useForm({
+  const { handleSubmit, control, setValue, getValues, watch, reset, setError, formState: { errors } } = useForm({
     defaultValues: defaultValue,
     // resolver: yupResolver(paymentReceivedSchema),
     // mode: "onBlur",
@@ -67,6 +66,14 @@ const NewPaymentRecieved = () => {
   const closingType = watch("closingType");
 
   const submitPayment = async (data) => {
+    // Check if a file is selected
+    if (!selectedFile) {
+      setError("repaymentDocs", {
+        type: "manual",
+        message: "Upload Screenshot is required",
+      });
+      return; // Prevent form submission
+    }
     try {
       const formData = new FormData();
       formData.append("receivedAmount", data.receivedAmount);
@@ -76,10 +83,11 @@ const NewPaymentRecieved = () => {
       formData.append("transactionId", data.transactionId);
       formData.append("discount", data.discount);
       formData.append("excessAmount", data.excessAmount);
+      formData.append("repaymentDocs", selectedFile);
       //   formData.append("paymentRemarks", data.paymentRemarks);
-      if (selectedFile) {
-        formData.append("repaymentDocs", selectedFile);
-      }
+      // if (selectedFile) {
+      //   formData.append("repaymentDocs", selectedFile);
+      // }
 
       for (var pair of formData.entries()) {
         console.log("key <>>> ", pair[0] + ", " + pair[1]);
@@ -95,12 +103,14 @@ const NewPaymentRecieved = () => {
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
+    setError("repaymentDocs", { type: "manual", message: "" });
   };
 
   const handleRemoveFile = () => {
     setSelectedFile(null);
     setKey((prevKey) => prevKey + 1);
     fileInputRef.current.value = "";
+    setError("repaymentDocs", { type: "manual", message: "" });
   };
 
   const handleClickChooseFile = () => {
@@ -363,6 +373,55 @@ const NewPaymentRecieved = () => {
                   )}
                 />
               </Box>
+              
+              <Box sx={{ flex: { xs: "1 1 100%", sm: "1 1 45%" } }}>
+                <Controller
+                  name="paymentBank"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      required
+                      error={!!fieldState.error}
+                    >
+                      <InputLabel htmlFor="payment-bank">
+                        Bank Name
+                      </InputLabel>
+                      <Select
+                        {...field}
+                        input={
+                          <OutlinedInput
+                            label="Bank Name"
+                            id="payment-bank"
+                          />
+                        }
+                      >
+                        <MenuItem value="" disabled>
+                          Select
+                        </MenuItem>
+                        <MenuItem value="HDFC7815" name="hdfcBank">
+                          HDFC / 7815
+                        </MenuItem>
+                        <MenuItem value="Bandhan4022" name="bandhanBank">
+                          Bandhan / 4022
+                        </MenuItem>
+                        <MenuItem value="Indusind2230" name="indusindBank">
+                          Indusind Bank / 2230
+                        </MenuItem>
+                        <MenuItem value="EquitasSmallFinance" name="equitasSmallBank">
+                          Equitas Small Finance Bank
+                        </MenuItem>
+                      </Select>
+                      {fieldState.error && (
+                        <Typography color="error">
+                          {fieldState.error.message}
+                        </Typography>
+                      )}
+                    </FormControl>
+                  )}
+                />
+              </Box>
 
               <Box sx={{ flex: { xs: "1 1 100%", sm: "1 1 45%" } }}>
                 <Controller
@@ -499,7 +558,7 @@ const NewPaymentRecieved = () => {
                       onClick={handleClickChooseFile}
                       component="span"
                     >
-                      Upload Screenshot
+                      Upload Screenshot *
                     </Button>
                   </label>
                   {/* Display Selected File */}
@@ -516,6 +575,12 @@ const NewPaymentRecieved = () => {
                         <CloseIcon />
                       </IconButton>
                     </Stack>
+                  )}
+                  {/* Display error message if no file is selected */}
+                  {errors.repaymentDocs && (
+                    <Typography color="error">
+                      {errors.repaymentDocs.message}
+                    </Typography>
                   )}
                 </Stack>
               </Box>

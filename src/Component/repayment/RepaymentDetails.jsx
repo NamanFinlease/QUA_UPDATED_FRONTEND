@@ -28,6 +28,7 @@ import NewPaymentRecieved from "./NewPaymentRecieved";
 import moment from 'moment';
 
 const RepaymentDetails = ({disburse, repaymentId}) => {
+  const { empInfo, activeRole } = useAuthStore()
   const [checkedFields, setCheckedFields] = useState({
     loanNo: false,
     loanAmount: false,
@@ -284,7 +285,9 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
       </Accordion>
 
       {/* New Payment Recieved */}
-      <NewPaymentRecieved />
+      {(activeRole === "collectionExecutive" || activeRole === "collectionHead") &&
+        <NewPaymentRecieved />
+      }
     </>
   );
 };

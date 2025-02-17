@@ -11,7 +11,14 @@ import {
     Tooltip,
     useTheme,
     Alert,
+    Paper,
+    Select,
+    MenuItem,
+    FormControl,
+    InputLabel,
+    OutlinedInput
 } from '@mui/material';
+import { Controller, useForm } from 'react-hook-form';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
@@ -38,6 +45,15 @@ const UploadDocuments = ({ leadData }) => {
         bankStatement: [],
     });
     const [uploadDocuments, { data, isSuccess: docSuccess, isLoading, isError: isDocError, error: docError }] = useUploadDocumentsMutation();
+
+    const {control} = useForm({
+        defaultValues: {
+            addRemarks : '',
+        }
+    })
+
+    // New state for remarks when "others" is selected
+    const [otherRemarks, setOtherRemarks] = useState('');
 
     // Color theme
     const theme = useTheme();
@@ -123,7 +139,8 @@ const UploadDocuments = ({ leadData }) => {
                 bankStatement: [],
             });
             setFileInputs([{ file: null, remarks: '' }]); // Reset file inputs
-            setSelectedDocType(null)
+            setSelectedDocType(null);
+            setOtherRemarks('');
 
         } catch (error) {
             Swal.fire('Error!', 'Failed to upload documents. Please try again.', 'error');
@@ -211,6 +228,8 @@ const UploadDocuments = ({ leadData }) => {
                     ))}
                 </Box>
 
+
+
                 {selectedDocType && (
                     <>
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, }}>
@@ -250,9 +269,63 @@ const UploadDocuments = ({ leadData }) => {
                                             onChange={(event) => handleFileChange(index, event)}
                                         />
                                     </Button>
+                                    {/* Conditional Remarks Input */}
+                                    {selectedDocType === 'others' ? (
+                                        <FormControl 
+                                            fullWidth 
+                                            variant="outlined"
+                                            sx={{
+                                                '& .MuiOutlinedInput-root': {
+                                                    color:colors.primary[400],
+                                                },
+                                                '& .MuiOutlinedInput-notchedOutline': {
+                                                    borderColor:colors.primary[400],
+                                                },
+                                                '& .MuiInputLabel-root': {
+                                                    color:colors.primary[400],
+                                                },
+                                                '& .MuiSelect-icon': {
+                                                    color:colors.primary[400],
+                                                }
+                                            }}
+                                        >
+                                            <InputLabel id="other-remarks-label">Select Remarks</InputLabel>
+                                            <Select
+                                                labelId="other-remarks-label"
+                                                value={otherRemarks}
+                                                onChange={(e) => setOtherRemarks(e.target.value)}
+                                                label="Select Remarks"
+                                            >
+                                                <MenuItem value="" disabled>Select</MenuItem>
+                                                <MenuItem value="passport">Passport</MenuItem>
+                                                <MenuItem value="voterCard">Voter's Indentity Card</MenuItem>
+                                                <MenuItem value="drivingLicense">Driving License</MenuItem>
+                                                <MenuItem value="electricityBill">Electricity Bill</MenuItem>
+                                                <MenuItem value="rationCard">Ration Card</MenuItem>
+                                                <MenuItem value="nregaCard">NREGA Card</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    ) : (
+                                        <TextField
+                                            label="Remarks / Document Credentials"
+                                            value={input.remarks}
+                                            onChange={(event) => handleRemarksChange(index, event)}
+                                            variant="outlined"
+                                            size="small"
+                                            sx={{
+                                                flex: 1,
+                                                '& .MuiInputBase-input': { color: colors.primary[400] },
+                                                '& .MuiInputLabel-root': { color: colors.primary[400] },
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': { borderColor: colors.primary[400], borderRadius: "0px 10px 0px 10px", },
+                                                    '&:hover fieldset': { borderColor: colors.primary[400] },
+                                                },
+                                            }}
+                                        />
+                                    )}
 
                                     {/* Remarks Input */}
-                                    <TextField
+                                    {/* <TextField
                                         label="Remarks"
                                         value={input.remarks}
                                         onChange={(event) => handleRemarksChange(index, event)}
@@ -267,7 +340,7 @@ const UploadDocuments = ({ leadData }) => {
                                                 '&:hover fieldset': { borderColor: colors.primary[400] },
                                             },
                                         }}
-                                    />
+                                    /> */}
 
                                     {/* View Button */}
                                     {input.file && (
@@ -318,7 +391,7 @@ const UploadDocuments = ({ leadData }) => {
                                 <Button
                                     onClick={handleSubmit}
                                     disabled={isLoading}
-                                    // variant="contained"
+                                    variant="contained"
                                     sx={{
                                         backgroundColor: isLoading ? "#ccc" : colors.white[100],
                                         border: isLoading ? "ccc" : `1px solid ${colors.primary[400]}`,
@@ -332,13 +405,15 @@ const UploadDocuments = ({ leadData }) => {
                                     }}
                                 >
                                     {isLoading ? <CircularProgress size={20} color="inherit" /> : "Submit"}
-                                </Button>
-                    </>
-                )}
-            </Box>
-            </Box>
-            </>
+                                </Button> 
+                            </>
+                        )}
+                    </Box>
+                </Box>
+             </>
             }
+
+            
         <Box>
 
             {
@@ -349,6 +424,7 @@ const UploadDocuments = ({ leadData }) => {
                 />
             }
         </Box>
+        
         </>
     );
 };

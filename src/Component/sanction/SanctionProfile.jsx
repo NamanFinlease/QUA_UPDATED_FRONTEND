@@ -118,6 +118,7 @@ const SanctionProfile = () => {
                   <>
                     <InternalDedupe id={data?.application?.lead?._id} />
                     <ApplicationLogHistory id={data?.application?.lead?._id} />
+                    
 
                     {/* Action Buttons */}
                     {(isPreviewError || isError) &&

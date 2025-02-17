@@ -1,3 +1,159 @@
+// import React, { useEffect, useState } from "react";
+// import { DataGrid } from "@mui/x-data-grid";
+// import { useNavigate } from "react-router-dom";
+// import { Alert } from "@mui/material";
+// import useAuthStore from "../store/authStore";
+// import { useActiveLeadsQuery, useAllocateCollectionsMutation, useActivePreCollectionLeadsQuery, useAllocatePreCollectionsMutation } from "../../Service/LMSQueries";
+// import CommonTable from "../CommonTable";
+
+// const ActiveLeads = () => {
+//     const [activeLeads, setActiveLeads] = useState();
+//     const [totalActiveLeads, setTotalActiveLeads] = useState();
+//     const { empInfo, activeRole } = useAuthStore();
+//     const [selectedLeads, setSelectedLeads] = useState(null); // Stores selected leads
+//     const navigate = useNavigate();
+//     const [paginationModel, setPaginationModel] = useState({
+//         page: 0,
+//         pageSize: 10,
+//     });
+
+//     const { data , isSuccess, isError, error, refetch } = useActiveLeadsQuery({
+//         page: paginationModel.page + 1,
+//         limit: paginationModel.pageSize,
+//     });
+    
+//     const { data: preCollectionData, isSuccess: isPreCollectionSuccess, isError: isPreCollectionError, error: preCollectionError, refetch: preCollectionRefetch } = 
+//         useActivePreCollectionLeadsQuery({
+//             page: paginationModel.page + 1,
+//             limit: paginationModel.pageSize,
+//         });
+
+//     const [ allocateCollections, { data: collection, isSuccess: isAllocateSuccess, isError: isAllocateError, error: allocateError }] = 
+//         useAllocateCollectionsMutation();
+//     const [ allocatePreCollections, { data: preCcollection, isSuccess: isAllocatePreCollectionSuccess, isError: isAllocatePreCollectionError, error: allocatePreCollectionError }] = 
+//         useAllocatePreCollectionsMutation();
+
+//     const handleCheckboxChange = (id) => {
+//         setSelectedLeads(selectedLeads === id ? null : id);
+//     }
+
+//     const handleAllocate = async () => {
+//         console.log(selectedLeads)
+//         if (selectedLeads) {
+//             await allocateCollections(selectedLeads);
+//         } else {
+//             console.warn("No lead selected for allocation.");
+//         }
+//     };
+
+//     const handlePageChange = (newPaginationModel) => {
+//         setPaginationModel(newPaginationModel)
+//     };
+
+//     const columns = [
+//         {
+//             field: 'select',
+//             headerName: '',
+//             width: 50,
+//             renderCell: (params) => (
+//               activeRole === "collectionExecutive" &&
+//               <input
+//                 type="checkbox"
+//                 checked={selectedLeads === params.row.id}
+      
+//                 onChange={() => handleCheckboxChange(params.row.id)}
+//               />
+//             ),
+//           },
+//         { field: "leadNo", headerName: "Loan Number", width: 200 },
+//         { field: "name", headerName: "Full Name", width: 200 },
+//         { field: "mobile", headerName: "Mobile", width: 150 },
+//         { field: "aadhaar", headerName: "Aadhaar No.", width: 150 },
+//         { field: "pan", headerName: "PAN No.", width: 150 },
+//         { field: "loanNo", headerName: "Loan Number", width: 150 },
+//         { field: "city", headerName: "City", width: 150 },
+//         { field: "state", headerName: "State", width: 150 },
+//         { field: "sanctionAmount", headerName: "Sanction Amount", width: 150 },
+//         { field: "salary", headerName: "Salary", width: 150 },
+//         { field: "source", headerName: "Source", width: 150 },
+//         ...(activeRole === "collectionHead" || activeRole === "admin"
+//             ? [
+//                   {
+//                       field: "disbursalHead",
+//                       headerName: "Disbursed By",
+//                       width: 150,
+//                   },
+//               ]
+//             : []),
+//     ];
+
+//     const rows = (isSuccess ? data?.activeLeads : []).concat(
+//         (isPreCollectionSuccess ? preCollectionData.activePreCollectionLeads : [])
+//     ).map((lead) => ({
+//         id: lead?._id,
+//         leadNo: lead?.leadNo,
+//         name: ` ${lead?.fName}  ${lead?.mName} ${lead?.lName}`,
+//         mobile: lead?.mobile,
+//         aadhaar: lead?.aadhaar,
+//         pan: lead?.pan,
+//         loanNo: lead?.loanNo,
+//         city: lead?.city,
+//         state: lead?.state,
+//         sanctionAmount: lead?.sanctionAmount,
+//         salary: lead?.salary,
+//         source: lead?.source,
+//         ...((activeRole === "collectionHead" || activeRole === "admin") && {
+//             disbursalHead: `${lead?.fName}${lead?.mName ? ` ${lead?.mName}` : ``} ${lead?.lName}`,
+//         }),
+//     }));
+
+//     useEffect(() => {
+//         if (isAllocateSuccess) {
+//           navigate("/allocatedCollectionLeads")
+//         }
+//       }, [isAllocateSuccess, collection])
+
+//     useEffect(() => {
+//         refetch();
+//         preCollectionRefetch();
+//     }, [paginationModel]);
+
+//     useEffect(() => {
+//         if (isSuccess && data) {
+//             setActiveLeads(data.activeLeads);
+//             setTotalActiveLeads(data?.totalActiveLeads);
+//         }
+//         if (isPreCollectionSuccess && preCollectionData) {
+//             setActiveLeads(preCollectionData.activeLeads)
+//             setTotalActiveLeads(preCollectionData?.totalActiveLeads);
+//         }
+//     }, [isSuccess, data, isPreCollectionSuccess, preCollectionData]);
+
+
+//     return (
+//         <>
+//             <CommonTable
+//                 columns={columns}
+//                 rows={rows}
+//                 totalRows={totalActiveLeads}
+//                 paginationModel={paginationModel}
+//                 onPageChange={handlePageChange}
+//                 title="Active Leads"
+//                 actionButton={true}
+//                 onAllocateButtonClick={handleAllocate}
+//             />
+//             {(isError || isPreCollectionError) && (
+//                 <Alert severity="error" style={{ marginTop: "10px" }}>
+//                     {(error?.data?.message || preCollectionError?.data?.message) || "An error occurred."}
+//                 </Alert>
+//             )}
+//         </>
+//     );
+// };
+
+// export default ActiveLeads;
+
+
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
