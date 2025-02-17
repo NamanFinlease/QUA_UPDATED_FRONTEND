@@ -41,6 +41,13 @@ export const lmsQueries = createApi({
       }),
       invalidatesTags: ["activeLeads"],
     }),
+    allocatePreCollections: builder.mutation({
+      query: ( id ) =>  ({
+        url:`/precollections/allocate/${id}/?role=${role()}`,
+        method:"PATCH"
+      }),
+      invalidatesTags: ["activeLeads"],
+    }),
     allocateCollections: builder.mutation({
       query: ( id ) =>  ({
         url:`/collections/allocate/${id}/?role=${role()}`,
@@ -48,6 +55,16 @@ export const lmsQueries = createApi({
       }),
       invalidatesTags: ["activeLeads"],
     }),
+    //Pre Collection Leads
+    activePreCollectionLeads: builder.query({
+      query: ({ page, limit }) => `/precollections/active/?role=${role()}`,
+      providesTags: ["activeLeads"],
+    }),
+    allocatedPreCollectionsList: builder.query({
+      query: ( {page, limit} ) =>  `/precollections/allocatedList/?role=${role()}`,
+      providesTags: ["activeLeads"],
+    }),
+    //Collection Leads
     activeLeads: builder.query({
       query: ({ page, limit }) => `/collections/active/?role=${role()}`,
       providesTags: ["activeLeads"],
@@ -90,6 +107,8 @@ export const lmsQueries = createApi({
 export const {
   useUpdateCollectionMutation,
   useAddPaymentMutation,
+  useActivePreCollectionLeadsQuery,
+  useAllocatedPreCollectionsListQuery,
   useActiveLeadsQuery,
   useAllocatedCollectionsListQuery,
   useFetchActiveLeadQuery,
@@ -97,6 +116,7 @@ export const {
   useVerifyPendingLeadMutation,
   useClosedLeadsQuery,
   useVerifyPaymentMutation,
+  useAllocatePreCollectionsMutation,
   useAllocateCollectionsMutation,
   useFetchRepaymentDetailsQuery,
   usePendingVerificationListQuery,

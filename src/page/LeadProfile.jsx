@@ -14,6 +14,7 @@ import ActionButton from '../Component/ActionButton';
 import BarButtons from '../Component/BarButtons';
 import useAuthStore from '../Component/store/authStore';
 import ApplicantProfileData from '../Component/applicantProfileData';
+import CommonRemarks from '../Component/commonRemarks';
 
 const barButtonOptions = ['Lead', 'Documents', 'Verification',]
 
@@ -122,6 +123,7 @@ const LeadProfile = () => {
                                         <CibilScorePage id={leadData._id} />
                                         <InternalDedupe id={leadData._id} />
                                         <ApplicationLogHistory id={leadData._id} />
+                                        {(activeRole === "screener" && <CommonRemarks id={leadData._id} />)}
                                         {/* Action Buttons */}
                                         {(!leadData?.isRejected && activeRole !== "sanctionHead" && activeRole !== "admin") &&
                                             <div className='my-3  d-flex justify-content-center'>

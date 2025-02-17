@@ -25,9 +25,10 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
   console.log('pan details',panDetails)
 
   const { lead } = useStore()
+  console.log(lead)
 
   const [verifyPan, { data, isSuccess, isError, error }] = useVerifyPanMutation()
-
+  console.log("pan data",data)
 
 
   const compareValues = (label, value1, value2) => {
@@ -61,6 +62,7 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
 
   // Fields to be compared
   const getComparisonFields = (lead,panDetails)=> {
+    console.log(panDetails)
     const {building_name,city,country,street_name,state,pincode} = panDetails?.address
 
     const formatAddress = (...parts) => parts.filter(Boolean).join(", "); // Join only non-empty values with commas
@@ -68,7 +70,7 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
     // Construct the PAN address
     const panAddress = formatAddress(building_name, street_name, city, state, country, pincode);
   
-    const leadAddress = formatAddress(lead?.city, lead?.state, lead?.pinCode)
+    const leadAddress = formatAddress(lead?.city, lead?.state, lead?.pincode)
 
     const comparisonFields = [
       { label: "Name", leadValue: `${lead?.fName}${lead?.mName ? ` ${lead?.mName}` : ""} ${lead?.lName}`, panValue: panDetails?.fullname },
@@ -249,7 +251,7 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
         >
           Close
         </Button>
-        <Button
+        {/* <Button
           onClick={handleSubmit}
           variant="contained"
           color="primary"
@@ -261,7 +263,7 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
           }}
         >
           Verify
-        </Button>
+        </Button> */}
       </DialogActions>
     </Dialog>
   );

@@ -37,7 +37,7 @@ export function formatDateTime(dateString) {
       const year = date.getFullYear();
       
       // Format as dd/mm/yyyy 
-      const formattedDate = `${day}/${month}/${year}`;
+      const formattedDate = `${day}-${month}-${year}`;
       
   
     return formattedDate;

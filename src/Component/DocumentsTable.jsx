@@ -49,7 +49,7 @@ const DocumentsTable = ({ leadData, uploadedDocs }) => {
                     >
                         <TableCell sx={{ fontWeight: 'bold' }}>S.N</TableCell>
                         <TableCell sx={{ fontWeight: 'bold' }}>Name</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold' }}>Remark</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold' }}>Remarks / Document Credentials</TableCell>
                         <TableCell sx={{ fontWeight: 'bold' }}>View</TableCell>
                         {/* <TableCell sx={{ color: '#ffffff', fontWeight: 'bold' }}>Actions</TableCell> */}
                     </TableRow>
