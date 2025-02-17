@@ -301,7 +301,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
         >
           Close
         </Button>
-        <Button
+        {/* <Button
           onClick={handleSubmit}
           variant="contained"
           sx={{
@@ -317,7 +317,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
           }}
         >
           Show Document
-        </Button>
+        </Button> */}
       </DialogActions>
     </Dialog>
 

@@ -6,7 +6,8 @@ import { useParams } from 'react-router-dom';
 import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import EditCam from './EditCam';
 import useAuthStore from '../store/authStore';
-import { formatDate } from '../../utils/helper';
+import moment from 'moment'; 
+// import { formatDate } from '../../utils/helper';
 
 
 const Cam = ({id}) => {
@@ -16,12 +17,24 @@ const Cam = ({id}) => {
   // Color theme
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    
+    // Extract the date components
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JS
+    const year = date.getFullYear();
+    
+    // Format as dd/mm/yyyy 
+    return `${day}-${month}-${year}`;
+  }
   
   // const updatData = useUpdateCamDetailsMutation();
   const [isEditing, setIsEditing] = useState(false);
   // const response = useGetCamDetailsQuery(id, { skip: id === null });  // Fetch data
   const [formData, setFormData] = useState({
-    leadId: '',                // Lead ID
+    leadNo: '',                // Lead ID
     salaryDate1: '',           // Salary Date 1
     salaryAmount1: '',         // Salary Amount 1
     salaryDate2: '',           // Salary Date 2
@@ -52,14 +65,22 @@ const Cam = ({id}) => {
     if (getCamSuccess && data?.details) {
       const details = data.details;  // Access the deeply nested object
       setFormData({
-        leadId: data.details?.leadId || 0,                // Lead ID
-        salaryDate1: details?.salaryDate1 || '',          // Salary Date 1
+        leadNo: data.details?.leadNo || 0,                // Lead ID
+        salaryDate1: details?.salaryDate1 && moment(details?.salaryDate1).format('YYYY-MM-DD') || '',          // Salary Date 1
+        // salaryDate1: details?.salaryDate1 || '',          // Salary Date 1
+        // salaryDate1: details?.salaryDate1 && formatDate(details?.salaryDate1) || '',          // Salary Date 1
         salaryAmount1: details?.salaryAmount1 || 0,       // Salary Amount 1
-        salaryDate2: details?.salaryDate2 || '',          // Salary Date 2
+        salaryDate2: details?.salaryDate2 && moment(details?.salaryDate2).format('YYYY-MM-DD') || '',          // Salary Date 2
+        // salaryDate2: details?.salaryDate2 || '',          // Salary Date 2
+        // salaryDate2: details?.salaryDate2 && formatDate(details?.salaryDate2) || '',          // Salary Date 2
         salaryAmount2: details?.salaryAmount2 || 0,       // Salary Amount 2
-        salaryDate3: details?.salaryDate3 || '',          // Salary Date 3
+        salaryDate3: details?.salaryDate3 && moment(details?.salaryDate3).format('YYYY-MM-DD') || '',          // Salary Date 2
+        // salaryDate3: details?.salaryDate3 || '',          // Salary Date 3
+        // salaryDate3: details?.salaryDate3 && formatDate(details?.salaryDate3) || '',          // Salary Date 3
         salaryAmount3: details?.salaryAmount3 || 0,       // Salary Amount 3
-        nextPayDate: details?.nextPayDate || '',          // Next Salary Date
+        // nextPayDate: details?.nextPayDate || '',          // Next Salary Date
+        nextPayDate: details?.nextPayDate && moment(details?.nextPayDate).format('YYYY-MM-DD') || '',          // Next Salary Date
+        // nextPayDate: details?.nextPayDate && formatDate(details?.nextPayDate) || '',          // Next Salary Date
         averageSalary: details?.averageSalary || 0,       // Avergae Salary
         actualNetSalary: details?.actualNetSalary || 0,   // Net Salary
         creditBureauScore: details?.cibilScore || '-',    // Credit Bureau Score
@@ -67,13 +88,18 @@ const Cam = ({id}) => {
         dedupeCheck: details?.dedupeCheck || 'NO',        // Dedupe Check
         customerCategory: details?.customerCategory || '-',  // Customer Category
         obligations: details?.obligations || 0,         // Obligations (Rs)
-        salaryToIncomeRatio: details?.salaryToIncomeRatio || '',  // Salary to Income Ratio
+        salaryToIncomeRatio: details?.salaryToIncomeRatio || '',  // Initial Salary to Income Ratio
         eligibleLoan: details?.eligibleLoan || 0,         // Eligible Loan
+        loanAmount: details?.loanAmount || 0,          // loan Applied
         netDisbursalAmount: details?.netDisbursalAmount || 0,         // Net Disbursal Amount
         loanRecommended: details?.loanRecommended || 0,   // Loan Recommended
-        disbursalDate: details?.disbursalDate && formatDate(details?.disbursalDate) || '-',     // Disbursal Date
-        finalSalaryToIncomeRatioPercentage: details?.finalSalaryToIncomeRatioPercentage || '-',     // Final Salary to income ratio
-        repaymentDate: details?.repaymentDate && formatDate(details?.repaymentDate) || '-',     // Repayment Date
+        disbursalDate: details?.disbursalDate && moment(details?.disbursalDate).format('YYYY-MM-DD') || '-',     // Disbursal Date
+        // disbursalDate: details?.disbursalDate || '-',     // Disbursal Date
+        // disbursalDate: details?.disbursalDate && formatDate(details?.disbursalDate) || '-',     // Disbursal Date
+        finalSalaryToIncomeRatioPercentage: details?.finalSalaryToIncomeRatioPercentage || '',     // Final Salary to income ratio
+        repaymentDate: details?.repaymentDate && moment(details?.repaymentDate).format('YYYY-MM-DD')  || '-',     // Repayment Date
+        // repaymentDate: details?.repaymentDate  || '-',     // Repayment Date
+        // repaymentDate: details?.repaymentDate && formatDate(details?.repaymentDate) || '-',     // Repayment Date
         adminFeePercentage: details?.adminFeePercentage || '',  // Admin Fee Inc. GST (%)
         totalAdminFeeAmount: details?.totalAdminFeeAmount || '0',  // Admin Fee Inc. GST (%)
         roi: details?.roi || '',                        // ROI (Rate of Interest)
@@ -113,7 +139,7 @@ const Cam = ({id}) => {
                   <TableBody >
                     <TableRow>
                       <TableCell colSpan={4} align="center">
-                        <b>Lead ID: {formData?.leadId}</b>
+                        <b>Lead No: {formData?.leadNo}</b>
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -160,7 +186,7 @@ const Cam = ({id}) => {
                     <TableRow>
                       <TableCell>Obligations (Rs)</TableCell>
                       <TableCell>{formData?.obligations}</TableCell>
-                      <TableCell>Initial Salary To Income Ratio</TableCell>
+                      <TableCell>Initial Loan To Salary Ratio</TableCell>
                       <TableCell>  {formData?.salaryToIncomeRatio}%</TableCell>
                     </TableRow>
                     <TableRow>
@@ -172,11 +198,16 @@ const Cam = ({id}) => {
                     <TableRow>
                       <TableCell>Eligible Loan</TableCell>
                       <TableCell>{formData?.eligibleLoan}</TableCell>
-                      <TableCell>Loan Recommended</TableCell>
-                      <TableCell>{formData?.loanRecommended}</TableCell>
+                      <TableCell>Loan Applied</TableCell>
+                      <TableCell>{formData?.loanAmount}</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell>Final Salary To Income Ratio</TableCell>
+                      <TableCell colSpan={4} align='center'>
+                        <b>Loan Recommended : {formData?.loanRecommended}</b>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Sanction Loan To Salary Ratio</TableCell>
                       <TableCell>{formData?.finalSalaryToIncomeRatioPercentage}%</TableCell>
                       <TableCell>Net Disbursal Amount</TableCell>
                       <TableCell>{formData?.netDisbursalAmount}</TableCell>

@@ -24,7 +24,7 @@ const CollectionProfile = () => {
     const { id } = useParams();
     const [collectionData, setCollectionData] = useState()
     const { empInfo, activeRole } = useAuthStore()
-    const { setApplicationProfile } = useStore();
+    const { setApplicationProfile,setLead } = useStore();
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState("application");
 
@@ -56,6 +56,7 @@ const CollectionProfile = () => {
 
     useEffect(() => {
         if (isSuccess && data) {
+            setLead(data?.data?.disbursal?.sanction?.application?.lead)
             setCollectionData(data?.data)
             setApplicationProfile(data?.data?.disbursal);
         }

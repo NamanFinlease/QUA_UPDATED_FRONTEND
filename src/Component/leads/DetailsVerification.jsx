@@ -281,8 +281,9 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
   const [openAadhaarCompare, setOpenAadhaarCompare] = useState()
   const [aadhaarData, setAadhaarData] = useState()
   const [otpAadhaar, setOtpAadhaar] = useState(false)
-  const [panData, setPanData] = useState(false)
+  const [panData, setPanData] = useState()
   const [panModal, setPanModal] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [otpPan, setOtpPan] = useState(false)
   const [mobileVerified, setMobileVerified] = useState(false);
 
@@ -303,16 +304,20 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
   // Color theme
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  console.log(leadId)
 
   const handleEmailVerification = () => {
     getEmailOtp(id)
   };
   const handlePanVerification = () => {
-    getPanDetails(id)
+    // getPanDetails(leadId)
+    setLoading(true);
+    getPanDetails(leadId).finally(() => setLoading(false));
   }
   const handleSendAadhaarLink = () => {
-    sendAadhaarLink(id);
+    // sendAadhaarLink(id);
+    setLoading(true);
+    checkDetails(leadId).finally(() => setLoading(false));
   };
 
   const handleAadhaarVerification = () => {
@@ -323,10 +328,12 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
   // Effects
   useEffect(() => {
     if (panRes?.isSuccess && panRes?.data && !panRes?.isFetching) {
-      setPanData(panRes.data.details);
+      setPanData(panRes?.data?.data);
       setPanModal(true);
     }
   }, [panRes?.data, panRes?.isSuccess, panRes?.isFetching]);
+
+  console.log(panRes?.data?.data, panRes?.isSuccess, panRes?.isFetching)
   // useEffect(() => {
   //   if (panRes?.isSuccess && panRes?.data && !panRes?.isFetching) {
   //     setPanModal(true);
@@ -368,7 +375,7 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
             background: colors.white[100],
             color: colors.primary[400],
             border: colors.primary[400],
-            borderRadius: "0px 10px 0px 10px",
+            borderRadius: "0px 10px",
             ":hover": {
               background: colors.primary[400],
               color: colors.white[100],
@@ -385,30 +392,28 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
       action: (
         <Button
           variant="contained"
-          // onClick={handlePanVerification}
-          onClick={isPanVerified ? () => setPanModal(true) : handlePanVerification}
-          // disabled={isPanVerified}
+          onClick={handlePanVerification}
           sx={{
             background: colors.white[100],
             color: colors.primary[400],
             border: colors.primary[400],
-            borderRadius: "0px 10px 0px 10px",
+            borderRadius: "0px 10px",
             ":hover": {
               background: colors.primary[400],
               color: colors.white[100],
             }
           }}
         >
-          {isPanVerified ? "Show Details" : "Send Link"}
-          {/* {isPanVerified ? "Show Details" : isPanDetailsSaved ? "Verify Pan" : "Send Link"} */}
-          {/* Verify PAN */}
+          {/* {isPanVerified ? "Show Details" : "Send Link"} */}
+          {loading ? <CircularProgress size={24} /> : (isPanVerified ? "Show Details" : "Send Link")}
         </Button>
       ),
     },
+    ...(activeRole === 'sanctionHead' || activeRole === 'disbursalManager' || activeRole === 'disbursalHead' || activeRole === 'collectionExecutive' || activeRole === 'collectionHead' ||  activeRole === 'admin' ? [{
+      type: 'E-Sign',
+      status: isESigned ? 'Completed' : 'Pending',
+    }] : []),
   ];
-
-  console.log('open aadhaar',openAadhaarCompare)
-  console.log('Pan Modal',panModal)
 
 
   return (
@@ -457,7 +462,7 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
             {verificationData.map((row, index) => (
               <TableRow key={index}>
                 <TableCell sx={{ color: colors.black[100] }}>{row.type}</TableCell>
-                <TableCell><Typography sx={{ color: row.status == 'Verified' ? `green` : 'red' }}>{row.status}</Typography></TableCell>
+                <TableCell><Typography sx={{ color: row.status == 'Verified' || row.status == 'Completed' ? 'green' : 'red' }}>{row.status}</Typography></TableCell>
                 <TableCell>{row.action}</TableCell>
               </TableRow>
             ))}

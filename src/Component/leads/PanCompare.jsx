@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { tokens } from "../../theme";
 import {
   Button,
   Dialog,
@@ -14,18 +15,22 @@ import {
   Paper,
   Typography,
   Box,
+  useTheme,
 } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import useStore from "../../Store";
 import { useVerifyPanMutation } from "../../Service/Query";
-import { compareDates, formatDate } from "../../utils/helper";
+import { compareDates, formatDate, formatFullName } from "../../utils/helper";
 
 const PanCompare = ({ open, setOpen, panDetails }) => {
-  console.log('pan details',panDetails)
 
   const { lead } = useStore()
   console.log(lead)
+
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const [verifyPan, { data, isSuccess, isError, error }] = useVerifyPanMutation()
   console.log("pan data",data)
@@ -62,7 +67,7 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
 
   // Fields to be compared
   const getComparisonFields = (lead,panDetails)=> {
-    console.log(panDetails)
+    console.log(lead, panDetails)
     const {building_name,city,country,street_name,state,pincode} = panDetails?.address
 
     const formatAddress = (...parts) => parts.filter(Boolean).join(", "); // Join only non-empty values with commas
@@ -73,9 +78,11 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
     const leadAddress = formatAddress(lead?.city, lead?.state, lead?.pincode)
 
     const comparisonFields = [
-      { label: "Name", leadValue: `${lead?.fName}${lead?.mName ? ` ${lead?.mName}` : ""} ${lead?.lName}`, panValue: panDetails?.fullname },
+      { label: "Name", leadValue: formatFullName(lead?.fName, lead?.mName,lead?.lName), panValue: panDetails?.fullname },
+      // { label: "Name", leadValue: `${lead?.fName}${lead?.mName ? ` ${lead?.mName}` : ""} ${lead?.lName}`, panValue: panDetails?.fullname },
       { label: "DOB", leadValue:lead?.dob && formatDate(lead?.dob), panValue: panDetails?.dob  },
       { label: "Gender", leadValue:lead?.gender , panValue: panDetails?.gender === "male" ? "M" : "F" },
+      { label: "PAN", leadValue:lead?.pan , panValue: panDetails?.pan },
       { label: "Masked Aadhaar", leadValue:`XXXXXXXX${lead?.aadhaar.slice(-4)}` , panValue: panDetails?.aadhaar_number },
       { label: "Address", leadValue:leadAddress , panValue: panAddress },
     ];
@@ -98,9 +105,20 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
   }, [isSuccess, data])
 
   return (
-    <Dialog open={open} maxWidth="md" fullWidth>
+    <Dialog 
+      open={open} 
+      maxWidth="lg" 
+      fullWidth
+      sx={{
+        '& .MuiDialog-paper':{
+          background:colors.white[100],
+          borderRadius:"0px 20px",
+          color:colors.primary[400],
+        },
+      }}
+    >
       <DialogTitle>
-        <Typography variant="h6" align="center" sx={{ fontWeight: "bold", mb: 2 }}>
+        <Typography variant="h4" align="center" sx={{ fontWeight: "bold", m: 2 }}>
           Compare User Details
         </Typography>
       </DialogTitle>
@@ -110,56 +128,40 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
             component={Paper}
             elevation={3}
             sx={{
-              borderRadius: 2,
-              border: "1px solid #e0e0e0",
-              backgroundColor: "#fafafa",
+              borderRadius: "0px 20px",
+              backgroundColor: colors.white[100],
+              '& .MuiTableCell-root': {
+                borderBottom: `2px solid ${colors.primary[400]}`,
+                padding: "16px 24px",
+                fontSize: 14,
+                fontWeight: "500",
+              },
+              '& .MuiTableHead-root': {
+                background: colors.primary[400],
+                color: colors.white[100],
+              },
+              '& .MuiTableCell-head': {
+                color: colors.white[100],
+                fontWeight: 600,
+                textAlign: "center",  
+                fontSize: "15px",
+                padding: "12px", 
+              },
             }}
           >
             <Table>
-              <TableHead sx={{ backgroundColor: "#eceff1" }}>
+              <TableHead>
                 <TableRow>
-                  <TableCell
-                    sx={{
-                      fontWeight: "bold",
-                      fontSize: 15,
-                      color: "#37474f",
-                      textAlign: "center",
-                      padding: "12px",
-                    }}
-                  >
+                  <TableCell>
                     Field
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      fontWeight: "bold",
-                      fontSize: 15,
-                      color: "#37474f",
-                      textAlign: "center",
-                      padding: "12px",
-                    }}
-                  >
+                  <TableCell>
                     Lead Details
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      fontWeight: "bold",
-                      fontSize: 15,
-                      color: "#37474f",
-                      textAlign: "center",
-                      padding: "12px",
-                    }}
-                  >
+                  <TableCell>
                     PAN Details
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      fontWeight: "bold",
-                      fontSize: 15,
-                      color: "#37474f",
-                      textAlign: "center",
-                      padding: "12px",
-                    }}
-                  >
+                  <TableCell>
                     Comparison
                   </TableCell>
                 </TableRow>
@@ -170,20 +172,14 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
                   const textColor = getTextColor(result);
 
 
-                  return <TableRow
-                    key={label}
-                    sx={{
-                      "&:nth-of-type(odd)": {
-                        backgroundColor: "#f5f5f5",
-                      },
-                    }}
-                  >
+                  return (
+                  <TableRow key={label}>
                     <TableCell
                       sx={{
                         padding: "16px 24px",
                         fontSize: 14,
                         textAlign: "center",
-                        color: "#424242",
+                        color: colors.black[100],
                         fontWeight: "500",
                       }}
                     >
@@ -194,7 +190,7 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
                         padding: "16px 24px",
                         fontSize: 14,
                         textAlign: "center",
-                        color: "#424242",
+                        color: colors.black[100],
                       }}
                     >
                       {leadValue}
@@ -204,7 +200,7 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
                         padding: "16px 24px",
                         fontSize: 14,
                         textAlign: "center",
-                        color: "#424242",
+                        color: colors.black[100],
                       }}
                     >
                       {panValue}
@@ -220,16 +216,17 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
                     >
                       {result === "Matched" ? (
                         <>
-                          <CheckCircleOutlineIcon fontSize="small" sx={{ mr: 1, color: "#00796b" }} />
+                          <CheckCircleOutlineIcon fontSize="small" sx={{ mr: 1, color: "#00796b" }} /> Matched
                         </>
                       ) : (
                         <>
-                          <HighlightOffIcon fontSize="small" sx={{ mr: 1 }} />
+                          <HighlightOffIcon fontSize="small" sx={{ mr: 1 }} /> Unmatched
                         </>
                       )}
                     </TableCell>
                     {/* {isError && <p>{error?.data?.message}</p>} */}
                   </TableRow>
+                  );
                 })}
               </TableBody>
             </Table>
@@ -240,13 +237,17 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
       <DialogActions sx={{ justifyContent: "space-between", px: 3, pb: 3 }}>
         <Button
           onClick={handleClose}
-          variant="outlined"
+          variant="contained"
           sx={{
-            borderColor: "#00796b",
-            color: "#00796b",
+            background:colors.white[100],
+            color: colors.redAccent[500],
+            border: `1px solid ${colors.redAccent[500]}`,
             fontWeight: "bold",
-            textTransform: "none",
-            "&:hover": { backgroundColor: "#e0f7fa", borderColor: "#00796b" },
+            borderRadius:"0px 10px",
+            '&:hover':{
+              backgroundColor:colors.redAccent[500],
+              color:colors.white[100],
+            }
           }}
         >
           Close
