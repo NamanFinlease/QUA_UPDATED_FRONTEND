@@ -14,7 +14,7 @@ export const lmsQueries = createApi({
       return headers;
     },
   }),
-  tagTypes: ["activeLeads", "leadProfile", "collectionProfile"],
+  tagTypes: ["activeLeads", "preCollectionActiveLeads", "leadProfile", "collectionProfile"],
   endpoints: (builder) => ({
     updateCollection: builder.mutation({
       query: ({ loanNo, data }) => ({
@@ -43,10 +43,10 @@ export const lmsQueries = createApi({
     }),
     allocatePreCollections: builder.mutation({
       query: ( id ) =>  ({
-        url:`/precollections/allocate/${id}/?role=${role()}`,
+        url:`collections/preCollection/allocate/${id}/?role=${role()}`,
         method:"PATCH"
       }),
-      invalidatesTags: ["activeLeads"],
+      invalidatesTags: ["preCollectionActiveLeads"],
     }),
     allocateCollections: builder.mutation({
       query: ( id ) =>  ({
@@ -57,11 +57,11 @@ export const lmsQueries = createApi({
     }),
     //Pre Collection Leads
     activePreCollectionLeads: builder.query({
-      query: ({ page, limit }) => `/precollections/active/?role=${role()}`,
-      providesTags: ["activeLeads"],
+      query: ({ page, limit }) => `collections/preCollection/active/?role=${role()}`,
+      providesTags: ["preCollectionActiveLeads"],
     }),
     allocatedPreCollectionsList: builder.query({
-      query: ( {page, limit} ) =>  `/precollections/allocatedList/?role=${role()}`,
+      query: ( {page, limit} ) =>  `collections/preCollection/allocatedList/?role=${role()}`,
       providesTags: ["activeLeads"],
     }),
     //Collection Leads

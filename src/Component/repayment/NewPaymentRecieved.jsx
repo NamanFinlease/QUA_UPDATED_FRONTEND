@@ -39,6 +39,7 @@ const NewPaymentRecieved = () => {
 
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [fileSelected, setFileSelected] = useState(false);
 
   const [addPayment, { data, isLoading, isSuccess, isError, error }] =
     useAddPaymentMutation();
@@ -103,26 +104,35 @@ const NewPaymentRecieved = () => {
     }
   };
 
-
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-    clearErrors("repaymentDocs");
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setFileSelected(true); // Set fileSelected to true when a file is chosen
+      clearErrors("repaymentDocs");
+    }
   };
+  // const handleFileChange = (event) => {
+  //   setSelectedFile(event.target.files[0]);
+  //   clearErrors("repaymentDocs");
+  // };
 
   const handleRemoveFile = () => {
     setSelectedFile(null);
     // setKey((prevKey) => prevKey + 1);
+    setFileSelected(false);
     fileInputRef.current.value = "";
     setError("repaymentDocs", { type: "manual", message: "" });
+    // fileInputRef.current.click();
   };
 
   // console.log('errrororro', errors)
 
   const handleClickChooseFile = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+    if (!fileSelected) {
+      // fileInputRef.current.value = "";
+      fileInputRef.current.click();
     }
-    fileInputRef.current.click();
   };
 
   const handleKeyDown = (e) => {

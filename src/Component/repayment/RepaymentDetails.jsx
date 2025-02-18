@@ -79,6 +79,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
     { field: "paymentMode", headerName: "Payment Mode", width: 150 },
     { field: "bankName", headerName: "Payment Bank", width: 150 },
     { field: "paymentDiscount", headerName: "Discount", width: 150 },
+    { field: "excessAmount", headerName: "Excess Amount", width: 150 },
     // { field: 'recoveryDiscountType', headerName: 'Discount Type', width: 150 },
     // { field: "recoveryRemarks", headerName: "Remarks", width: 150 },
   ];
@@ -91,6 +92,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
     paymentAmount: paymentHistory?.receivedAmount,
     closingType: paymentHistory?.closingType,
     paymentDiscount : paymentHistory?.discount || 0,
+    excessAmount : paymentHistory?.excessAmount || 0,
     paymentReferenceNumber : paymentHistory?.transactionId,
     paymentStatus : paymentHistory?.isPaymentVerified === true ? "Verified" : "Pending",
     paymentDate : moment(paymentHistory?.paymentDate).format("DD-MM-YYYY"),

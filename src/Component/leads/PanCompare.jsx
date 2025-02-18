@@ -119,7 +119,7 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
     >
       <DialogTitle>
         <Typography variant="h4" align="center" sx={{ fontWeight: "bold", m: 2 }}>
-          Compare User Details
+          Compare Lead and PAN Details
         </Typography>
       </DialogTitle>
       <DialogContent>

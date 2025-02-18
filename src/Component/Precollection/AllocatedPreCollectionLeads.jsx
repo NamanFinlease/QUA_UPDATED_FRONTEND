@@ -3,10 +3,10 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
 import useAuthStore from "../store/authStore";
-import { useAllocatedCollectionsListQuery } from "../../Service/LMSQueries";
+import { useAllocatedPreCollectionsListQuery} from "../../Service/LMSQueries";
 import CommonTable from "../CommonTable";
 
-const AllocatedCollectionLeads = () => {
+const AllocatedPreCollectionLeads = () => {
     const [allocatedLeads, setAllocatedLeads] = useState([]);
     const [totalAllocatedLeads, setTotalAllocatedLeads] = useState();
     const { empInfo, activeRole } = useAuthStore();
@@ -16,7 +16,7 @@ const AllocatedCollectionLeads = () => {
         pageSize: 10,
     });
 
-    const { data, isSuccess, isError, error, refetch } = useAllocatedCollectionsListQuery({
+    const { data, isSuccess, isError, error, refetch } = useAllocatedPreCollectionsListQuery({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
     });
@@ -99,7 +99,7 @@ const AllocatedCollectionLeads = () => {
                 paginationModel={paginationModel}
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
-                title="Allocated Collection Leads"
+                title="Allocated PreCollection Leads"
             />
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>
@@ -110,4 +110,4 @@ const AllocatedCollectionLeads = () => {
     );
 };
 
-export default AllocatedCollectionLeads;
+export default AllocatedPreCollectionLeads;

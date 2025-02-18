@@ -1118,6 +1118,9 @@ const EditCam = ({ camData, setIsEditing }) => {
         '& .MuiTypography-root':{
           color:colors.black[100],
         },
+        '& .Mui-readOnly':{
+          background:colors.grey[100],
+        },
       }}
     >
       {/* First Row (4 items) */}

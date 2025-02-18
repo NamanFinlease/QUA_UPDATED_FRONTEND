@@ -112,7 +112,7 @@ const CommonRemarks = ({id}) => {
                                 Option 2
                                 </MenuItem>
                             </Select> */}
-                            <Button
+                            {/* <Button
                                 // onClick={handleSaveRemarks}
                                 className="mt-3"
                                 variant="contained"
@@ -130,7 +130,7 @@ const CommonRemarks = ({id}) => {
                                 }}
                             >
                                 Add Remarks
-                            </Button>
+                            </Button> */}
                         </FormControl>
                     )}
                     />

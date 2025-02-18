@@ -96,8 +96,8 @@ const accordionItems = [
     title: "Pre-Collection",
     icon: <FolderSpecialRoundedIcon/>,
     items: [
-      { text: "Active Leads", link: "/activeLeads" },
-      { text: "Allocated Leads", link: "/allocatedCollectionLeads" },
+      { text: "Active Leads", link: "/preCollectionActiveLeads" },
+      { text: "Allocated Leads", link: "/allocatedPreCollectionLeads" },
       { text: "Verification Pending", link: "/pending-verification" },
       { text: "Closed Leads", link: "/closed-leads" },
     ],
