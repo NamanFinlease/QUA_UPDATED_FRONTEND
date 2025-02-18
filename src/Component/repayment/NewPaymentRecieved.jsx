@@ -381,7 +381,7 @@ const NewPaymentRecieved = () => {
 
               <Box sx={{ flex: { xs: "1 1 100%", sm: "1 1 45%" } }}>
                 <Controller
-                  name="paymentBank"
+                  name="bankName"
                   defaultValue=""
                   control={control}
                   render={({ field, fieldState }) => (

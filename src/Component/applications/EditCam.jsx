@@ -827,6 +827,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import moment from 'moment';
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { camSchema } from "../../utils/validations";
 import { useUpdateCamDetailsMutation } from '../../Service/applicationQueries';
 import Swal from 'sweetalert2';
 import { useParams } from 'react-router-dom';
@@ -838,6 +841,8 @@ const EditCam = ({ camData, setIsEditing }) => {
   const [errorMessage, setErrorMessage] = useState({
     recommendedLoanError: null,
   });
+  const [loanRecommendedError, setLoanRecommendedError] = useState(null);
+
 
   console.log(camData)
   const today = new Date().toISOString().split('T')[0];
@@ -847,6 +852,39 @@ const EditCam = ({ camData, setIsEditing }) => {
   const colors = tokens(theme.palette.mode);
 
   const [updateCamDetails, { data, isLoading, isSuccess, isError, error }] = useUpdateCamDetailsMutation();
+
+  const defaultValue = {
+    leadNo: '',                // Lead ID
+    salaryDate1: '',           // Salary Date 1
+    salaryAmount1: '',         // Salary Amount 1
+    salaryDate2: '',           // Salary Date 2
+    salaryAmount2: '',         // Salary Amount 2
+    salaryDate3: '',           // Salary Date 3
+    salaryAmount3: '',         // Salary Amount 3
+    nextPayDate: '',           // Next Salary Date
+    averageSalary: '',         // Median Salary Amount
+    customerType: '',          // Customer Type
+    dedupeCheck: '',           // Dedupe Check
+    actualNetSalary: '',       // Net Salary
+    creditBureauScore: '',     // Credit Bureau Score
+    obligations: '',           // Obligations (Rs)
+    salaryToIncomeRatio: '',   // Salary To Income Ratio
+    eligibleLoan: '',          // Loan Amount
+    loanRecommended: '',       // Loan Recommended
+    disbursalDate: '',         // Disbursal Date
+    repaymentDate: '',         // Repayment Date
+    adminFeePercentage: '',    // Admin Fee Inc. GST (%)
+    roi: '',                   // ROI (Rate of Interest)
+    netAdminFeeAmount: '',     // Net Admin Fee Amount
+    eligibleTenure: '',        // Eligible Tenure
+    repaymentAmount: '',       // Repayment Amount
+    remarks: '', 
+  }
+
+  const { handleSubmit, control, setValue, getValues, watch, reset, clearErrors, setError, formState: { errors } } = useForm({
+      defaultValues: defaultValue,
+      resolver: yupResolver(camSchema),
+    });
 
   const calculateDaysDifference = (disbursalDate, repaymentDate) => {
     if (!disbursalDate && !repaymentDate) {
@@ -933,6 +971,18 @@ const EditCam = ({ camData, setIsEditing }) => {
           : 0;
       }
 
+      // Check if loan recommended is greater than loan applied
+      if (name === 'loanRecommended') {
+        const loanRecommended = Number(value);
+        const loanApplied = Number(updatedFormData.loanAmount); // Assuming loanAmount is the field for Loan Applied
+
+        if (loanRecommended > loanApplied) {
+          setLoanRecommendedError("Loan Recommended cannot be greater than Loan Applied.");
+        } else {
+          setLoanRecommendedError(null); // Clear the error if validation passes
+        }
+      }
+
       if (name === 'nextPayDate') {
         updatedFormData.repaymentDate = value;
       }
@@ -976,10 +1026,9 @@ const EditCam = ({ camData, setIsEditing }) => {
     }
   };
 
-  const calculateEligibleLoan = (salary, salaryToIncomeRatioPercentage, loanAmount) => {
+  const calculateEligibleLoan = (salary, salaryToIncomeRatioPercentage,) => {
     const salaryToIncomeRatioDecimal = parseFloat(salaryToIncomeRatioPercentage) / 100;
-    const eligibleLoan = salary * salaryToIncomeRatioDecimal;
-    return eligibleLoan > loanAmount ? loanAmount : eligibleLoan;
+    return salary * salaryToIncomeRatioDecimal;
   };
 
   useEffect(() => {
@@ -1396,9 +1445,9 @@ const EditCam = ({ camData, setIsEditing }) => {
             onKeyDown={handleKeyDown}
             required
           />
-          {errorMessage.recommendedLoanError && (
+          {loanRecommendedError && (
             <FormHelperText error>
-              {errorMessage.recommendedLoanError}
+              {loanRecommendedError}
             </FormHelperText>
           )}
         </Box>
@@ -1414,9 +1463,6 @@ const EditCam = ({ camData, setIsEditing }) => {
             value={formData.finalSalaryToIncomeRatioPercentage}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            InputProps={{
-              readOnly: true,
-            }}
             slotProps={{
               input: {
                 endAdornment: (
@@ -1425,6 +1471,9 @@ const EditCam = ({ camData, setIsEditing }) => {
                   </InputAdornment>
                 ),
               },
+            }}
+            InputProps={{
+              readOnly: true,
             }}
             required
           />
@@ -1543,7 +1592,7 @@ const EditCam = ({ camData, setIsEditing }) => {
             onChange={handleChange}
             required
             inputProps={{
-              maxLength: 30 // Set a character limit as a fallback
+              minLength: 30 // Set a character limit as a fallback
             }}
           />
         </Box>
@@ -1562,6 +1611,7 @@ const EditCam = ({ camData, setIsEditing }) => {
           type="submit"
           variant="contained"
           disabled={isLoading}
+          onclick={handleSubmit}
           sx={{
             backgroundColor: isLoading ? '#ccc' : colors.white[100],
             color: isLoading ? '#666' : colors.primary[400],

@@ -193,6 +193,24 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
 
         <Box sx={{ flex: '1 1 45%' }}>
           <Controller
+            name="mothersName"
+            control={control}
+            render={({ field, fieldState }) => (
+              <TextField
+                {...field}
+                required
+                fullWidth
+                label="Mother's Name"
+                variant="outlined"
+                error={!!fieldState.error}
+                helperText={fieldState.error ? fieldState.error.message : ''}
+              />
+            )}
+          />
+        </Box>
+
+        <Box sx={{ flex: '1 1 45%' }}>
+          <Controller
             name="aadhaar"
             control={control}
             render={({ field, fieldState }) => (
@@ -298,36 +316,35 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
           />
         </Box>
 
-        <Box sx={{ flex: '1 1 45%' }}>
-          <Controller
-            name="loanAmount"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                required
-                fullWidth
-                label="Loan Amount"
-                type="number"
-                variant="outlined"
-                error={!!fieldState.error}
-                helperText={fieldState.error ? fieldState.error.message : ''}
-                InputProps={{
-                  min: 0, // Set the minimum value
-                  sx: {
-                    '& input[type=number]': {
-                      '-moz-appearance': 'textfield', // For Firefox
-                    },
-                    '& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button': {
-                      '-webkit-appearance': 'none', // For Chrome, Safari, Edge, and Opera
-                      margin: 0,
-                    },
-                  },
-                }}
-              />
-            )}
-          />
-        </Box>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Box sx={{ flex: '1 1 45%', width: '100%' }} fullWidth> {/* Ensure the box takes full width */}
+            <Controller
+              name="employedSince"
+              control={control}
+              render={({ field, fieldState }) => (
+                <DatePicker
+                  {...field}
+                  label="Working Since"
+                  sx={{ width: "100%" }}
+                  format="DD/MM/YYYY"
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      required
+                      variant="outlined"
+                      error={!!fieldState.error}
+                      helperText={fieldState.error ? fieldState.error.message : ''}
+                    />
+                  )}
+                  value={field.value ? dayjs(field.value, 'YYYY-MM-DD') : null}
+                  onChange={(newValue) => {
+                    field.onChange(newValue);
+                  }}
+                />
+              )}
+            />
+          </Box>
+        </LocalizationProvider>
 
         <Box sx={{ flex: '1 1 45%' }}>
           <Controller
@@ -362,18 +379,30 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
 
         <Box sx={{ flex: '1 1 45%' }}>
           <Controller
-            name="pinCode"
+            name="loanAmount"
             control={control}
             render={({ field, fieldState }) => (
               <TextField
                 {...field}
                 required
                 fullWidth
-                type='string'
-                label="Pin Code"
+                label="Loan Amount"
+                type="number"
                 variant="outlined"
                 error={!!fieldState.error}
                 helperText={fieldState.error ? fieldState.error.message : ''}
+                InputProps={{
+                  min: 0, // Set the minimum value
+                  sx: {
+                    '& input[type=number]': {
+                      '-moz-appearance': 'textfield', // For Firefox
+                    },
+                    '& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button': {
+                      '-webkit-appearance': 'none', // For Chrome, Safari, Edge, and Opera
+                      margin: 0,
+                    },
+                  },
+                }}
               />
             )}
           />
@@ -407,6 +436,25 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
                 required
                 fullWidth
                 label="City"
+                variant="outlined"
+                error={!!fieldState.error}
+                helperText={fieldState.error ? fieldState.error.message : ''}
+              />
+            )}
+          />
+        </Box>
+
+        <Box sx={{ flex: '1 1 45%' }}>
+          <Controller
+            name="pinCode"
+            control={control}
+            render={({ field, fieldState }) => (
+              <TextField
+                {...field}
+                required
+                fullWidth
+                type='string'
+                label="Pin Code"
                 variant="outlined"
                 error={!!fieldState.error}
                 helperText={fieldState.error ? fieldState.error.message : ''}

@@ -171,7 +171,7 @@ export const camSchema = Yup.object().shape({
   averageSalary: Yup.string()
   .matches(regexPatterns.onlyNumbers, 'Invalid salary amount'),
   actualNetSalary: Yup.string()
-  .required('Actual Net Salary is required')
+  .required('Net Salary is required')
   .matches(regexPatterns.onlyNumbers, 'Invalid salary amount'),
   salaryToIncomeRatio: Yup.string()
   .required('Salary to Income Ratio is required')
@@ -192,7 +192,7 @@ export const camSchema = Yup.object().shape({
 
 
 export const paymentReceivedSchema = Yup.object().shape({
-  paymentReceived : Yup.string()
+  receivedAmount : Yup.string()
   .required('Payment amount is required'),
   paymentReceivedDate : Yup.string()
   .matches(
@@ -211,9 +211,11 @@ export const paymentReceivedSchema = Yup.object().shape({
   ),
   closingType : Yup.string()
   .required('Choose Payment Type'),
+  bankName: Yup.string()
+  .required('Choose Bank Name'),
   paymentMode : Yup.string()
   .required('Choose Payment Mode'),
-  referenceNumber : Yup.string()
+  transactionId : Yup.string()
   .required('Reference Number is required'),
 });
 
