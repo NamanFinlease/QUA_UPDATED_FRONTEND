@@ -56,7 +56,7 @@ const NewPaymentRecieved = () => {
     repaymentDocs: "",
   };
 
-  const { handleSubmit, control, setValue, getValues, watch, reset, setError, formState: { errors } } = useForm({
+  const { handleSubmit, control, setValue, getValues, watch, reset, clearErrors, setError, formState: { errors } } = useForm({
     defaultValues: defaultValue,
     // resolver: yupResolver(paymentReceivedSchema),
     // mode: "onBlur",
@@ -66,6 +66,11 @@ const NewPaymentRecieved = () => {
   const closingType = watch("closingType");
 
   const submitPayment = async (data) => {
+
+    clearErrors("repaymentDocs")
+
+    console.log('adddd payment', data)
+
     // Check if a file is selected
     if (!selectedFile) {
       setError("repaymentDocs", {
@@ -92,26 +97,26 @@ const NewPaymentRecieved = () => {
       for (var pair of formData.entries()) {
         console.log("key <>>> ", pair[0] + ", " + pair[1]);
       }
-      // await addPayment({ id, data: formData });
-      // reset();
-      // setSelectedFile(null);
       addPayment({ id, data: formData });
     } catch (error) {
       console.error("Error submitting payment:", error);
     }
   };
 
+
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
-    setError("repaymentDocs", { type: "manual", message: "" });
+    clearErrors("repaymentDocs");
   };
 
   const handleRemoveFile = () => {
     setSelectedFile(null);
-    setKey((prevKey) => prevKey + 1);
+    // setKey((prevKey) => prevKey + 1);
     fileInputRef.current.value = "";
     setError("repaymentDocs", { type: "manual", message: "" });
   };
+
+  // console.log('errrororro', errors)
 
   const handleClickChooseFile = () => {
     if (fileInputRef.current) {
@@ -137,8 +142,8 @@ const NewPaymentRecieved = () => {
     if (isSuccess) {
       console.log("Payment Added Successfully");
       Swal.fire({
-          text: "Payment Added successfully",
-          icon: "success"
+        text: "Payment Added successfully",
+        icon: "success"
       });
       reset();
       setSelectedFile(null);
@@ -211,9 +216,9 @@ const NewPaymentRecieved = () => {
                   borderColor: colors.primary[400],
                 },
                 "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                  {
-                    borderColor: colors.primary[400],
-                  },
+                {
+                  borderColor: colors.primary[400],
+                },
                 "& .MuiSelect-icon": {
                   color: colors.black[100],
                 },
@@ -373,10 +378,11 @@ const NewPaymentRecieved = () => {
                   )}
                 />
               </Box>
-              
+
               <Box sx={{ flex: { xs: "1 1 100%", sm: "1 1 45%" } }}>
                 <Controller
                   name="paymentBank"
+                  defaultValue=""
                   control={control}
                   render={({ field, fieldState }) => (
                     <FormControl
