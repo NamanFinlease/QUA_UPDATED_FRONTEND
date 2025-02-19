@@ -76,6 +76,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
     { field: "closingType", headerName: "Closing Type", width: 150 },
     { field: "paymentReferenceNumber", headerName: "Reference No", width: 150 },
     { field: "paymentStatus", headerName: "Payment Verification Status", width: 150 },
+    // { field: "paymentApprove", headerName: "Payment Approve/Reject", width: 150 },
     { field: "paymentMode", headerName: "Payment Mode", width: 150 },
     { field: "bankName", headerName: "Payment Bank", width: 150 },
     { field: "paymentDiscount", headerName: "Discount", width: 150 },
@@ -91,10 +92,11 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
     bankName: paymentHistory?.bankName,
     paymentAmount: paymentHistory?.receivedAmount,
     closingType: paymentHistory?.closingType,
+    // paymentApprove: paymentHistory?.isRejected ? "Rejected" : "Approved",
     paymentDiscount : paymentHistory?.discount || 0,
     excessAmount : paymentHistory?.excessAmount || 0,
     paymentReferenceNumber : paymentHistory?.transactionId,
-    paymentStatus : paymentHistory?.isPaymentVerified === true ? "Verified" : "Pending",
+    paymentStatus : paymentHistory?.isPaymentVerified === false ? paymentHistory?.isRejected ? "Rejected" : "Pending" : "Verified",
     paymentDate : moment(paymentHistory?.paymentDate).format("DD-MM-YYYY"),
   })) || [];
 
@@ -290,7 +292,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
 
       {/* New Payment Recieved */}
       {(activeRole === "collectionExecutive" || activeRole === "collectionHead") &&
-        <NewPaymentRecieved />
+        <NewPaymentRecieved repaymentDetails={repaymentDetails} />
       }
     </>
   );

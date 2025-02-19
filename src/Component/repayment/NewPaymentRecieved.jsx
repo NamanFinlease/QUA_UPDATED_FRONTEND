@@ -22,6 +22,7 @@ import {
   useTheme,
   IconButton,
   Stack,
+  CircularProgress,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -32,7 +33,7 @@ import { useAddPaymentMutation } from "../../Service/LMSQueries";
 import { paymentReceivedSchema } from "../../utils/validations";
 import { tokens } from "../../theme";
 
-const NewPaymentRecieved = () => {
+const NewPaymentRecieved = ({repaymentDetails}) => {
   const { id } = useParams();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -40,6 +41,8 @@ const NewPaymentRecieved = () => {
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileSelected, setFileSelected] = useState(false);
+
+  console.log(repaymentDetails?.repaymentDetails?.dpd)
 
   const [addPayment, { data, isLoading, isSuccess, isError, error }] =
     useAddPaymentMutation();
@@ -51,6 +54,7 @@ const NewPaymentRecieved = () => {
     paymentMode: "",
     transactionId: "",
     discount: "",
+    bankName : "",
     excessAmount: "",
     paymentRemarks: "",
     paymentUpload: "",
@@ -87,6 +91,7 @@ const NewPaymentRecieved = () => {
       formData.append("closingType", data.closingType);
       formData.append("paymentMode", data.paymentMode);
       formData.append("transactionId", data.transactionId);
+      formData.append("bankName", data.bankName);
       formData.append("discount", data.discount);
       formData.append("excessAmount", data.excessAmount);
       formData.append("repaymentDocs", selectedFile);
@@ -108,7 +113,7 @@ const NewPaymentRecieved = () => {
     const file = event.target.files[0];
     if (file) {
       setSelectedFile(file);
-      setFileSelected(true); // Set fileSelected to true when a file is chosen
+      setFileSelected(true);
       clearErrors("repaymentDocs");
     }
   };
@@ -125,8 +130,6 @@ const NewPaymentRecieved = () => {
     setError("repaymentDocs", { type: "manual", message: "" });
     // fileInputRef.current.click();
   };
-
-  // console.log('errrororro', errors)
 
   const handleClickChooseFile = () => {
     if (!fileSelected) {
@@ -392,7 +395,6 @@ const NewPaymentRecieved = () => {
               <Box sx={{ flex: { xs: "1 1 100%", sm: "1 1 45%" } }}>
                 <Controller
                   name="bankName"
-                  defaultValue=""
                   control={control}
                   render={({ field, fieldState }) => (
                     <FormControl
@@ -626,7 +628,8 @@ const NewPaymentRecieved = () => {
                     ":hover": { background: colors.primary[100] },
                   }}
                 >
-                  Add Payment
+                  {isLoading ? <CircularProgress size={20} color="inherit" /> : "Add Payment"}
+                  {/* Add Payment */}
                 </Button>
               </Box>
             </Box>

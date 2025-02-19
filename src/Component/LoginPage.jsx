@@ -88,7 +88,8 @@ const LoginPage = () => {
           },
         }}
       >
-        <img src="../../src/assets/image/Qua_logo.png" alt="background" width="100px" />
+        <img src="https://globals3diigitaloceanbucket.blr1.cdn.digitaloceanspaces.com/QUAASSESTS/Qua_logo.png" alt="background" width="100px" />
+        {/* <img src="../../src/assets/image/Qua_logo.png" alt="background" width="100px" /> */}
         <Typography variant="h4" gutterBottom color={colors.black[100]} margin="20px 0px" align="center">
           CRM Login
         </Typography>

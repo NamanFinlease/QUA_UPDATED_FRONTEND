@@ -681,8 +681,7 @@ const Dashboard = () => {
   },
   disbursalManager: {
     leadNew: {
-      icon: <NewReleasesIcon className='mt-3'
-      sx={{ color: colors.primary[400], width:'100%', }} />,
+      icon: <NewReleasesIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/disbursal-new",
       title: 'New ',
       no : data?.disbursal?.newDisbursals || 0
@@ -732,14 +731,28 @@ const Dashboard = () => {
       sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/activeLeads",
       title: 'Active Leads ',
-      no : 0
+      no : data?.collection?.activeLeads || 0
     },
     allocatedLeads: {
       icon: <CheckCircleIcon className='mt-3'
       sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/allocatedCollectionLeads",
       title: 'Allocated Leads',
-      no : 0
+      no : data?.collection?.allocatedLeads || 0
+    },
+    activePreCollectionLeads: {
+      icon: <NewReleasesIcon className='mt-3'
+      sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/preCollectionActiveLeads",
+      title: 'Active Precollection Leads ',
+      no : data?.collection?.activePreCollectionLeads || 0
+    },
+    allocatedPreCollectionLeads: {
+      icon: <CheckCircleIcon className='mt-3'
+      sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/allocatedPreCollectionLeads",
+      title: 'Allocated Precollection Leads',
+      no : data?.collection?.allocatedPreCollectionLeads || 0
     },
     pendingVerification: {
       icon: <PauseIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,

@@ -23,6 +23,8 @@ import { tokens } from '../../theme';
 import { useVerifyPendingLeadMutation, usePendingVerificationQuery, useVerifyPaymentMutation, } from "../../Service/LMSQueries";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
+import { isRejected } from "@reduxjs/toolkit";
+import { TroubleshootTwoTone } from "@mui/icons-material";
 
 const PaymentRow = ({ payment, onUpdateStatus }) => {
     const [selectedStatus, setSelectedStatus] = useState("");
@@ -33,9 +35,6 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
 
     const [verifyPayment, { isSuccess, isError, error}] =
         useVerifyPaymentMutation();
-
-    console.log(selectedStatus)
-    console.log(setSelectedStatus)
 
     // Color theme
     const theme = useTheme();
@@ -75,27 +74,58 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
     };
 
     const handleConfirm = () => {
-        if (actionType === "Approve"){
-            verifyPayment({
-                loanNo : id, 
-                transactionId: payment.transactionId, 
-                closingType : selectedStatus,
-                remarks : remarks
-            })
-        }else {
-
+        const payload = {
+            loanNo: id,
+            transactionId: payment.transactionId,
+            closingType: selectedStatus,
+            remarks: remarks
+        };
+    
+        if (actionType === "Reject") {
+            payload.isRejected = true;
+        } else {
+            payload.isRejected = false;
         }
+    
+        verifyPayment(payload);
         handleClose();
     }
 
+    // const handleConfirm = () => {
+    //     if (actionType === "Reject"){
+    //         verifyPayment({
+    //             loanNo : id, 
+    //             transactionId: payment.transactionId, 
+    //             closingType : selectedStatus,
+    //             isRejected : true,
+    //             remarks : remarks
+    //         })
+    //     }
+    //     else if (actionType === "Approve"){
+    //         verifyPayment({
+    //             loanNo : id, 
+    //             transactionId: payment.transactionId, 
+    //             closingType : selectedStatus,
+    //             isRejected : true,
+    //             remarks : remarks
+    //         })
+    //     }
+    //     handleClose();
+    // }
+
     useEffect(() => {
-        if(isSuccess && verifyPayment){
+        if (isSuccess) {
             Swal.fire({
                 text: "Payment Verified",
                 icon: "success"
             });
+        } else if (isError) {
+            Swal.fire({
+                text: "Payment Rejected",
+                icon: "error"
+            });
         }
-    }, [isSuccess, ])
+    }, [isSuccess, isError]);
 
     return (
         <tr>
@@ -106,7 +136,7 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
             <td>{payment.paymentMode || "N/A"}</td>
             <td>{payment.transactionId || "N/A"}</td>
             <td>{payment.discount || 0}</td>
-            <td>{payment.isPaymentVerified ? "Verified" : "Pending"}</td>
+            <td>{payment.isPaymentVerified ? payment.isRejected ? "Rejected" : "Verified" : "Pending"}</td>
             <td>{payment.paymentRemarks || "-"}</td>
             {!payment.isPartlyPaid &&
                 <>
