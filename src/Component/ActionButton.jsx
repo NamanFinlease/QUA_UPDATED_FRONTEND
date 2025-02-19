@@ -487,7 +487,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                         >
                             Reject
                         </Button>
-                        {(activeRole !== "screener" && activeRole !== "disbursalManager" && !isHold) || applicationProfile?.eSigned &&
+                        {(activeRole !== "screener" && activeRole !== "disbursalManager" && !isHold)  &&
                             <Button
                                 variant="contained"
                                 color="secondary"

@@ -32,6 +32,7 @@ const SanctionLetterPreview = ({
     
     
     const { fullname, loanAmount, disbursalDate, totalInterest, disbursalAmount, annualPercentage, pan, loanNo, bouncedCharges, mobile, penalInterest, processingFee, repaymentAmount, repaymentDate, roi, residenceAddress, sanctionDate, stateCountry, tenure, title } = previewData
+    console.log('preview',previewData)
     const navigate = useNavigate()
     const [approveApplication, { data, isSuccess, isLoading, isFetching, isError, error }] = useLazySendESignQuery()
     
@@ -74,6 +75,14 @@ const SanctionLetterPreview = ({
             color:colors.black[100],
         },
     };
+
+    // let annualPercentageRate = 
+    //         ((Number(roi) / 100) *
+    //             Number(tenure) +
+    //             Number(adminFeePercentage) / 100) *
+    //         (365 / Number(tenure)) *
+    //         100
+        
 
     useEffect(() => {
         if (isSuccess && data) {
@@ -297,6 +306,10 @@ const SanctionLetterPreview = ({
                                     <TableRow>
                                         <TableCell sx={{ backgroundColor: '#ffffff', padding: '8px', color: '#0363a3', fontWeight: 'bold' }}>Processing Fee (Rs.)</TableCell>
                                         <TableCell sx={{ backgroundColor: '#ffffff', padding: '8px', color: '#333' }}>{processingFee} /- (Inclusive of GST)</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell sx={{ backgroundColor: '#ffffff', padding: '8px', color: '#0363a3', fontWeight: 'bold' }}>Annual Percentage Rate</TableCell>
+                                        <TableCell sx={{ backgroundColor: '#ffffff', padding: '8px', color: '#333' }}>- </TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ backgroundColor: '#ffffff', padding: '8px', color: '#0363a3', fontWeight: 'bold' }}>Repayment Cheque(s)</TableCell>
