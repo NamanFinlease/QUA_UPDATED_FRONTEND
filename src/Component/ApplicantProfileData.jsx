@@ -15,7 +15,7 @@ const ApplicantProfileData = ({leadData}) => {
     const columns =  [
         { label: "First Name", value: leadData?.fName, label2: "Middle Name", value2: leadData?.mName },
         { label: "Last Name", value: leadData?.lName, label2: "Gender", value2: leadData?.gender },
-        { label: "Date of Birth", value: leadData?.dob && formatDate(leadData?.dob), label2: "Mother's Name", value2: leadData?.motherName },
+        { label: "Date of Birth", value: leadData?.dob && formatDate(leadData?.dob), label2: "Mother's Name", value2: leadData?.extraDetails?.personalDetails?.mothersName },
         { label: "Aadhaar Number", value: leadData?.aadhaar, label2: "PAN Number", value2: leadData?.pan },
         { label: "Mobile Number", value: leadData?.mobile, label2: "Alternate Mobile", value2: leadData?.alternateMobile },
         { label: "Personal Email", value: leadData?.personalEmail, label2: "Office Email", value2: leadData?.officeEmail },

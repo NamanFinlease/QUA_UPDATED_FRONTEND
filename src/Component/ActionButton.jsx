@@ -70,6 +70,10 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
+    const handleForward = () => {
+        onForward();
+      };
+
     const handleApprove = () => {
         if (activeRole === "screener") {
             recommendLead(id)

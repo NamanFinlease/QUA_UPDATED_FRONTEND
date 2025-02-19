@@ -161,7 +161,8 @@ const Navbar = () => {
                         {/* Qualoan */}
                         <Box 
                             component="img" 
-                            src="../src/assets/image/Qua_logo.png"
+                            src="https://globals3diigitaloceanbucket.blr1.cdn.digitaloceanspaces.com/QUAASSESTS/Qua_logo.png"
+                            // src="../src/assets/image/Qua_logo.png"
                             background="transparent"
                             sx={{ width: 100, height: 30, margin: "10px" }} 
                         />

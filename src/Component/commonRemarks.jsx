@@ -6,7 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 import useAuthStore from './store/authStore';
 
 
-const CommonRemarks = ({id}) => {
+const CommonRemarks = ({id, onRemarksChange}) => {
 
     const { empInfo, activeRole } = useAuthStore();
     const theme = useTheme();
@@ -17,6 +17,11 @@ const CommonRemarks = ({id}) => {
             addRemarks : '',
         }
     })
+
+    // const handleRemarksChange = (e) => {
+    //     console.log(onRemarksChange)
+    //     onRemarksChange(e.target.value);
+    // };
 
     return (
         <>
@@ -73,9 +78,13 @@ const CommonRemarks = ({id}) => {
                                 {...field}
                                 id="add-remarks"
                                 label="Remarks"
+                                // onChange={handleRemarksChange}
                                 multiline
                                 rows={4}
                                 variant="outlined"
+                                inputProps={{
+                                    minLength: 30
+                                }}
                                 sx={{
                                     color:colors.primary[100],
                                     "&:hover": {

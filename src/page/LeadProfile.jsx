@@ -26,13 +26,17 @@ const LeadProfile = () => {
     const [uploadedDocs, setUploadedDocs] = useState([]);
     const { setLead } = useStore()
     const [leadEdit, setLeadEdit] = useState(false);
+    const [commonRemarks, setCommonRemarks] = useState('');
 
     // Color theme
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
     const { data: leadData, isSuccess: leadSuccess, isError, error } = useFetchSingleLeadQuery(id, { skip: id === null });
-    console.log(leadData?.isRejected)
+    
+    const handleForwardRemarks = (remarks) => {
+        console.log(remarks);
+    };
 
     useEffect(() => {
         if (leadSuccess) {
@@ -123,7 +127,7 @@ const LeadProfile = () => {
                                         <CibilScorePage id={leadData._id} />
                                         <InternalDedupe id={leadData._id} />
                                         <ApplicationLogHistory id={leadData._id} />
-                                        {(activeRole === "screener" && <CommonRemarks id={leadData._id} />)}
+                                        {(activeRole === "screener" && <CommonRemarks id={leadData._id} onRemarksChange={handleForwardRemarks}/>)}
                                         {/* Action Buttons */}
                                         {(!leadData?.isRejected && activeRole !== "sanctionHead" && activeRole !== "admin") &&
                                             <div className='my-3  d-flex justify-content-center'>
