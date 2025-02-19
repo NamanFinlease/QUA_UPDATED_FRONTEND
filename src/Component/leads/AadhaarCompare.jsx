@@ -96,7 +96,9 @@ const AadhaarCompare = ({
         const comparisonFields = [
             {
                 label: "Name",
-                leadValue: `${lead?.fName.trim()} ${lead?.mName.trim()} ${lead?.lName.trim()}`,
+                leadValue: `${lead?.fName.trim()}${
+                    lead?.mName ? ` ${lead?.mName.trim()}` : ""
+                }${lead?.lName ? ` ${lead?.lName.trim()}` : ""}`,
                 aadhaarValue: aadhaarDetails?.name.trim(),
             },
             {

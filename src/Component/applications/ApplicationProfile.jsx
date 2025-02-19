@@ -42,13 +42,20 @@ const ApplicationProfile = () => {
         refetch,
     } = useFetchSingleApplicationQuery(id, { skip: id === null });
 
+    console.log(applicationData);
+
     useEffect(() => {
         if (applicationSuccess) {
-            setApplicationProfile(applicationData);
+            setApplicationProfile(applicationData.application);
         }
-        if (applicationSuccess && applicationData?.lead?.document?.length) {
+        if (
+            applicationSuccess &&
+            applicationData.application?.lead?.document?.length
+        ) {
             setUploadedDocs(
-                applicationData?.lead?.document.map((doc) => doc.type)
+                applicationData.application?.lead?.document.map(
+                    (doc) => doc.type
+                )
             );
         }
     }, [applicationSuccess, applicationData]);
@@ -63,7 +70,7 @@ const ApplicationProfile = () => {
         <div className="crm-container" style={{ padding: "10px" }}>
             {leadEdit ? (
                 <LeadDetails
-                    applicationData={applicationData}
+                    applicationData={applicationData.application}
                     setLeadEdit={setLeadEdit}
                 />
             ) : (
@@ -86,16 +93,24 @@ const ApplicationProfile = () => {
                                     }}
                                 >
                                     <ApplicantProfileData
-                                        leadData={applicationData?.lead}
+                                        leadData={
+                                            applicationData?.application?.lead
+                                        }
                                     />
                                 </Paper>
-                                {applicationData?.lead?._id && (
+                                {applicationData?.application?.lead?._id && (
                                     <>
                                         <InternalDedupe
-                                            id={applicationData?.lead?._id}
+                                            id={
+                                                applicationData?.application
+                                                    ?.lead?._id
+                                            }
                                         />
                                         <ApplicationLogHistory
-                                            id={applicationData?.lead?._id}
+                                            id={
+                                                applicationData?.application
+                                                    ?.lead?._id
+                                            }
                                         />
                                         {isError && (
                                             <Alert
@@ -108,7 +123,8 @@ const ApplicationProfile = () => {
 
                                         {/* Action Buttons */}
 
-                                        {!applicationData.isRejected &&
+                                        {!applicationData.application
+                                            .isRejected &&
                                             activeRole === "creditManager" && (
                                                 <Box
                                                     display="flex"
@@ -116,9 +132,14 @@ const ApplicationProfile = () => {
                                                     sx={{ marginTop: "20px" }}
                                                 >
                                                     <ActionButton
-                                                        id={applicationData._id}
+                                                        id={
+                                                            applicationData
+                                                                .application._id
+                                                        }
                                                         isHold={
-                                                            applicationData.onHold
+                                                            applicationData
+                                                                .application
+                                                                .onHold
                                                         }
                                                     />
                                                 </Box>
@@ -133,50 +154,66 @@ const ApplicationProfile = () => {
                                 <>
                                     {currentPage === "personal" && (
                                         <PersonalDetails
-                                            id={applicationData.applicant}
+                                            id={
+                                                applicationData.application
+                                                    .applicant
+                                            }
                                         />
                                     )}
                                     {currentPage === "banking" && (
                                         <BankDetails
-                                            id={applicationData?.applicant}
+                                            id={
+                                                applicationData?.application
+                                                    ?.applicant
+                                            }
                                         />
                                     )}
 
                                     {currentPage === "verification" && (
                                         <VerifyContactDetails
                                             isMobileVerified={
-                                                applicationData?.lead
-                                                    ?.isMobileVerified
+                                                applicationData?.application
+                                                    ?.lead?.isMobileVerified
                                             }
                                             isEmailVerified={
-                                                applicationData?.lead
-                                                    ?.isEmailVerified
+                                                applicationData?.application
+                                                    ?.lead?.isEmailVerified
                                             }
                                             isAadhaarVerified={
-                                                applicationData?.lead
-                                                    ?.isAadhaarVerified
+                                                applicationData?.application
+                                                    ?.lead?.isAadhaarVerified
                                             }
                                             isAadhaarDetailsSaved={
-                                                applicationData?.lead
+                                                applicationData?.application
+                                                    ?.lead
                                                     ?.isAadhaarDetailsSaved
                                             }
                                             isPanVerified={
-                                                applicationData?.lead
-                                                    ?.isPanVerified
+                                                applicationData?.application
+                                                    ?.lead?.isPanVerified
                                             }
+                                            BRE={applicationData?.bre}
                                         />
                                     )}
                                     {currentPage === "documents" && (
                                         <UploadDocuments
-                                            leadData={applicationData?.lead}
+                                            leadData={
+                                                applicationData?.application
+                                                    ?.lead
+                                            }
                                             setUploadedDocs={setUploadedDocs}
                                             uploadedDocs={uploadedDocs}
                                         />
                                     )}
 
                                     {currentPage === "cam" &&
-                                        applicationData._id && (
-                                            <Cam id={applicationData._id} />
+                                        applicationData?.application._id && (
+                                            <Cam
+                                                id={
+                                                    applicationData?.application
+                                                        ._id
+                                                }
+                                            />
                                         )}
                                 </>
                             )}

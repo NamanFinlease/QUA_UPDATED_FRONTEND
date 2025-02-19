@@ -31,6 +31,7 @@ const VerifyContactDetails = ({
     isPanVerified,
     isESignPending,
     isESigned,
+    BRE,
 }) => {
     const { id } = useParams();
     const { activeRole } = useAuthStore();
@@ -63,6 +64,7 @@ const VerifyContactDetails = ({
             error: aadhaarDetailsError,
         },
     ] = useLazyCheckDetailsQuery();
+
     const [sendAadhaarLink, aadhaarRes] = useLazyGenerateAadhaarLinkQuery();
     const [getPanDetails, panRes] = useLazyGetPanDetailsQuery();
 
@@ -499,6 +501,57 @@ const VerifyContactDetails = ({
                                         )}
                                     </Button>
                                 )}
+                            </Box>
+
+                            {/* BRE Verification */}
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 1, // Adds spacing between items
+                                    mb: 2,
+                                }}
+                            >
+                                <Typography
+                                    variant="body1"
+                                    sx={{ color: "#898b8c" }}
+                                >
+                                    BRE:
+                                </Typography>
+
+                                {BRE?.analysis?.map((analysis, index) => (
+                                    <Box
+                                        key={index}
+                                        sx={{
+                                            borderBottom: "1px solid #ccc",
+                                            pb: 1,
+                                            color: "black",
+                                        }}
+                                    >
+                                        <Typography variant="body2">
+                                            <strong>Date Pulled:</strong>{" "}
+                                            {analysis.datePulled}
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            <strong>Failed Accounts:</strong>{" "}
+                                            {analysis.failedAccounts}
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            <strong>File Name:</strong>{" "}
+                                            {analysis.fileName}
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            <strong>Final Decision:</strong>{" "}
+                                            {analysis.finalDecision}
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            <strong>
+                                                Max Loan Recommended:
+                                            </strong>{" "}
+                                            {analysis.maxLoanAmount}
+                                        </Typography>
+                                    </Box>
+                                ))}
                             </Box>
                             {/* E-Sign Verification */}
                             {activeRole === "screener" ||
