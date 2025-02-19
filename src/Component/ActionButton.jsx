@@ -368,7 +368,6 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                         {
                             activeRole === "sanctionHead" &&
                             <>
-                            {console.log('approve check',applicationProfile)}
                                 
                                         {(!applicationProfile?.isApproved) ?
 
