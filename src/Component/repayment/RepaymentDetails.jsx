@@ -70,7 +70,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
 
   const columns = [
     // { field: "sno", headerName: "S.No", width: 50 },
-    { field: "loanNo", headerName: "Loan No.", width: 150 },
+    // { field: "loanNo", headerName: "Loan No.", width: 150 },
     { field: "paymentDate", headerName: "Payment Date", width: 150 },
     { field: "paymentAmount", headerName: "Payment Amount", width: 150 },
     { field: "closingType", headerName: "Closing Type", width: 150 },
@@ -87,7 +87,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
 
   const rows = fetchRepaymentDetails?.repaymentDetails?.paymentHistory?.map((paymentHistory) => ({
     id: paymentHistory?._id,
-    loanNo: id,
+    // loanNo: paymentHistory?.loanNo, 
     paymentMode: paymentHistory?.paymentMode,
     bankName: paymentHistory?.bankName,
     paymentAmount: paymentHistory?.receivedAmount,

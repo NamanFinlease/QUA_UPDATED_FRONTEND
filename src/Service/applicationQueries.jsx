@@ -191,11 +191,13 @@ export const applicationApi = createApi({
       invalidatesTags:["getProfile","getApplication","pendingSanctions"]
     }),
     fetchAllApplication: builder.query({
-      query: ({ page, limit }) => `/applications/?page=${page}&limit=${limit}&role=${role()}`,
+      query: ({ page, limit }) => `/applications/?role=${role()}`,
+      // query: ({ page, limit }) => `/applications/?page=${page}&limit=${limit}&role=${role()}`,
       providesTags:["getApplication"]
     }),
     fetchAllocatedApplication: builder.query({
-      query: ({page,limit}) => `/applications/allocated/?page=${page}&limit=${limit}&role=${role()}`,
+      query: ( ) => `/applications/allocated/?role=${role()}`,
+      // query: ({page,limit}) => `/applications/allocated/?page=${page}&limit=${limit}&role=${role()}`,
       providesTags: ["getApplication"]
     }),
     
@@ -247,7 +249,7 @@ export const applicationApi = createApi({
       providesTags:["eSignPending"] 
     }),
     recommendedApplications: builder.query({
-      query: ({page,limit}) => `/sanction/recommended/?page=${page}&limit=${limit}&role=${role()}`,
+      query: ({page,limit}) => `/sanction/recommended/?role=${role()}`,
       providesTags:["recommendedApplications"]
     }),
     sanctionProfile: builder.query({
@@ -283,7 +285,8 @@ export const applicationApi = createApi({
       // providesTags:["getApplication"]
     }),
     fetchDisbursalHold: builder.query({
-      query: ({page,limit}) => `/disbursals/hold/?page=${page}&limit=${limit}&role=${role()}`,
+      // query: ({page,limit}) => `/disbursals/hold/?page=${page}&limit=${limit}&role=${role()}`,
+      query: ({page,limit}) => `/disbursals/hold/?role=${role()}`,
       // providesTags:["getApplication"]
     }),
     rejectedDisbursals: builder.query({
