@@ -40,30 +40,31 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  // Utility function to compare values and return "Matched" or "Unmatched"
-  const compareValues = (label, value1, value2) => {
+    // Utility function to compare values and return "Matched" or "Unmatched"
+    const compareValues = (label, value1, value2) => {
+        if (label === "DOB" && value1 && value2) {
+            return compareDates(value1, value2) ? "Matched" : "Unmatched";
+        }
 
+        if (value1 instanceof Date && value2 instanceof Date) {
+            const year1 = value1.getFullYear();
+            const month1 = value1.getMonth();
+            const day1 = value1.getDate();
 
-    if (label === "DOB" && value1 && value2) {
-      return compareDates(value1, value2) ? "Matched" : "Unmatched";
-    }
+            const year2 = value2.getFullYear();
+            const month2 = value2.getMonth();
+            const day2 = value2.getDate();
 
+            return year1 === year2 && month1 === month2 && day1 === day2
+                ? "Matched"
+                : "Unmatched";
+        }
 
-    if (value1 instanceof Date && value2 instanceof Date) {
-      const year1 = value1.getFullYear();
-      const month1 = value1.getMonth();
-      const day1 = value1.getDate();
-
-      const year2 = value2.getFullYear();
-      const month2 = value2.getMonth();
-      const day2 = value2.getDate();
-
-      return year1 === year2 && month1 === month2 && day1 === day2 ? "Matched" : "Unmatched";
-    }
-
-    if (typeof value1 === "string" && typeof value2 === "string") {
-      return value1.trim().toLowerCase() === value2.trim().toLowerCase() ? "Matched" : "Unmatched";
-    }
+        if (typeof value1 === "string" && typeof value2 === "string") {
+            return value1.trim().toLowerCase() === value2.trim().toLowerCase()
+                ? "Matched"
+                : "Unmatched";
+        }
 
     return value1 === value2 ? "Matched" : "Unmatched";
   };
@@ -124,9 +125,21 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
 
     const { house, po, dist, state, country, street, pc } = aadhaarDetails?.address
 
-    const formatAddress = (...parts) => parts.filter(Boolean).join(", "); // Join only non-empty values with commas
-    const aadhaarAddress = formatAddress(house, po, dist, street, state, country, pc);
-    const leadAddress = formatAddress(lead?.city, lead?.state, lead?.pinCode)
+        const formatAddress = (...parts) => parts.filter(Boolean).join(", "); // Join only non-empty values with commas
+        const aadhaarAddress = formatAddress(
+            house,
+            po,
+            dist,
+            street,
+            state,
+            country,
+            pc
+        );
+        const leadAddress = formatAddress(
+            lead?.city,
+            lead?.state,
+            lead?.pinCode
+        );
 
     const comparisonFields = [
       { label: "Name", leadValue: formatFullName(lead?.fName, lead?.mName,lead?.lName), aadhaarValue: aadhaarDetails?.name.trim() },

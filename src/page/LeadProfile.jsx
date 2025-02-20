@@ -16,8 +16,7 @@ import useAuthStore from '../Component/store/authStore';
 import ApplicantProfileData from '../Component/applicantProfileData';
 import CommonRemarks from '../Component/commonRemarks';
 
-const barButtonOptions = ['Lead', 'Documents', 'Verification',]
-
+const barButtonOptions = ["Lead", "Documents", "Verification"];
 
 const LeadProfile = () => {
     const { id } = useParams();
@@ -40,15 +39,14 @@ const LeadProfile = () => {
 
     useEffect(() => {
         if (leadSuccess) {
-            setLead(leadData)
+            setLead(leadData);
             if (leadData?.document && leadData?.document.length > 0) {
                 for (let docs of leadData.document) {
-                    setUploadedDocs(pre => [...pre, docs.type])
+                    setUploadedDocs((pre) => [...pre, docs.type]);
                 }
             }
         }
-
-    }, [leadSuccess, leadData])
+    }, [leadSuccess, leadData]);
 
     return (
         <div className="crm-container" style={{ display: "flex", flexDirection:"column", justifyContent: "center", }}>
@@ -72,7 +70,7 @@ const LeadProfile = () => {
                             setCurrentPage={setCurrentPage}
                         />
 
-                        {currentPage === "lead" &&
+                        {currentPage === "lead" && (
                             <>
                                 <Paper
                                     elevation={3}
@@ -93,10 +91,13 @@ const LeadProfile = () => {
                                 >
                                     <ApplicantProfileData leadData={leadData} />
 
-                                    {isError &&
-                                        <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+                                    {isError && (
+                                        <Alert
+                                            severity="error"
+                                            sx={{ borderRadius: "8px", mt: 2 }}
+                                        >
                                             {error?.data?.message}
-                                        </Alert>
+                                        </Alert>)
                                     }
                                     {(activeRole !== "sanctionHead" && activeRole !== "admin") && <Box display="flex" justifyContent="flex-end" sx={{ my: 2 }}>
                                         <Button
@@ -122,7 +123,7 @@ const LeadProfile = () => {
 
 
                                 </Paper>
-                                {leadData?._id &&
+                                {leadData?._id && (
                                     <>
                                         <CibilScorePage id={leadData._id} />
                                         <InternalDedupe id={leadData._id} />
@@ -134,12 +135,12 @@ const LeadProfile = () => {
                                                 <ActionButton id={leadData._id} isHold={leadData.onHold} />
                                             </div>}
                                     </>
-                                }
+                                )}
                             </>
-                        }
-                        {leadData?._id &&
+                        )}
+                        {leadData?._id && (
                             <>
-                                {currentPage === "verification" &&
+                                {currentPage === "verification" &&(
                                     <EKycVerification
                                         isMobileVerified={leadData?.isMobileVerified}
                                         isEmailVerified={leadData?.isEmailVerified}
@@ -148,21 +149,18 @@ const LeadProfile = () => {
                                         isPanVerified={leadData?.isPanVerified}
                                         leadId={leadData?._id}
                                     />
-                                }
-                                {currentPage === "documents" &&
+                                
+                                )}
+                                {currentPage === "documents" && (
                                     <UploadDocuments
                                         leadData={leadData}
                                         setUploadedDocs={setUploadedDocs}
                                         uploadedDocs={uploadedDocs}
                                     />
-                                }
-
-
+                                )}
                             </>
-                        }
+                        )}
                     </div>
-
-
                 </>
             )}
         </div>

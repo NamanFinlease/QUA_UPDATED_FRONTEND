@@ -36,34 +36,34 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
   console.log("pan data",data)
 
 
-  const compareValues = (label, value1, value2) => {
+    const compareValues = (label, value1, value2) => {
+        if (label === "DOB" && value1 && value2) {
+            return compareDates(value1, value2) ? "Matched" : "Unmatched";
+        }
 
-    if (label === "DOB" && value1 && value2) {
-      return compareDates(value1, value2) ? "Matched" : "Unmatched";
-    }
+        // if (value1 instanceof Date && value2 instanceof Date) {
+        //   const year1 = value1.getFullYear();
+        //   const month1 = value1.getMonth();
+        //   const day1 = value1.getDate();
 
-    // if (value1 instanceof Date && value2 instanceof Date) {
-    //   const year1 = value1.getFullYear();
-    //   const month1 = value1.getMonth();
-    //   const day1 = value1.getDate();
+        //   const year2 = value2.getFullYear();
+        //   const month2 = value2.getMonth();
+        //   const day2 = value2.getDate();
 
-    //   const year2 = value2.getFullYear();
-    //   const month2 = value2.getMonth();
-    //   const day2 = value2.getDate();
+        //   return year1 === year2 && month1 === month2 && day1 === day2 ? "Matched" : "Unmatched";
+        // }
 
-    //   return year1 === year2 && month1 === month2 && day1 === day2 ? "Matched" : "Unmatched";
-    // }
+        if (typeof value1 === "string" && typeof value2 === "string") {
+            return value1.trim().toLowerCase() === value2.trim().toLowerCase()
+                ? "Matched"
+                : "Unmatched";
+        }
 
+        return value1 === value2 ? "Matched" : "Unmatched";
+    };
 
-    if (typeof value1 === "string" && typeof value2 === "string") {
-      return value1.trim().toLowerCase() === value2.trim().toLowerCase() ? "Matched" : "Unmatched";
-    }
-
-    return value1 === value2 ? "Matched" : "Unmatched";
-  };
-
-
-  const getTextColor = (result) => (result === "Matched" ? "#00796b" : "#d32f2f");
+    const getTextColor = (result) =>
+        result === "Matched" ? "#00796b" : "#d32f2f";
 
   // Fields to be compared
   const getComparisonFields = (lead,panDetails)=> {
@@ -92,17 +92,14 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
     setOpen(false);
   };
 
-  const handleSubmit = () => {
-    verifyPan({ id: lead._id, data: panDetails })
-  };
+    const handleSubmit = () => {
+        verifyPan({ id: lead._id, data: panDetails });
+    };
 
-
-
-  // Function to render table rows dynamically
-  useEffect(() => {
-    if (isSuccess)
-      setOpen(false)
-  }, [isSuccess, data])
+    // Function to render table rows dynamically
+    useEffect(() => {
+        if (isSuccess) setOpen(false);
+    }, [isSuccess, data]);
 
   return (
     <Dialog 

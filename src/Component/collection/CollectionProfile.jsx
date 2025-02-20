@@ -78,47 +78,43 @@ const CollectionProfile = () => {
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
                     />
-                {currentPage === "application" &&
+                {currentPage === "application" &&(
                     <>
-                        {lead?._id &&
+                        {lead?._id && (
                             <>
                                 <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '0px 20px', background:colors.white[100], }}>
                                     <ApplicantProfileData leadData={lead} />
                                 </Paper>
                                 <InternalDedupe id={lead?._id} />
                                 <ApplicationLogHistory id={lead?._id} />
-
                             </>
-
-                        }
-
-
+                        )}
                     </>
-                }
+                )}
 
-                {collectionData && Object.keys(collectionData).length > 0 &&
+                {collectionData && Object.keys(collectionData).length > 0 && (
                     <>
                         {console.log('collection profile',)}
                         {currentPage === "personal" && <PersonalDetails id={application?.applicant} />}
                         {currentPage === "banking" && <BankDetails id={application?.applicant} />}
 
-                        {currentPage === "verification" &&
+                        {currentPage === "verification" &&(
                             <EKycVerification
                                 isMobileVerified={lead?.isMobileVerified}
                                 isEmailVerified={lead?.isEmailVerified}
                                 isAadhaarVerified={lead?.isAadhaarVerified}
-                                isAadhaarDetailsSaved={lead?.isAadhaarDetailsSaved}
+                                isAadhaarDetailsSaved={
+                                    lead?.isAadhaarDetailsSaved
+                                }
                                 isPanVerified={lead?.isPanVerified}
                                 isESignPending={collectionData?.disbursal?.sanction?.eSignPending}
                                 isESigned={collectionData?.disbursal?.sanction?.eSigned}
                                 leadId={lead?._id}
                             />
-                        }
-                        {currentPage === "documents" && lead &&
-                            <UploadDocuments
-                                leadData={lead}
-                            />
-                        }
+                        )}
+                        {currentPage === "documents" && lead && (
+                            <UploadDocuments leadData={lead} />
+                        )}
 
                         {currentPage === "cam" && <Cam id={application?._id} />}
                         {currentPage === "disbursal" && <DisburseInfo disburse={collectionData?.disbursal?.sanction} />}
@@ -137,25 +133,26 @@ const CollectionProfile = () => {
                                     <div>Loading account details...</div>
                                 )}
                                 {isError && (
-                                    <Alert severity="error" style={{ marginTop: "10px" }}>
-                                        {error?.data?.message || "Failed to load account details."}
+                                    <Alert
+                                        severity="error"
+                                        style={{ marginTop: "10px" }}
+                                    >
+                                        {error?.data?.message ||
+                                            "Failed to load account details."}
                                     </Alert>
                                 )}
                             </>
                         )}
-
                     </>
-
-                }
-                {(isError) &&
+                )}
+                {isError && (
                     <Alert severity="error" style={{ marginTop: "10px" }}>
                         {error?.data?.message}
                     </Alert>
-                }
+                )}
             </div>
         </div>
     );
 };
 
 export default CollectionProfile;
-

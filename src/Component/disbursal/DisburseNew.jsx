@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { DataGrid } from "@mui/x-data-grid";
+import { useNavigate } from "react-router-dom";
 import { saveAs } from "file-saver"; // For file downloads
 import * as Pap from "papaparse"; // For CSV conversion
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
@@ -27,10 +27,9 @@ const DisburseNew = () => {
   const [exportSanctioned, { data: exportData, isLoading: isExportLoading, isSuccess: isExportSuccess, isFetching: isExportFetching, isError: isExportErro, error: exportError }] = useLazyExportSanctionedQuery();
   const { data: allApplication, isSuccess: applicationSuccess, isError, error, refetch } = useAllDisbursalsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
 
-  const handleAllocate = async () => {
-    allocateApplication(selectedApplication);
-
-  };
+    const handleAllocate = async () => {
+        allocateApplication(selectedApplication);
+    };
 
   const handleExportClick = () => {
     console.log("Export click");
@@ -39,10 +38,9 @@ const DisburseNew = () => {
     console.log(exportSanctioned())
   };
 
-  const handleCheckboxChange = (id) => {
-    setSelectedApplication(selectedApplication === id ? null : id);
-  }
-
+    const handleCheckboxChange = (id) => {
+        setSelectedApplication(selectedApplication === id ? null : id);
+    };
 
   const handlePageChange = (newPaginationModel) => {
     setPaginationModel(newPaginationModel)
@@ -101,47 +99,48 @@ const DisburseNew = () => {
   }));
 
 
-  useEffect(() => {
-    console.log('export',exportData)
-    if (isExportSuccess && exportData) {
-      try {
-        
-        const formattedData = exportData?.data?.map((row) => {
-          const csvData = {
-            ...row,
-            'Account No': `"${row.accountNo}"`, // Add a leading single quote to force it as a string
-          }
-          delete csvData.accountNo
-          return csvData
-        });
+    useEffect(() => {
+        console.log("export", exportData);
+        if (isExportSuccess && exportData) {
+            try {
+                const formattedData = exportData?.data?.map((row) => {
+                    const csvData = {
+                        ...row,
+                        "Account No": `"${row.accountNo}"`, // Add a leading single quote to force it as a string
+                    };
+                    delete csvData.accountNo;
+                    return csvData;
+                });
 
-        console.log('export data',exportData,formattedData)
-        // Convert JSON to CSV using PapaParse
-        const csv = Pap.unparse(formattedData, {
-          header: true, // Include headers in the CSV
-        });
-  
-        // Create a Blob for the CSV content
-        const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-  
-        // Use file-saver to download the file
-        saveAs(blob, "sanctioned_data.csv");
-      } catch (error) {
-        console.log('error',error)
-      }
-      // Preprocess the data to ensure accountNo is a string
-    }
-  }, [isExportSuccess, exportData,isExportFetching]);
+                console.log("export data", exportData, formattedData);
+                // Convert JSON to CSV using PapaParse
+                const csv = Pap.unparse(formattedData, {
+                    header: true, // Include headers in the CSV
+                });
 
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("/disbursal-process")
-    }
-  }, [isSuccess, allApplication])
+                // Create a Blob for the CSV content
+                const blob = new Blob([csv], {
+                    type: "text/csv;charset=utf-8",
+                });
 
-  useEffect(() => {
-    // refetch()
-  }, [page, allApplication])
+                // Use file-saver to download the file
+                saveAs(blob, "New Disbursal.csv");
+            } catch (error) {
+                console.log("error", error);
+            }
+            // Preprocess the data to ensure accountNo is a string
+        }
+    }, [isExportSuccess, exportData, isExportFetching]);
+
+    useEffect(() => {
+        if (isSuccess) {
+            navigate("/disbursal-process");
+        }
+    }, [isSuccess, allApplication]);
+
+    useEffect(() => {
+        // refetch()
+    }, [page, allApplication]);
 
   useEffect(() => {
     if (applicationSuccess) {

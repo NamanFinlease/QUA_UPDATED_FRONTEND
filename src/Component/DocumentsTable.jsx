@@ -16,27 +16,38 @@ const DocumentsTable = ({ leadData, uploadedDocs }) => {
     const colors = tokens(theme.palette.mode);
 
     const viewFile = (doc) => {
-        let docType = ''
+        let docType = "";
         if (doc.type) {
-            docType = doc.type
+            docType = doc.type;
         } else {
-            docType = doc.url.split("/")[1]
+            docType = doc.url.split("/")[1];
         }
 
-        getLeadDocs({ id: leadData._id, docType, docId: doc._id })
-
-    }
+        getLeadDocs({ id: leadData._id, docType, docId: doc._id });
+    };
 
     useEffect(() => {
         if (isSuccess && data) {
             const fileUrl = data?.url;
-            const newTab = window.open(fileUrl, '_blank', 'noopener,noreferrer');
-            if(newTab) window.focus()
-
-
+            console.log(data);
+            if (data.type === "statementAnalyser") {
+                console.log("testing");
+                // Download the file instead of opening in a new tab
+                const link = document.createElement("a");
+                link.href = fileUrl;
+                link.download = "statementAnalyser.xlsx"; // Change filename if needed
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            const newTab = window.open(
+                fileUrl,
+                "_blank",
+                "noopener,noreferrer"
+            );
+            if (newTab) window.focus();
         }
-
-    }, [isSuccess, data])
+    }, [isSuccess, data]);
     return (
         <TableContainer component={Box} sx={{ marginTop: 6, borderRadius: '0px 20px 0px 20px', border: `1px solid ${colors.primary[400]}`, overflow: 'hidden' }}>
             <Table>

@@ -22,7 +22,15 @@ import CommonRemarks from '../commonRemarks';
 
 
 
-const barButtonOptions = ['Application', 'Documents', 'Personal', 'Banking', 'Verification', 'Cam', 'Disbursal']
+const barButtonOptions = [
+    "Application",
+    "Documents",
+    "Personal",
+    "Banking",
+    "Verification",
+    "Cam",
+    "Disbursal",
+];
 
 const DisbursalProfile = () => {
   const { id } = useParams();
@@ -161,4 +169,3 @@ const DisbursalProfile = () => {
 };
 
 export default DisbursalProfile;
-

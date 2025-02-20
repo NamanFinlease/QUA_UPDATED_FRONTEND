@@ -59,8 +59,12 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
         );
     };
 
-    const handleStatusChange = (event) => {
-        setSelectedStatus(event.target.value);
+    const handleStatusChange = (event, utr) => {
+        setSelectedStatus((prev) => ({
+            ...prev,
+            utr: utr,
+            status: event.target.value,
+        }));
     };
 
     const handleOpen = (type) => {
@@ -379,18 +383,10 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {paymentInfo.length > 0 ? (
-                        paymentInfo.map((payment, index) => (
-                            <PaymentRow
-                                key={index}
-                                payment={payment}
-                                onUpdateStatus={handleUpdateStatus}
-                            />
-                        ))
-                    ) : paymentInfo ? (
+                    {collectionData ? (
                         <PaymentRow
                             key={1}
-                            payment={paymentInfo}
+                            payment={collectionData}
                             onUpdateStatus={handleUpdateStatus}
                         />
                     ) : (
@@ -403,6 +399,32 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
                         </TableRow>
                     )}
                 </TableBody>
+
+                {/* <TableBody>
+                    {previousPayments.length > 0 ? (
+                        previousPayments.map((payment, index) => (
+                            <PaymentRow
+                                key={index}
+                                payment={payment}
+                                onUpdateStatus={handleUpdateStatus}
+                            />
+                        ))
+                    ) : previousPayments ? (
+                        <PaymentRow
+                            key={1}
+                            payment={previousPayments}
+                            onUpdateStatus={handleUpdateStatus}
+                        />
+                    ) : (
+                        <TableRow>
+                            <TableCell colSpan={7}>
+                                <Alert severity="info">
+                                    No payment data available.
+                                </Alert>
+                            </TableCell>
+                        </TableRow>
+                    )}
+                </TableBody> */}
             </Table>
         </Paper>
     );

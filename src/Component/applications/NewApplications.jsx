@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { DataGrid } from '@mui/x-data-grid';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { DataGrid } from "@mui/x-data-grid";
 // import { useAllocateLeadMutation, useFetchAllLeadsQuery } from '../Service/Query';
 import { useNavigate } from 'react-router-dom';
 import { useAllocateApplicationMutation, useFetchAllApplicationQuery } from '../../Service/applicationQueries';
@@ -25,36 +25,30 @@ const NewApplications = () => {
 
   const { data: allApplication, isSuccess: applicationSuccess, refetch } = useFetchAllApplicationQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
 
-  const handleAllocate = async () => {
-    // Perform action based on selected leads
-    allocateApplication(selectedApplication);
+    const handleAllocate = async () => {
+        // Perform action based on selected leads
+        allocateApplication(selectedApplication);
+    };
 
-  };
+    const handleCheckboxChange = (id) => {
+        setSelectedApplication(selectedApplication === id ? null : id);
+    };
 
-  const handleCheckboxChange = (id) => {
-    setSelectedApplication(selectedApplication === id ? null : id);
-  }
+    const handlePageChange = (newPaginationModel) => {
+        // Fetch new data based on the new page
+        setPaginationModel(newPaginationModel);
+        refetch(newPaginationModel); // Adjust this according to your data fetching logic
+    };
 
+    useEffect(() => {
+        if (isSuccess) {
+            navigate("/application-process");
+        }
+    }, [isSuccess, allApplication]);
 
-  const handlePageChange = (newPaginationModel) => {
-    // Fetch new data based on the new page
-    setPaginationModel(newPaginationModel)
-    refetch(newPaginationModel); // Adjust this according to your data fetching logic
-  };
-
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("/application-process")
-
-    }
-
-  }, [isSuccess, allApplication])
-
-
-
-  useEffect(() => {
-    refetch()
-  }, [page, allApplication])
+    useEffect(() => {
+        refetch();
+    }, [page, allApplication]);
 
   useEffect(() => {
     if (applicationSuccess) {

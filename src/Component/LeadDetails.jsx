@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import {
   TextField,
   FormControl,
@@ -33,25 +33,25 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const { handleSubmit, control, setValue } = useForm({
-    resolver: yupResolver(leadUpdateSchema),
-    defaultValues: leadData,
-    mode: 'onBlur',
-    reValidateMode: 'onChange',
-  });
+    const { handleSubmit, control, setValue } = useForm({
+        resolver: yupResolver(leadUpdateSchema),
+        defaultValues: leadData,
+        mode: "onBlur",
+        reValidateMode: "onChange",
+    });
 
-  useEffect(() => {
-    if (leadData && Object.keys(leadData).length > 0) {
-      Object.keys(leadData).forEach((key) => {
-        setValue(key, leadData[key]);
-      });
-    }
-  }, [leadData, setValue]);
+    useEffect(() => {
+        if (leadData && Object.keys(leadData).length > 0) {
+            Object.keys(leadData).forEach((key) => {
+                setValue(key, leadData[key]);
+            });
+        }
+    }, [leadData, setValue]);
 
-  const onSubmit = (formData) => {
-    setLeadEdit(false);
-    updateLead({ id, formData });
-  };
+    const onSubmit = (formData) => {
+        setLeadEdit(false);
+        updateLead({ id, formData });
+    };
 
   return (
     <Box sx={{ padding: '0px 20px', backgroundColor: colors.white[100], minHeight: '100vh' }}>
@@ -108,58 +108,78 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
           />
         </Box>
 
-        <Box sx={{ flex: '1 1 45%' }}>
-          <Controller
-            name="mName"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                fullWidth
-                label="Middle Name"
-                variant="outlined"
-              />
-            )}
-          />
-        </Box>
+                <Box sx={{ flex: "1 1 45%" }}>
+                    <Controller
+                        name="mName"
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                fullWidth
+                                label="Middle Name"
+                                variant="outlined"
+                            />
+                        )}
+                    />
+                </Box>
 
-        <Box sx={{ flex: '1 1 45%' }}>
-          <Controller
-            name="lName"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                required
-                fullWidth
-                label="Last Name"
-                variant="outlined"
-                error={!!fieldState.error}
-                helperText={fieldState.error ? fieldState.error.message : ''}
-              />
-            )}
-          />
-        </Box>
+                <Box sx={{ flex: "1 1 45%" }}>
+                    <Controller
+                        name="lName"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                {...field}
+                                required
+                                fullWidth
+                                label="Last Name"
+                                variant="outlined"
+                                error={!!fieldState.error}
+                                helperText={
+                                    fieldState.error
+                                        ? fieldState.error.message
+                                        : ""
+                                }
+                            />
+                        )}
+                    />
+                </Box>
 
-        <Box sx={{ flex: '1 1 45%' }}>
-          <Controller
-            name="gender"
-            control={control}
-            render={({ field, fieldState }) => (
-              <FormControl variant="outlined" fullWidth required error={!!fieldState.error}>
-                <InputLabel htmlFor="gender-select">Gender</InputLabel>
-                <Select
-                  {...field}
-                  input={<OutlinedInput label="Gender" id="gender-select" />}
-                >
-                  <MenuItem value="M">Male</MenuItem>
-                  <MenuItem value="F">Female</MenuItem>
-                </Select>
-                {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
-              </FormControl>
-            )}
-          />
-        </Box>
+                <Box sx={{ flex: "1 1 45%" }}>
+                    <Controller
+                        name="gender"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                            <FormControl
+                                variant="outlined"
+                                fullWidth
+                                required
+                                error={!!fieldState.error}
+                            >
+                                <InputLabel htmlFor="gender-select">
+                                    Gender
+                                </InputLabel>
+                                <Select
+                                    {...field}
+                                    input={
+                                        <OutlinedInput
+                                            label="Gender"
+                                            id="gender-select"
+                                        />
+                                    }
+                                >
+                                    <MenuItem value="M">Male</MenuItem>
+                                    <MenuItem value="F">Female</MenuItem>
+                                </Select>
+                                {fieldState.error && (
+                                    <Typography color="error">
+                                        {fieldState.error.message}
+                                    </Typography>
+                                )}
+                            </FormControl>
+                        )}
+                    />
+                </Box>
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Box sx={{ flex: '1 1 45%', width: '100%' }} fullWidth> {/* Ensure the box takes full width */}
@@ -209,112 +229,136 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
           />
         </Box>
 
-        <Box sx={{ flex: '1 1 45%' }}>
-          <Controller
-            name="aadhaar"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                required
-                fullWidth
-                label="Aadhaar"
-                variant="outlined"
-                error={!!fieldState.error}
-                helperText={fieldState.error ? fieldState.error.message : ''}
-              />
-            )}
-          />
-        </Box>
+                <Box sx={{ flex: "1 1 45%" }}>
+                    <Controller
+                        name="aadhaar"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                {...field}
+                                required
+                                fullWidth
+                                label="Aadhaar"
+                                variant="outlined"
+                                error={!!fieldState.error}
+                                helperText={
+                                    fieldState.error
+                                        ? fieldState.error.message
+                                        : ""
+                                }
+                            />
+                        )}
+                    />
+                </Box>
 
-        <Box sx={{ flex: '1 1 45%' }}>
-          <Controller
-            name="pan"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                required
-                fullWidth
-                label="PAN"
-                variant="outlined"
-                error={!!fieldState.error}
-                helperText={fieldState.error ? fieldState.error.message : ''}
-              />
-            )}
-          />
-        </Box>
+                <Box sx={{ flex: "1 1 45%" }}>
+                    <Controller
+                        name="pan"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                {...field}
+                                required
+                                fullWidth
+                                label="PAN"
+                                variant="outlined"
+                                error={!!fieldState.error}
+                                helperText={
+                                    fieldState.error
+                                        ? fieldState.error.message
+                                        : ""
+                                }
+                            />
+                        )}
+                    />
+                </Box>
 
-        <Box sx={{ flex: '1 1 45%' }}>
-          <Controller
-            name="mobile"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                required
-                fullWidth
-                label="Mobile"
-                variant="outlined"
-                error={!!fieldState.error}
-                helperText={fieldState.error ? fieldState.error.message : ''}
-              />
-            )}
-          />
-        </Box>
+                <Box sx={{ flex: "1 1 45%" }}>
+                    <Controller
+                        name="mobile"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                {...field}
+                                required
+                                fullWidth
+                                label="Mobile"
+                                variant="outlined"
+                                error={!!fieldState.error}
+                                helperText={
+                                    fieldState.error
+                                        ? fieldState.error.message
+                                        : ""
+                                }
+                            />
+                        )}
+                    />
+                </Box>
 
-        <Box sx={{ flex: '1 1 45%' }}>
-          <Controller
-            name="alternateMobile"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                fullWidth
-                label="Alternate Mobile"
-                variant="outlined"
-                error={!!fieldState.error}
-                helperText={fieldState.error ? fieldState.error.message : ''}
-              />
-            )}
-          />
-        </Box>
+                <Box sx={{ flex: "1 1 45%" }}>
+                    <Controller
+                        name="alternateMobile"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                {...field}
+                                fullWidth
+                                label="Alternate Mobile"
+                                variant="outlined"
+                                error={!!fieldState.error}
+                                helperText={
+                                    fieldState.error
+                                        ? fieldState.error.message
+                                        : ""
+                                }
+                            />
+                        )}
+                    />
+                </Box>
 
-        <Box sx={{ flex: '1 1 45%' }}>
-          <Controller
-            name="personalEmail"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                required
-                fullWidth
-                label="Personal Email"
-                variant="outlined"
-                error={!!fieldState.error}
-                helperText={fieldState.error ? fieldState.error.message : ''}
-              />
-            )}
-          />
-        </Box>
+                <Box sx={{ flex: "1 1 45%" }}>
+                    <Controller
+                        name="personalEmail"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                {...field}
+                                required
+                                fullWidth
+                                label="Personal Email"
+                                variant="outlined"
+                                error={!!fieldState.error}
+                                helperText={
+                                    fieldState.error
+                                        ? fieldState.error.message
+                                        : ""
+                                }
+                            />
+                        )}
+                    />
+                </Box>
 
-        <Box sx={{ flex: '1 1 45%' }}>
-          <Controller
-            name="officeEmail"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                required
-                fullWidth
-                label="Office Email"
-                variant="outlined"
-                error={!!fieldState.error}
-                helperText={fieldState.error ? fieldState.error.message : ''}
-              />
-            )}
-          />
-        </Box>
+                <Box sx={{ flex: "1 1 45%" }}>
+                    <Controller
+                        name="officeEmail"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                {...field}
+                                required
+                                fullWidth
+                                label="Office Email"
+                                variant="outlined"
+                                error={!!fieldState.error}
+                                helperText={
+                                    fieldState.error
+                                        ? fieldState.error.message
+                                        : ""
+                                }
+                            />
+                        )}
+                    />
+                </Box>
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Box sx={{ flex: '1 1 45%', width: '100%' }} fullWidth> {/* Ensure the box takes full width */}
@@ -346,36 +390,41 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
           </Box>
         </LocalizationProvider>
 
-        <Box sx={{ flex: '1 1 45%' }}>
-          <Controller
-            name="salary"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                required
-                fullWidth
-                label="Salary"
-                type="number"
-                variant="outlined"
-                error={!!fieldState.error}
-                helperText={fieldState.error ? fieldState.error.message : ''}
-                InputProps={{
-                  min: 0, // Set the minimum value
-                  sx: {
-                    '& input[type=number]': {
-                      '-moz-appearance': 'textfield', // For Firefox
-                    },
-                    '& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button': {
-                      '-webkit-appearance': 'none', // For Chrome, Safari, Edge, and Opera
-                      margin: 0,
-                    },
-                  },
-                }}
-              />
-            )}
-          />
-        </Box>
+                <Box sx={{ flex: "1 1 45%" }}>
+                    <Controller
+                        name="salary"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                {...field}
+                                required
+                                fullWidth
+                                label="Salary"
+                                type="number"
+                                variant="outlined"
+                                error={!!fieldState.error}
+                                helperText={
+                                    fieldState.error
+                                        ? fieldState.error.message
+                                        : ""
+                                }
+                                InputProps={{
+                                    min: 0, // Set the minimum value
+                                    sx: {
+                                        "& input[type=number]": {
+                                            "-moz-appearance": "textfield", // For Firefox
+                                        },
+                                        "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
+                                            {
+                                                "-webkit-appearance": "none", // For Chrome, Safari, Edge, and Opera
+                                                margin: 0,
+                                            },
+                                    },
+                                }}
+                            />
+                        )}
+                    />
+                </Box>
 
         <Box sx={{ flex: '1 1 45%' }}>
           <Controller
@@ -408,23 +457,27 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
           />
         </Box>
 
-        <Box sx={{ flex: '1 1 45%' }}>
-          <Controller
-            name="state"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                required
-                fullWidth
-                label="State"
-                variant="outlined"
-                error={!!fieldState.error}
-                helperText={fieldState.error ? fieldState.error.message : ''}
-              />
-            )}
-          />
-        </Box>
+                <Box sx={{ flex: "1 1 45%" }}>
+                    <Controller
+                        name="state"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                {...field}
+                                required
+                                fullWidth
+                                label="State"
+                                variant="outlined"
+                                error={!!fieldState.error}
+                                helperText={
+                                    fieldState.error
+                                        ? fieldState.error.message
+                                        : ""
+                                }
+                            />
+                        )}
+                    />
+                </Box>
 
         <Box sx={{ flex: '1 1 45%' }}>
           <Controller

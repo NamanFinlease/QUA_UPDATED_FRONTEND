@@ -36,26 +36,24 @@ function PaymentVerification() {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState("application");
 
-    const { data, isSuccess, isError, error, refetch } = useFetchActiveLeadQuery(id, {
-        skip: id === null,
-    });
+    const { data, isSuccess, isError, error, refetch } =
+        useFetchActiveLeadQuery(id, {
+            skip: id === null,
+        });
     const { lead } = collectionData?.disbursal?.sanction?.application ?? {};
     const { application } = collectionData?.disbursal?.sanction ?? {};
-
 
     useEffect(() => {
         if (isSuccess && data) {
             setCollectionData(data?.data);
             setApplicationProfile(data?.data);
         }
-        
     }, [isSuccess, data]);
     useEffect(() => {
         if (id) {
             refetch();
         }
     }, [id, refetch]);
-
 
     return (
         <div className="crm-container" style={{ padding: "10px" }}>
@@ -89,7 +87,6 @@ function PaymentVerification() {
 
                 {collectionData && Object.keys(collectionData).length > 0 && (
                     <>
-                        {console.log("collection profile")}
                         {currentPage === "personal" && (
                             <PersonalDetails id={application?.applicant} />
                         )}
@@ -102,7 +99,9 @@ function PaymentVerification() {
                                 isMobileVerified={lead?.isMobileVerified}
                                 isEmailVerified={lead?.isEmailVerified}
                                 isAadhaarVerified={lead?.isAadhaarVerified}
-                                isAadhaarDetailsSaved={lead?.isAadhaarDetailsSaved}
+                                isAadhaarDetailsSaved={
+                                    lead?.isAadhaarDetailsSaved
+                                }
                                 isPanVerified={lead?.isPanVerified}
                                 isESignPending={collectionData?.disbursal?.sanction?.eSignPending}
                                 isESigned={collectionData?.disbursal?.sanction?.eSigned}
@@ -124,8 +123,6 @@ function PaymentVerification() {
                                 disburse={collectionData?.disbursal}
                             />
                         )}
-
-
                     </>
                 )}
                 {currentPage === "accounts" && (
@@ -140,8 +137,12 @@ function PaymentVerification() {
                             <div>Loading account details...</div>
                         )}
                         {isError && (
-                            <Alert severity="error" style={{ marginTop: "10px" }}>
-                                {error?.data?.message || "Failed to load account details."}
+                            <Alert
+                                severity="error"
+                                style={{ marginTop: "10px" }}
+                            >
+                                {error?.data?.message ||
+                                    "Failed to load account details."}
                             </Alert>
                         )}
                     </>

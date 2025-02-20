@@ -287,10 +287,29 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
   const [otpPan, setOtpPan] = useState(false)
   const [mobileVerified, setMobileVerified] = useState(false);
 
-  const [getEmailOtp, { data: emailOtp, isSuccess: emailOtpSuccess, isError: isEmailError, error: emailError }] = useGetEmailOtpMutation()
-  const [checkDetails, { data: aadhaarDetails, isSuccess: aadhaarDetailsSuccess, isFetching: isAadhaarDetailsFetching, isLoading: aadhaarDetailsLoading, isError: isAadhaarDetailError, error: aadhaarDetailsError }] = useLazyCheckDetailsQuery()
-  const [sendAadhaarLink, aadhaarRes] = useLazyGenerateAadhaarLinkQuery()
-  const [getPanDetails, panRes] = useLazyGetPanDetailsQuery()
+    const [
+        getEmailOtp,
+        {
+            data: emailOtp,
+            isSuccess: emailOtpSuccess,
+            isError: isEmailError,
+            error: emailError,
+        },
+    ] = useGetEmailOtpMutation();
+    const [
+        checkDetails,
+        {
+            data: aadhaarDetails,
+            isSuccess: aadhaarDetailsSuccess,
+            isFetching: isAadhaarDetailsFetching,
+            isLoading: aadhaarDetailsLoading,
+            isError: isAadhaarDetailError,
+            error: aadhaarDetailsError,
+        },
+    ] = useLazyCheckDetailsQuery();
+
+    const [sendAadhaarLink, aadhaarRes] = useLazyGenerateAadhaarLinkQuery();
+    const [getPanDetails, panRes] = useLazyGetPanDetailsQuery();
 
   const handleMobileVerification = () => {
     // Logic for mobile verification

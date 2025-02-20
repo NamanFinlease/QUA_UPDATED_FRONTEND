@@ -1,12 +1,13 @@
 import React from 'react'
 import { tokens } from '../theme';
+
 import { Paper, Table, TableBody, TableCell, TableContainer, TableRow, useTheme } from '@mui/material';
 import { formatDate } from '../utils/helper';
 
 
 const ApplicantProfileData = ({leadData}) => {
 
-    console.log(leadData)
+    console.log('leadData',leadData)
 
     // Color theme
     const theme = useTheme();
@@ -53,9 +54,8 @@ const ApplicantProfileData = ({leadData}) => {
                     </TableBody>
                 </Table>
             </TableContainer>
-
         </>
-    )
-}
+    );
+};
 
-export default ApplicantProfileData
+export default ApplicantProfileData;
