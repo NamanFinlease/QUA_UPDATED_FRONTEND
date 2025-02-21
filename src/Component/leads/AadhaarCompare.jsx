@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import { compareDates, formatDate, formatFullName } from "../../utils/helper";
 import useAuthStore from "../store/authStore";
 
+
 const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
   const navigate = useNavigate()
   const {activeRole} = useAuthStore()
@@ -32,9 +33,13 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
   const [verifyAadhaar, { data, isSuccess, isError, error }] = useVerifyAadhaarMutation()
   const [getLeadDocs, { data: leadDocs, isSuccess: isLeadDocsSuccess, isError: isLeadDocsError, error: leadDocsError }] = useLazyGetLeadDocsQuery();
   const [showDocumentDialog, setShowDocumentDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Handle close modal
-  const handleClose = () => {setOpen(false);console.log('handle close') };
+  const handleClose = () => {
+    setOpen(false);console.log('handle close') 
+    setErrorMessage('');
+  };
 
   // Color theme
   const theme = useTheme();
@@ -116,6 +121,25 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
     // console.log(getLeadDocs)
     setShowDocumentDialog(true);
   }
+
+  const handleVerify = () => {
+    const formattedLeadDob = lead?.dob ? formatDate(lead.dob) : null;
+    const comparisonFields = getComparisonFields(lead, aadhaarDetails);
+
+    const mismatches = comparisonFields.filter(({ label }) => {
+      if (["Name", "DOB", "Gender", "Masked Aadhaar"].includes(label)) {
+        const leadValue = label === "DOB" ? formattedLeadDob : lead[label.toLowerCase()];
+        return compareValues(label, leadValue, aadhaarDetails[label.toLowerCase()]) === "Unmatched";
+      }
+      return false;
+    });
+
+    if (mismatches.length > 0) {
+      setErrorMessage("Some fields are not matched: " + mismatches.map(m => m.label).join(", "));
+    } else {
+      setErrorMessage("Verified");
+    }
+  };
 
   // Fields to be compared
   const getComparisonFields = (lead, aadhaarDetails) => {
@@ -296,6 +320,11 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
         </Box>
       </DialogContent>
       {isError && <p>{error?.data?.message}</p>}
+      {errorMessage && (
+        <Typography color="error" variant="body1" sx={{ mb: 2, textAlign: "center" }}>
+          {errorMessage}
+        </Typography>
+      )}
       <DialogActions sx={{ justifyContent: "space-between", px: 3, pb: 3 }}>
         <Button
           onClick={handleClose}
@@ -313,6 +342,23 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
           }}
         >
           Close
+        </Button>
+        <Button
+          onClick={handleVerify}
+          variant="contained"
+          sx={{
+            background:colors.white[100],
+            color: colors.greenAccent[700],
+            border: `1px solid ${colors.greenAccent[700]}`,
+            fontWeight: "bold",
+            borderRadius:"0px 10px",
+            '&:hover':{
+              backgroundColor:colors.greenAccent[700],
+              color:colors.white[100],
+            }
+          }}
+        >
+          Verify
         </Button>
         {/* <Button
           onClick={handleSubmit}

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { tokens } from "../../theme";
 import {
   Button,
@@ -24,7 +24,7 @@ import { useVerifyPanMutation } from "../../Service/Query";
 import { compareDates, formatDate, formatFullName } from "../../utils/helper";
 
 const PanCompare = ({ open, setOpen, panDetails }) => {
-
+  const [errorMessage, setErrorMessage] = useState("");
   const { lead } = useStore()
   console.log(lead)
 
@@ -33,7 +33,7 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
   const colors = tokens(theme.palette.mode);
 
   const [verifyPan, { data, isSuccess, isError, error }] = useVerifyPanMutation()
-  console.log("pan data",data)
+  console.log("pan data",panDetails)
 
 
     const compareValues = (label, value1, value2) => {
@@ -65,10 +65,29 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
     const getTextColor = (result) =>
         result === "Matched" ? "#00796b" : "#d32f2f";
 
+  const handleVerify = () => {
+    const formattedLeadDob = lead?.dob ? formatDate(lead.dob) : null;
+    const comparisonFields = getComparisonFields(lead, panDetails);
+
+    const mismatches = comparisonFields.filter(({ label }) => {
+      if (["Name", "DOB", "Masked Aadhaar"].includes(label)) {
+        const leadValue = label === "DOB" ? formattedLeadDob : lead[label.toLowerCase()];
+        return compareValues(label, leadValue, panDetails[label.toLowerCase()]) === "Unmatched";
+      }
+      return false;
+    });
+
+    if (mismatches.length > 0) {
+      setErrorMessage("Some fields are not matched: " + mismatches.map(m => m.label).join(", "));
+    } else {
+      setErrorMessage("Verified");
+    }
+  };
+
   // Fields to be compared
   const getComparisonFields = (lead,panDetails)=> {
     console.log(lead, panDetails)
-    const {building_name,city,country,street_name,state,pincode} = panDetails?.address
+    const {building_name,city,country,street_name,state,pincode} = panDetails?.address || {}
 
     const formatAddress = (...parts) => parts.filter(Boolean).join(", "); // Join only non-empty values with commas
   
@@ -231,6 +250,11 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
         </Box>
         {isError && <p>{error?.data?.message}</p>}
       </DialogContent>
+      {errorMessage && (
+        <Typography color="error" variant="body1" sx={{ mb: 2, textAlign: "center" }}>
+          {errorMessage}
+        </Typography>
+      )}
       <DialogActions sx={{ justifyContent: "space-between", px: 3, pb: 3 }}>
         <Button
           onClick={handleClose}
@@ -248,6 +272,23 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
           }}
         >
           Close
+        </Button>
+        <Button
+          onClick={handleVerify}
+          variant="contained"
+          sx={{
+            background:colors.white[100],
+            color: colors.greenAccent[700],
+            border: `1px solid ${colors.greenAccent[700]}`,
+            fontWeight: "bold",
+            borderRadius:"0px 10px",
+            '&:hover':{
+              backgroundColor:colors.greenAccent[700],
+              color:colors.white[100],
+            }
+          }}
+        >
+          Verify
         </Button>
         {/* <Button
           onClick={handleSubmit}
