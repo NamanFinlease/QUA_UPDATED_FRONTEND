@@ -1,0 +1,65 @@
+/* ExportForm.css */
+
+.export-form {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust the spacing between elements */
+    padding: 10px;
+    background-color: #f5f5f5; /* Light background for form */
+    border-radius: 5px;
+  }
+  
+  .export-form label {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  
+  .export-form input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .export-form .export-button {
+    padding: 5px 15px;
+    background-color: #032d5a;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow: #032d5a;
+  }
+.export-form .input-group {
+  max-width: 500px; /* Adjust based on your layout */
+}
+
+.export-form .input-group .form-control {
+  border-radius: 0; /* Remove border radius for seamless look */
+}
+
+.export-form .input-group .btn-outline-secondary {
+  border-radius: 0; /* Remove border radius for seamless look */
+}
+
+.date-range {
+  margin-top: 1rem;
+}
+
+.additional-selects {
+  margin-top: 1rem;
+}
+
+.export-button {
+  margin-top: 1px;
+}
+
+  
+  .export{
+
+    height: 200px;
+    margin-top: 100px;
+  }
+  .export-form .export-button:hover {
+    background-color: #9e830a;
+  }
+  
