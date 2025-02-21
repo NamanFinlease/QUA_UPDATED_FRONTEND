@@ -16,7 +16,7 @@ import ApplicationLogHistory from '../ApplicationLogHistory';
 import useAuthStore from '../store/authStore';
 import EKycVerification from '../leads/DetailsVerification';
 import ApplicantProfileData from '../applicantProfileData';
-import CommonRemarks from '../commonRemarks';
+import CommonRemarks from '../CommonRemarks';
 
 const barButtonOptions = ['Application', 'Documents', 'Personal', 'Banking', 'Verification', 'Cam']
 

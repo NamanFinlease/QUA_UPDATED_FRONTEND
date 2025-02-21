@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import { Box, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Paper, Select, TextField, Typography } from "@mui/material";
@@ -7,7 +7,7 @@ import useAuthStore from './store/authStore';
 
 
 const CommonRemarks = ({id, onRemarksChange}) => {
-
+    const {commonRemarks, setCommonRemarks} = useState([])
     const { empInfo, activeRole } = useAuthStore();
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -18,6 +18,10 @@ const CommonRemarks = ({id, onRemarksChange}) => {
         }
     })
 
+    const handleChange = (e)=>{
+
+    }
+
     // const handleRemarksChange = (e) => {
     //     console.log(onRemarksChange)
     //     onRemarksChange(e.target.value);
@@ -27,7 +31,8 @@ const CommonRemarks = ({id, onRemarksChange}) => {
         <>
         
             <Box 
-                component={Paper}
+                component="form"
+                // onChange={handleChange}
                 className="p-3 m-3"
                 sx={{
                     background:colors.white[100],
@@ -101,26 +106,6 @@ const CommonRemarks = ({id, onRemarksChange}) => {
                                     },
                                 }}
                             />
-                            
-                            {/* <Select
-                                {...field}
-                                input={
-                                <OutlinedInput
-                                    label="Remarks"
-                                    id="add-remarks"
-                                />
-                                }
-                            >
-                                <MenuItem value="" disable>
-                                Select
-                                </MenuItem>
-                                <MenuItem value="option 1" name="">
-                                Option 1
-                                </MenuItem>
-                                <MenuItem value="option 2" name="">
-                                Option 2
-                                </MenuItem>
-                            </Select> */}
                             {/* <Button
                                 // onClick={handleSaveRemarks}
                                 className="mt-3"
