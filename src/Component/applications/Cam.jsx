@@ -7,6 +7,7 @@ import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import EditCam from './EditCam';
 import useAuthStore from '../store/authStore';
 import moment from 'moment'; 
+import dayjs from 'dayjs';
 // import { formatDate } from '../../utils/helper';
 
 
@@ -17,6 +18,8 @@ const Cam = ({id}) => {
   // Color theme
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  console.log("cam data",data?.details)
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -79,8 +82,8 @@ const Cam = ({id}) => {
         // salaryDate3: details?.salaryDate3 && formatDate(details?.salaryDate3) || '',          // Salary Date 3
         salaryAmount3: details?.salaryAmount3 || 0,       // Salary Amount 3
         // nextPayDate: details?.nextPayDate || '',          // Next Salary Date
-        nextPayDate: details?.nextPayDate && moment(details?.nextPayDate).format('YYYY-MM-DD') || '',          // Next Salary Date
-        // nextPayDate: details?.nextPayDate && formatDate(details?.nextPayDate) || '',          // Next Salary Date
+        // nextPayDate: details?.nextPayDate && moment(details?.nextPayDate).format('DD-MM-YYYY') || '',          // Next Salary Date
+        nextPayDate: details?.nextPayDate && dayjs(details?.nextPayDate).format("YYYY-MM-DD") || '',          // Next Salary Date
         averageSalary: details?.averageSalary || 0,       // Avergae Salary
         actualNetSalary: details?.actualNetSalary || 0,   // Net Salary
         creditBureauScore: details?.cibilScore || '-',    // Credit Bureau Score

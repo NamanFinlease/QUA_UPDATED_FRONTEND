@@ -333,7 +333,7 @@ const UploadDocuments = ({ leadData }) => {
                                         />
                                     </Button>
                                     {/* Conditional Remarks Input */}
-                                    {selectedDocType === 'others' ? (
+                                    {/* {selectedDocType === 'others' ? (
                                         <FormControl 
                                             fullWidth 
                                             variant="outlined"
@@ -385,10 +385,10 @@ const UploadDocuments = ({ leadData }) => {
                                                 },
                                             }}
                                         />
-                                    )}
+                                    )} */}
 
                                     {/* Remarks Input */}
-                                    {/* <TextField
+                                    <TextField
                                         label="Remarks"
                                         value={input.remarks}
                                         onChange={(event) => handleRemarksChange(index, event)}
@@ -403,7 +403,7 @@ const UploadDocuments = ({ leadData }) => {
                                                 '&:hover fieldset': { borderColor: colors.primary[400] },
                                             },
                                         }}
-                                    /> */}
+                                    />
 
                                     {/* View Button */}
                                     {input.file && (

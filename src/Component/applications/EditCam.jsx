@@ -20,6 +20,9 @@
 // import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import dayjs from 'dayjs';
 // import moment from 'moment';
+// import { Controller, useForm } from "react-hook-form";
+// import { yupResolver } from "@hookform/resolvers/yup";
+// import { camSchema } from "../../utils/validations";
 // import { useUpdateCamDetailsMutation } from '../../Service/applicationQueries';
 // import Swal from 'sweetalert2';
 // import { useParams } from 'react-router-dom';
@@ -27,22 +30,12 @@
 // const EditCam = ({ camData, setIsEditing }) => {
 //   const { id } = useParams();
 
-//   const initializeFormData = (data) => {
-//     return {
-//       salaryDate1: data.salaryDate1 ? dayjs(data.salaryDate1).format('yyyy-MM-dd') : '',
-//       salaryDate2: data.salaryDate2 ? dayjs(data.salaryDate2).format('yyyy-MM-dd') : '',
-//       salaryDate3: data.salaryDate3 ? dayjs(data.salaryDate3).format('yyyy-MM-dd') : '',
-//       nextPayDate: data.nextPayDate ? dayjs(data.nextPayDate).format('yyyy-MM-dd') : '',
-//       disbursalDate: data.disbursalDate ? dayjs(data.disbursalDate).format('yyyy-MM-dd') : '',
-//       repaymentDate: data.repaymentDate ? dayjs(data.repaymentDate).format('yyyy-MM-dd') : '',
-//     };
-//   };
-
-//   const [formData, setFormData] = useState(initializeFormData(camData));
-//   // const [formData, setFormData] = useState(camData);
+//   const [formData, setFormData] = useState(camData);
 //   const [errorMessage, setErrorMessage] = useState({
 //     recommendedLoanError: null,
 //   });
+//   const [loanRecommendedError, setLoanRecommendedError] = useState(null);
+
 
 //   console.log(camData)
 //   const today = new Date().toISOString().split('T')[0];
@@ -52,6 +45,39 @@
 //   const colors = tokens(theme.palette.mode);
 
 //   const [updateCamDetails, { data, isLoading, isSuccess, isError, error }] = useUpdateCamDetailsMutation();
+
+//   const defaultValue = {
+//     leadNo: '',                // Lead ID
+//     salaryDate1: '',           // Salary Date 1
+//     salaryAmount1: '',         // Salary Amount 1
+//     salaryDate2: '',           // Salary Date 2
+//     salaryAmount2: '',         // Salary Amount 2
+//     salaryDate3: '',           // Salary Date 3
+//     salaryAmount3: '',         // Salary Amount 3
+//     nextPayDate: '',           // Next Salary Date
+//     averageSalary: '',         // Median Salary Amount
+//     customerType: '',          // Customer Type
+//     dedupeCheck: '',           // Dedupe Check
+//     actualNetSalary: '',       // Net Salary
+//     creditBureauScore: '',     // Credit Bureau Score
+//     obligations: '',           // Obligations (Rs)
+//     salaryToIncomeRatio: '',   // Salary To Income Ratio
+//     eligibleLoan: '',          // Loan Amount
+//     loanRecommended: '',       // Loan Recommended
+//     disbursalDate: '',         // Disbursal Date
+//     repaymentDate: '',         // Repayment Date
+//     adminFeePercentage: '',    // Admin Fee Inc. GST (%)
+//     roi: '',                   // ROI (Rate of Interest)
+//     netAdminFeeAmount: '',     // Net Admin Fee Amount
+//     eligibleTenure: '',        // Eligible Tenure
+//     repaymentAmount: '',       // Repayment Amount
+//     remarks: '', 
+//   }
+
+//   const { handleSubmit, control, setValue, getValues, watch, reset, clearErrors, setError, formState: { errors } } = useForm({
+//       defaultValues: defaultValue,
+//       resolver: yupResolver(camSchema),
+//     });
 
 //   const calculateDaysDifference = (disbursalDate, repaymentDate) => {
 //     if (!disbursalDate && !repaymentDate) {
@@ -138,6 +164,18 @@
 //           : 0;
 //       }
 
+//       // Check if loan recommended is greater than loan applied
+//       if (name === 'loanRecommended') {
+//         const loanRecommended = Number(value);
+//         const loanApplied = Number(updatedFormData.loanAmount); // Assuming loanAmount is the field for Loan Applied
+
+//         if (loanRecommended > loanApplied) {
+//           setLoanRecommendedError("Loan Recommended cannot be greater than Loan Applied.");
+//         } else {
+//           setLoanRecommendedError(null); // Clear the error if validation passes
+//         }
+//       }
+
 //       if (name === 'nextPayDate') {
 //         updatedFormData.repaymentDate = value;
 //       }
@@ -181,14 +219,14 @@
 //     }
 //   };
 
-//   const calculateEligibleLoan = (salary, salaryToIncomeRatioPercentage) => {
+//   const calculateEligibleLoan = (salary, salaryToIncomeRatioPercentage,) => {
 //     const salaryToIncomeRatioDecimal = parseFloat(salaryToIncomeRatioPercentage) / 100;
 //     return salary * salaryToIncomeRatioDecimal;
 //   };
 
 //   useEffect(() => {
 //     const salaryToIncomeRatioPercentage = calculatesalaryToIncomeRatio(formData.actualNetSalary);
-//     const eligibleLoan = calculateEligibleLoan(formData.actualNetSalary, salaryToIncomeRatioPercentage);
+//     const eligibleLoan = calculateEligibleLoan(formData.actualNetSalary, salaryToIncomeRatioPercentage, formData.loanAmount);
 //     if (formData.actualNetSalary > 25000) {
 //       setFormData((prevData) => ({
 //         ...prevData,
@@ -205,7 +243,7 @@
 //       salaryToIncomeRatio: salaryToIncomeRatioPercentage,
 //       eligibleLoan: eligibleLoan,
 //     }));
-//   }, [formData.actualNetSalary]);
+//   }, [formData.actualNetSalary, formData.loanAmount]);
 
 //   const meanSalary = (sal1, sal2, sal3) => {
 //     return (sal1 + sal2 + sal3) / 3;
@@ -273,17 +311,20 @@
 //         '& .MuiTypography-root':{
 //           color:colors.black[100],
 //         },
+//         '& .Mui-readOnly':{
+//           background:colors.grey[100],
+//         },
 //       }}
 //     >
 //       {/* First Row (4 items) */}
 //       <Box display="flex" flexWrap="wrap" gap="16px">
 //         <Box flex="1 1 46%">
 //           <TextField
-//             label="Lead ID"
-//             name="leadId"
+//             label="Lead No"
+//             name="leadNo"
 //             type="string"
 //             fullWidth
-//             value={formData.leadId}
+//             value={formData.leadNo}
 //             onChange={handleChange}
 //             InputProps={{
 //               readOnly: true,
@@ -310,8 +351,8 @@
 //             InputLabelProps={{ shrink: true }}
 //             inputProps={{ max: today }}
 //             fullWidth
-//             value={formData.salaryDate1}
-//             // value={formData.salaryDate1 ? moment(formData.salaryDate1).format('YYYY-MM-DD') : ''}
+//             // value={formData.salaryDate1}
+//             value={formData.salaryDate1 ? moment(formData.salaryDate1).format('YYYY-MM-DD') : ''}
 //             onChange={handleChange}
 //           />
 //         </Box>
@@ -338,8 +379,8 @@
 //             InputLabelProps={{ shrink: true }}
 //             inputProps={{ max: today }}
 //             fullWidth
-//             value={formData.salaryDate2}
-//             // value={formData.salaryDate2 ? moment(formData.salaryDate2).format('YYYY-MM-DD') : ''}
+//             // value={formData.salaryDate2}
+//             value={formData.salaryDate2 ? moment(formData.salaryDate2).format('YYYY-MM-DD') : ''}
 //             onChange={handleChange}
 //           />
 //         </Box>
@@ -362,8 +403,8 @@
 //             InputLabelProps={{ shrink: true }}
 //             inputProps={{ max: today }}
 //             fullWidth
-//             value={formData.salaryDate3}
-//             // value={formData.salaryDate3 ? moment(formData.salaryDate3).format('YYYY-MM-DD') : ''}
+//             // value={formData.salaryDate3}
+//             value={formData.salaryDate3 ? moment(formData.salaryDate3).format('YYYY-MM-DD') : ''}
 //             placeholder="DD/MM/YYYY"
 //             onChange={handleChange}
 //           />
@@ -381,8 +422,45 @@
 //         </Box>
 
 //       {/* Third Row (4 items) */}
-     
+
 //         <Box flex="1 1 46%">
+//           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
+//             <DatePicker
+//               label="Next Salary Date"
+//               sx={{
+//                 '& .MuiSvgIcon-root':{
+//                   fill: colors.black[100],
+//                 },
+//               }}
+//               value={formData.nextPayDate ? dayjs(formData.nextPayDate) : null}
+//               onChange={(newValue) => {
+//                 handleChange({
+//                   target: {
+//                     name: 'nextPayDate',
+//                     value: newValue ? newValue.toISOString() : '',
+//                   },
+//                 });
+//               }}
+//               slotProps={{
+//                 textField: { format: "DD-MM-YYYY" },
+//               }}
+//               renderInput={(params) => (
+//                 <TextField
+//                   {...params}
+//                   fullWidth
+//                   InputLabelProps={{ shrink: true }}
+//                   inputProps={{
+//                     ...params.inputProps,
+//                     min: today,
+//                   }}
+//                 />
+//               )}
+//               minDate={dayjs(today)}
+//             />
+//           </LocalizationProvider>
+//         </Box>
+     
+//         {/* <Box flex="1 1 46%">
 //           <TextField
 //             label="Next Salary Date"
 //             name="nextPayDate"
@@ -390,12 +468,11 @@
 //             InputLabelProps={{ shrink: true }}
 //             inputProps={{ min: today }}
 //             fullWidth
-//             value={formData.nextPayDate}
-//             // value={formData.nextPayDate ? moment(formData.nextPayDate).format('YYYY-MM-DD') : ''}
+//             value={formData.nextPayDate ? moment(formData.nextPayDate).format('YYYY-MM-DD') : ''}
 //             onChange={handleChange}
 //             required
 //           />
-//         </Box>
+//         </Box> */}
 //         <Box flex="1 1 46%">
 //           <TextField
 //             label="Average Salary"
@@ -407,6 +484,7 @@
 //             onChange={handleChange}
 //           />
 //         </Box>
+        
 //         <Box flex="1 1 46%">
 //           <TextField
 //             label="Net Salary"
@@ -580,7 +658,7 @@
 //             name="appliedLoan"
 //             type="text"
 //             fullWidth
-//             value={formData.appliedLoan}
+//             value={formData.loanAmount}
 //             onChange={handleChange}
 //             onKeyDown={handleKeyDown}
 //             InputProps={{
@@ -601,9 +679,9 @@
 //             onKeyDown={handleKeyDown}
 //             required
 //           />
-//           {errorMessage.recommendedLoanError && (
+//           {loanRecommendedError && (
 //             <FormHelperText error>
-//               {errorMessage.recommendedLoanError}
+//               {loanRecommendedError}
 //             </FormHelperText>
 //           )}
 //         </Box>
@@ -619,9 +697,6 @@
 //             value={formData.finalSalaryToIncomeRatioPercentage}
 //             onChange={handleChange}
 //             onKeyDown={handleKeyDown}
-//             InputProps={{
-//               readOnly: true,
-//             }}
 //             slotProps={{
 //               input: {
 //                 endAdornment: (
@@ -630,6 +705,9 @@
 //                   </InputAdornment>
 //                 ),
 //               },
+//             }}
+//             InputProps={{
+//               readOnly: true,
 //             }}
 //             required
 //           />
@@ -651,15 +729,53 @@
 //           />
 //         </Box>  
 //       {/* Eighth Row (4 items) */}
-//         <Box flex="1 1 46%">
+//       <Box flex="1 1 46%">
+//         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
+//           <DatePicker
+//             label="Disbursal Date"
+//             sx={{
+//               '& .MuiSvgIcon-root':{
+//                 fill: colors.black[100],
+//               },
+//             }}
+//             value={formData.disbursalDate ? dayjs(formData.disbursalDate) : null}
+//             onChange={(newValue) => {
+//               handleChange({
+//                 target: {
+//                   name: 'disbursalDate',
+//                   value: newValue ? newValue.toISOString() : '',
+//                 },
+//               });
+//             }}
+//             slotProps={{
+//               textField: { format: "DD/MM/YYYY" },
+//             }}
+//             renderInput={(params) => (
+//               <TextField
+//                 {...params}
+//                 fullWidth
+//                 InputLabelProps={{ shrink: true }}
+//                 inputProps={{
+//                   ...params.inputProps,
+//                   min: today,
+//                   max: formData.repaymentDate || undefined,
+//                 }}
+//               />
+//             )}
+//             minDate={dayjs(today)}
+//             maxDate={formData.repaymentDate ? dayjs(formData.repaymentDate) : null}
+//           />
+//         </LocalizationProvider>
+//       </Box>
+//         {/* <Box flex="1 1 46%">
 //           <TextField
 //             label="Disbursal Date"
 //             name="disbursalDate"
 //             type="date"
 //             InputLabelProps={{ shrink: true }}
 //             fullWidth
-//             value={formData.disbursalDate}
-//             // value={formData.disbursalDate ? moment(formData.disbursalDate).format('YYYY-MM-DD') : ''}
+//             // value={formData.disbursalDate}
+//             value={formData.disbursalDate ? moment(formData.disbursalDate).format('YYYY-MM-DD') : ''}
 //             onChange={handleChange}
 //             onKeyDown={handleKeyDown}
 //             inputProps={{
@@ -668,16 +784,48 @@
 //             }}
 //             required
 //           />
-//         </Box>
+//         </Box> */}
+
 //         <Box flex="1 1 46%">
+//           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
+//             <DatePicker
+//               label="Repayment Date"
+//               sx={{
+//                 '& .MuiSvgIcon-root':{
+//                   fill: colors.black[100],
+//                 },
+//               }}
+//               value={formData.repaymentDate ? dayjs(formData.repaymentDate) : null}
+//               onChange={(newValue) => {
+//                 handleChange({
+//                   target: {
+//                     name: 'repyamentDate',
+//                     value: newValue ? newValue.toISOString() : '',
+//                   },
+//                 });
+//               }}
+//               slotProps={{
+//                 textField: { format: "DD/MM/YYYY" },
+//               }}
+//               renderInput={(params) => (
+//                 <TextField
+//                   {...params}
+//                   fullWidth
+//                   InputLabelProps={{ shrink: true }}
+//                 />
+//               )}
+//             />
+//           </LocalizationProvider>
+//         </Box>
+
+//         {/* <Box flex="1 1 46%">
 //           <TextField
 //             label="Repayment Date"
 //             name="repaymentDate"
 //             type="date"
 //             InputLabelProps={{ shrink: true }}
 //             fullWidth
-//             value={formData.repaymentDate}
-//             // value={formData.repaymentDate ? moment(formData.repaymentDate).format('YYYY-MM-DD') : ''}
+//             value={formData.repaymentDate ? moment(formData.repaymentDate).format('YYYY-MM-DD') : ''}
 //             onChange={handleChange}
 //             onKeyDown={handleKeyDown}
 //             InputProps={{
@@ -685,7 +833,7 @@
 //             }}
 //             required
 //           />
-//         </Box>
+//         </Box> */}
 //         <Box flex="1 1 46%">
 //           <TextField
 //             label="Eligible Tenure"
@@ -749,7 +897,7 @@
 //             onChange={handleChange}
 //             required
 //             inputProps={{
-//               maxLength: 30 // Set a character limit as a fallback
+//               minLength: 30 // Set a character limit as a fallback
 //             }}
 //           />
 //         </Box>
@@ -768,6 +916,7 @@
 //           type="submit"
 //           variant="contained"
 //           disabled={isLoading}
+//           onclick={handleSubmit}
 //           sx={{
 //             backgroundColor: isLoading ? '#ccc' : colors.white[100],
 //             color: isLoading ? '#666' : colors.primary[400],
@@ -1516,6 +1665,7 @@ const EditCam = ({ camData, setIsEditing }) => {
             required
           />
         </Box>
+
         <Box flex="1 1 46%">
           <TextField
             label="Repayment Date"

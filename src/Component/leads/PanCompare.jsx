@@ -65,24 +65,46 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
     const getTextColor = (result) =>
         result === "Matched" ? "#00796b" : "#d32f2f";
 
+  // const handleVerify = () => {
+  //   const formattedLeadDob = lead?.dob ? formatDate(lead.dob) : null;
+  //   const formattedGender = lead?.gender === "M" ? "male" : "female";
+  //   const comparisonFields = getComparisonFields(lead, panDetails);
+
+  //   const mismatches = comparisonFields.filter(({ label }) => {
+  //     if (["Name", "DOB", "Masked Aadhaar"].includes(label)) {
+  //       const leadValue = (label === "DOB" ? formattedLeadDob : lead[label.toLowerCase()] && label === "Gender" ? formattedGender : lead[label.toLowerCase()]);
+  //       return compareValues(label, leadValue, panDetails[label.toLowerCase()]) === "Unmatched";
+  //     }
+  //     return false;
+  //   });
+
+  //   if (mismatches.length > 0) {
+  //     setErrorMessage("Some fields are not matched: " + mismatches.map(m => m.label).join(", "));
+  //   } else {
+  //     setErrorMessage("Verified");
+  //   }
+  // };
+
   const handleVerify = () => {
     const formattedLeadDob = lead?.dob ? formatDate(lead.dob) : null;
+    const formattedGender = lead?.gender === "M" ? "male" : "female";
     const comparisonFields = getComparisonFields(lead, panDetails);
 
-    const mismatches = comparisonFields.filter(({ label }) => {
-      if (["Name", "DOB", "Masked Aadhaar"].includes(label)) {
-        const leadValue = label === "DOB" ? formattedLeadDob : lead[label.toLowerCase()];
-        return compareValues(label, leadValue, panDetails[label.toLowerCase()]) === "Unmatched";
-      }
-      return false;
+    const mismatches = comparisonFields.filter(({ label, leadValue, panValue }) => {
+        // Check for mismatches in the fields of interest
+        if (["Name", "DOB", "Masked Aadhaar", "PAN"].includes(label)) {
+            const leadValueToCompare = (label === "DOB" ? formattedLeadDob : leadValue);
+            return compareValues(label, leadValueToCompare, panValue) === "Unmatched";
+        }
+        return false;
     });
 
     if (mismatches.length > 0) {
-      setErrorMessage("Some fields are not matched: " + mismatches.map(m => m.label).join(", "));
+        setErrorMessage("Some fields are not matched: " + mismatches.map(m => m.label).join(", "));
     } else {
-      setErrorMessage("Verified");
+        setErrorMessage("Verified");
     }
-  };
+};
 
   // Fields to be compared
   const getComparisonFields = (lead,panDetails)=> {
