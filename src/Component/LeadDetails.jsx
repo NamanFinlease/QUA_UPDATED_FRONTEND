@@ -162,7 +162,7 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
         </Box>
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Box sx={{ flex: '1 1 45%', width: '100%' }} fullWidth> {/* Ensure the box takes full width */}
+          <Box sx={{ flex: '1 1 100%', width: '100%', }} fullWidth> {/* Ensure the box takes full width */}
             <Controller
               name="dob"
               control={control}
@@ -170,7 +170,12 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
                 <DatePicker
                   {...field}
                   label="Date of Birth"
-                  sx={{ width: "100%" }}
+                  sx={{ 
+                    width: "100%" ,
+                    '& .MuiButtonBase-root'  : {
+                      color: colors.black[100]
+                    }
+                  }}
                   format="DD/MM/YYYY"
                   renderInput={(params) => (
                     <TextField
@@ -190,6 +195,24 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
             />
           </Box>
         </LocalizationProvider>
+
+        <Box sx={{ flex: '1 1 45%' }}>
+          <Controller
+            name="fathersName"
+            control={control}
+            render={({ field, fieldState }) => (
+              <TextField
+                {...field}
+                required
+                fullWidth
+                label="Father's Name"
+                variant="outlined"
+                error={!!fieldState.error}
+                helperText={fieldState.error ? fieldState.error.message : ''}
+              />
+            )}
+          />
+        </Box>
 
         <Box sx={{ flex: '1 1 45%' }}>
           <Controller
@@ -325,7 +348,12 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
                 <DatePicker
                   {...field}
                   label="Working Since"
-                  sx={{ width: "100%" }}
+                  sx={{ 
+                    width: "100%" ,
+                    '& .MuiButtonBase-root'  : {
+                      color: colors.black[100]
+                    }
+                  }}
                   format="DD/MM/YYYY"
                   renderInput={(params) => (
                     <TextField

@@ -8,6 +8,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useUpdatePersonalDetailsMutation } from '../../Service/applicationQueries';
 import useStore from '../../Store';
 import useAuthStore from '../store/authStore';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
 
 const Residence = ({ residence }) => {
@@ -30,7 +34,7 @@ const Residence = ({ residence }) => {
       state: residence?.state || '',
       city: residence?.city || '',
       pincode: residence?.pincode || '',
-      residingSince: residence?.residingSince || '',
+      residingSince: residence?.residingSince && dayjs(residence.residingSince) || '',
     }
   });
 
@@ -47,7 +51,7 @@ const Residence = ({ residence }) => {
         state: residence?.state || '',
         city: residence?.city || '',
         pincode: residence?.pincode || '',
-        residingSince: residence?.residingSince.split(" ")[0] || '',
+        residingSince: residence?.residingSince && dayjs(residence.residingSince) || '',
       })
     } else {
       reset();
@@ -92,7 +96,7 @@ const Residence = ({ residence }) => {
       setColumns([
         { label: 'Address', value: `${residence?.address || ''} `, label2: 'State', value2: residence?.state || '' },
         { label: 'City', value: residence?.city || '', label2: 'Pin Code', value2: residence?.pincode || '' },
-        { label: 'Residing Since', value: residence.residingSince || '', },
+        { label: 'Residing Since', value: residence.residingSince && dayjs(residence.residingSince).format('DD-MM-YYYY') || '', },
       ]);
     }
   }, [residence])
@@ -196,35 +200,40 @@ const Residence = ({ residence }) => {
                   </Box>
 
                   <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} gap={2}>
-
-                    <Controller
-                      name="residingSince"
-                      control={control}
-                      render={({ field }) => {
-                        const currentYear = new Date().getFullYear();
-                        const pastYears = Array.from(new Array(100), (val, index) => currentYear - index); // Generate last 100 years
-
-                        return (
-                          <FormControl fullWidth error={!!errors.residingSince} sx={{ width: '150px' }}>
-                            <InputLabel id="residingSince">Residing Since</InputLabel>
-                            <Select
-                              labelId="residingSince"
-                              label="Residing Since"
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <Box sx={{ flex: '1 1 100%', width: '100%', }} fullWidth> {/* Ensure the box takes full width */}
+                        <Controller
+                          name="residingSince"
+                          control={control}
+                          render={({ field, fieldState }) => (
+                            <DatePicker
                               {...field}
-                            >
-                              {pastYears.map((year) => (
-                                <MenuItem key={year} value={year}>
-                                  {year}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                            {!!errors.residingSince && (
-                              <FormHelperText>{errors.residingSince?.message}</FormHelperText>
-                            )}
-                          </FormControl>
-                        );
-                      }}
-                    />
+                              label="Residing Since"
+                              sx={{ 
+                                width: "100%" ,
+                                '& .MuiButtonBase-root'  : {
+                                  color: colors.black[100]
+                                }
+                              }}
+                              format="DD/MM/YYYY"
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  required
+                                  variant="outlined"
+                                  error={!!fieldState.error}
+                                  helperText={fieldState.error ? fieldState.error.message : ''}
+                                />
+                              )}
+                              value={field.value ? dayjs(field.value, 'YYYY-MM-DD') : null}
+                              onChange={(newValue) => {
+                                field.onChange(newValue);
+                              }}
+                            />
+                          )}
+                        />
+                      </Box>
+                    </LocalizationProvider>
 
 
                     {isError &&

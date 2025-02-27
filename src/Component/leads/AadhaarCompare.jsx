@@ -162,12 +162,12 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
         const leadAddress = formatAddress(
             lead?.city,
             lead?.state,
-            lead?.pinCode
+            lead?.pinCode 
         );
 
     const comparisonFields = [
       { label: "Name", leadValue: formatFullName(lead?.fName, lead?.mName,lead?.lName), aadhaarValue: aadhaarDetails?.name.trim() },
-      { label: "DOB", leadValue: lead?.dob && formatDate(lead?.dob), aadhaarValue: aadhaarDetails?.dob && formatDate(aadhaarDetails?.dob) },
+      { label: "DOB", leadValue: lead?.dob && formatDate(lead?.dob), aadhaarValue: aadhaarDetails?.dob },
       { label: "Gender", leadValue: lead?.gender, aadhaarValue: aadhaarDetails?.gender },
       { label: "Masked Aadhaar ", leadValue: `xxxxxxxx${lead?.aadhaar.slice(-4)}`, aadhaarValue: aadhaarDetails?.maskedAdharNumber },
       { label: "Address ", leadValue: leadAddress, aadhaarValue: aadhaarAddress },

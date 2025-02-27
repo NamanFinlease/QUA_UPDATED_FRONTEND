@@ -262,25 +262,40 @@ const Employment = ({ employmentData }) => {
                         />
                       )}
                     />
-                    <Controller
-                      name="employedSince"
-                      control={control}
-                      render={({ field }) => (
-                        <DatePicker
-                          label="Employed Since"
-                          sx={{ width: "100%" }}
-                          value={field.value}
-                          onChange={(newValue) => field.onChange(newValue)} // Connect the DatePicker with react-hook-form
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              error={!!errors.employedSince}
-                              helperText={errors.employedSince?.message}
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <Box sx={{ flex: '1 1 100%', width: '100%', }} fullWidth> {/* Ensure the box takes full width */}
+                        <Controller
+                          name="employedSince"
+                          control={control}
+                          render={({ field, fieldState }) => (
+                            <DatePicker
+                              {...field}
+                              label="Employed Since"
+                              sx={{ 
+                                width: "100%" ,
+                                '& .MuiButtonBase-root'  : {
+                                  color: colors.black[100]
+                                }
+                              }}
+                              format="DD/MM/YYYY"
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  required
+                                  variant="outlined"
+                                  error={!!fieldState.error}
+                                  helperText={fieldState.error ? fieldState.error.message : ''}
+                                />
+                              )}
+                              value={field.value ? dayjs(field.value, 'YYYY-MM-DD') : null}
+                              onChange={(newValue) => {
+                                field.onChange(newValue);
+                              }}
                             />
                           )}
                         />
-                      )}
-                    />
+                      </Box>
+                    </LocalizationProvider>
                   </Box>
 
                   {isError && (
