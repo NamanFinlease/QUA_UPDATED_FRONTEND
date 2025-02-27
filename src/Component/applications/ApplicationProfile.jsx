@@ -75,13 +75,13 @@ const ApplicationProfile = () => {
             {currentPage === "application" &&
               <>
                 <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '0px 20px 0px 20px', background:colors.white[100], }}>
-                  <ApplicantProfileData leadData={applicationData?.lead} />
+                  <ApplicantProfileData leadData={applicationData?.application?.lead} />
                 </Paper>
-                {applicationData?.lead?._id &&
+                {applicationData?.application?.lead?._id &&
                   <>
-                    <InternalDedupe id={applicationData?.lead?._id} />
-                    <ApplicationLogHistory id={applicationData?.lead?._id} />
-                    {(activeRole === "creditManager" && <CommonRemarks id={applicationData?.lead?._id} />)}
+                    <InternalDedupe id={applicationData?.application?.lead?._id} />
+                    <ApplicationLogHistory id={applicationData?.application?.lead?._id} />
+                    {(activeRole === "creditManager" && <CommonRemarks id={applicationData?.application?.lead?._id} />)}
                     {isError && (
                       <Alert severity="error" style={{ marginTop: "10px" }}>
                         {error?.data?.message}
@@ -93,7 +93,7 @@ const ApplicationProfile = () => {
                     {(!applicationData.isRejected && activeRole !== "admin") &&
                       <Box display="flex" justifyContent="center" sx={{ marginTop: '20px' }}>
                         <ActionButton
-                          id={applicationData._id}
+                          id={applicationData?.application?._id}
                           isHold={applicationData.onHold}
                         />
 
@@ -108,29 +108,29 @@ const ApplicationProfile = () => {
 
             {applicationData && Object.keys(applicationData).length > 0 &&
               <>
-                {currentPage === "personal" && <PersonalDetails id={applicationData.applicant} />}
+                {currentPage === "personal" && <PersonalDetails id={applicationData?.application?.applicant} />}
                 {currentPage === "banking" &&
-                  <BankDetails id={applicationData?.applicant} />}
+                  <BankDetails id={applicationData?.application?.applicant} />}
 
                 {currentPage === "verification" &&
                   <EKycVerification
-                    isMobileVerified={applicationData?.lead?.isMobileVerified}
-                    isEmailVerified={applicationData?.lead?.isEmailVerified}
-                    isAadhaarVerified={applicationData?.lead?.isAadhaarVerified}
-                    isAadhaarDetailsSaved={applicationData?.lead?.isAadhaarDetailsSaved}
-                    isPanVerified={applicationData?.lead?.isPanVerified}
-                    leadId={applicationData?.lead?._id}
+                    isMobileVerified={applicationData?.application?.lead?.isMobileVerified}
+                    isEmailVerified={applicationData?.application?.lead?.isEmailVerified}
+                    isAadhaarVerified={applicationData?.application?.lead?.isAadhaarVerified}
+                    isAadhaarDetailsSaved={applicationData?.application?.lead?.isAadhaarDetailsSaved}
+                    isPanVerified={applicationData?.application?.lead?.isPanVerified}
+                    leadId={applicationData?.application?.lead?._id}
                   />
                 }
                 {currentPage === "documents" &&
                   <UploadDocuments
-                    leadData={applicationData?.lead}
+                    leadData={applicationData?.application?.lead}
                     setUploadedDocs={setUploadedDocs}
                     uploadedDocs={uploadedDocs}
                   />
                 }
 
-                {currentPage === "cam" && applicationData._id && <Cam id={applicationData._id} />}
+                {currentPage === "cam" && applicationData?.application?._id && <Cam id={applicationData?.application?._id} />}
               </>
 
             }

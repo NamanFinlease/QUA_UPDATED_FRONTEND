@@ -14,7 +14,7 @@ const Reference = ({ reference }) => {
   const { applicationProfile } = useStore();
   const { empInfo, activeRole } = useAuthStore()
   const [openEdit, setOpenEdit] = useState(false)
-  const id = applicationProfile._id;
+  const id = applicationProfile?.application?._id;
   const [referenceDetails, setReferenceDetails] = useState()
 
   // const defaultValues = {

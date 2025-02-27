@@ -319,7 +319,7 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Box sx={{ flex: '1 1 45%', width: '100%' }} fullWidth> {/* Ensure the box takes full width */}
             <Controller
-              name="employedSince"
+              name="workingSince"
               control={control}
               render={({ field, fieldState }) => (
                 <DatePicker

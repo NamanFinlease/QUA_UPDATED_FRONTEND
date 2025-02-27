@@ -405,7 +405,7 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
           }}
         >
           {/* {isPanVerified ? "Show Details" : "Send Link"} */}
-          {loading ? <CircularProgress size={24} /> : (isPanVerified ? "Show Details" : "Send Link")}
+          {loading ? <CircularProgress size={24} color='inherit' /> : (isPanVerified ? "Show Details" : "Send Link")}
         </Button>
       ),
     },
