@@ -16,17 +16,21 @@ const RejectedLeads = () => {
         page: 0,
         pageSize: 5,
     });
-    const { data, isSuccess, isError } = useFetchAllRejectedLeadsQuery()
+    const { data, isSuccess, isError, refetch } = useFetchAllRejectedLeadsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
     // const { data: LeadData, isSuccess: leadSuccess } = useFetchSingleLeadQuery(id, { skip: id === null })
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel)
-
+        refetch({ page: newPaginationModel.page +1, limit: newPaginationModel.pageSize}); 
     }
 
     const handleRowClick = (lead) => {
         setId(lead.id)
         navigate(`/lead-profile/${lead.id}`)
     }
+
+    useEffect(() => {
+        refetch({ page: paginationModel.page + 1, limit: paginationModel.pageSize });
+    }, [paginationModel]);
 
 
     useEffect(() => {

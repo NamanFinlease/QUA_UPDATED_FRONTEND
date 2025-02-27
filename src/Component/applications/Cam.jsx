@@ -7,6 +7,7 @@ import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import EditCam from './EditCam';
 import useAuthStore from '../store/authStore';
 import moment from 'moment'; 
+import dayjs from 'dayjs';
 // import { formatDate } from '../../utils/helper';
 
 
@@ -17,6 +18,8 @@ const Cam = ({id}) => {
   // Color theme
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  console.log("cam data",data?.details)
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -66,21 +69,13 @@ const Cam = ({id}) => {
       const details = data.details;  // Access the deeply nested object
       setFormData({
         leadNo: data.details?.leadNo || 0,                // Lead ID
-        salaryDate1: details?.salaryDate1 && moment(details?.salaryDate1).format('YYYY-MM-DD') || '',          // Salary Date 1
-        // salaryDate1: details?.salaryDate1 || '',          // Salary Date 1
-        // salaryDate1: details?.salaryDate1 && formatDate(details?.salaryDate1) || '',          // Salary Date 1
+        salaryDate1: details?.salaryDate1 && dayjs(details?.salaryDate1).format('YYYY-MM-DD') || '',          // Salary Date 1
         salaryAmount1: details?.salaryAmount1 || 0,       // Salary Amount 1
-        salaryDate2: details?.salaryDate2 && moment(details?.salaryDate2).format('YYYY-MM-DD') || '',          // Salary Date 2
-        // salaryDate2: details?.salaryDate2 || '',          // Salary Date 2
-        // salaryDate2: details?.salaryDate2 && formatDate(details?.salaryDate2) || '',          // Salary Date 2
+        salaryDate2: details?.salaryDate2 && dayjs(details?.salaryDate2).format('YYYY-MM-DD') || '',          // Salary Date 2
         salaryAmount2: details?.salaryAmount2 || 0,       // Salary Amount 2
-        salaryDate3: details?.salaryDate3 && moment(details?.salaryDate3).format('YYYY-MM-DD') || '',          // Salary Date 2
-        // salaryDate3: details?.salaryDate3 || '',          // Salary Date 3
-        // salaryDate3: details?.salaryDate3 && formatDate(details?.salaryDate3) || '',          // Salary Date 3
+        salaryDate3: details?.salaryDate3 && dayjs(details?.salaryDate3).format('YYYY-MM-DD') || '',          // Salary Date 2
         salaryAmount3: details?.salaryAmount3 || 0,       // Salary Amount 3
-        // nextPayDate: details?.nextPayDate || '',          // Next Salary Date
-        nextPayDate: details?.nextPayDate && moment(details?.nextPayDate).format('YYYY-MM-DD') || '',          // Next Salary Date
-        // nextPayDate: details?.nextPayDate && formatDate(details?.nextPayDate) || '',          // Next Salary Date
+        nextPayDate: details?.nextPayDate && dayjs(details?.nextPayDate).format("YYYY-MM-DD") || '',          // Next Salary Date
         averageSalary: details?.averageSalary || 0,       // Avergae Salary
         actualNetSalary: details?.actualNetSalary || 0,   // Net Salary
         creditBureauScore: details?.cibilScore || '-',    // Credit Bureau Score
@@ -93,13 +88,9 @@ const Cam = ({id}) => {
         loanAmount: details?.loanAmount || 0,          // loan Applied
         netDisbursalAmount: details?.netDisbursalAmount || 0,         // Net Disbursal Amount
         loanRecommended: details?.loanRecommended || 0,   // Loan Recommended
-        disbursalDate: details?.disbursalDate && moment(details?.disbursalDate).format('YYYY-MM-DD') || '-',     // Disbursal Date
-        // disbursalDate: details?.disbursalDate || '-',     // Disbursal Date
-        // disbursalDate: details?.disbursalDate && formatDate(details?.disbursalDate) || '-',     // Disbursal Date
+        disbursalDate: details?.disbursalDate && dayjs(details?.disbursalDate).format('YYYY-MM-DD') || '-',     // Disbursal Date
         finalSalaryToIncomeRatioPercentage: details?.finalSalaryToIncomeRatioPercentage || '',     // Final Salary to income ratio
-        repaymentDate: details?.repaymentDate && moment(details?.repaymentDate).format('YYYY-MM-DD')  || '-',     // Repayment Date
-        // repaymentDate: details?.repaymentDate  || '-',     // Repayment Date
-        // repaymentDate: details?.repaymentDate && formatDate(details?.repaymentDate) || '-',     // Repayment Date
+        repaymentDate: details?.repaymentDate && dayjs(details?.repaymentDate).format('YYYY-MM-DD')  || '-',     // Repayment Date
         adminFeePercentage: details?.adminFeePercentage || '',  // Admin Fee Inc. GST (%)
         totalAdminFeeAmount: details?.totalAdminFeeAmount || '0',  // Admin Fee Inc. GST (%)
         roi: details?.roi || '',                        // ROI (Rate of Interest)
@@ -149,25 +140,25 @@ const Cam = ({id}) => {
                     </TableRow>
                     <TableRow>
                       <TableCell>Salary Date 1</TableCell>
-                      <TableCell>{formData?.salaryDate1 || '-'}</TableCell>
+                      <TableCell>{moment(formData?.salaryDate1 || '-').format('DD-MM-YYYY')}</TableCell>
                       <TableCell>Salary Amount 1</TableCell>
                       <TableCell>{formData?.salaryAmount1}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Salary Date 2</TableCell>
-                      <TableCell>{formData?.salaryDate2 || '-'}</TableCell>
+                      <TableCell>{moment(formData?.salaryDate2 || '-').format('DD-MM-YYYY')}</TableCell>
                       <TableCell>Salary Amount 2</TableCell>
                       <TableCell>{formData?.salaryAmount2}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Salary Date 3</TableCell>
-                      <TableCell>{formData?.salaryDate3 || '-'}</TableCell>
+                      <TableCell>{moment(formData?.salaryDate3 || '-').format('DD-MM-YYYY')}</TableCell>
                       <TableCell>Salary Amount 3</TableCell>
                       <TableCell>{formData?.salaryAmount3}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Next Salary Date</TableCell>
-                      <TableCell>{formData?.nextPayDate || '-'}</TableCell>
+                      <TableCell>{moment(formData?.nextPayDate || '-').format('DD-MM-YYYY')}</TableCell>
                       <TableCell>Average Salary</TableCell>
                       <TableCell>{formData?.averageSalary}</TableCell>
                     </TableRow>
@@ -214,9 +205,9 @@ const Cam = ({id}) => {
                     </TableRow>
                     <TableRow>
                       <TableCell>Disbursal Date</TableCell>
-                      <TableCell>{formData?.disbursalDate}</TableCell>
+                      <TableCell>{moment(formData?.disbursalDate).format("DD-MM-YYYY")}</TableCell>
                       <TableCell>Repayment Date</TableCell>
-                      <TableCell>{formData?.repaymentDate}</TableCell>
+                      <TableCell>{moment(formData?.repaymentDate).format("DD-MM-YYYY")}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Eligible Tenure</TableCell>

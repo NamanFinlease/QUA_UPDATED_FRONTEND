@@ -15,7 +15,7 @@ const DisbursePending = () => {
     const navigate = useNavigate()
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
-        pageSize: 5,
+        pageSize: 10,
     });
 
     const { data, isSuccess,isError,error, refetch } = usePendingDisbursalQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })

@@ -229,7 +229,7 @@ const BankDetails = ({ id }) => {
                                                 >
                                                     <MenuItem value="" disabled>Select Account Type</MenuItem>
                                                     <MenuItem value="savings">Savings</MenuItem>
-                                                    <MenuItem value="current">Current</MenuItem>
+                                                    <MenuItem value="overdraft">Overdraft</MenuItem>
                                                 </Select>
                                                 {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
 
