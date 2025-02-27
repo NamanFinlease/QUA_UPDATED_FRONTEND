@@ -5,110 +5,116 @@ const role = () =>
     JSON.parse(localStorage.getItem("auth-storage")).state.activeRole;
 // Define a service using a base URL and expected endpoints
 export const applicationApi = createApi({
-    reducerPath: "applicationApi",
-    baseQuery: fetchBaseQuery({
-        baseUrl: BASE_URL,
-        credentials: "include",
-        prepareHeaders: (headers, { getState }) => {
-            return headers;
-        },
+  reducerPath: 'applicationApi',
+  baseQuery: fetchBaseQuery({
+    baseUrl:BASE_URL,
+    credentials:"include",
+    prepareHeaders: (headers, { getState }) => {
+      return headers;
+    },
+
+  }),
+  tagTypes: ["getApplication",
+    "getProfile",
+    "bankDetails",
+    "recommendedApplications",
+    "applicantDetails",
+    'getDisbursals',
+    "getCamDetails",
+    "pendingSanctions",
+    "sanctionProfile",
+    "getPendinDisbursals"],
+  endpoints: (builder) => ({
+    // GET request to fetch a Pokemon by name
+    holdApplication: builder.mutation({
+      query: ({id,reason}) => ({
+
+        url: `applications/hold/${id}/?role=${role()}`,
+        method: 'PATCH',
+        body:{reason}
+      }),
+      invalidatesTags:["getProfile"]
     }),
-    tagTypes: [
-        "getApplication",
-        "getProfile",
-        "bankDetails",
-        "recommendedApplications",
-        "applicantDetails",
-        "getDisbursals",
-        "getCamDetails",
-        "pendingSanctions",
-        "sanctionProfile",
-        "getPendinDisbursals",
-    ],
-    endpoints: (builder) => ({
-        // GET request to fetch a Pokemon by name
-        holdApplication: builder.mutation({
-            query: ({ id, reason }) => ({
-                url: `applications/hold/${id}/?role=${role()}`,
-                method: "PATCH",
-                body: { reason },
-            }),
-            invalidatesTags: ["getProfile"],
-        }),
-        rejectApplication: builder.mutation({
-            query: ({ id, reason }) => ({
-                url: `applications/reject/${id}/?role=${role()}`,
-                method: "PATCH",
-                body: { reason },
-            }),
-            invalidatesTags: ["getProfile", "getApplication"],
-        }),
-        sanctionReject: builder.mutation({
-            query: ({ id, reason }) => ({
-                url: `sanction/reject/${id}/?role=${role()}`,
-                method: "PATCH",
-                body: { reason },
-            }),
-            invalidatesTags: [
-                "getProfile",
-                "getApplication",
-                "pendingSanctions",
-            ],
-        }),
-        unholdApplication: builder.mutation({
-            query: ({ id, reason }) => ({
-                url: `applications/unhold/${id}/?role=${role()}`,
-                method: "PATCH",
-                body: { reason },
-            }),
-            invalidatesTags: ["getProfile"],
-        }),
-        unholdDisbursal: builder.mutation({
-            query: ({ id, reason }) => ({
-                url: `disbursals/unhold/${id}/?role=${role()}`,
-                method: "PATCH",
-                body: { reason },
-            }),
-            invalidatesTags: ["getProfile"],
-        }),
-        sendBack: builder.mutation({
-            query: ({ id, reason, sendTo }) => ({
-                url: `applications/sent-back/${id}/?role=${role()}`,
-                method: "PATCH",
-                body: { sendTo, reason },
-            }),
-            invalidatesTags: ["getApplication"],
-        }),
-        sanctionSendBack: builder.mutation({
-            query: ({ id, reason, sendTo }) => ({
-                url: `sanction/sent-back/${id}/?role=${role()}`,
-                method: "PATCH",
-                body: { sendTo, reason },
-            }),
-            invalidatesTags: ["getApplication", "pendingSanctions"],
-        }),
-        disbursalSendBack: builder.mutation({
-            query: ({ id, reason, sendTo }) => ({
-                url: `disbursals/sent-back/${id}/?role=${role()}`,
-                method: "PATCH",
-                body: { sendTo, reason },
-            }),
-            invalidatesTags: ["getApplication", "pendingSanctions"],
-        }),
-        sanctionApprove: builder.mutation({
-            query: (id) => ({
-                url: `sanction/approve/${id}/?role=${role()}`,
-                method: "PATCH",
-            }),
-            invalidatesTags: ["sanctionProfile", "pendingSanctions"],
-        }),
-        recommendApplication: builder.mutation({
-            query: (id) => ({
-                url: `applications/recommend/${id}/?role=${role()}`,
-                method: "PATCH",
-            }),
-            invalidatesTags: ["recommendedApplications"],
-        }),
+    rejectApplication: builder.mutation({
+      query: ({id,reason}) => ({
+
+        url: `applications/reject/${id}/?role=${role()}`,
+        method: 'PATCH',
+        body:{reason}
+      }),
+      invalidatesTags:["getProfile","getApplication"]
+    }),
+    sanctionReject: builder.mutation({
+      query: ({id,reason}) => ({
+
+        url: `sanction/reject/${id}/?role=${role()}`,
+        method: 'PATCH',
+        body:{reason}
+      }),
+      invalidatesTags:["getProfile","getApplication","pendingSanctions"]
+    }),
+    unholdApplication: builder.mutation({
+      query: ({id,reason}) => ({
+
+        url: `applications/unhold/${id}/?role=${role()}`,
+        method: 'PATCH',
+        body:{reason}
+      }),
+      invalidatesTags:["getProfile"]
+    }),
+    unholdDisbursal: builder.mutation({
+      query: ({id,reason}) => ({
+
+        url: `disbursals/unhold/${id}/?role=${role()}`,
+        method: 'PATCH',
+        body:{reason}
+      }),
+      invalidatesTags:["getProfile"]
+    }),
+    sendBack: builder.mutation({
+      query: ({id,reason,sendTo}) => ({
+
+        url: `applications/sent-back/${id}/?role=${role()}`,
+        method: 'PATCH',
+        body:{sendTo,reason}
+      }),
+      invalidatesTags:["getApplication"]
+    }),
+    sanctionSendBack: builder.mutation({
+      query: ({id,reason,sendTo}) => ({
+
+        url: `sanction/sent-back/${id}/?role=${role()}`,
+        method: 'PATCH',
+        body:{sendTo,reason}
+      }),
+      invalidatesTags:["getApplication","pendingSanctions"]
+    }),
+    disbursalSendBack: builder.mutation({
+      query: ({id,reason,sendTo}) => ({
+
+        url: `disbursals/sent-back/${id}/?role=${role()}`,
+        method: 'PATCH',
+        body:{sendTo,reason}
+      }),
+      invalidatesTags:["getApplication","pendingSanctions"]
+    }),
+    sanctionApprove: builder.mutation({
+      query: (id) => ({
+
+        url: `sanction/approve/${id}/?role=${role()}`,
+        method: 'PATCH',
+      }),
+      invalidatesTags:["sanctionProfile","pendingSanctions"]
+    }),
+    recommendApplication: builder.mutation({
+      query: (id) => ({
+
+        url: `applications/recommend/${id}/?role=${role()}`,
+        method: 'PATCH',
+      }),
+      invalidatesTags:["recommendedApplications"]
+    }),
+
 
         allocateApplication: builder.mutation({
             query: (id) => ({

@@ -16,7 +16,7 @@ const ProcessingLeads = () => {
     const navigate = useNavigate()
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
-        pageSize: 5,
+        pageSize: 10,
     });
     const { data, isSuccess, refetch } = useFetchAllocatedLeadsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
     const { data: LeadData, isSuccess: leadSuccess } = useFetchSingleLeadQuery(id, { skip: id === null })
@@ -28,7 +28,7 @@ const ProcessingLeads = () => {
     }
 
     const handlePageChange = (newPaginationModel) => {
-        setPage(newPaginationModel);
+        // setPage(newPaginationModel);
         // Fetch new data based on the new page
         setPaginationModel(newPaginationModel)
         refetch({ page: newPaginationModel.page +1, limit: newPaginationModel.pageSize}); // Adjust this according to your data fetching logic

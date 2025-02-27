@@ -56,7 +56,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
     discount: "",
     bankName : "",
     excessAmount: "",
-    paymentRemarks: "",
+    accountRemarks: "",
     paymentUpload: "",
     repaymentDocs: "",
   };
@@ -95,7 +95,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
       formData.append("discount", data.discount);
       formData.append("excessAmount", data.excessAmount);
       formData.append("repaymentDocs", selectedFile);
-      //   formData.append("paymentRemarks", data.paymentRemarks);
+        formData.append("paymentRemarks", data.accountRemarks);
       // if (selectedFile) {
       //   formData.append("repaymentDocs", selectedFile);
       // }
@@ -532,7 +532,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
 
               <Box sx={{ flex: { xs: "1 1 100%", sm: "1 1 100%" } }}>
                 <Controller
-                  name="paymentRemarks"
+                  name="accountRemarks"
                   control={control}
                   render={({ field, fieldState }) => (
                     <TextField
