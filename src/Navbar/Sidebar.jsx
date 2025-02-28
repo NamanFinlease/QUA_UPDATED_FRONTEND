@@ -28,6 +28,7 @@ import RuleFolderRoundedIcon from '@mui/icons-material/RuleFolderRounded';
 import CollectionsBookmarkRoundedIcon from '@mui/icons-material/CollectionsBookmarkRounded';
 import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
 import FolderSpecialRoundedIcon from '@mui/icons-material/FolderSpecialRounded';
+// import TapAndPlayIcon from '@mui/icons-material/TapAndPlay';
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 const { empInfo, activeRole } = useAuthStore();
@@ -46,6 +47,17 @@ const accordionItems = [
     ],
     roles: ["screener", "admin", "sanctionHead"],
   },
+  // {
+  //   id: "partialLead",
+  //   title: "Partial Lead",
+  //   icon: <TapAndPlayIcon/>,
+  //   items: [
+  //     { text: "New Partial Lead", link: "/new-partialLeads" },
+  //     { text: "Allocated Leads", link: "/partialAllocatedLeads" },
+  //     { text: "Completed", link: "/partial-completedLeads" },
+  //   ],
+  //   roles: ["screener", "admin"],
+  // },
   {
     id: "application",
     title: "Application",

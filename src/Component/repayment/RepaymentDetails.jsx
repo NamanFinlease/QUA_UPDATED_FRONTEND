@@ -87,7 +87,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
 
   const rows = fetchRepaymentDetails?.repaymentDetails?.paymentHistory?.map((paymentHistory) => ({
     id: paymentHistory?._id,
-    loanNo: id,
+    loanNo: paymentHistory?.loanNo, 
     paymentMode: paymentHistory?.paymentMode,
     bankName: paymentHistory?.bankName,
     paymentAmount: paymentHistory?.receivedAmount,

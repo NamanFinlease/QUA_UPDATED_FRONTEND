@@ -32,6 +32,7 @@ function CloseLeads() {
 
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel);
+        refetch({ page: newPaginationModel.page +1, limit: newPaginationModel.pageSize});
     };
 
     const columns = [
@@ -89,14 +90,14 @@ function CloseLeads() {
     return (
         <>
             <CommonTable
-            columns={columns}
-            rows={rows}
-            totalRows={totalClosedLeads}
-            paginationModel={paginationModel}
-            onPageChange={handlePageChange}
-            // onRowClick={handleLeadClick}
-            title="Closed Leads"
-        />
+                columns={columns}
+                rows={rows}
+                totalRows={totalClosedLeads}
+                paginationModel={paginationModel}
+                onPageChange={handlePageChange}
+                // onRowClick={handleLeadClick}
+                title="Closed Leads"
+            />
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>
                     {error?.message}

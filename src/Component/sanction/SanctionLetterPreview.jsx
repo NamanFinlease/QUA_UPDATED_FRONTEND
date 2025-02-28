@@ -35,6 +35,8 @@ const SanctionLetterPreview = ({
     console.log('preview',previewData)
     const navigate = useNavigate()
     const [approveApplication, { data, isSuccess, isLoading, isFetching, isError, error }] = useLazySendESignQuery()
+
+    const [isApproved, setIsApproved] = useState(false);
     
     console.log('Total Interest', totalInterest)
     console.log('Disbursal Amount', disbursalAmount)
@@ -51,9 +53,8 @@ const SanctionLetterPreview = ({
 
     
     const handleApprove = () => {
-        // Handle the approval logic here
         console.log('Loan Approved');
-        // setForceRender(pre => pre+1)
+        setIsApproved(true);
         approveApplication(id)
     };
     
@@ -514,6 +515,7 @@ const SanctionLetterPreview = ({
                             }
                         }}
                         onClick={handleClose}
+                        disabled={isApproved}
                     >
                         Cancel
                     </Button>

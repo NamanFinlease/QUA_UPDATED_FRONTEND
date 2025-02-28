@@ -16,7 +16,7 @@ import ApplicationLogHistory from '../ApplicationLogHistory';
 import useAuthStore from '../store/authStore';
 import EKycVerification from '../leads/DetailsVerification';
 import ApplicantProfileData from '../applicantProfileData';
-import CommonRemarks from '../commonRemarks';
+import CommonRemarks from '../CommonRemarks';
 
 const barButtonOptions = ['Application', 'Documents', 'Personal', 'Banking', 'Verification', 'Cam']
 
@@ -79,9 +79,12 @@ const ApplicationProfile = () => {
                 </Paper>
                 {applicationData?.lead?._id &&
                   <>
-                    <InternalDedupe id={applicationData?.lead?._id} />
-                    <ApplicationLogHistory id={applicationData?.lead?._id} />
-                    {(activeRole === "creditManager" && <CommonRemarks id={applicationData?.lead?._id} />)}
+                    <InternalDedupe id={applicationData?.application?.lead?._id} />
+                    <ApplicationLogHistory id={applicationData?.application?.lead?._id} />
+                    {(activeRole === "creditManager" && <CommonRemarks id={applicationData?.application?.lead?._id} />)}
+                    <InternalDedupe id={applicationData?.application?.lead?._id} />
+                    <ApplicationLogHistory id={applicationData?.application?.lead?._id} />
+                    {(activeRole === "creditManager" && <CommonRemarks id={applicationData?.application?.lead?._id} />)}
                     {isError && (
                       <Alert severity="error" style={{ marginTop: "10px" }}>
                         {error?.data?.message}

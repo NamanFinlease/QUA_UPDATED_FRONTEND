@@ -14,7 +14,7 @@ import ActionButton from '../Component/ActionButton';
 import BarButtons from '../Component/BarButtons';
 import useAuthStore from '../Component/store/authStore';
 import ApplicantProfileData from '../Component/applicantProfileData';
-import CommonRemarks from '../Component/commonRemarks';
+import CommonRemarks from '../Component/CommonRemarks';
 
 const barButtonOptions = ["Lead", "Documents", "Verification"];
 

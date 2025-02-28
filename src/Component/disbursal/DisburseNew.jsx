@@ -44,7 +44,7 @@ const DisburseNew = () => {
 
   const handlePageChange = (newPaginationModel) => {
     setPaginationModel(newPaginationModel)
-    // refetch(newPaginationModel); 
+    refetch({ page: newPaginationModel.page + 1, limit: newPaginationModel.pageSize });
   };
 
 
@@ -148,7 +148,7 @@ const DisburseNew = () => {
       setTotalApplications(allApplication?.totalDisbursals)
     }
 
-  }, [allApplication]);
+  }, [allApplication, applicationSuccess]);
 
 
   return (

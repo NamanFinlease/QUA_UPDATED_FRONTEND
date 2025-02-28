@@ -58,15 +58,15 @@ const Sanctioned = () => {
     };
 
     const columns = [
-        { field: 'leadNo', headerName: 'Lead Number', width: 200 },
+        // { field: 'leadNo', headerName: 'Lead Number', width: 200 },
         { field: 'name', headerName: 'Full Name', width: 200 },
         { field: 'mobile', headerName: 'Mobile', width: 150 },
         { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },
         { field: 'pan', headerName: 'PAN No.', width: 150 },
-        { field: 'loanNo', headerName: 'Loan Number', width: 150 },
+        // { field: 'loanNo', headerName: 'Loan Number', width: 150 },
         { field: 'city', headerName: 'City', width: 150 },
         { field: 'state', headerName: 'State', width: 150 },
-        { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },
+        { field: 'sanctionAmount', headerName: 'Sanction Amount', width: 150 },
         { field: 'salary', headerName: 'Salary', width: 150 },
         ...((activeRole === "sanctionHead" || activeRole === "admin") ?
             [{ field: 'recommendedBy', headerName: 'Recommended By', width: 150 }] : []),

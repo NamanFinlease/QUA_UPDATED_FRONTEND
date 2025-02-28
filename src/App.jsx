@@ -57,6 +57,9 @@ import CloseLeads from "./Component/accounts/CloseLeads";
 import CollectionProfile from "./Component/collection/CollectionProfile";
 import PaymentVerification from "./Component/accounts/PaymentVerification";
 import PendingESign from "./Component/sanction/PendingESingn";
+// import NewPartialLeads from "./Component/partialLeads/NewPartialLeads";
+// import PartialAllocatedLeads from "./Component/partialLeads/PartialAllocatedLeads";
+// import CompletedLeads from "./Component/partialLeads/completedLeads";
 
 function App() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -148,10 +151,18 @@ function App() {
                                         path="/rejected-leads"
                                         element={<RejectedLeads />}
                                     />
-                                    <Route
-                                        path="/new-applications"
-                                        element={<NewApplications />}
+                                    {/* <Route
+                                        path="/new-partialLeads"
+                                        element={<NewPartialLeads />}
                                     />
+                                    <Route
+                                        path="/partialAllocatedLeads"
+                                        element={<PartialAllocatedLeads />}
+                                    />
+                                    <Route
+                                        path="/partial-completedLeads"
+                                        element={<CompletedLeads />}
+                                    /> */}
                                     <Route
                                         path="/application-profile/:id"
                                         element={<ApplicationProfile />}
@@ -163,6 +174,10 @@ function App() {
                                     <Route
                                         path="/compare"
                                         element={<CompareUserDetails />}
+                                    />
+                                    <Route
+                                        path="/new-applications"
+                                        element={<NewApplications />}
                                     />
                                     <Route
                                         path="/application-process"
