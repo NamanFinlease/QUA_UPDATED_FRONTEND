@@ -51,6 +51,10 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
             return compareDates(value1, value2) ? "Matched" : "Unmatched";
         }
 
+        if (label === "Name" && value1 && value2) {
+          return formatFullName(value1) === formatFullName(value2) ? "Matched" : "Unmatched";
+        }
+
         if (value1 instanceof Date && value2 instanceof Date) {
             const year1 = value1.getFullYear();
             const month1 = value1.getMonth();
@@ -129,7 +133,8 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
     const mismatches = comparisonFields.filter(({ label }) => {
       if (["Name", "DOB", "Gender", "Masked Aadhaar"].includes(label)) {
         const leadValue = label === "DOB" ? formattedLeadDob : lead[label.toLowerCase()];
-        return compareValues(label, leadValue, aadhaarDetails[label.toLowerCase()]) === "Unmatched";
+        const aadhaarValue = label ==="DOB" ? aadhaarDetails.dob : aadhaarDetails[label.toLowerCase()];
+        return compareValues(label, leadValue, aadhaarValue) === "Unmatched";
       }
       return false;
     });
@@ -146,6 +151,9 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
 
     console.log('aadhaar detail',aadhaarDetails)
     console.log('lead detail',lead)
+
+    const formattedLeadDob = lead?.dob ? formatDate(lead.dob) : null; // Ensure lead DOB is formatted
+    const formattedAadhaarDob = aadhaarDetails?.dob ? formatDate(aadhaarDetails.dob) : null;
 
     const { house, po, dist, state, country, street, pc } = aadhaarDetails?.address
 
@@ -167,7 +175,8 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
 
     const comparisonFields = [
       { label: "Name", leadValue: formatFullName(lead?.fName, lead?.mName,lead?.lName), aadhaarValue: aadhaarDetails?.name.trim() },
-      { label: "DOB", leadValue: lead?.dob && formatDate(lead?.dob), aadhaarValue: aadhaarDetails?.dob },
+      // { label: "DOB", leadValue: lead?.dob && formatDate(lead?.dob), aadhaarValue: aadhaarDetails?.dob && formatDate(aadhaarDetails?.dob) },
+      { label: "DOB", leadValue: formattedLeadDob, aadhaarValue: formattedAadhaarDob },
       { label: "Gender", leadValue: lead?.gender, aadhaarValue: aadhaarDetails?.gender },
       { label: "Masked Aadhaar ", leadValue: `xxxxxxxx${lead?.aadhaar.slice(-4)}`, aadhaarValue: aadhaarDetails?.maskedAdharNumber },
       { label: "Address ", leadValue: leadAddress, aadhaarValue: aadhaarAddress },

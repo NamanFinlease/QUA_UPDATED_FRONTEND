@@ -90,7 +90,7 @@ const NewApplications = () => {
 
   const rows = applications?.applications?.map(application => ({
     id: application?._id, // Unique ID for each lead
-    leadNo: application?.leadNo,
+    leadNo: application?.lead?.leadNo,
     name: `${application?.lead?.fName} ${application?.lead?.mName} ${application?.lead?.lName}`,
     mobile: application?.lead?.mobile,
     aadhaar: application?.lead?.aadhaar,
