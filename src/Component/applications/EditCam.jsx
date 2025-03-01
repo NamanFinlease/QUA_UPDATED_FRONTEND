@@ -569,9 +569,6 @@ const EditCam = ({ camData, setIsEditing }) => {
             fullWidth
             value={formData.customerType}
             onChange={handleChange}
-            InputProps={{
-              readOnly:true
-            }}
           />
         </Box>
         <Box flex="1 1 46%">
@@ -864,7 +861,7 @@ const EditCam = ({ camData, setIsEditing }) => {
 
         <Box flex="1 1 46%">
           <TextField
-            label="Eligible Tenure"
+            label="Eligible Tenure (days)"
             name="eligibleTenure"
             type="text"
             fullWidth

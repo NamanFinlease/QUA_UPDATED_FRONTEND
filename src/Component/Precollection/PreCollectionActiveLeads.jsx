@@ -66,7 +66,7 @@ const PreCollectionActiveLeads = () => {
         { field: "state", headerName: "State", width: 150 },
         { field: "sanctionAmount", headerName: "Sanction Amount", width: 150 },
         { field: "salary", headerName: "Salary", width: 150 },
-        { field: "source", headerName: "Source", width: 150 },
+        // { field: "source", headerName: "Source", width: 150 },
         ...(activeRole === "collectionHead" || activeRole === "admin"
             ? [
                   {

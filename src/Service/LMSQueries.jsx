@@ -65,7 +65,7 @@ export const lmsQueries = createApi({
     //Partial Leads
     partialLeads: builder.query({
       query: ({ page, limit }) =>
-          `/marketing/landingPageData/?page=${page}&limit=${limit}&role=${role()}`,
+          `/marketing/leads/?page=${page}&limit=${limit}&role=${role()}`,
       providesTags: ["partialLeads"],
     }),
     allocatedPartialLeads: builder.query({
