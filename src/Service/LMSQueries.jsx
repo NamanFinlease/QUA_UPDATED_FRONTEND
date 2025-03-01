@@ -25,10 +25,10 @@ export const lmsQueries = createApi({
       providesTags: ["activeLeads", "leadProfile"],
     }),
     verifyPayment : builder.mutation({
-        query: ({ loanNo, transactionId }) => ({
+        query: ({ loanNo, transactionId,closingType,remarks }) => ({
             url: `/accounts/payment/verify/${loanNo}/?transactionId=${transactionId}&role=accountExecutive`,
             method: "PATCH",
-            // body: { data },
+            body: { closingType, remarks },
         }),
         invalidatesTags: ["collectionProfile"]
     }),

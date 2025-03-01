@@ -14,7 +14,7 @@ const PreCollectionActiveLeads = () => {
     const navigate = useNavigate();
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
-        pageSize: 10,
+        pageSize: 100,
     });
 
     const { data , isSuccess, isError, error, refetch } = useActivePreCollectionLeadsQuery({

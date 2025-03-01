@@ -430,7 +430,7 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
     const [remarks, setRemarks] = useState("");
     const { id } = useParams();
 
-    const [verifyPayment, { isSuccess, isError, error}] =
+    const [verifyPayment, { isSuccess, isError, error }] =
         useVerifyPaymentMutation();
 
     console.log(selectedStatus)
@@ -460,12 +460,9 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
     };
 
     const handleStatusChange = (event, utr) => {
-        setSelectedStatus((prev) => ({
-            ...prev,
-            utr: utr,
-            status: event.target.value,
-        }));
+        setSelectedStatus(event.target.value);
     };
+
 
     const handleOpen = (type) => {
         setActionType(type);
@@ -478,6 +475,9 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
     };
 
     const handleConfirm = () => {
+
+        console.log('object',selectedStatus,remarks)
+
         if (actionType === "Approve"){
             verifyPayment({
                 loanNo : id, 
@@ -486,8 +486,10 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                 remarks : remarks
             })
         }else {
+            console.log('not approved')
 
         }
+
         handleClose();
     }
 
@@ -518,16 +520,16 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                             variant="outlined"
                             name="updatePaymentStatus"
                             sx={{
-                                color:colors.black[100],
-                                padding:"10px 0px",
-                                '& .MuiOutlinedInput-notchedOutline':{
+                                color: colors.black[100],
+                                padding: "10px 0px",
+                                '& .MuiOutlinedInput-notchedOutline': {
                                     borderColor: colors.primary[400],
                                 },
-                                '& .MuiSelect-icon':{
-                                    color:colors.primary[100],
+                                '& .MuiSelect-icon': {
+                                    color: colors.primary[100],
                                 },
-                                '& .MuiSelect-icon:disabled':{
-                                    color:colors.white[100],
+                                '& .MuiSelect-icon:disabled': {
+                                    color: colors.white[100],
                                 }
                             }}
                             value={selectedStatus}
@@ -556,10 +558,10 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                         <Button
                             variant="contained"
                             sx={{
-                                background:colors.primary[400],
-                                color:colors.white[100],
-                                borderRadius:'0px 10px',
-                                margin:"5px 1px",
+                                background: colors.primary[400],
+                                color: colors.white[100],
+                                borderRadius: '0px 10px',
+                                margin: "5px 1px",
                             }}
                             size="small"
                             onClick={() => handleOpen("Approve")}
@@ -570,10 +572,10 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                         <Button
                             variant="contained"
                             sx={{
-                                background:colors.redAccent[500],
-                                color:colors.white[100],
-                                borderRadius:'0px 10px',
-                                margin:"5px 1px",
+                                background: colors.redAccent[500],
+                                color: colors.white[100],
+                                borderRadius: '0px 10px',
+                                margin: "5px 1px",
                             }}
                             size="small"
                             onClick={() => handleOpen("Reject")}
@@ -585,14 +587,14 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                 </>
             }
             <Dialog
-                open={open} 
+                open={open}
                 onClose={handleClose}
-                PaperProps={{ 
-                    style: { 
+                PaperProps={{
+                    style: {
                         // backgroundColor: colors.grey[100], 
                         // color:colors.black[100] ,
-                        borderRadius:"0px 20px",
-                    } 
+                        borderRadius: "0px 20px",
+                    }
                 }}
             >
                 <DialogTitle>Confirm Action</DialogTitle>
@@ -612,49 +614,50 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button 
-                        variant="contained" 
-                        onClick={handleClose} 
+                    <Button
+                        variant="contained"
+                        onClick={handleClose}
                         sx={{
-                            color:colors.white[100],
-                            background:colors.redAccent[500],
-                            borderRadius:"0px 10px",
+                            color: colors.white[100],
+                            background: colors.redAccent[500],
+                            borderRadius: "0px 10px",
                         }}
                     >
                         Cancel
                     </Button>
-                    <Button 
-                        onClick={handleConfirm} 
+                    <Button
+                        onClick={handleConfirm}
                         autoFocus
                         sx={{
-                            color:colors.white[100],
-                            background:colors.primary[400],
-                            borderRadius:"0px 10px",
+                            color: colors.white[100],
+                            background: colors.primary[400],
+                            borderRadius: "0px 10px",
                         }}
                     >
                         Confirm
                     </Button>
                 </DialogActions>
-            {isError &&
-                <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
-                    {error?.data?.message}
-                </Alert>
-            }
+                {isError &&
+                    <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+                        {error?.data?.message}
+                    </Alert>
+                }
             </Dialog>
         </tr>
     );
 };
 
 const Payment = ({ collectionData, leadId, activeRole }) => {
-    const {id} = useParams();
-    console.log('params',id)
+
+    const { id } = useParams();
     const [paymentInfo, setPaymentInfo] = useState([]);
     if (!collectionData) {
-        return <div style={{textAlign:"center"}}>Loading...</div>;
+        return <div style={{ textAlign: "center" }}>Loading...</div>;
     }
 
-    const {data:paymentHistory, isLoading:verifyPaymentLoading, isSuccess:verifyPaymentSuccess, isError:verifyPaymentError} =
-        usePendingVerificationQuery(id,{skip : id === null});
+    const { data: paymentHistory, isLoading: verifyPaymentLoading, isSuccess: verifyPaymentSuccess, isError: verifyPaymentError } =
+        usePendingVerificationQuery(id, { skip: id === null });
+    console.log('params', paymentInfo, collectionData)
 
     useEffect(() => {
         if (verifyPaymentSuccess && paymentHistory) {
@@ -701,17 +704,17 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
     };
 
     return (
-        <Paper 
-            elevation={3} 
-            sx={{ 
-                padding: "20px", 
+        <Paper
+            elevation={3}
+            sx={{
+                padding: "20px",
                 background: colors.white[100],
-                color:colors.black[100],
-                borderRadius:"0px 20px",
-                width:"100%",
-                overflowX:"auto",
-                '& .MuiTableCell-root':{
-                    color:colors.white[100],
+                color: colors.black[100],
+                borderRadius: "0px 20px",
+                width: "100%",
+                overflowX: "auto",
+                '& .MuiTableCell-root': {
+                    color: colors.white[100],
                 },
             }}
         >
@@ -719,22 +722,22 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
                 Payment Verification for Lead ID: {leadId}
             </Typography>
             <Typography variant="subtitle1">Role: {activeRole}</Typography>
-            <Table 
+            <Table
                 component={Paper}
-                sx={{ 
+                sx={{
                     marginTop: "20px",
-                    background:colors.white[100],
-                    color:colors.black[100],
-                    borderRadius:"0px 20px",
-                    overflowY:"scroll",
-                    textAlign:"center",
-                    padding:"20px",
-                    '& .MuiTableHead-root':{
-                        background:colors.primary[400],
-                        color:colors.white[100],
+                    background: colors.white[100],
+                    color: colors.black[100],
+                    borderRadius: "0px 20px",
+                    overflowY: "scroll",
+                    textAlign: "center",
+                    padding: "20px",
+                    '& .MuiTableHead-root': {
+                        background: colors.primary[400],
+                        color: colors.white[100],
                     },
-                    '& .MuiTableCell-root':{
-                        outline:`1px solid ${colors.white[100]}`,
+                    '& .MuiTableCell-root': {
+                        outline: `1px solid ${colors.white[100]}`,
                     },
                 }}>
                 <TableHead>
@@ -752,12 +755,17 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {collectionData ? (
-                        <PaymentRow
-                            key={1}
-                            payment={collectionData}
-                            onUpdateStatus={handleUpdateStatus}
-                        />
+                    {(paymentInfo && paymentInfo.length > 0) ? (
+                        
+                            paymentInfo.map(payment =>
+
+                                <PaymentRow
+                                    key={payment._id}
+                                    payment={payment}
+                                    onUpdateStatus={handleUpdateStatus}
+                                />
+                            )
+                        
                     ) : (
                         <TableRow>
                             <TableCell colSpan={7}>
