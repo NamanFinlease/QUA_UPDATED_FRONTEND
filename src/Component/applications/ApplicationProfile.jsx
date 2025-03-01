@@ -18,14 +18,7 @@ import EKycVerification from '../leads/DetailsVerification';
 import ApplicantProfileData from '../applicantProfileData';
 import CommonRemarks from '../CommonRemarks';
 
-const barButtonOptions = [
-    "Application",
-    "Documents",
-    "Personal",
-    "Banking",
-    "Verification",
-    "Cam",
-];
+const barButtonOptions = ['Application', 'Documents', 'Personal', 'Banking', 'Verification', 'Cam']
 
 const ApplicationProfile = () => {
   const { id } = useParams();
@@ -36,46 +29,39 @@ const ApplicationProfile = () => {
   const [currentPage, setCurrentPage] = useState("application");
   const [leadEdit, setLeadEdit] = useState(false);
 
-    const {
-        data: applicationData,
-        isSuccess: applicationSuccess,
-        isError,
-        error,
-        refetch,
-    } = useFetchSingleApplicationQuery(id, { skip: id === null });
+  const { data: applicationData, isSuccess: applicationSuccess, isError, error, refetch } = useFetchSingleApplicationQuery(id, { skip: id === null });
 
   // Color theme
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  console.log("application profile",applicationData?.lead)
   useEffect(() => {
     if (applicationSuccess) {
-      setApplicationProfile(applicationData?.application);
-      setLead(applicationData?.application?.lead)
+      setApplicationProfile(applicationData);
+      setLead(applicationData?.lead)
     }
     if (applicationSuccess && applicationData?.lead?.document?.length) {
       setUploadedDocs(applicationData?.lead?.document.map(doc => doc.type));
     }
   }, [applicationSuccess, applicationData]);
 
-    useEffect(() => {
-        if (id) {
-            refetch();
-        }
-    }, [id, refetch]);
+  useEffect(() => {
+    if (id) {
+      refetch();
+    }
+  }, [id, refetch]);
 
   return (
     <div className="crm-container" style={{display:"flex", justifyContent:"center",}}>
       {leadEdit ? (
-        <LeadDetails applicationData={applicationData?.application} setLeadEdit={setLeadEdit} />
+        <LeadDetails applicationData={applicationData} setLeadEdit={setLeadEdit} />
       ) : (
         <>
           <div className='p-3' style={{ width:"90%",}}>
-            {applicationData?.application?.isRejected ?
+            {applicationData?.isRejected ?
             <h1 style={{color:colors.primary[400]}}>Application : Rejected</h1>
             :
-            applicationData?.application?.onHold ?
+            applicationData?.onHold ?
             <h1 style={{color:colors.primary[400]}}>Application : On Hold</h1>
             :
             <h1 style={{color:colors.primary[400]}}>Application : In Process</h1>
@@ -96,22 +82,19 @@ const ApplicationProfile = () => {
                     <InternalDedupe id={applicationData?.application?.lead?._id} />
                     <ApplicationLogHistory id={applicationData?.application?.lead?._id} />
                     {(activeRole === "creditManager" && <CommonRemarks id={applicationData?.application?.lead?._id} />)}
-                    <InternalDedupe id={applicationData?.application?.lead?._id} />
-                    <ApplicationLogHistory id={applicationData?.application?.lead?._id} />
-                    {(activeRole === "creditManager" && <CommonRemarks id={applicationData?.application?.lead?._id} />)}
                     {isError && (
                       <Alert severity="error" style={{ marginTop: "10px" }}>
                         {error?.data?.message}
                       </Alert>
                     )}
 
-                                        {/* Action Buttons */}
+                    {/* Action Buttons */}
 
-                    {(!applicationData?.application?.isRejected && activeRole !== "admin") &&
+                    {(!applicationData.isRejected && activeRole !== "admin") &&
                       <Box display="flex" justifyContent="center" sx={{ marginTop: '20px' }}>
                         <ActionButton
                           id={applicationData?.application?._id}
-                          isHold={applicationData?.application?.onHold}
+                          isHold={applicationData.onHold}
                         />
 
                       </Box>}
@@ -123,9 +106,9 @@ const ApplicationProfile = () => {
               </>
             }
 
-            {applicationData?.application && Object.keys(applicationData?.application).length > 0 &&(
+            {applicationData && Object.keys(applicationData).length > 0 &&
               <>
-                {currentPage === "personal" && <PersonalDetails id={applicationData?.application.applicant} />}
+                {currentPage === "personal" && <PersonalDetails id={applicationData?.application?.applicant} />}
                 {currentPage === "banking" &&
                   <BankDetails id={applicationData?.application?.applicant} />}
 
@@ -147,22 +130,18 @@ const ApplicationProfile = () => {
                   />
                 }
 
-                                    {currentPage === "cam" &&
-                                        applicationData?.application._id && (
-                                            <Cam
-                                                id={
-                                                    applicationData?.application
-                                                        ._id
-                                                }
-                                            />
-                                        )}
-                                </>
-                            )}
-                    </div>
-                </>
-            )}
-        </div>
-    );
+                {currentPage === "cam" && applicationData?.application?._id && <Cam id={applicationData?.application?._id} />}
+              </>
+
+            }
+
+
+          </div>
+        </>
+      )}
+
+    </div>
+  );
 };
 
 export default ApplicationProfile;

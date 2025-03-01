@@ -55,6 +55,32 @@ export const lmsQueries = createApi({
       }),
       invalidatesTags: ["activeLeads"],
     }),
+    allocatePartialLead: builder.mutation({
+      query: ( id ) =>  ({
+        url:`/marketing/partialLead/${id}/?role=${role()}`,
+        method:"POST"
+      }),
+      invalidatesTags: ["allocatedPartialLeads"],
+    }),
+    //Partial Leads
+    partialLeads: builder.query({
+      query: ({ page, limit }) =>
+          `/marketing/landingPageData/?page=${page}&limit=${limit}&role=${role()}`,
+      providesTags: ["partialLeads"],
+    }),
+    allocatedPartialLeads: builder.query({
+      query: ({ page, limit }) =>
+          `/marketing/allocated/?page=${page}&limit=${limit}&role=${role()}`,
+      providesTags: ["allocatedPartialLeads"],
+    }),
+    completedPartialLeads: builder.query({
+      query: ({ page, limit }) =>
+          `/marketing/completed/?page=${page}&limit=${limit}&role=${role()}`,
+    }),
+    rejectedPartialLeads: builder.query({
+      query: ({ page, limit }) =>
+          `/marketing/rejectedList/?page=${page}&limit=${limit}&role=${role()}`,
+    }),
     //Pre Collection Leads
     activePreCollectionLeads: builder.query({
       query: ({ page, limit }) => `collections/preCollection/active/?role=${role()}`,
@@ -120,4 +146,9 @@ export const {
   useAllocateCollectionsMutation,
   useFetchRepaymentDetailsQuery,
   usePendingVerificationListQuery,
+  usePartialLeadsQuery,
+  useAllocatePartialLeadMutation,
+  useAllocatedPartialLeadsQuery,
+  useCompletedPartialLeadsQuery,
+  useRejectedPartialLeadsQuery,
 } = lmsQueries;

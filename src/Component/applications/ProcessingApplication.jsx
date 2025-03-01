@@ -74,7 +74,7 @@ const ProcessingApplication = () => {
 
     const rows = processingApplication?.applications?.map((application) => ({
         id: application?._id,
-        leadNo: application?.leadNo,
+        leadNo: application?.lead?.leadNo,
         name: ` ${application?.lead?.fName}  ${application?.lead?.mName} ${application?.lead?.lName}`,
         mobile: application?.lead?.mobile,
         aadhaar: application?.lead?.aadhaar,

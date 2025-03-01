@@ -78,10 +78,13 @@ const DisbursalProfile = () => {
         disbursalData?.isDisbursed ?
         <h1 style={{color:colors.primary[400]}}>Disbursal : Disbursed</h1>
         :
-        !disbursalData?.isDisbursed ?
+        disbursalData?.isRecommended === true && disbursalData?.isDisbursed === false ?
         <h1 style={{color:colors.primary[400]}}>Disbursal : Pending</h1>
         :
+        disbursalData?.isDisbursed === false && disbursalData?.isRecommended === false ?
         <h1 style={{color:colors.primary[400]}}>Disbursal : In Process</h1>
+        :
+        <h1 style={{color:colors.primary[400]}}></h1>
         }
         <BarButtons
           barButtonOptions={barButtonOptions}
