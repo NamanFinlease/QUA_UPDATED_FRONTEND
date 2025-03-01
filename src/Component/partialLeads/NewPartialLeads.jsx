@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
-import { useAllocateLeadMutation, useFetchAllLeadsQuery } from '../../Service/Query';
+import { useAllocatePartialLeadMutation, usePartialLeadsQuery } from '../../Service/LMSQueries';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../Component/Header';
 import CommonTable from '../../Component/CommonTable';
@@ -19,11 +19,11 @@ const NewPartialLeads = () => {
   });
   const { empInfo, activeRole } = useAuthStore();
   const navigate = useNavigate();
-  const { data: allLeads, refetch } = useFetchAllLeadsQuery({
+  const { data: allLeads, refetch } = usePartialLeadsQuery({
     page: paginationModel.page + 1,
     limit: paginationModel.pageSize,
   });
-  const [allocateLead, { data: updatedLeads, isSuccess }] = useAllocateLeadMutation();
+  const [allocateLead, { data: updatedLeads, isSuccess }] = useAllocatePartialLeadMutation();
   
   useEffect(() => {
     if (allLeads) {
@@ -46,9 +46,8 @@ const NewPartialLeads = () => {
   }
 
   const handleAllocate = async () => {
-    // Perform action based on selected leads
+    console.log("handle allocate", selectedLeads);
     allocateLead(selectedLeads);
-    
   };
 
   const columns = [
@@ -66,37 +65,27 @@ const NewPartialLeads = () => {
         />
       ),
     },
-    { field: 'leadNo', headerName: 'Lead Number', width: 200 },
     { field: 'name', headerName: 'Full Name', width: 200 },
     { field: 'mobile', headerName: 'Mobile', width: 150 },
-    { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },
     { field: 'pan', headerName: 'PAN No.', width: 150 },
-    { field: 'city', headerName: 'City', width: 150 },
-    { field: 'state', headerName: 'State', width: 150 },
     { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },
     { field: 'salary', headerName: 'Salary', width: 150 },
     { field: 'source', headerName: 'Source', width: 150 },
+    { field: 'pinCode', headerName: 'Pin Code', width: 150 },
+    { field: 'email', headerName: 'Email', width: 150 },
   ];
 
   const rows = allLeads?.leads?.map((lead) => ({
       id: lead?._id,
-      leadNo: lead?.leadNo,
-      name: `${lead?.fName} ${lead?.mName} ${lead?.lName}`,
+      name: lead?.fullName,
       mobile: lead?.mobile,
-      aadhaar: lead?.aadhaar,
       pan: lead?.pan,
-      city: lead?.city,
-      state: lead?.state,
       loanAmount: lead?.loanAmount,
       salary: lead?.salary,
       source: lead?.source,
+      pinCode: lead?.pinCode,
+      email: lead?.email,
     })) || [];
-
-  const handleRowClick = (params) => {
-    if (onRowClick) {
-      onRowClick(params);
-    }
-  };
 
   const handlePageChange = (newPaginationModel) => {
     // setPage(newPaginationModel);
@@ -106,7 +95,7 @@ const NewPartialLeads = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate("/lead-process")
+      navigate("/partialAllocatedLeads")
     }
   }, [isSuccess, allLeads])
 

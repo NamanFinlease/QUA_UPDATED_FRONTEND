@@ -1,129 +1,92 @@
-import { useEffect, useState } from 'react';
-import React from 'react';
-import { useAllocateLeadMutation, useFetchAllLeadsQuery } from '../../Service/Query';
-import { useNavigate } from 'react-router-dom';
-import Header from '../../Component/Header';
-import CommonTable from '../../Component/CommonTable';
-import useAuthStore from '../../Component/store/authStore';
-
+import React, { useEffect, useState } from "react";
+import { DataGrid } from "@mui/x-data-grid";
+import { useNavigate } from "react-router-dom";
+import { Alert } from "@mui/material";
+import useAuthStore from "../store/authStore";
+import { useCompletedPartialLeadsQuery } from "../../Service/LMSQueries";
+import CommonTable from "../CommonTable";
 
 const CompletedLeads = () => {
-  const [leads, setLeads] = useState([]); // Stores lead details
-  const [totalLeads, setTotalLeads] = useState(0); // Stores the total lead count
-  const [page, setPage] = useState(1); // Current page 
-  const [selectedLeads, setSelectedLeads] = useState(null); // Stores selected leads
-  const apiUrl = import.meta.env.VITE_API_URL;
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 10,
-  });
-  const { empInfo, activeRole } = useAuthStore();
-  const navigate = useNavigate();
-  const { data: allLeads, refetch } = useFetchAllLeadsQuery({
-    page: paginationModel.page + 1,
-    limit: paginationModel.pageSize,
-  });
-  const [allocateLead, { data: updatedLeads, isSuccess }] = useAllocateLeadMutation();
-  
-  useEffect(() => {
-    if (allLeads) {
-      setLeads(allLeads.leads);
-      setTotalLeads(allLeads.totalLeads);
-    }
-  }, [allLeads]);
+    const [allocatedLeads, setAllocatedLeads] = useState([]);
+    const [totalAllocatedLeads, setTotalAllocatedLeads] = useState();
+    const { empInfo, activeRole } = useAuthStore();
+    const navigate = useNavigate();
+    const [paginationModel, setPaginationModel] = useState({
+        page: 0,
+        pageSize: 10,
+    });
 
-  useEffect(() => {
-        refetch()
-        setTotalLeads(allLeads?.totalLeads)
-      }, [page, allLeads, updatedLeads])
+    const { data, isSuccess, isError, error, refetch } = useCompletedPartialLeadsQuery({
+        page: paginationModel.page + 1,
+        limit: paginationModel.pageSize,
+    });
 
-  useEffect(() => {
-    setLeads(allLeads);
-  }, [page]);    
+    const handlePageChange = (newPaginationModel) => {
+        setPaginationModel(newPaginationModel);
+    };
 
-  const handleCheckboxChange = (id) => {
-    setSelectedLeads(selectedLeads === id ? null : id);
-  }
+    const handleLeadClick = (disbursal) => {
+        console.log("The disbursal", disbursal.row.loanNo);
+        navigate(`/collection-profile/${disbursal.row.loanNo}`);
+    };
+    const columns = [
+      { field: 'name', headerName: 'Full Name', width: 200 },
+      { field: 'mobile', headerName: 'Mobile', width: 150 },
+      { field: 'pan', headerName: 'PAN No.', width: 150 },
+      { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },
+      { field: 'salary', headerName: 'Salary', width: 150 },
+      { field: 'source', headerName: 'Source', width: 150 },
+      { field: 'city', headerName: 'City', width: 150 },
+      { field: 'state', headerName: 'State', width: 150 },
+      { field: 'pinCode', headerName: 'Pin Code', width: 150 },
+      { field: 'email', headerName: 'Email', width: 150 },
+    ];
 
-  const handleAllocate = async () => {
-    // Perform action based on selected leads
-    allocateLead(selectedLeads);
-    
-  };
+    useEffect(() => {
+        if (isSuccess && data) {
+            console.log("success")
+        }
+    }, [isSuccess, data]);
 
-  const columns = [
-    {
-      field: 'select',
-      headerName: '',
-      width: 50,
-      renderCell: (params) => (
-        activeRole === "screener" &&
-        <input
-          type="checkbox"
-          checked={selectedLeads === params.row.id}
-
-          onChange={() => handleCheckboxChange(params.row.id)}
-        />
-      ),
-    },
-    { field: 'leadNo', headerName: 'Lead Number', width: 200 },
-    { field: 'name', headerName: 'Full Name', width: 200 },
-    { field: 'mobile', headerName: 'Mobile', width: 150 },
-    { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },
-    { field: 'pan', headerName: 'PAN No.', width: 150 },
-    { field: 'city', headerName: 'City', width: 150 },
-    { field: 'state', headerName: 'State', width: 150 },
-    { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },
-    { field: 'salary', headerName: 'Salary', width: 150 },
-    { field: 'source', headerName: 'Source', width: 150 },
-  ];
-
-  const rows = allLeads?.leads?.map((lead) => ({
+    const rows = allocatedLeads?.map((allocatedLeads) => ({
       id: lead?._id,
-      leadNo: lead?.leadNo,
       name: `${lead?.fName} ${lead?.mName} ${lead?.lName}`,
       mobile: lead?.mobile,
-      aadhaar: lead?.aadhaar,
       pan: lead?.pan,
-      city: lead?.city,
-      state: lead?.state,
       loanAmount: lead?.loanAmount,
       salary: lead?.salary,
       source: lead?.source,
-    })) || [];
+      city: lead?.city,
+      state: lead?.state,
+      pinCode: lead?.pinCode,
+      email: lead?.email,
+    }));
 
-  const handleRowClick = (params) => {
-    if (onRowClick) {
-      onRowClick(params);
-    }
-  };
+    useEffect(() => {
+        refetch({
+            page: paginationModel.page + 1,
+            limit: paginationModel.pageSize,
+        });
+    }, [paginationModel]);
 
-  const handlePageChange = (newPaginationModel) => {
-    // setPage(newPaginationModel);
-    setPaginationModel(newPaginationModel)
-    refetch({ page: newPaginationModel.page +1, limit: newPaginationModel.pageSize});
-  };
-
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("/lead-process")
-    }
-  }, [isSuccess, allLeads])
-
-  return (
-    <>
-      <CommonTable
-        columns={columns}
-        rows={rows}
-        totalRows={totalLeads}
-        paginationModel={paginationModel}
-        onPageChange={handlePageChange}
-        title="Completed Leads"
-        actionButton={true}
-        onAllocateButtonClick={handleAllocate}
-      />
-      </>
-  );
+    return (
+        <>
+            <CommonTable
+                columns={columns}
+                rows={rows}
+                totalRows={totalAllocatedLeads}
+                paginationModel={paginationModel}
+                onPageChange={handlePageChange}
+                // onRowClick={handleLeadClick}
+                title="Completed Leads"
+            />
+            {isError && (
+                <Alert severity="error" style={{ marginTop: "10px" }}>
+                    {error?.data?.message}
+                </Alert>
+            )}
+        </>
+    );
 };
 
 export default CompletedLeads;

@@ -51,15 +51,16 @@ import RepaymentDetails from "./Component/repayment/RepaymentDetails";
 import ActiveLeads from "./Component/collection/ActiveLeads";
 import AllocatedCollectionLeads from "./Component/collection/AllocatedCollectionLeads";
 import AllocatedPreCollectionLeads from "./Component/Precollection/AllocatedPreCollectionLeads";
-import PreCollectionActiveLeads from "./Component/Precollection/preCollectionActiveLeads";
+import PreCollectionActiveLeads from "./Component/Precollection/PreCollectionActiveLeads";
 import PendingVerification from "./Component/accounts/PendingVerification";
 import CloseLeads from "./Component/accounts/CloseLeads";
 import CollectionProfile from "./Component/collection/CollectionProfile";
 import PaymentVerification from "./Component/accounts/PaymentVerification";
 import PendingESign from "./Component/sanction/PendingESingn";
-// import NewPartialLeads from "./Component/partialLeads/NewPartialLeads";
-// import PartialAllocatedLeads from "./Component/partialLeads/PartialAllocatedLeads";
-// import CompletedLeads from "./Component/partialLeads/completedLeads";
+import NewPartialLeads from "./Component/partialLeads/NewPartialLeads";
+import PartialAllocatedLeads from "./Component/partialLeads/PartialAllocatedLeads";
+import CompletedLeads from "./Component/partialLeads/completedLeads";
+import PartialRejectedLeads from "./Component/partialLeads/PartialRejectedLeads";
 
 function App() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -151,7 +152,7 @@ function App() {
                                         path="/rejected-leads"
                                         element={<RejectedLeads />}
                                     />
-                                    {/* <Route
+                                    <Route
                                         path="/new-partialLeads"
                                         element={<NewPartialLeads />}
                                     />
@@ -162,7 +163,11 @@ function App() {
                                     <Route
                                         path="/partial-completedLeads"
                                         element={<CompletedLeads />}
-                                    /> */}
+                                    />
+                                    <Route
+                                        path="/partial-rejectedLeads"
+                                        element={<PartialRejectedLeads />}
+                                    />
                                     <Route
                                         path="/application-profile/:id"
                                         element={<ApplicationProfile />}

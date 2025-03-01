@@ -89,7 +89,7 @@ const Cam = ({id}) => {
         netDisbursalAmount: details?.netDisbursalAmount || 0,         // Net Disbursal Amount
         loanRecommended: details?.loanRecommended || 0,   // Loan Recommended
         disbursalDate: details?.disbursalDate && dayjs(details?.disbursalDate).format('YYYY-MM-DD') || '-',     // Disbursal Date
-        finalSalaryToIncomeRatioPercentage: details?.finalSalaryToIncomeRatioPercentage || '',     // Final Salary to income ratio
+        finalSalaryToIncomeRatioPercentage: details?.finalSalaryToIncomeRatioPercentage || 0,     // Final Salary to income ratio
         repaymentDate: details?.repaymentDate && dayjs(details?.repaymentDate).format('YYYY-MM-DD')  || '-',     // Repayment Date
         adminFeePercentage: details?.adminFeePercentage || '',  // Admin Fee Inc. GST (%)
         totalAdminFeeAmount: details?.totalAdminFeeAmount || '0',  // Admin Fee Inc. GST (%)
@@ -97,7 +97,7 @@ const Cam = ({id}) => {
         netAdminFeeAmount: details?.netAdminFeeAmount || 0,   // Net Admin Fee Amount
         eligibleTenure: details?.eligibleTenure || '-',   // Eligible Tenure
         repaymentAmount: details?.repaymentAmount || 0,   // Repayment Amount
-        remarks: details?.remarks || "-",   // Remarks
+        remarks: details?.remarks || "",   // Remarks
       });
     }
   }, [getCamSuccess, data]);
@@ -140,25 +140,29 @@ const Cam = ({id}) => {
                     </TableRow>
                     <TableRow>
                       <TableCell>Salary Date 1</TableCell>
-                      <TableCell>{moment(formData?.salaryDate1 || '-').format('DD-MM-YYYY')}</TableCell>
+                      {/* <TableCell>{moment(formData?.salaryDate1 || '-').format('DD-MM-YYYY')}</TableCell> */}
+                      <TableCell>{formData?.salaryDate1 && moment(formData?.salaryDate1 || '-').format('DD-MM-YYYY') || '-'}</TableCell>
                       <TableCell>Salary Amount 1</TableCell>
                       <TableCell>{formData?.salaryAmount1}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Salary Date 2</TableCell>
-                      <TableCell>{moment(formData?.salaryDate2 || '-').format('DD-MM-YYYY')}</TableCell>
+                      {/* <TableCell>{moment(formData?.salaryDate2 || '-').format('DD-MM-YYYY')}</TableCell> */}
+                      <TableCell>{formData?.salaryDate2 && moment(formData?.salaryDate2 || '-').format('DD-MM-YYYY') || '-'}</TableCell>
                       <TableCell>Salary Amount 2</TableCell>
                       <TableCell>{formData?.salaryAmount2}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Salary Date 3</TableCell>
-                      <TableCell>{moment(formData?.salaryDate3 || '-').format('DD-MM-YYYY')}</TableCell>
+                      {/* <TableCell>{moment(formData?.salaryDate3 || '-').format('DD-MM-YYYY')}</TableCell> */}
+                      <TableCell>{formData?.salaryDate3 && moment(formData?.salaryDate3 || '-').format('DD-MM-YYYY') || '-'}</TableCell>
                       <TableCell>Salary Amount 3</TableCell>
                       <TableCell>{formData?.salaryAmount3}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Next Salary Date</TableCell>
-                      <TableCell>{moment(formData?.nextPayDate || '-').format('DD-MM-YYYY')}</TableCell>
+                      {/* <TableCell>{moment(formData?.nextPayDate || '-').format('DD-MM-YYYY')}</TableCell> */}
+                      <TableCell>{formData?.nextPayDate && moment(formData?.nextPayDate || '-').format('DD-MM-YYYY') || '-'}</TableCell>
                       <TableCell>Average Salary</TableCell>
                       <TableCell>{formData?.averageSalary}</TableCell>
                     </TableRow>
@@ -205,9 +209,21 @@ const Cam = ({id}) => {
                     </TableRow>
                     <TableRow>
                       <TableCell>Disbursal Date</TableCell>
-                      <TableCell>{moment(formData?.disbursalDate).format("DD-MM-YYYY")}</TableCell>
+                      {/* <TableCell>{moment(formData?.disbursalDate).format("DD-MM-YYYY")}</TableCell> */}
+                      {/* <TableCell>{formData?.disbursalDate && moment(formData?.disbursalDate || '-').format('DD-MM-YYYY') || '-'}</TableCell> */}
+                      <TableCell>
+                        {formData?.disbursalDate && moment(formData?.disbursalDate).isValid() 
+                          ? moment(formData?.disbursalDate).format('DD-MM-YYYY') 
+                          : '-'}
+                      </TableCell>
                       <TableCell>Repayment Date</TableCell>
-                      <TableCell>{moment(formData?.repaymentDate).format("DD-MM-YYYY")}</TableCell>
+                      {/* <TableCell>{moment(formData?.repaymentDate).format("DD-MM-YYYY")}</TableCell> */}
+                      {/* <TableCell>{formData?.repaymentDate && moment(formData?.repaymentDate || '-').format('DD-MM-YYYY') || '-'}</TableCell> */}
+                      <TableCell>
+                        {formData?.repaymentDate && moment(formData?.repaymentDate).isValid() 
+                          ? moment(formData?.repaymentDate).format('DD-MM-YYYY') 
+                          : '-'}
+                      </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Eligible Tenure</TableCell>

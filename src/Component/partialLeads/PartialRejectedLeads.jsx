@@ -3,10 +3,10 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
 import useAuthStore from "../store/authStore";
-import { useAllocatedPartialLeadsQuery} from "../../Service/LMSQueries";
+import { useRejectedPartialLeadsQuery } from "../../Service/LMSQueries";
 import CommonTable from "../CommonTable";
 
-const AllocatedPreCollectionLeads = () => {
+const PartialRejectedLeads = () => {
     const [allocatedLeads, setAllocatedLeads] = useState([]);
     const [totalAllocatedLeads, setTotalAllocatedLeads] = useState();
     const { empInfo, activeRole } = useAuthStore();
@@ -16,7 +16,7 @@ const AllocatedPreCollectionLeads = () => {
         pageSize: 10,
     });
 
-    const { data, isSuccess, isError, error, refetch } = useAllocatedPartialLeadsQuery({
+    const { data, isSuccess, isError, error, refetch } = useRejectedPartialLeadsQuery({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
     });
@@ -36,6 +36,8 @@ const AllocatedPreCollectionLeads = () => {
       { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },
       { field: 'salary', headerName: 'Salary', width: 150 },
       { field: 'source', headerName: 'Source', width: 150 },
+      { field: 'city', headerName: 'City', width: 150 },
+      { field: 'state', headerName: 'State', width: 150 },
       { field: 'pinCode', headerName: 'Pin Code', width: 150 },
       { field: 'email', headerName: 'Email', width: 150 },
     ];
@@ -46,14 +48,16 @@ const AllocatedPreCollectionLeads = () => {
         }
     }, [isSuccess, data]);
 
-    const rows = allocatedLeads?.data?.map((lead) => ({
+    const rows = allocatedLeads?.map((allocatedLeads) => ({
       id: lead?._id,
-      name: lead?.data?.fullName,
+      name: `${lead?.fName} ${lead?.mName} ${lead?.lName}`,
       mobile: lead?.mobile,
       pan: lead?.pan,
       loanAmount: lead?.loanAmount,
       salary: lead?.salary,
       source: lead?.source,
+      city: lead?.city,
+      state: lead?.state,
       pinCode: lead?.pinCode,
       email: lead?.email,
     }));
@@ -74,7 +78,7 @@ const AllocatedPreCollectionLeads = () => {
                 paginationModel={paginationModel}
                 onPageChange={handlePageChange}
                 // onRowClick={handleLeadClick}
-                title="Allocated Partial Leads"
+                title="Rejected Partial Leads"
             />
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>
@@ -85,4 +89,4 @@ const AllocatedPreCollectionLeads = () => {
     );
 };
 
-export default AllocatedPreCollectionLeads;
+export default PartialRejectedLeads;
