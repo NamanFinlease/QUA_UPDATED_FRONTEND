@@ -6,7 +6,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useLazyGetLeadDocsQuery } from '../Service/Query';
 import Swal from 'sweetalert2';
 
-const DocumentsTable = ({ leadData, uploadedDocs }) => {
+const DocumentsTable = ({ leadData, uploadedDocs, setSelectedBSA, selectedDocType,selectedBSA,getBanks }) => {
+
+    console.log('docs upload', uploadedDocs)
 
 
     const [getLeadDocs, { data, isSuccess, isError, error }] = useLazyGetLeadDocsQuery();
@@ -25,6 +27,16 @@ const DocumentsTable = ({ leadData, uploadedDocs }) => {
 
         getLeadDocs({ id: leadData._id, docType, docId: doc._id });
     };
+
+    const selectFile = (file) => {
+        console.log('file',file)
+
+        setSelectedBSA(prev => [...prev,file])
+        getBanks()
+
+    }
+
+
 
     useEffect(() => {
         if (isSuccess && data) {
@@ -52,9 +64,9 @@ const DocumentsTable = ({ leadData, uploadedDocs }) => {
         <TableContainer component={Box} sx={{ marginTop: 6, borderRadius: '0px 20px 0px 20px', border: `1px solid ${colors.primary[400]}`, overflow: 'hidden' }}>
             <Table>
                 <TableHead>
-                    <TableRow 
-                        sx={{ 
-                            backgroundColor: colors.primary[400], 
+                    <TableRow
+                        sx={{
+                            backgroundColor: colors.primary[400],
                             color: colors.white[100],
                         }}
                     >
@@ -62,6 +74,7 @@ const DocumentsTable = ({ leadData, uploadedDocs }) => {
                         <TableCell sx={{ fontWeight: 'bold' }}>Name</TableCell>
                         <TableCell sx={{ fontWeight: 'bold' }}>Remarks / Document Credentials</TableCell>
                         <TableCell sx={{ fontWeight: 'bold' }}>View</TableCell>
+                        <TableCell sx={{ fontWeight: "bold" }}>Actions</TableCell>
                         {/* <TableCell sx={{ color: '#ffffff', fontWeight: 'bold' }}>Actions</TableCell> */}
                     </TableRow>
                 </TableHead>
@@ -86,6 +99,33 @@ const DocumentsTable = ({ leadData, uploadedDocs }) => {
                                     <VisibilityIcon />
                                 </IconButton>
                             </TableCell>
+                            {(doc?.type || doc.url.split("/")[1]) === "bankStatement" ?
+                                <TableCell >
+                                    {/* <IconButton sx={{ color: '#454443'}} onClick={() => handleDownload(doc)}>
+                                        <VisibilityIcon />
+                                    </IconButton> */}
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+                                        onClick={() => selectFile(doc.name)}                                        
+                                        disabled={selectedDocType || selectedBSA.includes(doc.name)}
+                                        sx={{
+                                            borderRadius: '20px',
+                                            textTransform: 'none',
+                                    
+                                            // ✅ Override MUI's default disabled styles
+                                            '&.Mui-disabled': {
+                                                backgroundColor: colors.primary[400], // Keep primary color instead of default gray
+                                                opacity: 0.5,  // Faded effect
+                                                cursor: 'not-allowed', // Show "not-allowed" cursor
+                                                pointerEvents: 'none', // Prevent interaction
+                                            },
+                                        }}
+                                    >
+                                        {/* {label} */}
+                                        BSA
+                                    </Button>
+                                </TableCell> : null}
                         </TableRow>
                     ))}
                 </TableBody>

@@ -23,11 +23,12 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import Swal from "sweetalert2";
 
 
 const LeadDetails = ({ leadData, setLeadEdit }) => {
   const { id } = useParams();
-  const [updateLead, { data, isSuccess, isError, error }] = useUpdateLeadMutation();
+  const [updateLead, { data, isSuccess, isLoading, isError, error }] = useUpdateLeadMutation();
 
   // Color theme
   const theme = useTheme();
@@ -39,6 +40,10 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
     mode: "onBlur",
     reValidateMode: "onChange",
   });
+  const handleDate = (date) => {
+    
+    setValue("dob",dayjs(date).format("YYYY/MM/DD"))
+  };
 
   useEffect(() => {
     if (leadData && Object.keys(leadData).length > 0) {
@@ -52,6 +57,17 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
     setLeadEdit(false);
     updateLead({ id, formData });
   };
+
+  useEffect(() => {
+    if (isSuccess && data && !isLoading) {
+      Swal.fire({
+        text: "Lead details edited successfully!",
+        icon: "success",
+      });
+    }
+  }, [isSuccess, data, isLoading])
+
+  console.log('loading',isLoading)
 
   return (
     <Box sx={{ padding: '0px 20px', backgroundColor: colors.white[100], minHeight: '100vh' }}>
@@ -196,7 +212,6 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
                       color: colors.black[100]
                     }
                   }}
-                  format="DD/MM/YYYY"
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -206,10 +221,11 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
                       helperText={fieldState.error ? fieldState.error.message : ''}
                     />
                   )}
-                  value={field.value ? dayjs(field.value, 'YYYY-MM-DD') : null}
-                  onChange={(newValue) => {
-                    field.onChange(newValue);
+                  value={field.value ? dayjs(field.value) : null}
+                  slotProps={{
+                    textField: { format: "DD/MM/YYYY" },
                   }}
+                  onChange={date => setValue("dob",dayjs(date).format("YYYY/MM/DD"))}
                 />
               )}
             />

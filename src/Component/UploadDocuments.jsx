@@ -23,16 +23,16 @@ import { Controller, useForm } from 'react-hook-form';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import { useUploadDocumentsMutation } from '../Service/Query';
+import { useLazyGetBanksQuery, useUploadDocumentsMutation } from '../Service/Query';
 import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import useAuthStore from './store/authStore';
-import DocumentsTable from './documentsTable';
-
+import DocumentsTable from './DocumentsTable';
+import { GridCloseIcon } from '@mui/x-data-grid';
+import { Cancel } from '@mui/icons-material';
 const UploadDocuments = ({ leadData }) => {
-    const { id } = useParams();
-    const fileInputRef = useRef();
     const { empInfo, activeRole } = useAuthStore();
+    const [selectedBSA, setSelectedBSA] = useState([])
     const [uploadedDocs, setUploadedDocs] = useState();
     const [selectedDocuments, setSelectedDocuments] = useState([]);
     const [selectedDocType, setSelectedDocType] = useState(null);
@@ -52,12 +52,14 @@ const UploadDocuments = ({ leadData }) => {
         bankStatement: [],
     });
     const [uploadDocuments, { data, isSuccess: docSuccess, isLoading, isError: isDocError, error: docError }] = useUploadDocumentsMutation();
+    const [getBanks, { data: bankList, isSuccess: bankSuccess, isLoading: bankLoading, isError: isBankError, error: bankError }] = useLazyGetBanksQuery();
 
-    const {control} = useForm({
+    const { control } = useForm({
         defaultValues: {
-            addRemarks : '',
+            addRemarks: '',
         }
     })
+
 
     // New state for remarks when "others" is selected
     const [otherRemarks, setOtherRemarks] = useState('');
@@ -96,7 +98,10 @@ const UploadDocuments = ({ leadData }) => {
         }));
     };
 
+
+
     const handleBankChange = (e, newValue) => {
+
         setSelectedBank(newValue.bankName);
         setBankInputs((prev) => ({ ...prev, bankCode: newValue.code }));
     };
@@ -135,6 +140,14 @@ const UploadDocuments = ({ leadData }) => {
         }
     };
 
+    const removeBSA = (file) => {
+        const updatedBSAFiles = selectedBSA.filter(ele => ele !== file)
+        console.log('upadte ', updatedBSAFiles)
+
+        setSelectedBSA(updatedBSAFiles)
+
+    }
+
     const handleAccountNoChange = (e) => {
         setBankInputs((prev) => ({ ...prev, accountNo: e.target.value }));
     };
@@ -146,7 +159,7 @@ const UploadDocuments = ({ leadData }) => {
     const handleSubmit = async () => {
         const hasFileSelected = fileInputs.some((input) => input.file);
 
-        if (!hasFileSelected) {
+        if (!hasFileSelected && selectedBSA.length === 0) {
             Swal.fire(
                 "Warning!",
                 "Please select at least one file to upload.",
@@ -159,15 +172,23 @@ const UploadDocuments = ({ leadData }) => {
 
         // Prepare data to be sent to the FormData
         fileInputs.forEach((input, index) => {
+            console.log('htehtuhtneu', bankInputs.bankCode);
             if (input.file) {
                 formData.append(`${selectedDocType}`, input.file); // Append file to formData
                 formData.append(`remarks`, input.remarks); // Append remarks to formData
                 if (selectedDocType === "bankStatement") {
-                    console.log(bankInputs.bankCode);
                     formData.append(`bankCode`, bankInputs.bankCode);
                     formData.append(`accountNo`, bankInputs.accountNo);
                     formData.append(`accountType`, bankInputs.accountType);
                 }
+            }
+            if (selectedBSA.length > 0) {
+                formData.append(`remarks`, input.remarks); // Append remarks to formData
+
+                formData.append(`bankCode`, bankInputs.bankCode);
+                formData.append(`accountNo`, bankInputs.accountNo);
+                formData.append(`accountType`, bankInputs.accountType);
+                formData.append(`bsaList`, selectedBSA);
             }
         });
 
@@ -194,22 +215,28 @@ const UploadDocuments = ({ leadData }) => {
             setFileInputs([{ file: null, remarks: '' }]); // Reset file inputs
             setSelectedDocType(null);
             setOtherRemarks('');
+            setSelectedBSA([])
+            setBankInputs({
+                bankCode: "",
+                accountNo: "",
+                accountType: "",
+
+            })
 
         } catch (error) {
             Swal.fire(
                 "Error!",
-                "Failed to upload documents. Please try again.",
+                error?.data?.message,
                 "error"
             );
-            console.error("Upload error:", error); // Log error for debugging
         }
     };
 
-    // useEffect(() => {
-    //     if (isSuccess && banksData) {
-    //         setBanks(banksData);
-    //     }
-    // }, [isSuccess, banksData]);
+    useEffect(() => {
+        if (bankSuccess && bankList) {
+            setBanks(bankList);
+        }
+    }, [bankSuccess, bankList]);
 
     useEffect(() => {
         if (docSuccess) {
@@ -240,100 +267,175 @@ const UploadDocuments = ({ leadData }) => {
     return (
         <>
 
-        {activeRole === "screener" && 
-            <>
-        <Box 
-            sx={{ 
-                maxWidth: '1000px', 
-                margin: '0 auto', 
-                mt: 3, 
-                p: 3, 
-                backgroundColor: colors.white[100], 
-                color:colors.primary[400],
-                borderRadius: "0px 20px 0px 20px",
-                border: `1px solid ${colors.primary[400]}`,
-                boxShadow : `0px 0px 20px rgb(0,0,0,0.2)`,
-            }}
-        >
-            
-            <Typography variant="h6" style={{ fontWeight: '600', color: colors.primary[400], marginBottom:"10px", textAlign:"center", fontSize:"18px" }}>
-                Upload Documents
-            </Typography>
+            {activeRole === "screener" &&
+                <>
+                    <Box
+                        sx={{
+                            maxWidth: '1000px',
+                            margin: '0 auto',
+                            mt: 3,
+                            p: 3,
+                            backgroundColor: colors.white[100],
+                            color: colors.primary[400],
+                            borderRadius: "0px 20px 0px 20px",
+                            border: `1px solid ${colors.primary[400]}`,
+                            boxShadow: `0px 0px 20px rgb(0,0,0,0.2)`,
+                        }}
+                    >
 
-                    <Box display="flex" flexDirection="column" gap={2}>
-                        <Box display="flex" flexWrap="wrap" justifyContent="center" alignItems="center" gap={2}>
-                            {['aadhaarFront', 'aadhaarBack', 'panCard', 'salarySlip', 'bankStatement', 'others'].map((key) => (
-                                <Box 
-                                    key={key} 
-                                    sx={{
-                                        display: 'flex',
-                                        flexWrap:"wrap",
-                                        alignItems:"center",
-                                        gap:"1",
-                                    }}
-                                >
-                                    <Checkbox
-                                        checked={selectedDocType === key}
-                                        onChange={(e) => {
-                                            setSelectedDocType(null);
-                                            setFileInputs([{ file: null, remarks: '' }]);
+                        <Typography variant="h6" style={{ fontWeight: '600', color: colors.primary[400], marginBottom: "10px", textAlign: "center", fontSize: "18px" }}>
+                            Upload Documents
+                        </Typography>
 
-                                    if (e.target.checked) {
-                                        setSelectedDocType(key);
-                                    }
-                                }}
-                                sx={{ color: colors.primary[400],'&.Mui-checked':{color:colors.primary[400]} }}
-                            />
-                            <Typography variant="subtitle2" style={{ fontWeight: '600', color: colors.black[100], fontSize: '14px' }}>
-                                {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
-                            </Typography>
-                        </Box>
-                    ))}
-                </Box>
-
-
-
-                {selectedDocType && (
-                    <>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, }}>
-                            {fileInputs.map((input, index) => (
-                                <Box
-                                    key={index}
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: 2,
-                                        p: 2,
-                                        borderRadius: "0px 20px 0px 20px",
-                                        backgroundColor: colors.white[100],
-                                        boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.2)',
-                                    }}
-                                >
-                                    <Button
-                                        variant="outlined"
-                                        component="label"
-                                        // onClick={() => fileInputRef.current.click()}
+                        <Box display="flex" flexDirection="column" gap={2}>
+                            <Box display="flex" flexWrap="wrap" justifyContent="center" alignItems="center" gap={2}>
+                                {['aadhaarFront', 'aadhaarBack', 'panCard', 'salarySlip', 'bankStatement', 'others'].map((key) => (
+                                    <Box
+                                        key={key}
                                         sx={{
-                                            minWidth: 120,
-                                            background: colors.primary[400],
-                                            borderColor: colors.primary[400],
-                                            color: colors.white[100],
-                                            borderRadius:"0px 10px 0px 10px",
-                                            '&:hover': {
-                                                background: colors.primary[100],
-                                            },
+                                            display: 'flex',
+                                            flexWrap: "wrap",
+                                            alignItems: "center",
+                                            gap: "1",
                                         }}
                                     >
-                                        Choose File
-                                        <input
-                                            type="file"
-                                            // ref={fileInputRef}
-                                            hidden
-                                            onChange={(event) => handleFileChange(index, event)}
+                                        <Checkbox
+                                            checked={selectedDocType === key}
+                                            disabled={selectedBSA.length > 0}
+                                            onChange={(e) => handleCheckbox(e, key)}
+                                            sx={{
+                                                color: colors.primary[400],
+                                                '&.Mui-checked': { color: colors.primary[400] },
+
+                                                // Override MUI's default disabled styles
+                                                '&.Mui-disabled': {
+                                                    color: colors.primary[400], // Keeps the color instead of default gray
+                                                    opacity: 0.5,  // Slightly faded
+                                                    cursor: 'not-allowed', // Show "not-allowed" cursor
+                                                    pointerEvents: 'none', // Prevent interaction
+                                                },
+
+                                                // Also apply the same effect on the label (if any)
+                                                '&.Mui-disabled + span': {
+                                                    opacity: 0.5,
+                                                }
+                                            }}
                                         />
-                                    </Button>
-                                    {/* Conditional Remarks Input */}
-                                    {/* {selectedDocType === 'others' ? (
+                                        <Typography variant="subtitle2" style={{ fontWeight: '600', color: colors.black[100], fontSize: '14px' }}>
+                                            {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
+                                        </Typography>
+                                    </Box>
+                                ))}
+                            </Box>
+
+
+
+                            {(selectedDocType || selectedBSA.length > 0) && (
+                                <>
+                                    <Box
+                                        sx={{
+                                            display: "inline-flex", // Ensures the box sizes itself properly
+                                            alignItems: "center",
+                                            gap: "8px",
+
+                                            padding: "6px 12px",
+                                            // boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                                            maxWidth: "100%", // Prevents fixed small width issues
+                                            // border: "1px solid #ccc",
+                                            overflow: "hidden",
+                                            flexWrap: "wrap", // Allows items to wrap properly
+                                        }}
+                                    >
+                                        {selectedBSA.map((file) => (
+                                            <Box
+                                                key={file}
+                                                sx={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    paddingLeft: "5px",
+                                                    justifyContent: "space-between",
+                                                    gap: "4px",
+                                                    backgroundColor: "#f0f0f0",
+                                                    borderRadius: "20px",
+                                                    flexGrow: 1,
+                                                    minWidth: "100px",
+                                                    maxWidth: "200px", // Adjust if needed
+                                                    overflow: "hidden",
+                                                }}
+                                            >
+                                                <Typography
+                                                    sx={{
+                                                        flex: 1, // Takes available space
+                                                        minWidth: 0, // Required for text truncation
+                                                        fontSize: "14px",
+                                                        fontWeight: 500,
+                                                        color: "#333",
+                                                        whiteSpace: "nowrap",
+                                                        overflow: "hidden",
+                                                        textOverflow: "ellipsis",
+                                                    }}
+                                                >
+                                                    {file}
+                                                </Typography>
+                                                <IconButton
+                                                    size="small"
+                                                    onClick={() => removeBSA(file)}
+                                                    sx={{
+                                                        color: "#d32f2f",
+                                                        padding: "4px",
+                                                        transition: "0.2s",
+                                                        "&:hover": { color: "#b71c1c", transform: "scale(1.1)" },
+                                                    }}
+                                                >
+                                                    <Cancel fontSize="small" />
+                                                </IconButton>
+                                            </Box>
+                                        ))}
+                                    </Box>
+
+
+
+
+
+                                    {selectedDocType && <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, }}>
+                                        {fileInputs.map((input, index) => (
+                                            <Box
+                                                key={index}
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: 2,
+                                                    p: 2,
+                                                    borderRadius: "0px 20px 0px 20px",
+                                                    backgroundColor: colors.white[100],
+                                                    boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.2)',
+                                                }}
+                                            >
+                                                <Button
+                                                    variant="outlined"
+                                                    component="label"
+                                                    // onClick={() => fileInputRef.current.click()}
+                                                    sx={{
+                                                        minWidth: 120,
+                                                        background: colors.primary[400],
+                                                        borderColor: colors.primary[400],
+                                                        color: colors.white[100],
+                                                        borderRadius: "0px 10px 0px 10px",
+                                                        '&:hover': {
+                                                            background: colors.primary[100],
+                                                        },
+                                                    }}
+                                                >
+                                                    Choose File
+                                                    <input
+                                                        type="file"
+                                                        // ref={fileInputRef}
+                                                        hidden
+                                                        onChange={(event) => handleFileChange(index, event)}
+                                                    />
+                                                </Button>
+                                                {/* Conditional Remarks Input */}
+                                                {/* {selectedDocType === 'others' ? (
                                         <FormControl 
                                             fullWidth 
                                             variant="outlined"
@@ -387,206 +489,205 @@ const UploadDocuments = ({ leadData }) => {
                                         />
                                     )} */}
 
-                                    {/* Remarks Input */}
-                                    <TextField
-                                        label="Remarks"
-                                        value={input.remarks}
-                                        onChange={(event) => handleRemarksChange(index, event)}
-                                        variant="outlined"
-                                        size="small"
-                                        sx={{
-                                            flex: 1,
-                                            '& .MuiInputBase-input': { color: colors.primary[400] },
-                                            '& .MuiInputLabel-root': { color: colors.primary[400] },
-                                            '& .MuiOutlinedInput-root': {
-                                                '& fieldset': { borderColor: colors.primary[400],borderRadius:"0px 10px 0px 10px", },
-                                                '&:hover fieldset': { borderColor: colors.primary[400] },
-                                            },
-                                        }}
-                                    />
+                                                {/* Remarks Input */}
+                                                <TextField
+                                                    label="Remarks"
+                                                    value={input.remarks}
+                                                    onChange={(event) => handleRemarksChange(index, event)}
+                                                    variant="outlined"
+                                                    size="small"
+                                                    sx={{
+                                                        flex: 1,
+                                                        '& .MuiInputBase-input': { color: colors.primary[400] },
+                                                        '& .MuiInputLabel-root': { color: colors.primary[400] },
+                                                        '& .MuiOutlinedInput-root': {
+                                                            '& fieldset': { borderColor: colors.primary[400], borderRadius: "0px 10px 0px 10px", },
+                                                            '&:hover fieldset': { borderColor: colors.primary[400] },
+                                                        },
+                                                    }}
+                                                />
 
-                                    {/* View Button */}
-                                    {input.file && (
-                                        <IconButton
-                                            color="primary"
-                                            component="a"
-                                            href={URL.createObjectURL(input.file)}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            sx={{ color: colors.primary[400] }}
-                                        >
-                                            <VisibilityIcon />
-                                        </IconButton>
-                                    )}
-
-                                            {/* Remove File Button */}
-                                            {index > 0 && (
-                                                <IconButton
-                                                    color="secondary"
-                                                    onClick={() =>
-                                                        handleRemoveFileInput(
-                                                            index
-                                                        )
-                                                    }
-                                                    sx={{ color: "#ff4d4f" }}
-                                                >
-                                                    <RemoveCircleOutlineIcon />
-                                                </IconButton>
-                                            )}
-
-                                            {/* Add New Input Button */}
-                                            {index === fileInputs.length - 1 &&
-                                                ![
-                                                    "aadhaarFront",
-                                                    "aadhaarBack",
-                                                    "panCard",
-                                                ].includes(selectedDocType) &&
-                                                fileInputs[
-                                                    fileInputs.length - 1
-                                                ].file && (
+                                                {/* View Button */}
+                                                {input.file && (
                                                     <IconButton
                                                         color="primary"
-                                                        onClick={
-                                                            handleAddFileInput
-                                                        }
-                                                        sx={{
-                                                            backgroundColor:
-                                                                "#007bff",
-                                                            color: "white",
-                                                            "&:hover": {
-                                                                backgroundColor:
-                                                                    "#0056b3",
-                                                            },
-                                                        }}
+                                                        component="a"
+                                                        href={URL.createObjectURL(input.file)}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        sx={{ color: colors.primary[400] }}
                                                     >
-                                                        <AddIcon />
+                                                        <VisibilityIcon />
                                                     </IconButton>
                                                 )}
-                                        </Box>
-                                    ))}
-                                </Box>
-                                {selectedDocType === "bankStatement" && (
-                                    <>
-                                        <Autocomplete
-                                            disablePortal
-                                            options={banks}
-                                            getOptionLabel={(option) =>
-                                                option.bankName
-                                            }
-                                            sx={{
-                                                width: 300,
-                                                borderRadius: 1,
-                                                color: "#000", // Ensure text is black or dark
-                                                backgroundColor: "#bfbdbd", // Light background for better contrast
-                                                "& .MuiOutlinedInput-notchedOutline":
-                                                    { borderColor: "#c4c4c4" }, // Border color
-                                                "&:hover .MuiOutlinedInput-notchedOutline":
-                                                    { borderColor: "#1976d2" }, // Border on hover
-                                                "&.Mui-focused .MuiOutlinedInput-notchedOutline":
-                                                    { borderColor: "#1976d2" }, // Border on focus
-                                            }}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    label="Bank"
+
+                                                {/* Remove File Button */}
+                                                {index > 0 && (
+                                                    <IconButton
+                                                        color="secondary"
+                                                        onClick={() =>
+                                                            handleRemoveFileInput(
+                                                                index
+                                                            )
+                                                        }
+                                                        sx={{ color: "#ff4d4f" }}
+                                                    >
+                                                        <RemoveCircleOutlineIcon />
+                                                    </IconButton>
+                                                )}
+
+                                                {/* Add New Input Button */}
+                                                {index === fileInputs.length - 1 &&
+                                                    ![
+                                                        "aadhaarFront",
+                                                        "aadhaarBack",
+                                                        "panCard",
+                                                    ].includes(selectedDocType) &&
+                                                    fileInputs[
+                                                        fileInputs.length - 1
+                                                    ].file && (
+                                                        <IconButton
+                                                            color="primary"
+                                                            onClick={
+                                                                handleAddFileInput
+                                                            }
+                                                            sx={{
+                                                                backgroundColor:
+                                                                    "#007bff",
+                                                                color: "white",
+                                                                "&:hover": {
+                                                                    backgroundColor:
+                                                                        "#0056b3",
+                                                                },
+                                                            }}
+                                                        >
+                                                            <AddIcon />
+                                                        </IconButton>
+                                                    )}
+                                            </Box>
+                                        ))}
+                                    </Box>}
+                                    {(selectedDocType === "bankStatement" || selectedBSA.length > 0) && (
+                                        <>
+                                            <Box
+                                                display="flex"
+                                                gap={2}
+                                                alignItems="center"
+                                                sx={{ flexWrap: "wrap", padding: 2, backgroundColor: "#f8f9fa", borderRadius: 2 }}
+                                            >
+                                                {/* Bank Selection */}
+                                                <Autocomplete
+                                                    disablePortal
+                                                    options={banks}
+                                                    getOptionLabel={(option) => option.bankName}
+                                                    onChange={handleBankChange}
+                                                    renderInput={(params) =>
+                                                        <TextField
+                                                            {...params}
+                                                            label="Bank"
+                                                            sx={{
+                                                                "& .MuiInputBase-input": {
+                                                                    color: "#1b1c1b", // Change text color of selected bank
+                                                                },
+                                                                "& .MuiInputLabel-root": {
+                                                                    color: "#1b1c1b", // Change label color
+                                                                },
+                                                                "& .MuiOutlinedInput-root": {
+                                                                    "& fieldset": { borderColor: "#007bff" },
+                                                                    "&:hover fieldset": { borderColor: "#0056b3" },
+                                                                },
+                                                            }}
+                                                        />
+                                                    }
+                                                    sx={{
+                                                        flex: 1,
+                                                        backgroundColor: "#fff",
+                                                        "& .MuiOutlinedInput-root": {
+                                                            "& fieldset": { borderColor: "#007bff" },
+                                                            "&:hover fieldset": { borderColor: "#0056b3" },
+                                                        },
+                                                    }}
                                                 />
-                                            )}
-                                            onChange={handleBankChange}
-                                            required
-                                        />
-                                        <TextField
-                                            label="Account No"
-                                            value={bankInputs.accountNo}
-                                            onChange={(event) =>
-                                                handleAccountNoChange(event)
-                                            }
-                                            variant="outlined"
-                                            size="small"
-                                            sx={{
-                                                flex: 1,
-                                                "& .MuiInputBase-input": {
-                                                    color: "#1b1c1b",
-                                                },
-                                                "& .MuiInputLabel-root": {
-                                                    color: "#1b1c1b",
-                                                },
-                                                "& .MuiOutlinedInput-root": {
-                                                    "& fieldset": {
-                                                        borderColor: "#007bff",
-                                                    },
-                                                    "&:hover fieldset": {
-                                                        borderColor: "#0056b3",
-                                                    },
-                                                },
-                                            }}
-                                            required
-                                        />
-                                        <TextField
-                                            label="Account Type"
-                                            value={bankInputs.accountType}
-                                            onChange={(event) =>
-                                                handleAccountTypeChange(event)
-                                            }
-                                            variant="outlined"
-                                            size="small"
-                                            sx={{
-                                                flex: 1,
-                                                "& .MuiInputBase-input": {
-                                                    color: "#1b1c1b",
-                                                },
-                                                "& .MuiInputLabel-root": {
-                                                    color: "#1b1c1b",
-                                                },
-                                                "& .MuiOutlinedInput-root": {
-                                                    "& fieldset": {
-                                                        borderColor: "#007bff",
-                                                    },
-                                                    "&:hover fieldset": {
-                                                        borderColor: "#0056b3",
-                                                    },
-                                                },
-                                            }}
-                                            required
-                                        />
-                                    </>
-                                )}
-                                <Button
-                                    onClick={handleSubmit}
-                                    disabled={isLoading}
-                                    variant="contained"
-                                    sx={{
-                                        backgroundColor: isLoading ? "#ccc" : colors.white[100],
-                                        border: isLoading ? "ccc" : `1px solid ${colors.primary[400]}`,
-                                        borderRadius:"0px 10px 0px 10px",
-                                        color: isLoading ? "#666" : colors.primary[400],
-                                        cursor: isLoading ? "not-allowed" : "pointer",
-                                        "&:hover": {
-                                            backgroundColor: isLoading ? "#ccc" : colors.primary[400],
-                                            color: isLoading ? "#ccc" : colors.white[100],
-                                        },
-                                    }}
-                                >
-                                    {isLoading ? <CircularProgress size={20} color="inherit" /> : "Submit"}
-                                </Button> 
-                            </>
-                        )}
+
+                                                {/* Account Number */}
+                                                <TextField
+                                                    label="Account No"
+                                                    value={bankInputs.accountNo}
+                                                    onChange={handleAccountNoChange}
+                                                    variant="outlined"
+                                                    sx={{
+                                                        flex: 1,
+                                                        "& .MuiInputBase-input": { color: "#1b1c1b" },
+                                                        "& .MuiInputLabel-root": { color: "#1b1c1b" },
+                                                        "& .MuiOutlinedInput-root": {
+                                                            "& fieldset": { borderColor: "#007bff" },
+                                                            "&:hover fieldset": { borderColor: "#0056b3" },
+                                                        },
+                                                    }}
+                                                    required
+                                                />
+
+                                                {/* Account Type */}
+                                                <TextField
+                                                    label="Account Type"
+                                                    value={bankInputs.accountType}
+                                                    onChange={handleAccountTypeChange}
+                                                    variant="outlined"
+                                                    sx={{
+                                                        flex: 1,
+                                                        "& .MuiInputBase-input": { color: "#1b1c1b" },
+                                                        "& .MuiInputLabel-root": { color: "#1b1c1b" },
+                                                        "& .MuiOutlinedInput-root": {
+                                                            "& fieldset": { borderColor: "#007bff" },
+                                                            "&:hover fieldset": { borderColor: "#0056b3" },
+                                                        },
+                                                    }}
+                                                    required
+                                                />
+                                            </Box>
+                                        </>
+                                    )}
+                                    <Button
+                                        onClick={handleSubmit}
+                                        disabled={isLoading}
+                                        variant="contained"
+                                        sx={{
+                                            backgroundColor: isLoading ? "#ccc" : colors.white[100],
+                                            border: isLoading ? "ccc" : `1px solid ${colors.primary[400]}`,
+                                            borderRadius: "0px 10px 0px 10px",
+                                            color: isLoading ? "#666" : colors.primary[400],
+                                            cursor: isLoading ? "not-allowed" : "pointer",
+                                            "&:hover": {
+                                                backgroundColor: isLoading ? "#ccc" : colors.primary[400],
+                                                color: isLoading ? "#ccc" : colors.white[100],
+                                            },
+                                        }}
+                                    >
+                                        {isLoading ? <CircularProgress size={20} color="inherit" /> : selectedBSA.length > 0 ? "Analyse" : "Submit"}
+                                    </Button>
+                                </>
+                            )}
+                        </Box>
                     </Box>
-                </Box>
-             </>
+                </>
             }
 
-            
-        <Box>
 
-            {(
-                uploadedDocs && uploadedDocs.length > 0 &&
-                <DocumentsTable
-                    leadData={leadData}
-                    uploadedDocs={uploadedDocs}
-                />
-            )}
-        </Box>
-        
+            <Box>
+
+                {(
+                    uploadedDocs && uploadedDocs.length > 0 &&
+                    <DocumentsTable
+                        leadData={leadData}
+                        uploadedDocs={uploadedDocs}
+                        selectedDocType={selectedDocType}
+                        setSelectedBSA={setSelectedBSA}
+                        selectedBSA={selectedBSA}
+                        getBanks={getBanks}
+                    />
+                )}
+            </Box>
+
         </>
     );
 };
