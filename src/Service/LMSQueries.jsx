@@ -62,11 +62,21 @@ export const lmsQueries = createApi({
       }),
       invalidatesTags: ["allocatedPartialLeads"],
     }),
+    rejectPartialLead: builder.mutation({
+      query: ( id ) =>  ({
+        url:`/marketing/reject/${id}/?role=${role()}`,
+        method:"POST"
+      }),
+      invalidatesTags: ["rejectedPartialLeads"],
+    }),
     //Partial Leads
     partialLeads: builder.query({
       query: ({ page, limit }) =>
           `/marketing/leads/?page=${page}&limit=${limit}&role=${role()}`,
       providesTags: ["partialLeads"],
+    }),
+    partialLeadProfile: builder.query({
+      query: (id) => `/marketing/profile/${id}/?role=${role()}`,
     }),
     allocatedPartialLeads: builder.query({
       query: ({ page, limit }) =>
@@ -144,6 +154,7 @@ export const {
   useVerifyPaymentMutation,
   useAllocatePreCollectionsMutation,
   useAllocateCollectionsMutation,
+  useRejectPartialLeadMutation,
   useFetchRepaymentDetailsQuery,
   usePendingVerificationListQuery,
   usePartialLeadsQuery,
@@ -151,4 +162,5 @@ export const {
   useAllocatedPartialLeadsQuery,
   useCompletedPartialLeadsQuery,
   useRejectedPartialLeadsQuery,
+  usePartialLeadProfileQuery,
 } = lmsQueries;

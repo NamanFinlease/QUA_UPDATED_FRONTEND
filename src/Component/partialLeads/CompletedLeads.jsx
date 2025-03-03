@@ -7,7 +7,10 @@ import { useCompletedPartialLeadsQuery } from "../../Service/LMSQueries";
 import CommonTable from "../CommonTable";
 
 const CompletedLeads = () => {
+    const [processingLeads, setProcessingLeads] = useState()
+    const [totalLeads, setTotalLeads] = useState()
     const [allocatedLeads, setAllocatedLeads] = useState([]);
+    const [id, setId] = useState(null);
     const [totalAllocatedLeads, setTotalAllocatedLeads] = useState();
     const { empInfo, activeRole } = useAuthStore();
     const navigate = useNavigate();
@@ -25,9 +28,9 @@ const CompletedLeads = () => {
         setPaginationModel(newPaginationModel);
     };
 
-    const handleLeadClick = (disbursal) => {
-        console.log("The disbursal", disbursal.row.loanNo);
-        navigate(`/collection-profile/${disbursal.row.loanNo}`);
+    const handleLeadClick = (lead) => {
+        setId(lead.id)
+        navigate(`/partialLeadPofile/${lead.id}`);
     };
     const columns = [
       { field: 'name', headerName: 'Full Name', width: 200 },
@@ -44,13 +47,14 @@ const CompletedLeads = () => {
 
     useEffect(() => {
         if (isSuccess && data) {
-            console.log("success")
+            setProcessingLeads(data)
+            setTotalLeads(data?.totalLeads)
         }
     }, [isSuccess, data]);
 
-    const rows = allocatedLeads?.map((allocatedLeads) => ({
+    const rows = allocatedLeads?.map((lead) => ({
       id: lead?._id,
-      name: `${lead?.fName} ${lead?.mName} ${lead?.lName}`,
+      name: lead?.fullName,
       mobile: lead?.mobile,
       pan: lead?.pan,
       loanAmount: lead?.loanAmount,
@@ -77,7 +81,7 @@ const CompletedLeads = () => {
                 totalRows={totalAllocatedLeads}
                 paginationModel={paginationModel}
                 onPageChange={handlePageChange}
-                // onRowClick={handleLeadClick}
+                onRowClick={handleLeadClick}
                 title="Completed Leads"
             />
             {isError && (
