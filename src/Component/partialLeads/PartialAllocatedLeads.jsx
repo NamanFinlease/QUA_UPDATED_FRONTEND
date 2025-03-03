@@ -7,8 +7,10 @@ import { useAllocatedPartialLeadsQuery} from "../../Service/LMSQueries";
 import CommonTable from "../CommonTable";
 
 const AllocatedPreCollectionLeads = () => {
-    const [allocatedLeads, setAllocatedLeads] = useState([]);
+    const [processingLeads, setProcessingLeads] = useState()
+    const [totalLeads, setTotalLeads] = useState()
     const [totalAllocatedLeads, setTotalAllocatedLeads] = useState();
+    const [id, setId] = useState(null);
     const { empInfo, activeRole } = useAuthStore();
     const navigate = useNavigate();
     const [paginationModel, setPaginationModel] = useState({
@@ -25,9 +27,9 @@ const AllocatedPreCollectionLeads = () => {
         setPaginationModel(newPaginationModel);
     };
 
-    const handleLeadClick = (disbursal) => {
-        console.log("The disbursal", disbursal.row.loanNo);
-        navigate(`/collection-profile/${disbursal.row.loanNo}`);
+    const handleLeadClick = (lead) => {
+        setId(lead.id)
+        navigate(`/partialLeadPofile/${lead.id}`);
     };
     const columns = [
       { field: 'name', headerName: 'Full Name', width: 200 },
@@ -42,13 +44,14 @@ const AllocatedPreCollectionLeads = () => {
 
     useEffect(() => {
         if (isSuccess && data) {
-            console.log("success")
+            setProcessingLeads(data)
+            setTotalLeads(data?.totalLeads)
         }
     }, [isSuccess, data]);
 
-    const rows = allocatedLeads?.data?.map((lead) => ({
+    const rows = data?.allocatedLeads?.map((lead) => ({
       id: lead?._id,
-      name: lead?.data?.fullName,
+      name: lead?.fullName,
       mobile: lead?.mobile,
       pan: lead?.pan,
       loanAmount: lead?.loanAmount,
@@ -73,7 +76,7 @@ const AllocatedPreCollectionLeads = () => {
                 totalRows={totalAllocatedLeads}
                 paginationModel={paginationModel}
                 onPageChange={handlePageChange}
-                // onRowClick={handleLeadClick}
+                onRowClick={handleLeadClick}
                 title="Allocated Partial Leads"
             />
             {isError && (

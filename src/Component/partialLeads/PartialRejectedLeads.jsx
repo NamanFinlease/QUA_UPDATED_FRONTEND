@@ -7,7 +7,10 @@ import { useRejectedPartialLeadsQuery } from "../../Service/LMSQueries";
 import CommonTable from "../CommonTable";
 
 const PartialRejectedLeads = () => {
+    const [processingLeads, setProcessingLeads] = useState()
+    const [totalLeads, setTotalLeads] = useState()
     const [allocatedLeads, setAllocatedLeads] = useState([]);
+    const [id, setId] = useState(null);
     const [totalAllocatedLeads, setTotalAllocatedLeads] = useState();
     const { empInfo, activeRole } = useAuthStore();
     const navigate = useNavigate();
@@ -25,9 +28,9 @@ const PartialRejectedLeads = () => {
         setPaginationModel(newPaginationModel);
     };
 
-    const handleLeadClick = (disbursal) => {
-        console.log("The disbursal", disbursal.row.loanNo);
-        navigate(`/collection-profile/${disbursal.row.loanNo}`);
+    const handleLeadClick = (lead) => {
+        setId(lead.id)
+        navigate(`/partialLeadPofile/${lead.id}`);
     };
     const columns = [
       { field: 'name', headerName: 'Full Name', width: 200 },
@@ -36,28 +39,25 @@ const PartialRejectedLeads = () => {
       { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },
       { field: 'salary', headerName: 'Salary', width: 150 },
       { field: 'source', headerName: 'Source', width: 150 },
-      { field: 'city', headerName: 'City', width: 150 },
-      { field: 'state', headerName: 'State', width: 150 },
       { field: 'pinCode', headerName: 'Pin Code', width: 150 },
       { field: 'email', headerName: 'Email', width: 150 },
     ];
 
     useEffect(() => {
         if (isSuccess && data) {
-            console.log("success")
+            setProcessingLeads(data)
+            setTotalLeads(data?.totalLeads)
         }
     }, [isSuccess, data]);
 
-    const rows = allocatedLeads?.map((allocatedLeads) => ({
+    const rows = data?.rejectedLeads?.map((lead) => ({
       id: lead?._id,
-      name: `${lead?.fName} ${lead?.mName} ${lead?.lName}`,
+      name: lead?.fullName,
       mobile: lead?.mobile,
       pan: lead?.pan,
       loanAmount: lead?.loanAmount,
       salary: lead?.salary,
       source: lead?.source,
-      city: lead?.city,
-      state: lead?.state,
       pinCode: lead?.pinCode,
       email: lead?.email,
     }));
@@ -77,7 +77,7 @@ const PartialRejectedLeads = () => {
                 totalRows={totalAllocatedLeads}
                 paginationModel={paginationModel}
                 onPageChange={handlePageChange}
-                // onRowClick={handleLeadClick}
+                onRowClick={handleLeadClick}
                 title="Rejected Partial Leads"
             />
             {isError && (

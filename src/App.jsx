@@ -61,6 +61,7 @@ import NewPartialLeads from "./Component/partialLeads/NewPartialLeads";
 import PartialAllocatedLeads from "./Component/partialLeads/PartialAllocatedLeads";
 import CompletedLeads from "./Component/partialLeads/completedLeads";
 import PartialRejectedLeads from "./Component/partialLeads/PartialRejectedLeads";
+import PartialLeadProfile from "./Component/partialLeads/PartialLeadProfile";
 
 function App() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -155,6 +156,10 @@ function App() {
                                     <Route
                                         path="/new-partialLeads"
                                         element={<NewPartialLeads />}
+                                    />
+                                    <Route
+                                        path="/partialLeadPofile/:id"
+                                        element={<PartialLeadProfile />}
                                     />
                                     <Route
                                         path="/partialAllocatedLeads"
