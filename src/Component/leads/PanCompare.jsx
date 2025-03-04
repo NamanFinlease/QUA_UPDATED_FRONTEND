@@ -295,7 +295,7 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
         >
           Close
         </Button>
-        <Button
+        {/* <Button
           onClick={handleVerify}
           variant="contained"
           sx={{
@@ -311,7 +311,7 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
           }}
         >
           Verify
-        </Button>
+        </Button> */}
         {/* <Button
           onClick={handleSubmit}
           variant="contained"

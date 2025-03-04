@@ -21,10 +21,6 @@ function CloseLeads() {
         limit: paginationModel.pageSize,
     });
 
-    console.log(data?.closedList)
-    console.log(data?.closedList?.fName)
-    console.log(data?.closedList?.isSettled)
-
     const handleLeadClick = (disbursal) => {
         console.log("The disbursal", disbursal.row.loanNo);
         navigate(`/collection-profile/${disbursal.row.loanNo}`);
@@ -95,7 +91,7 @@ function CloseLeads() {
                 totalRows={totalClosedLeads}
                 paginationModel={paginationModel}
                 onPageChange={handlePageChange}
-                // onRowClick={handleLeadClick}
+                onRowClick={handleLeadClick}
                 title="Closed Leads"
             />
             {isError && (

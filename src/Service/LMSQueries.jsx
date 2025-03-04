@@ -11,6 +11,8 @@ export const lmsQueries = createApi({
     baseUrl: BASE_URL,
     credentials: "include",
     prepareHeaders: (headers, { getState }) => {
+      const token = localStorage.getItem("token");
+      if (token) headers.set("Authorization", `Bearer ${token}`);
       return headers;
     },
   }),

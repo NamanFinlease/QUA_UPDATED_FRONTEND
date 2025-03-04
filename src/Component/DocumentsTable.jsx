@@ -75,7 +75,6 @@ const DocumentsTable = ({ leadData, uploadedDocs, setSelectedBSA, selectedDocTyp
                         <TableCell sx={{ fontWeight: 'bold' }}>Remarks / Document Credentials</TableCell>
                         <TableCell sx={{ fontWeight: 'bold' }}>View</TableCell>
                         <TableCell sx={{ fontWeight: "bold" }}>Actions</TableCell>
-                        {/* <TableCell sx={{ color: '#ffffff', fontWeight: 'bold' }}>Actions</TableCell> */}
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -99,33 +98,30 @@ const DocumentsTable = ({ leadData, uploadedDocs, setSelectedBSA, selectedDocTyp
                                     <VisibilityIcon />
                                 </IconButton>
                             </TableCell>
+                            <TableCell>
                             {(doc?.type || doc.url.split("/")[1]) === "bankStatement" ?
-                                <TableCell >
-                                    {/* <IconButton sx={{ color: '#454443'}} onClick={() => handleDownload(doc)}>
-                                        <VisibilityIcon />
-                                    </IconButton> */}
                                     <Button
                                         variant="contained"
                                         size="small"
                                         onClick={() => selectFile(doc.name)}                                        
                                         disabled={selectedDocType || selectedBSA.includes(doc.name)}
                                         sx={{
-                                            borderRadius: '20px',
+                                            borderRadius: '0px 10px',
                                             textTransform: 'none',
-                                    
-                                            // ✅ Override MUI's default disabled styles
                                             '&.Mui-disabled': {
-                                                backgroundColor: colors.primary[400], // Keep primary color instead of default gray
-                                                opacity: 0.5,  // Faded effect
-                                                cursor: 'not-allowed', // Show "not-allowed" cursor
-                                                pointerEvents: 'none', // Prevent interaction
+                                                backgroundColor: colors.primary[400],
+                                                opacity: 0.5,
+                                                cursor: 'not-allowed',
+                                                pointerEvents: 'none',
                                             },
                                         }}
                                     >
-                                        {/* {label} */}
                                         BSA
                                     </Button>
-                                </TableCell> : null}
+                                    :
+                                    null
+                                    }
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

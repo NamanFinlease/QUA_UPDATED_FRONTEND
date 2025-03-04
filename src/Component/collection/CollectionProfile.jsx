@@ -14,7 +14,7 @@ import BankDetails from '../applications/BankDetails';
 import EKycVerification from '../leads/DetailsVerification';
 import UploadDocuments from '../UploadDocuments';
 import Cam from '../applications/Cam';
-import DisburseInfo from '../disbursal/DisburseLoan';
+import DisburseLoan from '../disbursal/DisburseLoan';
 import ClosingRequest from './ClosingRequest';
 import Payment from '../accounts/Payment';
 import CollectionDetails from './CollectionDetails';
@@ -117,7 +117,7 @@ const CollectionProfile = () => {
                         )}
 
                         {currentPage === "cam" && <Cam id={application?._id} />}
-                        {currentPage === "disbursal" && <DisburseInfo disburse={collectionData?.disbursal?.sanction} />}
+                        {currentPage === "disbursal" && <DisburseLoan disburse={collectionData?.disbursal?.sanction} />}
                         {currentPage === "collection" && <CollectionDetails disburse={collectionData?.disbursal?.sanction} repaymentId={collectionData?.loanNo} />}
                         {currentPage === "repayment" && <RepaymentDetails disburse={collectionData?.disbursal} repaymentId={collectionData?.loanNo} />}
                         {/* {currentPage === "repayment" && <ClosingRequest disburse={collectionData?.disbursal} />} */}

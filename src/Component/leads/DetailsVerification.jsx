@@ -388,7 +388,7 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
       action: (
         <Button
           variant="contained"
-          onClick={!isAadhaarVerified ? handleSendAadhaarLink : handleAadhaarVerification}
+          onClick={handleAadhaarVerification}
           disabled={isAadhaarDetailsFetching || aadhaarDetailsLoading || aadhaarRes?.isLoading || aadhaarRes?.isFetching}
           sx={{
             background: colors.white[100],
@@ -401,7 +401,7 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
             }
           }}
         >
-          {isAadhaarVerified ? "Show Details" : isAadhaarDetailsSaved ? "Verify Aadhaar" : "Send Link"}
+          {isAadhaarVerified ? "Show Details" : "Verify Aadhaar"}
         </Button>
       ),
     },
@@ -424,7 +424,7 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
           }}
         >
           {/* {isPanVerified ? "Show Details" : "Send Link"} */}
-          {loading ? <CircularProgress size={24} color='inherit' /> : (isPanVerified ? "Show Details" : "Send Link")}
+          {loading ? <CircularProgress size={24} color='inherit' /> : (isPanVerified ? "Show Details" : "Verify PAN")}
         </Button>
       ),
     },

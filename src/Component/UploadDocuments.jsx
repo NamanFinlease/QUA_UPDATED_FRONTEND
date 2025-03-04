@@ -368,6 +368,7 @@ const UploadDocuments = ({ leadData }) => {
                                                         flex: 1, // Takes available space
                                                         minWidth: 0, // Required for text truncation
                                                         fontSize: "14px",
+                                                        padding: "5px",
                                                         fontWeight: 500,
                                                         color: "#333",
                                                         whiteSpace: "nowrap",
@@ -381,8 +382,8 @@ const UploadDocuments = ({ leadData }) => {
                                                     size="small"
                                                     onClick={() => removeBSA(file)}
                                                     sx={{
-                                                        color: "#d32f2f",
-                                                        padding: "4px",
+                                                        color: colors.redAccent[500],
+                                                        padding: "10px",
                                                         transition: "0.2s",
                                                         "&:hover": { color: "#b71c1c", transform: "scale(1.1)" },
                                                     }}
@@ -501,7 +502,7 @@ const UploadDocuments = ({ leadData }) => {
                                                         '& .MuiInputBase-input': { color: colors.primary[400] },
                                                         '& .MuiInputLabel-root': { color: colors.primary[400] },
                                                         '& .MuiOutlinedInput-root': {
-                                                            '& fieldset': { borderColor: colors.primary[400], borderRadius: "0px 10px 0px 10px", },
+                                                            '& fieldset': { borderColor: colors.primary[400], borderRadius: "0px 10px", },
                                                             '&:hover fieldset': { borderColor: colors.primary[400] },
                                                         },
                                                     }}
@@ -571,9 +572,29 @@ const UploadDocuments = ({ leadData }) => {
                                         <>
                                             <Box
                                                 display="flex"
+                                                component={Paper}
+                                                elevation={2}
                                                 gap={2}
                                                 alignItems="center"
-                                                sx={{ flexWrap: "wrap", padding: 2, backgroundColor: "#f8f9fa", borderRadius: 2 }}
+                                                sx={{ 
+                                                    flexWrap: "wrap", 
+                                                    padding: 2, 
+                                                    backgroundColor: colors.white[100], 
+                                                    borderRadius: "0px 20px",
+                                                    "& .MuiInputBase-input": {
+                                                        color: colors.black[100],
+                                                    },
+                                                    "& .MuiInputLabel-root": {
+                                                        color: colors.black[400],
+                                                    },
+                                                    "& .MuiOutlinedInput-root": {
+                                                        "& fieldset": { borderColor: colors.primary[400] },
+                                                        "&:hover fieldset": { borderColor: colors.primary[400] },
+                                                    },
+                                                    "& .MuiButtonBase-root": {
+                                                        color:colors.primary[400],
+                                                    },
+                                                }}
                                             >
                                                 {/* Bank Selection */}
                                                 <Autocomplete
@@ -585,27 +606,11 @@ const UploadDocuments = ({ leadData }) => {
                                                         <TextField
                                                             {...params}
                                                             label="Bank"
-                                                            sx={{
-                                                                "& .MuiInputBase-input": {
-                                                                    color: "#1b1c1b", // Change text color of selected bank
-                                                                },
-                                                                "& .MuiInputLabel-root": {
-                                                                    color: "#1b1c1b", // Change label color
-                                                                },
-                                                                "& .MuiOutlinedInput-root": {
-                                                                    "& fieldset": { borderColor: "#007bff" },
-                                                                    "&:hover fieldset": { borderColor: "#0056b3" },
-                                                                },
-                                                            }}
                                                         />
                                                     }
                                                     sx={{
                                                         flex: 1,
-                                                        backgroundColor: "#fff",
-                                                        "& .MuiOutlinedInput-root": {
-                                                            "& fieldset": { borderColor: "#007bff" },
-                                                            "&:hover fieldset": { borderColor: "#0056b3" },
-                                                        },
+                                                        cursor: "pointer",
                                                     }}
                                                 />
 
@@ -617,12 +622,6 @@ const UploadDocuments = ({ leadData }) => {
                                                     variant="outlined"
                                                     sx={{
                                                         flex: 1,
-                                                        "& .MuiInputBase-input": { color: "#1b1c1b" },
-                                                        "& .MuiInputLabel-root": { color: "#1b1c1b" },
-                                                        "& .MuiOutlinedInput-root": {
-                                                            "& fieldset": { borderColor: "#007bff" },
-                                                            "&:hover fieldset": { borderColor: "#0056b3" },
-                                                        },
                                                     }}
                                                     required
                                                 />
@@ -635,12 +634,6 @@ const UploadDocuments = ({ leadData }) => {
                                                     variant="outlined"
                                                     sx={{
                                                         flex: 1,
-                                                        "& .MuiInputBase-input": { color: "#1b1c1b" },
-                                                        "& .MuiInputLabel-root": { color: "#1b1c1b" },
-                                                        "& .MuiOutlinedInput-root": {
-                                                            "& fieldset": { borderColor: "#007bff" },
-                                                            "&:hover fieldset": { borderColor: "#0056b3" },
-                                                        },
                                                     }}
                                                     required
                                                 />

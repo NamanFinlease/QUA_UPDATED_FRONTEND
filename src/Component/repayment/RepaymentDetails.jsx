@@ -43,9 +43,8 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
       page: 0,
       pageSize: 10,
     });
-
+    
   const id = repaymentId;
-  console.log(id)
 
   const { data: fetchRepaymentDetails, isSuccess: isFetchRepaymentSuccess, isError: isFetchRepaymentError, error: fetchRepaymenterror, } = 
           useFetchRepaymentDetailsQuery( id, {skip:id ===null});
@@ -70,7 +69,6 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
 
   const columns = [
     // { field: "sno", headerName: "S.No", width: 50 },
-    { field: "loanNo", headerName: "Loan No.", width: 150 },
     { field: "paymentDate", headerName: "Payment Date", width: 150 },
     { field: "paymentAmount", headerName: "Payment Amount", width: 150 },
     { field: "closingType", headerName: "Closing Type", width: 150 },
@@ -78,7 +76,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
     { field: "paymentStatus", headerName: "Payment Verification Status", width: 150 },
     // { field: "paymentApprove", headerName: "Payment Approve/Reject", width: 150 },
     { field: "paymentMode", headerName: "Payment Mode", width: 150 },
-    { field: "bankName", headerName: "Payment Bank", width: 150 },
+    // { field: "bankName", headerName: "Payment Bank", width: 150 },
     { field: "paymentDiscount", headerName: "Discount", width: 150 },
     { field: "excessAmount", headerName: "Excess Amount", width: 150 },
     // { field: 'recoveryDiscountType', headerName: 'Discount Type', width: 150 },
@@ -87,12 +85,10 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
 
   const rows = fetchRepaymentDetails?.repaymentDetails?.paymentHistory?.map((paymentHistory) => ({
     id: paymentHistory?._id,
-    loanNo: paymentHistory?.loanNo, 
     paymentMode: paymentHistory?.paymentMode,
     bankName: paymentHistory?.bankName,
     paymentAmount: paymentHistory?.receivedAmount,
     closingType: paymentHistory?.closingType,
-    // paymentApprove: paymentHistory?.isRejected ? "Rejected" : "Approved",
     paymentDiscount : paymentHistory?.discount || 0,
     excessAmount : paymentHistory?.excessAmount || 0,
     paymentReferenceNumber : paymentHistory?.transactionId,
@@ -131,7 +127,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
       <OutstandingLoanAmount outstandingDetails={repaymentDetails}/>
 
       {/* Add to Blacklist */}
-      <Paper
+      {/* <Paper
         elevation={3}
         sx={{
           display: "flex",
@@ -233,7 +229,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
             </Button>
           </Box>
         )}
-      </Paper>
+      </Paper> */}
 
       {/* Payment History */}
       <Accordion
@@ -291,7 +287,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
       </Accordion>
 
       {/* New Payment Recieved */}
-      {(activeRole === "collectionExecutive" || activeRole === "collectionHead") &&
+      {(activeRole === "collectionExecutive" || activeRole === "collectionHead") && (!disburse?.isClosed) &&
         <NewPaymentRecieved repaymentDetails={repaymentDetails} />
       }
     </>

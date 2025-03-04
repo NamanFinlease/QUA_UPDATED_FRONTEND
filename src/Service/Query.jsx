@@ -12,6 +12,8 @@ export const leadsApi = createApi({
 
         credentials: "include",
         prepareHeaders: (headers, { getState }) => {
+            const token = localStorage.getItem("token");
+            if (token) headers.set("Authorization", `Bearer ${token}`);
             return headers;
         },
     }),

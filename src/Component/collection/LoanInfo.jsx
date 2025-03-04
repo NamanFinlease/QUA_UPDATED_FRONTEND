@@ -7,6 +7,7 @@ import useStore from '../../Store';
 import useAuthStore from '../store/authStore';
 import { useRecommendLoanMutation } from '../../Service/applicationQueries';
 import { formatDate } from '../../utils/helper';
+import dayjs from 'dayjs';
 
 const LoanInfo = ({ repaymentDetails }) => {
   const { applicationProfile } = useStore()
@@ -44,7 +45,7 @@ const LoanInfo = ({ repaymentDetails }) => {
     { label: "Loan No.", value: applicationProfile?.loanNo },
     { label: "Customer Name", value: `${fName}${mName ? ` ${mName}` : ``} ${lName}` },
     { label: "Sanctioned Amount", value: repaymentDetails?.repaymentDetails?.sanctionedAmount },
-    { label: "Repayment Date", value: cam?.repaymentDate && formatDate(cam?.repaymentDate) },
+    { label: "Repayment Date", value: cam?.repaymentDate && dayjs(cam?.repaymentDate).format('DD-MM-YYYY') },
     { label: "Repayment Amount", value: cam?.repaymentAmount },
     { label: "Repayment Amount (as on today)", value: repaymentDetails?.repaymentDetails?.outstandingAmount },
     { label: "ROI % (per day)", value: cam?.roi },

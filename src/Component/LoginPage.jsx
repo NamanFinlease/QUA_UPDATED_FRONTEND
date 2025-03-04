@@ -48,6 +48,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (loginSuccess) {
       setLogin(true);
+      localStorage.setItem("token", loginData.token);
       setEmpInfo(loginData);
       setActiveRole(loginData?.empRole[0]);
       navigate('/');

@@ -10,7 +10,9 @@ export const applicationApi = createApi({
     baseUrl:BASE_URL,
     credentials:"include",
     prepareHeaders: (headers, { getState }) => {
-      return headers;
+        const token = localStorage.getItem("token");
+        if (token) headers.set("Authorization", `Bearer ${token}`);
+        return headers;
     },
 
   }),

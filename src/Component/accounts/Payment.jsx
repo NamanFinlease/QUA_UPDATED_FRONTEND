@@ -421,20 +421,19 @@ import {
 import { tokens } from '../../theme';
 import { useVerifyPendingLeadMutation, usePendingVerificationQuery, useVerifyPaymentMutation, } from "../../Service/LMSQueries";
 import Swal from "sweetalert2";
+import dayjs from 'dayjs';
 import { useParams } from "react-router-dom";
 
 const PaymentRow = ({ payment, onUpdateStatus }) => {
     const [selectedStatus, setSelectedStatus] = useState("");
     const [open, setOpen] = useState(false);
     const [actionType, setActionType] = useState("");
+    const [reject, setReject] = useState();
     const [remarks, setRemarks] = useState("");
     const { id } = useParams();
 
     const [verifyPayment, { isSuccess, isError, error }] =
         useVerifyPaymentMutation();
-
-    console.log(selectedStatus)
-    console.log(setSelectedStatus)
 
     // Color theme
     const theme = useTheme();
@@ -476,21 +475,23 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
 
     const handleConfirm = () => {
 
-        console.log('object',selectedStatus,remarks)
-
         if (actionType === "Approve"){
             verifyPayment({
                 loanNo : id, 
                 transactionId: payment.transactionId, 
                 closingType : selectedStatus,
                 remarks : remarks
-            })
-        }else {
-            console.log('not approved')
-
+            }) 
+            handleClose();
+        }else if (actionType === "Reject") {
+            verifyPayment({
+                loanNo: id,
+                transactionId: payment.transactionId,
+                isRejected: true, // Set isRejected to true
+                remarks: remarks
+            });
         }
 
-        handleClose();
     }
 
     useEffect(() => {
@@ -504,8 +505,7 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
 
     return (
         <tr>
-            {console.log(payment)}
-            <td>{payment.paymentDate ? formatDateToIST(payment.paymentDate) : "N/A"}</td>
+            <td>{payment.paymentDate ? dayjs(payment.paymentDate).format('DD/MM/YYYY') : "N/A"}</td>
             <td>{payment.receivedAmount || "N/A"}</td>
             <td>{payment.closingType || "N/A"}</td>
             <td>{payment.paymentMode || "N/A"}</td>
@@ -657,7 +657,6 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
 
     const { data: paymentHistory, isLoading: verifyPaymentLoading, isSuccess: verifyPaymentSuccess, isError: verifyPaymentError } =
         usePendingVerificationQuery(id, { skip: id === null });
-    console.log('params', paymentInfo, collectionData)
 
     useEffect(() => {
         if (verifyPaymentSuccess && paymentHistory) {

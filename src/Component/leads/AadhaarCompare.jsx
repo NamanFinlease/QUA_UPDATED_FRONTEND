@@ -24,6 +24,7 @@ import { useVerifyAadhaarMutation, useLazyGetLeadDocsQuery } from "../../Service
 import { useNavigate } from "react-router-dom";
 import { compareDates, formatDate, formatFullName } from "../../utils/helper";
 import useAuthStore from "../store/authStore";
+import dayjs from 'dayjs';
 
 
 const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
@@ -153,7 +154,8 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
     console.log('lead detail',lead)
 
     const formattedLeadDob = lead?.dob ? formatDate(lead.dob) : null; // Ensure lead DOB is formatted
-    const formattedAadhaarDob = aadhaarDetails?.dob ? formatDate(aadhaarDetails.dob) : null;
+    const formattedAadhaarDob = aadhaarDetails?.dob ? dayjs(aadhaarDetails.dob).format('DD-MM-YYYY') : null;
+    // const formattedAadhaarDob = aadhaarDetails?.dob ? formatDate(aadhaarDetails.dob) : null;
 
     const { house, po, dist, state, country, street, pc } = aadhaarDetails?.address
 
@@ -352,7 +354,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
         >
           Close
         </Button>
-        <Button
+        {/* <Button
           onClick={handleVerify}
           variant="contained"
           sx={{
@@ -368,7 +370,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
           }}
         >
           Verify
-        </Button>
+        </Button> */}
         {/* <Button
           onClick={handleSubmit}
           variant="contained"

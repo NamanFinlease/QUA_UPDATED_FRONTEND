@@ -39,8 +39,6 @@ const CompletedLeads = () => {
       { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },
       { field: 'salary', headerName: 'Salary', width: 150 },
       { field: 'source', headerName: 'Source', width: 150 },
-      { field: 'city', headerName: 'City', width: 150 },
-      { field: 'state', headerName: 'State', width: 150 },
       { field: 'pinCode', headerName: 'Pin Code', width: 150 },
       { field: 'email', headerName: 'Email', width: 150 },
     ];
@@ -52,7 +50,7 @@ const CompletedLeads = () => {
         }
     }, [isSuccess, data]);
 
-    const rows = allocatedLeads?.map((lead) => ({
+    const rows = data?.completedLeads?.map((lead) => ({
       id: lead?._id,
       name: lead?.fullName,
       mobile: lead?.mobile,
@@ -60,8 +58,6 @@ const CompletedLeads = () => {
       loanAmount: lead?.loanAmount,
       salary: lead?.salary,
       source: lead?.source,
-      city: lead?.city,
-      state: lead?.state,
       pinCode: lead?.pinCode,
       email: lead?.email,
     }));
@@ -81,7 +77,7 @@ const CompletedLeads = () => {
                 totalRows={totalAllocatedLeads}
                 paginationModel={paginationModel}
                 onPageChange={handlePageChange}
-                onRowClick={handleLeadClick}
+                // onRowClick={handleLeadClick}
                 title="Completed Leads"
             />
             {isError && (

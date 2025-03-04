@@ -25,16 +25,22 @@ const LeadProfile = () => {
     const [uploadedDocs, setUploadedDocs] = useState([]);
     const { setLead } = useStore()
     const [leadEdit, setLeadEdit] = useState(false);
-    const [commonRemarks, setCommonRemarks] = useState('');
 
     // Color theme
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
     const { data: leadData, isSuccess: leadSuccess, isError, error } = useFetchSingleLeadQuery(id, { skip: id === null });
+
+    console.log(leadData)
     
     const handleForwardRemarks = (remarks) => {
-        console.log(remarks);
+        const payload = {
+            leadId: leadData._id,
+            screenerId: leadData.screenerId,
+            remarks: remarks,
+        };
+        console.log(payload);
     };
 
     useEffect(() => {
