@@ -25,7 +25,7 @@ const DisburseNew = () => {
 
   const [allocateApplication, { data: updateApplication, isSuccess, isError: isAllocateError, error: allocateError }] = useAllocateDisbursalMutation();
   const [exportSanctioned, { data: exportData, isLoading: isExportLoading, isSuccess: isExportSuccess, isFetching: isExportFetching, isError: isExportErro, error: exportError }] = useLazyExportSanctionedQuery();
-  const { data: allApplication, isSuccess: applicationSuccess, isError, error, refetch } = useAllDisbursalsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
+  const { data: allApplication, isSuccess: applicationSuccess, isLoading, isError, error, refetch } = useAllDisbursalsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
 
     const handleAllocate = async () => {
         allocateApplication(selectedApplication);
@@ -164,6 +164,7 @@ const DisburseNew = () => {
           actionButton={true}
           onAllocateButtonClick={handleAllocate}
           onExportButtonClick={handleExportClick}
+          loading={isLoading}
       />
     </>
   );

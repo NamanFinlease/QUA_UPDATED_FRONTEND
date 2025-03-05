@@ -18,6 +18,7 @@ const CommonTable = ({
   actionButton,
   onAllocateButtonClick,
   onExportButtonClick,
+  loading,
 }) => {
   const { activeRole } = useAuthStore();
   const navigate = useNavigate();
@@ -148,6 +149,7 @@ const CommonTable = ({
           paginationMode="server"
           onPaginationModelChange={handlePageChange}
           onRowClick={handleRowClick}
+          loading={loading}
           sx={{
             border:"none",
             borderTopRightRadius:"30px",

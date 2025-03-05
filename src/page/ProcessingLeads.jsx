@@ -18,7 +18,7 @@ const ProcessingLeads = () => {
         page: 0,
         pageSize: 10,
     });
-    const { data, isSuccess, refetch } = useFetchAllocatedLeadsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
+    const { data, isSuccess,isLoading, refetch } = useFetchAllocatedLeadsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
     const { data: LeadData, isSuccess: leadSuccess } = useFetchSingleLeadQuery(id, { skip: id === null })
     
 
@@ -89,6 +89,7 @@ const ProcessingLeads = () => {
                 onPageChange={handlePageChange}
                 onRowClick={handleRowClick}
                 title="Leads In Process"
+                loading={isLoading}
             />
         </>
     )

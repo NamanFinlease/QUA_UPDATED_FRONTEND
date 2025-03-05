@@ -20,7 +20,7 @@ function PendingVerification() {
         page: 0,
         pageSize: 10,
     });
-    const { data, isSuccess, isError, error, refetch } =
+    const { data, isSuccess, isLoading, isError, error, refetch } =
         usePendingVerificationListQuery();
 
     console.log(data)
@@ -90,6 +90,7 @@ function PendingVerification() {
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Pending Verifications"
+                loading={isLoading}
             />
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>

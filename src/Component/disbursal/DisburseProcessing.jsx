@@ -17,7 +17,7 @@ const DisbursalProcess = () => {
         pageSize: 5,
     });
 
-    const { data, isSuccess, refetch } = useAllocatedDisbursalsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
+    const { data, isSuccess, isLoading, refetch } = useAllocatedDisbursalsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
     // const {data:applicationData,isSuccess:applicationSuccess} = useFetchSingleApplicationQuery(id,{skip:id===null})
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel)
@@ -87,6 +87,7 @@ const DisbursalProcess = () => {
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Disbursals In Process"
+                isLoading={isLoading}
             />
         </>
     )

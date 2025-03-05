@@ -32,7 +32,7 @@ const Disbursed = () => {
             error: exportError,
         },
     ] = useLazyExportDisbursedQuery();
-    const { data, isSuccess, isError, error, refetch } = useDisbursedQuery({
+    const { data, isSuccess, isLoading, isError, error, refetch } = useDisbursedQuery({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
     });
@@ -172,6 +172,7 @@ const Disbursed = () => {
                 onRowClick={handleLeadClick}
                 title="Total Disbursed"
                 actionButton={true}
+                loading={isLoading}
             />
             {(isError) &&
             <Alert severity="error" style={{ marginTop: "10px" }}>

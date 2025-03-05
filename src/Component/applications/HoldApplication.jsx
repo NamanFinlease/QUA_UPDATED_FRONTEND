@@ -15,7 +15,7 @@ const HoldApplication = () => {
         page: 0,
         pageSize: 5,
     });
-    const {data,isSuccess,isError,error} = useAllHoldApplicationQuery()
+    const {data,isSuccess,isLoading,isError,error} = useAllHoldApplicationQuery()
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel)
     }
@@ -33,7 +33,7 @@ const HoldApplication = () => {
     useEffect(() => {
         if (data) {
             setHoldApplications(data?.heldApplications?.applications)
-        setTotalHoldApplications(data?.heldApplications?.totalRecords)
+            setTotalHoldApplications(data?.heldApplications?.totalRecords)
         }
     }, [isSuccess, data])
 
@@ -81,6 +81,7 @@ const HoldApplication = () => {
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Applications Hold"
+                loading={isLoading}
             />            
             {/* <OTPVerificationUI /> */}
             {/* </div> */}

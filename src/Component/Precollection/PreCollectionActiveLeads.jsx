@@ -17,7 +17,7 @@ const PreCollectionActiveLeads = () => {
         pageSize: 100,
     });
 
-    const { data , isSuccess, isError, error, refetch } = useActivePreCollectionLeadsQuery({
+    const { data , isSuccess, isLoading, isError, error, refetch } = useActivePreCollectionLeadsQuery({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
     });
@@ -129,6 +129,7 @@ const PreCollectionActiveLeads = () => {
                 title="PreCollection Active Leads"
                 actionButton={true}
                 onAllocateButtonClick={handleAllocate}
+                loading={isLoading}
             />
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>

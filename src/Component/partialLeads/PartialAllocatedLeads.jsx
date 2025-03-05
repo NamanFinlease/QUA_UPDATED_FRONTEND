@@ -18,7 +18,7 @@ const AllocatedPreCollectionLeads = () => {
         pageSize: 10,
     });
 
-    const { data, isSuccess, isError, error, refetch } = useAllocatedPartialLeadsQuery({
+    const { data, isSuccess,isLoading, isError, error, refetch } = useAllocatedPartialLeadsQuery({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
     });
@@ -78,6 +78,7 @@ const AllocatedPreCollectionLeads = () => {
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Allocated Partial Leads"
+                loading={isLoading}
             />
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>

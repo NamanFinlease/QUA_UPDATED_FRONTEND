@@ -18,7 +18,7 @@ const DisbursePending = () => {
         pageSize: 10,
     });
 
-    const { data, isSuccess,isError,error, refetch } = usePendingDisbursalQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
+    const { data, isSuccess,isLoading,isError,error, refetch } = usePendingDisbursalQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
     // const {data:applicationData,isSuccess:applicationSuccess} = useFetchSingleApplicationQuery(id,{skip:id===null})
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel)
@@ -83,13 +83,14 @@ const DisbursePending = () => {
     return (
         <>
             <CommonTable
-            columns={columns}
-            rows={rows}
-            totalRows={totalDisbursals}
-            paginationModel={paginationModel}
-            onPageChange={handlePageChange}
-            onRowClick={handleLeadClick}
-            title="Pending Disbursals"
+                columns={columns}
+                rows={rows}
+                totalRows={totalDisbursals}
+                paginationModel={paginationModel}
+                onPageChange={handlePageChange}
+                onRowClick={handleLeadClick}
+                title="Pending Disbursals"
+                isLoading={isLoading}
             />
             {(isError) &&
             <Alert severity="error" style={{ marginTop: "10px" }}>

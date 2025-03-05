@@ -173,7 +173,7 @@ const ActiveLeads = () => {
         pageSize: 10,
     });
 
-    const { data , isSuccess, isError, error, refetch } = useActiveLeadsQuery({
+    const { data , isSuccess, isLoading, isError, error, refetch } = useActiveLeadsQuery({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
     });
@@ -285,6 +285,7 @@ const ActiveLeads = () => {
                 title="Active Leads"
                 actionButton={true}
                 onAllocateButtonClick={handleAllocate}
+                loading={isLoading}
             />
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>

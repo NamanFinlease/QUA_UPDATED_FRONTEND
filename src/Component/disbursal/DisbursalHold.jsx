@@ -15,7 +15,7 @@ const DisbursalHold = () => {
         page: 0,
         pageSize: 5,
     });
-    const {data,isSuccess,isError,error} = useFetchDisbursalHoldQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
+    const {data,isSuccess,isLoading,isError,error} = useFetchDisbursalHoldQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel)
     }
@@ -80,6 +80,7 @@ const DisbursalHold = () => {
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Hold Disbursals"
+                isLoading={isLoading}
             />
             {/* <OTPVerificationUI /> */}
             {/* </div> */}

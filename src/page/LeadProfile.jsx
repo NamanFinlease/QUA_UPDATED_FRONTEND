@@ -16,7 +16,6 @@ import useAuthStore from '../Component/store/authStore';
 import ApplicantProfileData from '../Component/applicantProfileData';
 import CommonRemarks from '../Component/CommonRemarks';
 
-const barButtonOptions = ["Lead", "Documents", "Verification"];
 
 const LeadProfile = () => {
     const { id } = useParams();
@@ -25,14 +24,20 @@ const LeadProfile = () => {
     const [uploadedDocs, setUploadedDocs] = useState([]);
     const { setLead } = useStore()
     const [leadEdit, setLeadEdit] = useState(false);
-
+    
     // Color theme
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-
+    
     const { data: leadData, isSuccess: leadSuccess, isError, error } = useFetchSingleLeadQuery(id, { skip: id === null });
 
-    console.log(leadData)
+    // const barButtonOptions = ["Lead", "Documents", "Verification"];
+    const isVerificationDisabled = !leadData?.isAadhaarVerified && !leadData?.isPanVerified;
+    const barButtonOptions = [
+        "Lead",
+        "Documents",
+        "Verification"
+    ];
     
     const handleForwardRemarks = (remarks) => {
         const payload = {
@@ -74,6 +79,7 @@ const LeadProfile = () => {
                             barButtonOptions={barButtonOptions}
                             currentPage={currentPage}
                             setCurrentPage={setCurrentPage}
+                            disabledOptions={{ Verification: isVerificationDisabled }}
                         />
 
                         {currentPage === "lead" && (

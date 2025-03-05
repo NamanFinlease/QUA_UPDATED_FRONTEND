@@ -19,7 +19,7 @@ const NewPartialLeads = () => {
   });
   const { empInfo, activeRole } = useAuthStore();
   const navigate = useNavigate();
-  const { data: allLeads, refetch } = usePartialLeadsQuery({
+  const { data: allLeads,isLoading, refetch } = usePartialLeadsQuery({
     page: paginationModel.page + 1,
     limit: paginationModel.pageSize,
   });
@@ -110,6 +110,7 @@ const NewPartialLeads = () => {
         title="New Partial Leads"
         actionButton={true}
         onAllocateButtonClick={handleAllocate}
+        loading={isLoading}
       />
       </>
   );

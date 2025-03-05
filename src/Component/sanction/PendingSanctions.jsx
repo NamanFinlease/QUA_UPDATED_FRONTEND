@@ -16,7 +16,7 @@ const PendingSanctions = () => {
   const navigate = useNavigate()
 
 
-  const { data: allApplication,isSuccess:applicationSuccess, refetch } = usePendingSanctionsQuery({page:paginationModel.page+1,limit:paginationModel.pageSize})
+  const { data: allApplication, isLoading, isSuccess:applicationSuccess, refetch } = usePendingSanctionsQuery({page:paginationModel.page+1,limit:paginationModel.pageSize})
 
   useEffect(() => {
     if(applicationSuccess){
@@ -82,6 +82,7 @@ const handleLeadClick = (lead) => {
           onPageChange={handlePageChange}
           onRowClick={handleLeadClick}
           title="Pending Sanctions"
+          loading={isLoading}
       />
     </>
   );

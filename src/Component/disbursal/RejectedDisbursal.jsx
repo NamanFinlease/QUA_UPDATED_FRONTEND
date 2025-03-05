@@ -75,6 +75,7 @@ const RejectedDisbursal = () => {
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Rejected Disbursals"
+                loading={isLoading}
             />
             {isError &&
                 <Alert severity="error" style={{ marginTop: "10px" }}>

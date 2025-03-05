@@ -19,7 +19,7 @@ const PartialRejectedLeads = () => {
         pageSize: 10,
     });
 
-    const { data, isSuccess, isError, error, refetch } = useRejectedPartialLeadsQuery({
+    const { data, isSuccess, isLoading, isError, error, refetch } = useRejectedPartialLeadsQuery({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
     });
@@ -79,6 +79,7 @@ const PartialRejectedLeads = () => {
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Rejected Partial Leads"
+                loading={isLoading}
             />
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>

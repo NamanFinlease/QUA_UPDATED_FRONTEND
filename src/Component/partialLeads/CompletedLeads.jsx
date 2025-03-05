@@ -19,7 +19,7 @@ const CompletedLeads = () => {
         pageSize: 10,
     });
 
-    const { data, isSuccess, isError, error, refetch } = useCompletedPartialLeadsQuery({
+    const { data, isSuccess,isLoading, isError, error, refetch } = useCompletedPartialLeadsQuery({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
     });
@@ -79,6 +79,7 @@ const CompletedLeads = () => {
                 onPageChange={handlePageChange}
                 // onRowClick={handleLeadClick}
                 title="Completed Leads"
+                loading={isLoading}
             />
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>

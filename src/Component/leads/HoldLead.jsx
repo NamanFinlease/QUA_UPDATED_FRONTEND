@@ -18,7 +18,7 @@ const HoldLead = () => {
         page: 0,
         pageSize: 5,
     });
-    const {data,isSuccess,isError,error,refetch} = useFetchAllHoldLeadsQuery()
+    const {data,isSuccess,isLoading,isError,error,refetch} = useFetchAllHoldLeadsQuery()
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel)
         setPaginationModel(newPaginationModel)
@@ -86,6 +86,7 @@ const HoldLead = () => {
                 onPageChange={handlePageChange}
                 onRowClick={handleRowClick}
                 title="Leads Hold"
+                loading={isLoading}
             />
         </>
     )

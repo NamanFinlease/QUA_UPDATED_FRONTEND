@@ -16,7 +16,7 @@ const AllocatedPreCollectionLeads = () => {
         pageSize: 10,
     });
 
-    const { data, isSuccess, isError, error, refetch } = useAllocatedPreCollectionsListQuery({
+    const { data, isSuccess, isLoading, isError, error, refetch } = useAllocatedPreCollectionsListQuery({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
     });
@@ -100,6 +100,7 @@ const AllocatedPreCollectionLeads = () => {
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Allocated PreCollection Leads"
+                loading={isLoading}
             />
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>

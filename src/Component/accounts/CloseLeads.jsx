@@ -16,7 +16,7 @@ function CloseLeads() {
         pageSize: 10,
     });
 
-    const { data, isSuccess, isError, error, refetch } = useClosedLeadsQuery({
+    const { data, isSuccess, isLoading, isError, error, refetch } = useClosedLeadsQuery({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
     });
@@ -93,6 +93,7 @@ function CloseLeads() {
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Closed Leads"
+                loading={isLoading}
             />
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>

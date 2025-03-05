@@ -73,6 +73,7 @@ const RejectedApplication = () => {
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Rejected Applications"
+                loading={isLoading}
             />
         </>
     )

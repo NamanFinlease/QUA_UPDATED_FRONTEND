@@ -17,7 +17,7 @@ const ProcessingApplication = () => {
         pageSize: 5,
     });
 
-    const { data, isSuccess, refetch } = useFetchAllocatedApplicationQuery({
+    const { data, isSuccess, isLoading, refetch } = useFetchAllocatedApplicationQuery({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
     });
@@ -105,6 +105,7 @@ const ProcessingApplication = () => {
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Applications In Process"
+                loading={isLoading}
             />
         </>
     );

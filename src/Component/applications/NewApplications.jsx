@@ -23,7 +23,7 @@ const NewApplications = () => {
   const navigate = useNavigate()
 
 
-  const { data: allApplication, isSuccess: applicationSuccess, refetch } = useFetchAllApplicationQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
+  const { data: allApplication, isSuccess: applicationSuccess,isLoading, refetch } = useFetchAllApplicationQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
 
     const handleAllocate = async () => {
         // Perform action based on selected leads
@@ -117,7 +117,7 @@ const NewApplications = () => {
           actionButton={true}
           actionButtonText="Allocate Leads"
           onAllocateButtonClick={handleAllocate}
-          // onActionButtonClick={handleActionButtonClick}
+          loading={isLoading}
       />
     </>
   );

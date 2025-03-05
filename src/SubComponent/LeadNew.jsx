@@ -139,7 +139,7 @@ const LeadNew = () => {
   });
   const { empInfo, activeRole } = useAuthStore();
   const navigate = useNavigate();
-  const { data: allLeads, refetch } = useFetchAllLeadsQuery({
+  const { data: allLeads,isLoading, refetch } = useFetchAllLeadsQuery({
     page: paginationModel.page + 1,
     limit: paginationModel.pageSize,
   });
@@ -241,6 +241,7 @@ const LeadNew = () => {
         title="New Leads"
         actionButton={true}
         onAllocateButtonClick={handleAllocate}
+        loading={isLoading}
       />
       </>
   );

@@ -144,6 +144,7 @@ const Sanctioned = () => {
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Total Sanctioned"
+                loading={isLoading}
             />
             <div>
                 {isError &&(

@@ -16,7 +16,7 @@ const AllocatedCollectionLeads = () => {
         pageSize: 10,
     });
 
-    const { data, isSuccess, isError, error, refetch } = useAllocatedCollectionsListQuery({
+    const { data, isSuccess, isLoading, isError, error, refetch } = useAllocatedCollectionsListQuery({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
     });
@@ -100,6 +100,7 @@ const AllocatedCollectionLeads = () => {
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Allocated Collection Leads"
+                loading={isLoading}
             />
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>
