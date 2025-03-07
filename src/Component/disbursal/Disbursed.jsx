@@ -68,8 +68,6 @@ const Disbursed = () => {
           : [])
     ];
 
-    console.log("disbursal", disbursals);
-
     const rows = disbursals?.map((disbursal) => ({
         id: disbursal?._id,
         leadNo: disbursal?.sanction?.application?.lead?.leadNo,
@@ -172,6 +170,7 @@ const Disbursed = () => {
                 onRowClick={handleLeadClick}
                 title="Total Disbursed"
                 actionButton={true}
+                onExportButtonClick={handleExportClick}
                 loading={isLoading}
             />
             {(isError) &&
