@@ -10,6 +10,7 @@ import {
   OutlinedInput,
   Box,
   useTheme,
+  Alert
 } from '@mui/material';
 import { tokens } from '../theme';
 import { useParams } from 'react-router-dom';
@@ -599,6 +600,11 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
             Submit
           </Button>
         </Box>
+        {isError &&
+          <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+            {error?.data?.message || "An error occurred while updating the lead."}
+          </Alert>
+        }
       </Box>
     </Box>
   );

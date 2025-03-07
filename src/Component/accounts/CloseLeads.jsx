@@ -43,15 +43,15 @@ function CloseLeads() {
         { field: "city", headerName: "City", width: 150 },
         { field: "state", headerName: "State", width: 150 },
         // { field: "repaymentAmount", headerName: "Repayment Amount", width: 150 },
-        ...(activeRole === "collectionHead" || activeRole === "admin"
-            ? [
-                  {
-                      field: "disbursalHead",
-                      headerName: "Disbursed By",
-                      width: 150,
-                  },
-              ]
-            : []),
+        // ...(activeRole === "collectionHead" || activeRole === "admin"
+        //     ? [
+        //           {
+        //               field: "disbursalHead",
+        //               headerName: "Disbursed By",
+        //               width: 150,
+        //           },
+        //       ]
+        //     : []),
     ];
 
     const rows = data?.closedList.map((closedLead) => ({

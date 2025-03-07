@@ -43,6 +43,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
   const [fileSelected, setFileSelected] = useState(false);
 
   console.log(repaymentDetails?.repaymentDetails?.dpd)
+  const dpd = repaymentDetails?.repaymentDetails?.dpd
 
   const [addPayment, { data, isLoading, isSuccess, isError, error }] =
     useAddPaymentMutation();
@@ -89,7 +90,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
       formData.append("receivedAmount", data.receivedAmount);
       formData.append("paymentDate", data.paymentDate);
       formData.append("closingType", data.closingType);
-      formData.append("paymentMode", data.paymentMode);
+      formData.append("paymentMethod", data.paymentMethod);
       formData.append("transactionId", data.transactionId);
       formData.append("bankName", data.bankName);
       formData.append("discount", data.discount);
@@ -326,8 +327,8 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                       >
                         <MenuItem value="" disabled>Select</MenuItem>
                         <MenuItem value="closed">Closed</MenuItem>
-                        <MenuItem value="settled">Settled</MenuItem>
-                        <MenuItem value="writeOff">WriteOff</MenuItem>
+                        <MenuItem value="settled" hidden={dpd < 21}>Settled</MenuItem>
+                        <MenuItem value="writeOff" hidden={dpd < 21}>WriteOff</MenuItem>
                         <MenuItem value="partPayment">Part-Payment</MenuItem>
                       </Select>
                       {fieldState.error && (
@@ -342,7 +343,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
 
               <Box sx={{ flex: { xs: "1 1 100%", sm: "1 1 45%" } }}>
                 <Controller
-                  name="paymentMode"
+                  name="paymentMethod"
                   control={control}
                   render={({ field, fieldState }) => (
                     <FormControl
@@ -352,13 +353,13 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                       error={!!fieldState.error}
                     >
                       <InputLabel htmlFor="payment-select">
-                        Payment Mode
+                        Payment Method
                       </InputLabel>
                       <Select
                         {...field}
                         input={
                           <OutlinedInput
-                            label="Payment Mode"
+                            label="Payment Method"
                             id="payment-select"
                           />
                         }

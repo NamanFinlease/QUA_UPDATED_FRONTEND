@@ -929,7 +929,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
     const [selectedRecipient, setSelectedRecipient] = useState();
     const [reasonList, setReasonList] = useState(null);
     const [remarks, setRemarks] = useState("");
-    const [isActionInProgress, setIsActionInProgress] = useState(false); // New state variable
+    const [isActionInProgress, setIsActionInProgress] = useState(false);
 
     // Application Action component API-----------
     const [
@@ -1147,7 +1147,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
         } else if (actionType === "sendBack") {
             if (activeRole === "creditManager") {
                 sendBack({
-                    id: applicationProfile?.lead._id,
+                    id: applicationProfile?.application?.lead._id,
                     reason: remarks,
                     sendTo: selectedRecipient,
                 });
@@ -1168,6 +1168,10 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
             if (activeRole === "disbursalManager") {
                 recommendLoan({ id: applicationProfile._id, remarks });
             }
+        } else if (actionType === "approve") {
+            if (activeRole === "sanctionHead") {
+                sanctionApprove({ id: applicationProfile?.sanction?.application?.lead._id, remarks });
+            }
         }
     };
 
@@ -1177,7 +1181,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
     };
 
     const handleSanctionApprove = () => {
-        sanctionApprove(id);
+        sanctionApprove(id, remarks);
     };
 
     const handleCancel = () => {
@@ -1436,10 +1440,9 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                     <Button
                                         variant="contained"
                                         disabled={isActionInProgress || sanctionApproveLoading}
-                                        color="success"
                                         onClick={() => handleSanctionApprove()}
                                         sx={{
-                                            backgroundColor: (isActionInProgress || sanctionApproveLoading) ? "#ccc" : "#04c93f",
+                                            backgroundColor: (isActionInProgress || sanctionApproveLoading) ? "#000000" : "#04c93f",
                                             color: (isActionInProgress || sanctionApproveLoading) ? "#666" : "white",
                                             cursor: (isActionInProgress || sanctionApproveLoading) ? "not-allowed" : "pointer",
                                             borderRadius: "0px 10px",
@@ -1448,7 +1451,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                             },
                                         }}
                                     >
-                                        {sanctionApproveLoading ? <CircularProgress size={20} color="inherit" /> : "Approve"}
+                                        {sanctionApproveLoading ? <CircularProgress size={20} color='inherit' /> : "Approve"}
                                     </Button>
                                     :
                                     (!applicationProfile.eSignPending) ?
@@ -1520,6 +1523,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                     onClick={() => handleActionClick(isHold ? "unhold" : 'hold')}
                                     disabled={isActionInProgress}
                                     sx={{
+                                        color:colors.white[100],
                                         borderRadius: (isHold) ? "0px 10px 0px 10px" : "0px 10px 0px 10px",
                                         '&:hover': {
                                             backgroundColor: isHold ? '#ffcccb' : '#ffc107',
@@ -1561,7 +1565,8 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                     actionType === "unhold" ||
                     actionType === "reject" ||
                     actionType === "sendBack" ||
-                    actionType === "recommend") && (
+                    actionType === "recommend" ||
+                    actionType === "approve") && (
                     <Box
                         sx={{
                             marginTop: 3,
@@ -1574,7 +1579,14 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                         {(actionType === "hold" || actionType === "reject") && (
                             <>
                                 <FormControl fullWidth sx={{ marginBottom: 3, }}>
-                                    <InputLabel sx={{ color: colors.black[100] }}>Select a Reason</InputLabel>
+                                    <InputLabel 
+                                        sx={{ 
+                                            color: colors.black[100],
+                                            '& .MuiInputLabel-root':{
+                                                color:colors.black[100],
+                                            }, 
+                                        }}
+                                    >Select a Reason</InputLabel>
                                     <Select
                                         value={selectedReason}
                                         onChange={handleReasonChange}
@@ -1655,7 +1667,16 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                 />
                                 {actionType === "sendBack" && (
                                     <>
-                                        <FormControl fullWidth sx={{ marginBottom: 3, }}>
+                                        <FormControl 
+                                            fullWidth 
+                                            sx={{ 
+                                                marginBottom: 3,
+                                                backgroundColor: colors.white[100],
+                                                '& .MuiInputLabel-root':{
+                                                    color:colors.black[100],
+                                                },
+                                            }}
+                                        >
                                             <InputLabel>Send Back to</InputLabel>
                                             <Select
                                                 value={selectedRecipient}
@@ -1670,7 +1691,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                     backgroundColor: colors.white[100],
                                                     borderRadius: "0px 10px",
                                                     '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
-                                                    '& .MuiSvgIcon-root': { color: colors.black[100] },
+                                                    '& .MuiSvgIcon-root': { color: colors.primary[400] },
                                                     '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                                                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                                                 }}
@@ -1695,6 +1716,50 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                         </FormControl>
                                     </>
                                 )}
+                            </>
+                        )}
+
+                        {(actionType === "approve") && (
+                            <>
+                                <FormControl
+                                    fullWidth 
+                                    sx={{ 
+                                        marginBottom: 3,
+                                        '& .MuiInputLabel-root':{
+                                            color:colors.black[100],
+                                        },
+                                        '& .MuiOutlinedInput-root': {
+                                            color:colors.black[100],
+                                            '& fieldset': {
+                                                borderColor: colors.primary[400],
+                                                borderRadius: '0px 10px',
+                                                color: colors.black[100],
+                                            },
+                                            '&:hover fieldset': {
+                                                borderColor: colors.primary[400],
+                                                color: colors.black[100]
+                                            },
+                                        },
+                                    }}
+                                >
+                                    <InputLabel>Check</InputLabel>
+                                    <Select
+                                        value={remarks}
+                                        onChange={(e) =>
+                                            setRemarks(
+                                                e.target.value
+                                            )
+                                        }
+                                        label="Check"
+                                    >
+                                        <MenuItem value="" disabled>
+                                            Select
+                                        </MenuItem>
+                                        <MenuItem value="Cam and eKyc Checked">
+                                            Cam and eKyc Checked
+                                        </MenuItem>
+                                    </Select>
+                                </FormControl>
                             </>
                         )}
 

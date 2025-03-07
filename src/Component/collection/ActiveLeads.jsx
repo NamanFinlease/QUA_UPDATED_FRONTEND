@@ -248,11 +248,7 @@ const ActiveLeads = () => {
         salary: activeLead?.salary,
         source: activeLead?.source,
         ...((activeRole === "collectionHead" || activeRole === "admin") && {
-            disbursalHead: `${activeLead?.fName}${
-                activeLead?.mName
-                    ? ` ${activeLead?.mName}`
-                    : ``
-            } ${activeLead?.lName}`,
+            disbursalHead: activeLead?.disbursedBy,
         }),
     }));
 

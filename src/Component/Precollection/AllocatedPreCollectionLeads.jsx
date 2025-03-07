@@ -74,11 +74,7 @@ const AllocatedPreCollectionLeads = () => {
         salary: allocatedLeads.salary,
         source: allocatedLeads.source,
         ...((activeRole === "collectionHead" || activeRole === "admin") && {
-            disbursalHead: `${allocatedLeads.fName}${
-                allocatedLeads.mName
-                    ? ` ${allocatedLeads.mName}`
-                    : ``
-            } ${allocatedLeads.lName}`,
+            disbursalHead: allocatedLeads?.disbursedBy,
         }),
     }));
     console.log("rows", rows)

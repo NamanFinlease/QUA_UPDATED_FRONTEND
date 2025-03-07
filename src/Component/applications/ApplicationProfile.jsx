@@ -38,7 +38,7 @@ const ApplicationProfile = () => {
   useEffect(() => {
     if (applicationSuccess) {
       setApplicationProfile(applicationData);
-      setLead(applicationData?.lead)
+      setLead(applicationData?.application?.lead)
     }
     if (applicationSuccess && applicationData?.lead?.document?.length) {
       setUploadedDocs(applicationData?.lead?.document.map(doc => doc.type));

@@ -482,7 +482,6 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                 closingType : selectedStatus,
                 remarks : remarks
             }) 
-            handleClose();
         }else if (actionType === "Reject") {
             verifyPayment({
                 loanNo: id,
@@ -491,7 +490,7 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                 remarks: remarks
             });
         }
-
+        handleClose();
     }
 
     useEffect(() => {
@@ -501,7 +500,7 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                 icon: "success"
             });
         }
-    }, [isSuccess, ])
+    }, [isSuccess, verifyPayment ])
 
     return (
         <tr>
@@ -548,10 +547,10 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                                     ? formatCamelCaseToTitle(payment.requestedStatus)
                                     : "N/A"}
                             </MenuItem>
-                            <MenuItem value="Part Payment">Part Payment</MenuItem>
-                            <MenuItem value="Settled">Settled</MenuItem>
-                            <MenuItem value="WriteOff">Write Off</MenuItem>
-                            <MenuItem value="Closed">Closed</MenuItem>
+                            <MenuItem value="partPayment">Part Payment</MenuItem>
+                            <MenuItem value="settled">Settled</MenuItem>
+                            <MenuItem value="writeOff">Write Off</MenuItem>
+                            <MenuItem value="closed">Closed</MenuItem>
                         </Select>
                     </td>
                     <td>
