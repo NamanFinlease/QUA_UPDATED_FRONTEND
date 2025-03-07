@@ -256,6 +256,7 @@ const UploadDocuments = ({ leadData }) => {
                 ...leadData?.documents?.document?.multipleDocuments
                     ?.bankStatement,
                 ...leadData?.documents?.document?.multipleDocuments?.others,
+                ...leadData?.documents?.document?.multipleDocuments?.statementAnalyser,
                 // ...leadData?.documents?.document?.multipleDocuments?.sanctionLetter,
                 ...leadData?.documents?.document?.multipleDocuments?.repaymentDocs,
                 ...leadData?.documents?.document?.singleDocuments

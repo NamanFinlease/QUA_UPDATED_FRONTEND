@@ -103,8 +103,8 @@ const DocumentsTable = ({ leadData, uploadedDocs, setSelectedBSA, selectedDocTyp
                                     <Button
                                         variant="contained"
                                         size="small"
-                                        onClick={() => selectFile(doc.name)}                                        
-                                        disabled={selectedDocType || selectedBSA.includes(doc.name)}
+                                        onClick={() => selectFile(doc._id)}                                        
+                                        disabled={selectedDocType || selectedBSA.includes(doc._id)}
                                         sx={{
                                             borderRadius: '0px 10px',
                                             textTransform: 'none',

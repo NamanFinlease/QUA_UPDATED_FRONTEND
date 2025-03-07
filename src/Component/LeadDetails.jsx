@@ -10,7 +10,8 @@ import {
   OutlinedInput,
   Box,
   useTheme,
-  Alert
+  Alert,
+  CircularProgress,
 } from '@mui/material';
 import { tokens } from '../theme';
 import { useParams } from 'react-router-dom';
@@ -55,18 +56,19 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
   }, [leadData, setValue]);
 
   const onSubmit = (formData) => {
-    setLeadEdit(false);
+    
     updateLead({ id, formData });
   };
 
   useEffect(() => {
-    if (isSuccess && data && !isLoading) {
+    if (isSuccess && data ) {
       Swal.fire({
         text: "Lead details edited successfully!",
         icon: "success",
       });
+      setLeadEdit(false);
     }
-  }, [isSuccess, data, isLoading])
+  }, [isSuccess, data])
 
   console.log('loading',isLoading)
 
@@ -596,8 +598,9 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
                 color: colors.white[100]
               },
             }}
-          >
-            Submit
+          >{
+            isLoading ? <CircularProgress size={20} color="inherit" /> : "Submit"
+          }
           </Button>
         </Box>
         {isError &&
