@@ -7,6 +7,7 @@ import { useAllocateApplicationMutation, useFetchAllApplicationQuery } from '../
 import Header from '../Header';
 import useAuthStore from '../store/authStore';
 import CommonTable from '../CommonTable';
+import { set } from "react-hook-form";
 
 const NewApplications = () => {
   const [applications, setApplications] = useState([]);
@@ -15,6 +16,7 @@ const NewApplications = () => {
   const [selectedApplication, setSelectedApplication] = useState(null);
   const { empInfo,activeRole } = useAuthStore()
   //   const apiUrl = import.meta.env.VITE_API_URL;
+  const [isAllocating, setIsAllocating] = useState(false);
   const [allocateApplication, { data: updateApplication, isSuccess }] = useAllocateApplicationMutation();
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
@@ -26,8 +28,9 @@ const NewApplications = () => {
   const { data: allApplication, isSuccess: applicationSuccess,isLoading, refetch } = useFetchAllApplicationQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
 
     const handleAllocate = async () => {
-        // Perform action based on selected leads
-        allocateApplication(selectedApplication);
+      setIsAllocating(true);
+      await allocateApplication(selectedApplication);
+      setIsAllocating(false);
     };
 
     const handleCheckboxChange = (id) => {
@@ -85,7 +88,13 @@ const NewApplications = () => {
     { field: 'source', headerName: 'Source', width: 150 },
     ...(activeRole === "sanctionHead" || activeRole === "admin"
       ? [{ field: 'recommendedBy', headerName: 'Recommended By', width: 150 }]
-      : [])
+      : []),  
+    { field: "breDecision", headerName: "BRE Decision", width: 200 },
+    {
+        field: "maxLoanByBRE",
+        headerName: "Max Loan Recommended by BRE",
+        width: 200,
+    },
   ];
 
   const rows = applications?.applications?.map(application => ({
@@ -101,8 +110,9 @@ const NewApplications = () => {
     salary: application?.lead?.salary,
     source: application?.lead?.source,
     ...((activeRole === "sanctionHead" || activeRole === "admin") &&
-      { recommendedBy: `${application?.lead?.recommendedBy?.fName}${application?.lead?.recommendedBy?.mName ? ` ${application?.lead?.recommendedBy?.mName}` : ``} ${application?.lead?.recommendedBy?.lName}`, })
-
+      { recommendedBy: `${application?.lead?.recommendedBy?.fName}${application?.lead?.recommendedBy?.mName ? ` ${application?.lead?.recommendedBy?.mName}` : ``} ${application?.lead?.recommendedBy?.lName}`, }),
+    breDecision: application?.bre?.finalDecision || "-",
+    maxLoanByBRE: application?.bre?.maxLoanAmount || 0,
   }));
 
   return (
@@ -118,6 +128,7 @@ const NewApplications = () => {
           actionButtonText="Allocate Leads"
           onAllocateButtonClick={handleAllocate}
           loading={isLoading}
+          isAllocating={isAllocating}
       />
     </>
   );

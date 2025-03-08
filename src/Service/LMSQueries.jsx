@@ -65,8 +65,9 @@ export const lmsQueries = createApi({
       invalidatesTags: ["allocatedPartialLeads"],
     }),
     rejectPartialLead: builder.mutation({
-      query: ( id ) =>  ({
+      query: ( {id, remarks} ) =>  ({
         url:`/marketing/reject/${id}/?role=${role()}`,
+        body:{remarks},
         method:"POST"
       }),
       invalidatesTags: ["rejectedPartialLeads"],

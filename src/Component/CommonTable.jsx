@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { tokens } from '../theme';
-import { useTheme, Button } from '@mui/material';
+import { useTheme, Button, CircularProgress } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from './store/authStore';
@@ -19,6 +19,8 @@ const CommonTable = ({
   onAllocateButtonClick,
   onExportButtonClick,
   loading,
+  isExporting,
+  isAllocating,
 }) => {
   const { activeRole } = useAuthStore();
   const navigate = useNavigate();
@@ -96,14 +98,18 @@ const CommonTable = ({
                 display:"inline-block",
                 margin:'10px',
                 textTransform: 'capitalize',
+                '& .Mui-disabled':{
+                  background: colors.greenAccent[700],
+                  color: colors.white[100],
+                },
                 ':hover':{
                   background: colors.greenAccent[700],
                   color: colors.white[100],
-                }
+                },
             }}
           >
-            <FileDownloadIcon style={{ marginRight: '5px' }}/>
-            Export CSV
+            {isExporting ? <CircularProgress size={10} color='inherit' /> : <FileDownloadIcon style={{ marginRight: '5px' }}/>}
+            {isExporting ? "Exporting..." : "Export CSV"}
           </Button>}
         </div>
         <div
@@ -132,8 +138,8 @@ const CommonTable = ({
                 }
             }}
           >
-            <AddTaskIcon style={{ marginRight: '5px' }}/>
-            Allocate
+            {isAllocating ? <CircularProgress size={10} color='inherit' /> : <AddTaskIcon style={{ marginRight: '5px' }}/>}
+            {isAllocating ? "Allocating..." : "Allocate"}
           </Button>}
         </div>
       </>

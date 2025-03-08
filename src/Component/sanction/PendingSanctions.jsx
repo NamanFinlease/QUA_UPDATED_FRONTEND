@@ -53,6 +53,8 @@ const handleLeadClick = (lead) => {
     { field: 'salary', headerName: 'Salary', width: 150 },
     { field: 'recommendedBy', headerName: 'Recommended By', width: 150 },
     { field: 'source', headerName: 'Source', width: 150 },
+    { field: "breDecision", headerName: "BRE Decision", width: 200 },
+    { field: "maxLoanByBRE", headerName: "Max Loan Recommended by BRE",width: 200,},
   ];
 
   const rows = applications?.map(sanction => {
@@ -69,6 +71,8 @@ const handleLeadClick = (lead) => {
     salary: sanction?.application?.lead?.salary,
     recommendedBy: `${sanction?.application?.recommendedBy?.fName}${sanction?.application?.recommendedBy?.mName ? ` ${sanction?.application?.recommendedBy?.mName}` : ``} ${sanction?.application?.recommendedBy?.lName}`,
     source: sanction?.application?.lead?.source,
+    breDecision: sanction?.application?.bre?.finalDecision || "-",
+    maxLoanByBRE: sanction?.application?.bre?.maxLoanAmount || 0,
   })});
 
 

@@ -120,6 +120,7 @@ const ApplicationProfile = () => {
                     isAadhaarDetailsSaved={applicationData?.application?.lead?.isAadhaarDetailsSaved}
                     isPanVerified={applicationData?.application?.lead?.isPanVerified}
                     leadId={applicationData?.application?.lead?._id}
+                    bre={applicationData?.bre?.analysis[0]}
                   />
                 }
                 {currentPage === "documents" &&

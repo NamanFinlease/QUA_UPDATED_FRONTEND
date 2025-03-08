@@ -47,6 +47,8 @@ const DisbursalHold = () => {
         { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },
         { field: 'salary', headerName: 'Salary', width: 150 },
         { field: 'source', headerName: 'Source', width: 150 },
+        { field: "breDecision", headerName: "BRE Decision", width: 200 },
+        { field: "maxLoanByBRE", headerName: "Max Loan Recommended by BRE",width: 200,},
         ...(activeRole === "disbursalHead" || activeRole === "admin"
             ? [{ field: 'heldBy', headerName: 'Hold By', width: 150 }]
             : [])
@@ -65,6 +67,8 @@ const DisbursalHold = () => {
         loanAmount: disbursal?.sanction?.application?.lead?.loanAmount,
         salary: disbursal?.sanction?.application?.lead?.salary,
         source: disbursal?.sanction?.application?.lead?.source,
+        breDecision: disbursal?.sanction?.application?.bre?.finalDecision || "-",
+        maxLoanByBRE: disbursal?.sanction?.application?.bre?.maxLoanAmount || 0,
         ...((activeRole === "disbursalHead" || activeRole === "admin") &&
         { heldBy: `${disbursal?.sanction?.application?.heldBy?.fName}${disbursal?.sanction?.application?.heldBy?.mName ? ` ${disbursal?.sanction?.application?.heldBy?.mName}` : ``} ${disbursal?.sanction?.application?.heldBy?.lName}`, })
   

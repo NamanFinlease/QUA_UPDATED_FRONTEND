@@ -133,6 +133,7 @@ const LeadNew = () => {
   const [page, setPage] = useState(1); // Current page 
   const [selectedLeads, setSelectedLeads] = useState(null); // Stores selected leads
   const apiUrl = import.meta.env.VITE_API_URL;
+  const [isAllocating, setIsAllocating] = useState(false);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 10,
@@ -166,9 +167,9 @@ const LeadNew = () => {
   }
 
   const handleAllocate = async () => {
-    // Perform action based on selected leads
-    allocateLead(selectedLeads);
-    
+    setIsAllocating(true);
+    await allocateLead(selectedLeads);
+    setIsAllocating(false);
   };
 
   const columns = [
@@ -242,6 +243,7 @@ const LeadNew = () => {
         actionButton={true}
         onAllocateButtonClick={handleAllocate}
         loading={isLoading}
+        isAllocating={isAllocating}
       />
       </>
   );

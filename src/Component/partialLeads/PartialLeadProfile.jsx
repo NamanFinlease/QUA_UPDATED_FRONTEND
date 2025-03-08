@@ -30,9 +30,8 @@ const PartialLeadProfile = () => {
 
     const handleConfirmReject = async () => {
         try {
-            await rejectLead(id).unwrap();
+            await rejectLead({id, remarks}).unwrap();
             setShowRejectForm(false);
-            setRemarks("");
         } catch (err) {
             console.error("Failed to reject lead:", err);
         }
@@ -56,6 +55,14 @@ const PartialLeadProfile = () => {
 
     return (
         <div className="crm-container" style={{ display: "flex", flexDirection: "column", justifyContent: "center", }}>
+            {/* {leadData?.partialLeadsDetails?.isRejected ?
+            <h1 style={{color:colors.primary[400]}}>Partial Lead : Rejected</h1>
+            :
+            leadData?.partialLeadsDetails?.isCompleted ?
+            <h1 style={{color:colors.primary[400]}}>Partial Lead : Compeleted</h1>
+            :
+            <h1 style={{color:colors.primary[400]}}>Partial Lead : In Process</h1>
+            } */}
             <div className="p-3" style={{ width: "90%", }}>
                 <BarButtons
                     barButtonOptions={barButtonOptions}
@@ -124,6 +131,7 @@ const PartialLeadProfile = () => {
                             >
                                 <TextField
                                     autoFocus
+                                    name='remarks'
                                     margin="dense"
                                     label="Remarks"
                                     type="text"

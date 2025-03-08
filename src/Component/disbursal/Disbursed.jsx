@@ -16,6 +16,7 @@ const Disbursed = () => {
     const [id, setId] = useState(null);
     const { empInfo, activeRole } = useAuthStore();
     const navigate = useNavigate();
+    const [isExporting, setIsExporting] = useState(false);
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
         pageSize: 5,
@@ -45,10 +46,10 @@ const Disbursed = () => {
         navigate(`/disbursal-profile/${disbursal.id}`);
     };
 
-    const handleExportClick = () => {
-        console.log("Disbursed Export click");
-        // Replace with your actual API call
-        exportDisbursed();
+    const handleExportClick = async () => {
+        setIsExporting(true);
+        await exportDisbursed();
+        setIsExporting(false);
     };
 
     const columns = [
@@ -60,9 +61,11 @@ const Disbursed = () => {
       { field: 'loanNo', headerName: 'Loan Number', width: 150 },
       { field: 'city', headerName: 'City', width: 150 },
       { field: 'state', headerName: 'State', width: 150 },
-      { field: 'sanctionAmount', headerName: 'Sanction Amount', width: 150 },
+      { field: 'loanRecommended', headerName: 'Sanctioned Amount', width: 150 },
       { field: 'salary', headerName: 'Salary', width: 150 },
       { field: 'source', headerName: 'Source', width: 150 },
+      { field: "breDecision", headerName: "BRE Decision", width: 200 },
+      { field: "maxLoanByBRE", headerName: "Max Loan Recommended by BRE",width: 200,},
       ...(activeRole === "disbursalHead" || activeRole === "admin"
           ? [{ field: 'disbursalHead', headerName: 'Disbursed By', width: 150 }]
           : [])
@@ -81,6 +84,8 @@ const Disbursed = () => {
         loanRecommended: disbursal?.sanction?.camDetails?.loanRecommended,
         salary: disbursal?.sanction?.camDetails?.actualNetSalary,
         source: disbursal?.sanction?.application?.lead?.source,
+        breDecision: disbursal?.sanction?.application?.bre?.finalDecision || "-",
+        maxLoanByBRE: disbursal?.sanction?.application?.bre?.maxLoanAmount || 0,
         ...((activeRole === "disbursalHead" || activeRole === "admin") && {
             disbursalHead: `${disbursal?.disbursedBy?.fName}${
                 disbursal?.disbursedBy?.mName
@@ -172,6 +177,7 @@ const Disbursed = () => {
                 actionButton={true}
                 onExportButtonClick={handleExportClick}
                 loading={isLoading}
+                isExporting={isExporting}
             />
             {(isError) &&
             <Alert severity="error" style={{ marginTop: "10px" }}>

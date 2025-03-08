@@ -16,6 +16,8 @@ const DisburseNew = () => {
   const [page, setPage] = useState(1);
   const [selectedApplication, setSelectedApplication] = useState(null);
   const { empInfo, activeRole } = useAuthStore()
+  const [isExporting, setIsExporting] = useState(false);
+  const [isAllocating, setIsAllocating] = useState(false);  
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 10,
@@ -28,14 +30,15 @@ const DisburseNew = () => {
   const { data: allApplication, isSuccess: applicationSuccess, isLoading, isError, error, refetch } = useAllDisbursalsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
 
     const handleAllocate = async () => {
-        allocateApplication(selectedApplication);
+      setIsAllocating(true);
+      allocateApplication(selectedApplication);
+      setIsAllocating(false);
     };
 
-  const handleExportClick = () => {
-    console.log("Export click");
-    // Replace with your actual API call
-    exportSanctioned();
-    console.log(exportSanctioned())
+  const handleExportClick = async () => {
+    setIsExporting(true);
+    await exportSanctioned();
+    setIsExporting(false);
   };
 
     const handleCheckboxChange = (id) => {
@@ -71,9 +74,11 @@ const DisburseNew = () => {
     { field: 'loanNo', headerName: 'Loan Number', width: 150 },
     { field: 'city', headerName: 'City', width: 150 },
     { field: 'state', headerName: 'State', width: 150 },
-    { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },
+    { field: 'loanRecommended', headerName: 'Sanctioned Amount', width: 150 },
     { field: 'salary', headerName: 'Salary', width: 150 },
     { field: 'source', headerName: 'Source', width: 150 },
+    { field: "breDecision", headerName: "BRE Decision", width: 200 },
+    { field: "maxLoanByBRE", headerName: "Max Loan Recommended by BRE",width: 200,},
     ...(activeRole === "disbursalHead" || activeRole === "admin"
       ? [{ field: 'recommendedBy', headerName: 'Recommended By', width: 150 }]
       : [])
@@ -82,19 +87,21 @@ const DisburseNew = () => {
 
   const rows = applications?.map(disbursal => ({
     id: disbursal?._id, // Unique ID for each lead
-    leadNo: disbursal?.sanction?.application?.lead?.leadNo,
-    name: `${disbursal?.sanction?.application?.lead?.fName} ${disbursal?.sanction?.application?.lead?.mName} ${disbursal?.sanction?.application?.lead?.lName}`,
-    mobile: disbursal?.sanction?.application?.lead?.mobile,
-    aadhaar: disbursal?.sanction?.application?.lead?.aadhaar,
-    pan: disbursal?.sanction?.application?.lead?.pan,
-    loanNo: disbursal?.sanction?.loanNo,
-    city: disbursal?.sanction?.application?.lead?.city,
-    state: disbursal?.sanction?.application?.lead?.state,
-    loanAmount: disbursal?.sanction?.application?.lead?.loanAmount,
-    salary: disbursal?.sanction?.application?.lead?.salary,
-    source: disbursal?.sanction?.application?.lead?.source,
+    leadNo: disbursal?.leadNo,
+    name: `${disbursal?.fName} ${disbursal?.mName} ${disbursal?.lName}`,
+    mobile: disbursal?.mobile,
+    aadhaar: disbursal?.aadhaar,
+    pan: disbursal?.pan,
+    loanNo: disbursal?.loanNo,
+    city: disbursal?.city,
+    state: disbursal?.state,
+    loanRecommended: disbursal?.loanRecommended,
+    salary: disbursal?.actualNetSalary,
+    source: disbursal?.source,
     ...((activeRole === "disbursalHead" || activeRole === "admin") &&
-      { recommendedBy: `${disbursal?.sanction?.application?.lead?.recommendedBy?.fName}${disbursal?.sanction?.application?.lead?.recommendedBy?.mName ? ` ${disbursal?.sanction?.application?.lead?.recommendedBy?.mName}` : ``} ${disbursal?.sanction?.application?.lead?.recommendedBy?.lName}`, })
+      { recommendedBy: `${disbursal?.sanction?.application?.lead?.recommendedBy?.fName}${disbursal?.sanction?.application?.lead?.recommendedBy?.mName ? ` ${disbursal?.sanction?.application?.lead?.recommendedBy?.mName}` : ``} ${disbursal?.sanction?.application?.lead?.recommendedBy?.lName}`, }),
+    breDecision: disbursal?.sanction?.application?.bre?.finalDecision || "-",
+    maxLoanByBRE: disbursal?.sanction?.application?.bre?.maxLoanAmount || 0,
 
   }));
 
@@ -165,6 +172,8 @@ const DisburseNew = () => {
           onAllocateButtonClick={handleAllocate}
           onExportButtonClick={handleExportClick}
           loading={isLoading}
+          isExporting={isExporting}
+          isAllocating={isAllocating}
       />
     </>
   );

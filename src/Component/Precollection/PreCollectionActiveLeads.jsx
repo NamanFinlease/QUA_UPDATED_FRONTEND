@@ -5,6 +5,7 @@ import { Alert } from "@mui/material";
 import useAuthStore from "../store/authStore";
 import { useActivePreCollectionLeadsQuery, useAllocatePreCollectionsMutation } from "../../Service/LMSQueries";
 import CommonTable from "../CommonTable";
+import { set } from "react-hook-form";
 
 const PreCollectionActiveLeads = () => {
     const [activeLeads, setActiveLeads] = useState();
@@ -12,6 +13,7 @@ const PreCollectionActiveLeads = () => {
     const { empInfo, activeRole } = useAuthStore();
     const [selectedLeads, setSelectedLeads] = useState(null); // Stores selected leads
     const navigate = useNavigate();
+    const [isAllocating, setIsAllocating] = useState(false);
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
         pageSize: 100,
@@ -29,9 +31,10 @@ const PreCollectionActiveLeads = () => {
     }
 
     const handleAllocate = async () => {
-        console.log(selectedLeads)
         if (selectedLeads) {
+            setIsAllocating(true);
             await allocateCollections(selectedLeads);
+            setIsAllocating(false);
         } else {
             console.warn("No lead selected for allocation.");
         }
@@ -126,6 +129,7 @@ const PreCollectionActiveLeads = () => {
                 actionButton={true}
                 onAllocateButtonClick={handleAllocate}
                 loading={isLoading}
+                isAllocating={isAllocating}
             />
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>

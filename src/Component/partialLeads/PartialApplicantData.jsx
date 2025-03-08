@@ -15,7 +15,7 @@ const PartialApplicantData = ({leadData}) => {
         { label: "Full Name", value: leadData?.fullName, label2: "PAN Number", value2: leadData?.pan},
         { label: "Mobile Number", value: leadData?.mobile, label2: "Email", value2: leadData?.email},
         { label: "Salary", value: leadData?.salary, label2: "Loan Applied", value2: leadData?.loanAmount },
-        { label: "Pin Code", value: leadData?.pinCode, label2: "Remarks", value2: leadData?.remarks || '-'},
+        { label: "Pin Code", value: leadData?.pinCode, label2 : (leadData?.remarks === '' ? "" : "Remarks"), value2: (leadData?.remarks === '' ? "" : leadData?.remarks) },
       ]
     return (
         <>

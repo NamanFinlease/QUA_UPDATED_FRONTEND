@@ -66,11 +66,13 @@ const Sanctioned = () => {
         // { field: 'loanNo', headerName: 'Loan Number', width: 150 },
         { field: 'city', headerName: 'City', width: 150 },
         { field: 'state', headerName: 'State', width: 150 },
-        { field: 'sanctionAmount', headerName: 'Sanction Amount', width: 150 },
+        { field: 'loanRecommended', headerName: 'Sanctioned Amount', width: 150 },
         { field: 'salary', headerName: 'Salary', width: 150 },
         ...((activeRole === "sanctionHead" || activeRole === "admin") ?
             [{ field: 'recommendedBy', headerName: 'Recommended By', width: 150 }] : []),
         { field: 'source', headerName: 'Source', width: 150 },
+        { field: "breDecision", headerName: "BRE Decision", width: 200 },
+        { field: "maxLoanByBRE", headerName: "Max Loan Recommended by BRE",width: 200,},
     ];
 
     const rows = applications?.map((sanction) => ({
@@ -93,6 +95,8 @@ const Sanctioned = () => {
             } ${sanction?.application?.recommendedBy?.lName}`,
         }),
         source: sanction?.application?.lead?.source,
+        breDecision: sanction?.application?.bre?.finalDecision || "-",
+        maxLoanByBRE: sanction?.application?.bre?.maxLoanAmount || 0,
     }));
 
     useEffect(() => {

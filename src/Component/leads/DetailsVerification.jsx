@@ -1,248 +1,3 @@
-// import React, { useEffect, useState } from 'react';
-// import { tokens } from '../../theme';
-// import { Accordion, AccordionSummary, AccordionDetails, Typography, Button, Box, CircularProgress, useTheme } from '@mui/material';
-// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-// import Swal from 'sweetalert2';
-// import { useGetEmailOtpMutation, useLazyAadhaarOtpQuery, useLazyCheckDetailsQuery, useLazyGenerateAadhaarLinkQuery, useLazyGetPanDetailsQuery } from '../../Service/Query';
-// import { useNavigate, useParams } from 'react-router-dom';
-// import EmailVerification from './OtpVerification';
-// import AadhaarOtpVerification from './AadhaarOtpVerification';
-// import PanCompare from './PanCompare';
-// import Loader from '../loader';
-// import useAuthStore from '../store/authStore';
-// import AadhaarCompare from './AadhaarCompare';
-
-// const EKycVerification = ({ isMobileVerified, isEmailVerified, isAadhaarVerified,isAadhaarDetailsSaved, isPanVerified }) => {
-//   const { id } = useParams()
-//   const {setCodeVerifier,setFwdp,activeRole} = useAuthStore()
-//   const navigate = useNavigate()
-//   const [otp, setOtp] = useState(false)
-//   const [openAadhaarCompare,setOpenAadhaarCompare] = useState()
-//   const [aadhaarData,setAadhaarData] = useState()
-//   const [otpAadhaar, setOtpAadhaar] = useState(false)
-//   const [panModal, setPanModal] = useState(false)
-//   const [otpPan, setOtpPan] = useState(false)
-//   const [mobileVerified, setMobileVerified] = useState(false);
-
-//   const [getEmailOtp, { data: emailOtp, isSuccess: emailOtpSuccess, isError: isEmailError, error: emailError }] = useGetEmailOtpMutation()
-//   const [checkDetails, { data: aadhaarDetails, isSuccess: aadhaarDetailsSuccess,isLoading:aadhaarDetailsLoading, isError: isAadhaarDetailError, error: aadhaarDetailsError }] = useLazyCheckDetailsQuery()
-//   const [getPanDetails, panRes] = useLazyGetPanDetailsQuery()
-//   const [sendAadhaarLink, aadhaarRes] = useLazyGenerateAadhaarLinkQuery()
-
-//   const handleMobileVerification = () => {
-//     // Logic for mobile verification
-//     setMobileVerified(true);
-//     Swal.fire({
-//       title: 'Mobile Verified!',
-//       icon: 'success',
-//     });
-//   };
-
-
-//   const handleEmailVerification = () => {
-//     getEmailOtp(id)
-//   };
-//   const handlePanVerification = () => {
-//     getPanDetails(id)
-//   }
-//   const handleSendAadhaarLink = () => {
-//     sendAadhaarLink(id)
-//   }
-
-//   const handleAadhaarVerification = () => {
-//     checkDetails(id)
-
-//   }
-
-//   useEffect(() => {
-//     if (panRes?.isSuccess && panRes?.data) {
-//       setPanModal(true)
-
-//     }
-//   }, [panRes?.data, panRes?.isSuccess])
-
-//   useEffect(() => {
-//     if (emailOtpSuccess) {
-//       setOtp(true)
-//     }
-//   }, [emailOtp, emailOtpSuccess])
-//   useEffect(() => {
-//     if (aadhaarRes?.isSuccess && aadhaarRes) {
-//       navigate(`/lead-process`)
-//     }
-//     if (aadhaarDetails && aadhaarDetailsSuccess) {
-//       setOpenAadhaarCompare(true)
-//       setAadhaarData(aadhaarDetails?.data?.details)
-//     }
-//   }, [aadhaarRes.data, aadhaarRes?.isSuccess,aadhaarDetails,aadhaarDetailsSuccess])
-
-//   console.log('aadhaar data',aadhaarData)
-
-//   // Color theme
-//   const theme = useTheme();
-//   const colors = tokens(theme.palette.mode);
-
-//   return (
-//     <>
-//     {openAadhaarCompare && <AadhaarCompare open={openAadhaarCompare} setOpen={setOpenAadhaarCompare} aadhaarDetails={aadhaarData} />}
-//       {otp && <EmailVerification open={otp} setOpen={setOtp} />}
-//       {<PanCompare open={panModal} setOpen={setPanModal} panDetails={panRes?.data?.data} />}
-//       <Box sx={{ maxWidth: 700, margin: '0 auto', mt: 4 }}>
-//         {/* Single Accordion for Mobile and Email Verification */}
-//         <Accordion sx={{ borderRadius: '15px', boxShadow: 3 }}>
-//           <AccordionSummary
-//             expandIcon={<ExpandMoreIcon />}
-//             aria-controls="panel1-content"
-//             id="panel1-header"
-//             sx={{
-//               backgroundColor: '#0366fc',
-//               borderRadius: '5px',
-//               color: '#fff',
-//               fontWeight: 'bold',
-//               '&:hover': { backgroundColor: '#0056b3' }
-//             }}
-//           >
-//             <Typography variant="h6">Documents Verification</Typography>
-//           </AccordionSummary>
-//           <AccordionDetails sx={{ backgroundColor: '#f5f5f5', borderRadius: '15px' }}>
-//             <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-//               {/* Mobile Verification Section */}
-//               {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-//                 <Typography variant="body1" sx={{ color: '#898b8c' }}>
-
-
-//                   Mobile:<span style={{ color: isMobileVerified ? 'green' : 'red' }}> {isMobileVerified ? 'Verified' : 'Not Verified'}
-//                   </span>
-//                 </Typography>
-//                 <Button
-//                   variant="contained"
-//                   onClick={handleMobileVerification}
-//                   sx={{
-//                     backgroundColor: isMobileVerified ? '#ccc' : '#4caf50',
-//                     '&:hover': { backgroundColor: isMobileVerified ? '#ccc' : '#388e3c' },
-//                     transition: 'background-color 0.3s'
-//                   }}
-//                   disabled={isMobileVerified}
-//                 >
-//                   Verify Mobile
-//                 </Button>
-//               </Box> */}
-
-//               {/* Email Verification Section */}
-//               {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-//                 <Typography variant="body1" sx={{ color: '#898b8c', }}>
-//                   Email:
-//                   <span style={{ color: isEmailVerified ? 'green' : 'red' }}>
-//                     {isEmailVerified ? ' Verified' : ' Not Verified'}
-//                   </span>
-//                 </Typography>
-
-//                 <Button
-//                   variant="contained"
-//                   onClick={handleEmailVerification}
-//                   sx={{
-//                     backgroundColor: isEmailVerified ? '#ccc' : '#4caf50',
-//                     '&:hover': { backgroundColor: isEmailVerified ? '#ccc' : '#388e3c' },
-//                     transition: 'background-color 0.3s'
-//                   }}
-//                   disabled={isEmailVerified} // Disable button if already verified
-//                 >
-//                   Verify Email
-//                 </Button>
-//               </Box> */}
-//               {/* Aadhaar Verification Section */}
-//               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-//                 <Typography variant="body1" sx={{ color: '#898b8c' }}>
-//                   Adhaar:
-//                   <span style={{ color: isAadhaarVerified ? 'green' : 'red' }}>
-//                     {isAadhaarVerified ? ' Verified' : ' Not Verified'}
-//                   </span>
-//                 </Typography>
-
-//                 {(activeRole === "screener" && !isAadhaarVerified ) && 
-//                 <>
-//                 {
-//                   isAadhaarDetailsSaved ? 
-//                 <Button
-//                   // variant="contained" 
-//                   onClick={handleAadhaarVerification}
-//                   sx={{
-//                     backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#1F2A40",
-//                     color: aadhaarRes.isLoading ? "#666" : "white",
-//                     cursor: aadhaarRes.isLoading ? "not-allowed" : "pointer",
-//                     "&:hover": {
-//                         backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#3F4E64",
-//                     },
-//                 }}
-//                   disabled={isAadhaarVerified}
-//                 >
-//                   {aadhaarRes.isLoading ? <CircularProgress size={20} color="inherit" /> : `Verify Aadhaar`}
-//                 </Button>
-//                 :
-//                 <Button
-//                   // variant="contained" 
-//                   onClick={handleSendAadhaarLink}
-//                   sx={{
-//                     backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#1F2A40",
-//                     color: aadhaarRes.isLoading ? "#666" : "white",
-//                     cursor: aadhaarRes.isLoading ? "not-allowed" : "pointer",
-//                     "&:hover": {
-//                         backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#3F4E64",
-//                     },
-//                 }}
-//                   disabled={isAadhaarVerified}
-//                 >
-//                   {aadhaarRes.isLoading ? <CircularProgress size={20} color="inherit" /> : `Send Link`}
-//                 </Button>
-//                 }
-//                 </>
-//                 }
-//               </Box>
-
-
-//               {/* Pan Verification Section */}
-//               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-//                 <Typography variant="body1" sx={{ color: '#898b8c' }}>
-//                   Pan:
-//                   <span style={{ color: isPanVerified ? 'green' : 'red' }}>
-//                     {isPanVerified ? ' Verified' : ' Not Verified'}
-//                   </span>
-//                 </Typography>
-
-
-//                 {(activeRole === "screener" && !isPanVerified) && <Button
-//                   // variant="contained"
-//                   onClick={handlePanVerification}
-//                   sx={{
-//                     backgroundColor: panRes?.isLoading ? "#ccc" : "#1F2A40",
-//                     color: panRes?.isLoading ? "#666" : "white",
-//                     cursor: panRes?.isLoading ? "not-allowed" : "pointer",
-//                     "&:hover": {
-//                         backgroundColor: panRes?.isLoading ? "#ccc" : "#3F4E64",
-//                     },
-//                 }}
-//                   disabled={panRes?.isLoading}
-//                 >
-//                   {panRes?.isLoading ? <CircularProgress size={20} color="inherit" /> : `Verify Pan`}
-//                 </Button>}
-//               </Box>
-//               {(panRes.isError || aadhaarRes.isError || isEmailError) && <Typography variant="body1">
-//                 <span style={{ color: 'red' }}>
-//                   {panRes?.error?.data?.message}  {aadhaarRes?.error?.data?.message}  {emailError?.data?.message}
-//                 </span>
-//               </Typography>}
-
-//             </Box>
-//           </AccordionDetails>
-//         </Accordion>
-//       </Box>
-//     </>
-//    );
-// };
-
-// export default EKycVerification;
-
-
 import React, { useEffect, useState } from 'react';
 import { tokens } from "../../theme";
 import {
@@ -272,13 +27,16 @@ import EmailVerification from './OtpVerification';
 import PanCompare from './PanCompare';
 import useAuthStore from '../store/authStore';
 import AadhaarCompare from './AadhaarCompare';
+import BreDetails from '../applications/BreDetails';
 
-const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerified, isESignPending, isESigned, leadId }) => {
+const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerified, isESignPending, isESigned, leadId, bre }) => {
   const { id } = useParams()
   const { activeRole } = useAuthStore()
   const navigate = useNavigate()
   const [otp, setOtp] = useState(false)
   const [openAadhaarCompare, setOpenAadhaarCompare] = useState()
+  const [openBreDetails, setOpenBreDetails] = useState(false)
+  const [breDetails, setBreDetails] = useState(bre)
   const [aadhaarData, setAadhaarData] = useState()
   const [otpAadhaar, setOtpAadhaar] = useState(false)
   const [panData, setPanData] = useState()
@@ -323,7 +81,6 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
   // Color theme
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  console.log(leadId)
 
   const handleEmailVerification = () => {
     getEmailOtp(id)
@@ -344,6 +101,10 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
     checkDetails(leadId);
   };
 
+  const handleBreDetails = () => {
+    setOpenBreDetails(true);
+    setBreDetails(bre);
+  }
   // Effects
   useEffect(() => {
     if (panRes?.isSuccess && panRes?.data && !panRes?.isFetching) {
@@ -352,7 +113,6 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
     }
   }, [panRes?.data, panRes?.isSuccess, panRes?.isFetching]);
 
-  console.log(panRes?.data?.data, panRes?.isSuccess, panRes?.isFetching)
   // useEffect(() => {
   //   if (panRes?.isSuccess && panRes?.data && !panRes?.isFetching) {
   //     setPanModal(true);
@@ -379,7 +139,13 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
     }
   }, [aadhaarRes, aadhaarDetails, aadhaarDetailsSuccess, isAadhaarDetailsFetching]);
 
-  console.log('Is aadhaar verified', isAadhaarVerified)
+  useEffect(() => {
+    if (bre && openBreDetails) {
+      setOpenBreDetails(true);
+      setBreDetails(bre);
+    }
+  }, [bre, openBreDetails]);
+
   // Table Data
   const verificationData = [
     {
@@ -423,11 +189,35 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
             }
           }}
         >
-          {/* {isPanVerified ? "Show Details" : "Send Link"} */}
           {loading ? <CircularProgress size={24} color='inherit' /> : (isPanVerified ? "Show Details" : "Verify PAN")}
         </Button>
       ),
     },
+    ...(activeRole !== 'screener' ? [
+
+      {
+        type: 'BRE',
+        status: 'Analysed',
+        action: (
+          <Button
+            variant="contained"
+            onClick={handleBreDetails}
+            sx={{
+              background: colors.white[100],
+              color: colors.primary[400],
+              border: colors.primary[400],
+              borderRadius: "0px 10px",
+              ":hover": {
+                background: colors.primary[400],
+                color: colors.white[100],
+              }
+            }}
+          >
+            {loading ? <CircularProgress size={24} color='inherit' /> : "Show Analysis"}
+          </Button>
+        ),
+      },
+    ] : []),
     ...(activeRole === 'sanctionHead' || activeRole === 'disbursalManager' || activeRole === 'disbursalHead' || activeRole === 'collectionExecutive' || activeRole === 'collectionHead' ||  activeRole === 'admin' ? [{
       type: 'E-Sign',
       status: isESigned ? 'Completed' : 'Pending',
@@ -481,7 +271,7 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
             {verificationData.map((row, index) => (
               <TableRow key={index}>
                 <TableCell sx={{ color: colors.black[100] }}>{row.type}</TableCell>
-                <TableCell><Typography sx={{ color: row.status == 'Verified' || row.status == 'Completed' ? 'green' : 'red' }}>{row.status}</Typography></TableCell>
+                <TableCell><Typography sx={{ color: row.status == 'Verified' || row.status == 'Completed' || row.status == 'Analysed' ? 'green' : 'red'}}>{row.status}</Typography></TableCell>
                 <TableCell>{row.action}</TableCell>
               </TableRow>
             ))}
@@ -491,6 +281,7 @@ const EKycVerification = ({ isAadhaarVerified, isAadhaarDetailsSaved, isPanVerif
 
       {panModal && <PanCompare open={panModal} setOpen={setPanModal} panDetails={panData} />}
       {openAadhaarCompare && <AadhaarCompare open={openAadhaarCompare} setOpen={setOpenAadhaarCompare} aadhaarDetails={aadhaarData} />}
+      {openBreDetails && <BreDetails open={openBreDetails} setOpen={setOpenBreDetails} breDetails={breDetails} />}
       
     </Box>
   );
