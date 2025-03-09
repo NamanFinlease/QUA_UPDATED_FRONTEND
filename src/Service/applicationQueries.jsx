@@ -214,6 +214,10 @@ export const applicationApi = createApi({
             query: (id) => `/applicant/bankDetails/${id}/?role=${role()}`,
             providesTags: ["bankDetails"],
         }),
+        verifyBankDetails: builder.query({
+            query: ({borrowerId, accountNo}) => `/verify/bank/pennyDrop/?borrowerId=${borrowerId}&accountNo=${accountNo}&role=${role()}`,
+            providesTags: ["bankDetails"],
+        }),
         allHoldApplication: builder.query({
             query: () => `/applications/hold/?role=${role()}`,
             providesTags: ["applicationHeld"],
@@ -329,6 +333,7 @@ export const {
     useUnholdDisbursalMutation,
     useRejectDisbursalMutation,
     useGetBankDetailsQuery,
+    useVerifyBankDetailsQuery,
     useFetchAllocatedApplicationQuery,
     useFetchSingleApplicationQuery,
     useApplicantPersonalDetailsQuery,

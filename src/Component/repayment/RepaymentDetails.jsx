@@ -27,7 +27,7 @@ import { useFetchRepaymentDetailsQuery, useAddPaymentMutation } from "../../Serv
 import NewPaymentRecieved from "./NewPaymentRecieved";
 import moment from 'moment';
 
-const RepaymentDetails = ({disburse, repaymentId}) => {
+const RepaymentDetails = ({disburse, repaymentId, collectionData}) => {
   const { empInfo, activeRole } = useAuthStore()
   const [checkedFields, setCheckedFields] = useState({
     loanNo: false,
@@ -92,7 +92,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
     paymentDiscount : paymentHistory?.discount || 0,
     excessAmount : paymentHistory?.excessAmount || 0,
     paymentReferenceNumber : paymentHistory?.transactionId,
-    paymentStatus : paymentHistory?.isPaymentVerified === false ? paymentHistory?.isRejected ? "Rejected" : "Pending" : "Verified",
+    paymentStatus : (paymentHistory?.isPaymentVerified || paymentHistory.isRejected) ? paymentHistory?.isRejected ? "Rejected" : "Verifed" : "Pending",
     paymentDate : moment(paymentHistory?.paymentDate).format("DD-MM-YYYY"),
   })) || [];
 
@@ -287,7 +287,7 @@ const RepaymentDetails = ({disburse, repaymentId}) => {
       </Accordion>
 
       {/* New Payment Recieved */}
-      {(activeRole === "collectionExecutive" || activeRole === "collectionHead") && (!disburse?.isClosed) &&
+      {(activeRole === "collectionExecutive" || activeRole === "collectionHead") && (!collectionData?.isClosed) &&
         <NewPaymentRecieved repaymentDetails={repaymentDetails} />
       }
     </>

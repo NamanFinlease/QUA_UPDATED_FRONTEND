@@ -119,7 +119,7 @@ const CollectionProfile = () => {
                         {currentPage === "cam" && <Cam id={application?._id} />}
                         {currentPage === "disbursal" && <DisburseLoan disburse={collectionData?.disbursal?.sanction} />}
                         {currentPage === "collection" && <CollectionDetails disburse={collectionData?.disbursal?.sanction} repaymentId={collectionData?.loanNo} />}
-                        {currentPage === "repayment" && <RepaymentDetails disburse={collectionData?.disbursal} repaymentId={collectionData?.loanNo} />}
+                        {currentPage === "repayment" && <RepaymentDetails disburse={collectionData?.disbursal} repaymentId={collectionData?.loanNo} collectionData={collectionData} />}
                         {/* {currentPage === "repayment" && <ClosingRequest disburse={collectionData?.disbursal} />} */}
                         {currentPage === "accounts" && (
                             <>
