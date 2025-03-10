@@ -96,6 +96,7 @@ const CommonRemarks = ({ id, onRemarksChange }) => {
                                             }
                                         },
                                     }}
+                                    required
                                 />
                             </FormControl>
                         )}

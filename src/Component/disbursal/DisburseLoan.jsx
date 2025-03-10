@@ -152,6 +152,7 @@ const DisburseLoan = ({ disburse }) => {
                     color:colors.primary[400],
                   },
                   '& .Mui-disabled':{
+                    background:colors.grey[100],
                     '& .MuiFormControl-root':{
                       color:colors.primary[400],
                     },
@@ -169,7 +170,7 @@ const DisburseLoan = ({ disburse }) => {
                   },
                   '& .MuiSelect-icon':{
                     color:colors.primary[400],
-                  }
+                  },
                 }}
               >
                 <Box

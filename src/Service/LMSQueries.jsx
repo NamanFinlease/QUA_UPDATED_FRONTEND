@@ -34,6 +34,14 @@ export const lmsQueries = createApi({
         }),
         invalidatesTags: ["collectionProfile"]
     }),
+    rejectPayment: builder.mutation({
+        query: ({ loanNo, transactionId, remarks }) => ({
+            url: `/accounts/payment/reject/${loanNo}/?role=${role()}`,
+            method: "PATCH",
+            body: { remarks, transactionId },
+        }),
+        invalidatesTags: ["collectionProfile"],
+    }),
     addPayment: builder.mutation({
       query: ({ id, data }) => ({
           url: `/collections/updatePayment/${id}/?role=${role()}`,
@@ -155,6 +163,7 @@ export const {
   useVerifyPendingLeadMutation,
   useClosedLeadsQuery,
   useVerifyPaymentMutation,
+  useRejectPaymentMutation,
   useAllocatePreCollectionsMutation,
   useAllocateCollectionsMutation,
   useRejectPartialLeadMutation,

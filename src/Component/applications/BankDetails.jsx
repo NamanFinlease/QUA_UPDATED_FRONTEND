@@ -18,9 +18,14 @@ import {
     FormControl,
     CircularProgress,
     useTheme,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    TableHead,
 } from '@mui/material';
 import { tokens } from '../../theme';
-import { useAddBankMutation, useGetBankDetailsQuery, useUpdateBankMutation } from '../../Service/applicationQueries';
+import { useAddBankMutation, useGetBankDetailsQuery, useUpdateBankMutation, useVerifyBankDetailsQuery } from '../../Service/applicationQueries';
 import { useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import useStore from '../../Store';
@@ -34,10 +39,14 @@ const BankDetails = ({ id }) => {
     const { empInfo, activeRole } = useAuthStore()
     const [bankDetails, setBankDetails] = useState(null)
     const [isAddingBank, setIsAddingBank] = useState(false);
+    const [openVerifyDialog, setOpenVerifyDialog] = useState(false);
 
     const bankRes = useGetBankDetailsQuery(id, { skip: id === null })
+    const verifyBank = useVerifyBankDetailsQuery({ borrowerId :id, accountNo: bankDetails?.bankAccNo }, { skip: id === null || !bankDetails });
     const [addBank, addBankRes] = useAddBankMutation();
-    const [updatBank, {data:updateData,isSuccess:updateSuccess,isLoading:updateLoading,isError:isUpdateError,error:updateError}] = useUpdateBankMutation();
+    const [updatBank, { data: updateData, isSuccess: updateSuccess, isLoading: updateLoading, isError: isUpdateError, error: updateError }] = useUpdateBankMutation();
+
+    console.log(verifyBank)
 
     // React Hook Form setup
     const { handleSubmit, control, reset, formState: { errors } } = useForm({
@@ -49,8 +58,8 @@ const BankDetails = ({ id }) => {
         if (!isAddingBank) {
 
             addBank({ id, data });
-        }else{
-            updatBank({id,data})
+        } else {
+            updatBank({ id, data })
         }
 
     };
@@ -61,14 +70,24 @@ const BankDetails = ({ id }) => {
 
 
     const handleOpenForm = () => {
-
-
         setIsAddingBank(true)
         reset(bankDetails)
     }
 
+    const handleOpenVerifyBank = () => {
+        setOpenVerifyDialog(true); // Open the dialog
+        verifyBank({
+            borrowerId: id,
+            accountNo : bankDetails?.bankAccNo
+        })
+    };
+
+    const handleCloseDialog = () => {
+        setOpenVerifyDialog(false); // Close the dialog
+    };
+
     useEffect(() => {
-        if (bankRes.isSuccess ) {
+        if (bankRes.isSuccess) {
             setBankDetails(bankRes?.data)
             // reset(bankRes.data[1])
 
@@ -76,7 +95,7 @@ const BankDetails = ({ id }) => {
 
     }, [bankRes.isSuccess, bankRes.data])
     useEffect(() => {
-        if ((addBankRes.isSuccess && addBankRes.data) ||  (updateSuccess && updateData)) {
+        if ((addBankRes.isSuccess && addBankRes.data) || (updateSuccess && updateData)) {
             setIsAddingBank(false);
             reset();
             Swal.fire({
@@ -86,23 +105,23 @@ const BankDetails = ({ id }) => {
 
         }
 
-    }, [addBankRes.data ,updateSuccess,updateData])
+    }, [addBankRes.data, updateSuccess, updateData])
 
     return (
-        <Paper 
-            elevation={3} 
-            style={{ 
-                padding: '20px', 
-                marginTop: '20px', 
-                borderRadius: '0px 20px', 
-                background:colors.white[100],
+        <Paper
+            elevation={3}
+            style={{
+                padding: '20px',
+                marginTop: '20px',
+                borderRadius: '0px 20px',
+                background: colors.white[100],
             }}
         >
             {(isAddingBank ||
                 !(bankDetails && Object.keys(bankDetails).length > 0 && !bankDetails.message))
                 ? (
                     <>
-                        <Typography variant="h4" gutterBottom sx={{textAlign:"center", padding:"0px 0px 20px 0px", color:colors.primary[400]}}>
+                        <Typography variant="h4" gutterBottom sx={{ textAlign: "center", padding: "0px 0px 20px 0px", color: colors.primary[400] }}>
                             Add Bank Details
                         </Typography>
 
@@ -110,7 +129,7 @@ const BankDetails = ({ id }) => {
                             <Box display="flex" flexDirection="column" gap={2}
                                 sx={{
                                     '& .MuiOutlinedInput-root': {
-                                        color:colors.black[100],
+                                        color: colors.black[100],
                                         '& .MuiOutlinedInput-notchedOutline': {
                                             borderColor: colors.primary[400],
                                             '&:hover': {
@@ -119,15 +138,15 @@ const BankDetails = ({ id }) => {
                                         },
                                     },
                                     '& .MuiSelect-select': {
-                                        color:colors.black[100],
-                                    },
-                                    '& .MuiInputLabel-root': { 
                                         color: colors.black[100],
-                                        ':hover':{
-                                            color:colors.black[100],
+                                    },
+                                    '& .MuiInputLabel-root': {
+                                        color: colors.black[100],
+                                        ':hover': {
+                                            color: colors.black[100],
                                         }
                                     },
-                                  }}
+                                }}
                             >
                                 <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} gap={2}>
                                     <Controller
@@ -141,7 +160,7 @@ const BankDetails = ({ id }) => {
                                                     {...field}
                                                     error={!!fieldState.error}
                                                     helperText={fieldState.error ? fieldState.error.message : ''}
-                                                       
+
                                                 />
                                             )
                                         }}
@@ -210,13 +229,13 @@ const BankDetails = ({ id }) => {
                                         render={({ field, fieldState }) => (
                                             <FormControl
                                                 fullWidth
-                                                sx={{ 
+                                                sx={{
                                                     '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[100] },
-                                                    '& .MuiInputLabel-root': { color: colors.black[100],},
-                                                    '& .MuiInputBase-root':{ height:"53px", },
+                                                    '& .MuiInputLabel-root': { color: colors.black[100], },
+                                                    '& .MuiInputBase-root': { height: "53px", },
                                                     '& .MuiSelect-select': { color: colors.black[100] },
                                                     '& .MuiSelect-icon': { color: colors.black[100] },
-                                                    '&:hover':{
+                                                    '&:hover': {
                                                         '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[100] },
                                                     }
                                                 }}
@@ -244,16 +263,16 @@ const BankDetails = ({ id }) => {
                             <Box display="flex" justifyContent="flex-end" marginTop="20px">
                                 <Button
                                     variant="contained"
-                                    sx={{ 
-                                        marginRight: '10px', 
-                                        borderColor:colors.redAccent[500],
-                                        color:colors.redAccent[500],
-                                        background:colors.white[100],
-                                        borderRadius:"0px 10px",
-                                        border:`2px solid ${colors.redAccent[500]}`,
-                                        '&:hover':{
-                                            background:colors.redAccent[500],
-                                            color:colors.white[100],
+                                    sx={{
+                                        marginRight: '10px',
+                                        borderColor: colors.redAccent[500],
+                                        color: colors.redAccent[500],
+                                        background: colors.white[100],
+                                        borderRadius: "0px 10px",
+                                        border: `2px solid ${colors.redAccent[500]}`,
+                                        '&:hover': {
+                                            background: colors.redAccent[500],
+                                            color: colors.white[100],
                                         }
                                     }}
                                     onClick={() => setIsAddingBank(false)}
@@ -268,11 +287,11 @@ const BankDetails = ({ id }) => {
                                         backgroundColor: (addBankRes?.isLoading || updateLoading) ? "#ccc" : colors.white[100],
                                         color: (addBankRes?.isLoading || updateLoading) ? "#666" : colors.primary[400],
                                         cursor: (addBankRes?.isLoading || updateLoading) ? "not-allowed" : "pointer",
-                                        borderRadius:"0px 10px",
-                                        border:`2px solid ${colors.primary[400]}`,
+                                        borderRadius: "0px 10px",
+                                        border: `2px solid ${colors.primary[400]}`,
                                         "&:hover": {
-                                            background:colors.primary[400],
-                                            color:colors.white[100],
+                                            background: colors.primary[400],
+                                            color: colors.white[100],
                                         },
                                     }}
                                 >
@@ -290,27 +309,27 @@ const BankDetails = ({ id }) => {
 
                 ) : (
                     <>
-                        <Typography 
-                            variant="h3" 
-                            gutterBottom 
+                        <Typography
+                            variant="h3"
+                            gutterBottom
                             sx={{
-                                color:colors.primary[400],
-                                textAlign:"center",
-                                marginBottom:"20px",
+                                color: colors.primary[400],
+                                textAlign: "center",
+                                marginBottom: "20px",
                             }}
                         >
                             Bank Details
                         </Typography>
-                        <TableContainer 
+                        <TableContainer
                             component={Paper}
                             sx={{
-                                borderRadius:"0px 20px",
-                                color:colors.black[100],
-                                background:colors.white[100],
-                                boxShadow:"0px 0px 20px rgb(0,0,0,0.2)",
-                                '& .MuiTableCell-root':{
-                                    color:colors.black[100],
-                                    borderBottom:`2px solid ${colors.primary[400]}`,
+                                borderRadius: "0px 20px",
+                                color: colors.black[100],
+                                background: colors.white[100],
+                                boxShadow: "0px 0px 20px rgb(0,0,0,0.2)",
+                                '& .MuiTableCell-root': {
+                                    color: colors.black[100],
+                                    borderBottom: `2px solid ${colors.primary[400]}`,
                                 }
                             }}
                         >
@@ -341,15 +360,32 @@ const BankDetails = ({ id }) => {
                         {(activeRole === "creditManager") && <Box display="flex" justifyContent="flex-end" marginTop="20px">
                             <Button
                                 variant="contained"
+                                onClick={() => handleOpenVerifyBank()}
+                                sx={{
+                                    background: colors.white[100],
+                                    color: colors.primary[400],
+                                    borderRadius: "0px 10px",
+                                    margin: "0px 10px",
+                                    border: `2px solid ${colors.primary[400]}`,
+                                    '&:hover': {
+                                        background: colors.primary[400],
+                                        color: colors.white[100],
+                                    },
+                                }}
+                            >
+                                Verify Bank
+                            </Button>
+                            <Button
+                                variant="contained"
                                 onClick={() => handleOpenForm()}
                                 sx={{
                                     background: colors.white[100],
                                     color: colors.primary[400],
-                                    borderRadius:"0px 10px",
-                                    border:`2px solid ${colors.primary[400]}`,
+                                    borderRadius: "0px 10px",
+                                    border: `2px solid ${colors.primary[400]}`,
                                     '&:hover': {
-                                        background:colors.primary[400],
-                                        color:colors.white[100],
+                                        background: colors.primary[400],
+                                        color: colors.white[100],
                                     },
                                 }}
                             >
@@ -367,6 +403,67 @@ const BankDetails = ({ id }) => {
                     {bankRes?.error?.data?.message}
                 </Alert>
             }
+
+            {/* Dialog for verifying bank details */}
+            <Dialog
+                open={openVerifyDialog} 
+                onClose={handleCloseDialog}
+                sx={{
+                    '& .MuiDialog-paper': {
+                        width: '50%',
+                        padding:"20px",
+                        background: colors.white[100],
+                        color: colors.primary[400],
+                        borderRadius: "0px 20px",
+                        boxShadow: "0px 0px 20px rgb(0,0,0,0.2)",
+                    },
+                    '& .MuiTableContainer-root': {
+                        color: colors.primary[400],
+                        borderRadius: "0px 20px",
+                    },
+                }}
+            >
+                <DialogTitle variant='h4' textAlign='center'>Verify Bank Details</DialogTitle>
+                <DialogContent>
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableBody>
+                                <TableRow sx={{background:colors.primary[400], color:colors.white[100]}}>
+                                    <TableCell><strong>Field</strong></TableCell>
+                                    <TableCell><strong>Lead</strong></TableCell>
+                                    <TableCell><strong>Bank</strong></TableCell>
+                                    <TableCell><strong>Comparison</strong></TableCell>
+                                </TableRow>
+                                <TableRow sx={{background:colors.white[100]}}>
+                                    <TableCell sx={{color:colors.primary[400]}}><strong>Bank A/c No</strong></TableCell>
+                                    <TableCell sx={{color:colors.primary[400]}}>{bankDetails?.bankAccNo}</TableCell>
+                                    <TableCell sx={{color:colors.primary[400]}}></TableCell>
+                                    <TableCell sx={{color:colors.primary[400]}}></TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </DialogContent>
+                <DialogActions>
+                    <Button 
+                        onClick={handleCloseDialog}
+                        variant='contained'
+                        sx={{
+                            color:colors.redAccent[500],
+                            background:colors.white[100],
+                            border:`2px solid ${colors.redAccent[500]}`,
+                            borderRadius:"0px 10px",
+                            fontWeight:"bold",
+                            '&:hover':{
+                                color:colors.white[100],
+                                background:colors.redAccent[500]
+                            }
+                        }}
+                    >
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Paper>
     );
 };

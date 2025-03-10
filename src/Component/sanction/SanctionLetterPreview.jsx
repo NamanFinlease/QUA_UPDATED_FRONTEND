@@ -21,6 +21,7 @@ import { useLazySendESignQuery } from '../../Service/applicationQueries';
 import { tokens } from '../../theme';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import dayjs from "dayjs"
 
 
 const SanctionLetterPreview = ({
@@ -286,7 +287,7 @@ const SanctionLetterPreview = ({
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ backgroundColor: '#ffffff', padding: '8px', color: '#0363a3', fontWeight: 'bold' }}>Date of Disbursal</TableCell>
-                                        <TableCell sx={{ backgroundColor: '#ffffff', padding: '8px', color: '#333' }}>{disbursalDate}</TableCell>
+                                        <TableCell sx={{ backgroundColor: '#ffffff', padding: '8px', color: '#333' }}>{dayjs(disbursalDate).format('DD-MM-YYYY')}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ backgroundColor: '#ffffff', padding: '8px', color: '#0363a3', fontWeight: 'bold' }}>Total Repayment Amount (Rs.)</TableCell>
@@ -298,7 +299,7 @@ const SanctionLetterPreview = ({
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ backgroundColor: '#ffffff', padding: '8px', color: '#0363a3', fontWeight: 'bold' }}>Repayment Date</TableCell>
-                                        <TableCell sx={{ backgroundColor: '#ffffff', padding: '8px', color: '#333' }}>{repaymentDate}</TableCell>
+                                        <TableCell sx={{ backgroundColor: '#ffffff', padding: '8px', color: '#333' }}>{dayjs(repaymentDate).format('DD-MM-YYYY')}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ backgroundColor: '#ffffff', padding: '8px', color: '#0363a3', fontWeight: 'bold' }}>Penal Interest (%)</TableCell>

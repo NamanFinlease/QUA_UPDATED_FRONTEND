@@ -419,7 +419,7 @@ import {
     TextField,
 } from "@mui/material";
 import { tokens } from '../../theme';
-import { useVerifyPendingLeadMutation, usePendingVerificationQuery, useVerifyPaymentMutation, } from "../../Service/LMSQueries";
+import { useVerifyPendingLeadMutation, usePendingVerificationQuery, useVerifyPaymentMutation, useRejectPaymentMutation } from "../../Service/LMSQueries";
 import Swal from "sweetalert2";
 import dayjs from 'dayjs';
 import { useParams } from "react-router-dom";
@@ -434,6 +434,9 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
 
     const [verifyPayment, { isSuccess, isError, error }] =
         useVerifyPaymentMutation();
+
+    const [rejectPayment, { isSuccess: rejectSuccess, isError: rejectError }] = 
+        useRejectPaymentMutation();
 
     // Color theme
     const theme = useTheme();
@@ -483,10 +486,9 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                 remarks : remarks
             }) 
         }else if (actionType === "Reject") {
-            verifyPayment({
+            rejectPayment({
                 loanNo: id,
                 transactionId: payment.transactionId,
-                isRejected: true, // Set isRejected to true
                 remarks: remarks
             });
         }
@@ -502,15 +504,24 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
         }
     }, [isSuccess, verifyPayment ])
 
+    useEffect(() => {
+        if(rejectSuccess && rejectPayment){
+            Swal.fire({
+                text: "Payment Rejected",
+                icon: "success"
+            });
+        }
+    }, [rejectSuccess, rejectPayment ])
+
     return (
         <tr>
             <td>{payment.paymentDate ? dayjs(payment.paymentDate).format('DD/MM/YYYY') : "N/A"}</td>
             <td>{payment.receivedAmount || "N/A"}</td>
             <td>{payment.closingType || "N/A"}</td>
-            <td>{payment.paymentMode || "N/A"}</td>
+            <td>{payment.paymentMethod || "N/A"}</td>
             <td>{payment.transactionId || "N/A"}</td>
             <td>{payment.discount || 0}</td>
-            <td>{payment.isPaymentVerified ? "Verified" : "Pending"}</td>
+            <td>{(payment.isPaymentVerified || payment.isRejected) ? payment.isRejected ? "Rejected" : "Verified" : "Pending"}</td>
             <td>{payment.accountRemarks || "-"}</td>
             {!payment.isPartlyPaid &&
                 <>
@@ -743,7 +754,7 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
                         <TableCell>Payment Receive Date</TableCell>
                         <TableCell>Received Amount</TableCell>
                         <TableCell>Payment Type</TableCell>
-                        <TableCell>Payment Mode</TableCell>
+                        <TableCell>Payment Method</TableCell>
                         <TableCell>Transaction ID</TableCell>
                         <TableCell>Discount Amount</TableCell>
                         <TableCell>Status</TableCell>
