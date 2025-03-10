@@ -333,7 +333,6 @@ export const {
     useUnholdDisbursalMutation,
     useRejectDisbursalMutation,
     useGetBankDetailsQuery,
-    useVerifyBankDetailsQuery,
     useFetchAllocatedApplicationQuery,
     useFetchSingleApplicationQuery,
     useApplicantPersonalDetailsQuery,
@@ -359,4 +358,5 @@ export const {
     useLazyExportSanctionedQuery,
     useLazyExportNewDisbursalQuery,
     useLazyExportDisbursedQuery,
+    useLazyVerifyBankDetailsQuery,
 } = applicationApi;
