@@ -355,7 +355,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
         >
           Close
         </Button>
-        {/* <Button
+        {(activeRole === "screener" && <Button
           onClick={handleVerify}
           variant="contained"
           sx={{
@@ -371,7 +371,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
           }}
         >
           Verify
-        </Button> */}
+        </Button>)}
         {/* <Button
           onClick={handleSubmit}
           variant="contained"
