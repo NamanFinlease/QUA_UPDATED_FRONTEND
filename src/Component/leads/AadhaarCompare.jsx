@@ -154,7 +154,8 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
     console.log('lead detail',lead)
 
     const formattedLeadDob = lead?.dob ? formatDate(lead.dob) : null; // Ensure lead DOB is formatted
-    const formattedAadhaarDob = aadhaarDetails?.dob ? dayjs(aadhaarDetails.dob).format('DD-MM-YYYY') : null;
+    const formattedAadhaarDob = aadhaarDetails?.dob ? (typeof aadhaarDetails.dob === 'string') ? aadhaarDetails.dob : dayjs(aadhaarDetails.dob).format('DD-MM-YYYY') : null;
+    console.log(typeof aadhaarDetails.dob)
     // const formattedAadhaarDob = aadhaarDetails?.dob ? formatDate(aadhaarDetails.dob) : null;
 
     const { house, po, dist, state, country, street, pc } = aadhaarDetails?.address
