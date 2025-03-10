@@ -22,7 +22,7 @@ dayjs.extend(utc); // Enable the utc plugin
 const Employment = ({ employmentData }) => {
   const { applicationProfile } = useStore();
   const {empInfo,activeRole} = useAuthStore()
-  const id = applicationProfile._id;
+  const id = applicationProfile?.application?._id;
   const [columns, setColumns] = useState(null);
   const [isEditingEmployment, setIsEditingEmployment] = useState(false);
 
