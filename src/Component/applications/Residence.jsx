@@ -17,7 +17,7 @@ import dayjs from 'dayjs';
 const Residence = ({ residence }) => {
   const { applicationProfile } = useStore()
   const { empInfo, activeRole } = useAuthStore()
-  const id = applicationProfile._id
+  const id = applicationProfile?.application?._id
   const [columns, setColumns] = useState(null)
   const [isEditingResidence, setIsEditingResidence] = useState(false);
 
