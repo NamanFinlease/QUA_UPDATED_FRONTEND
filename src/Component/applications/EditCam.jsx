@@ -152,7 +152,7 @@ const EditCam = ({ camData, setIsEditing }) => {
         updatedFormData.repaymentAmount = calculateRepayment(recommendedLoan);
       }
 
-      if (name === 'repaymentDate' || name === 'disbursalDate') {
+      if (name === 'repaymentDate' || name === 'disbursalDate' || name === "nextPayDate") {
         
         const eligibleTenure = calculateDaysDifference(updatedFormData.disbursalDate, updatedFormData.nextPayDate);
         updatedFormData.eligibleTenure = eligibleTenure + 1 || 0;
@@ -563,6 +563,33 @@ const EditCam = ({ camData, setIsEditing }) => {
       {/* Fourth Row (4 items) */}
       
         <Box flex="1 1 46%">
+          <FormControl
+            fullWidth
+            sx={{
+              '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[100] },
+              '& .MuiInputLabel-root': { color: colors.black[100] },
+              '& .MuiSelect-select': { color: colors.black[100] },
+              '& .MuiSelect-icon': { color: colors.black[100] },
+              '&:hover': {
+                '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[100] },
+              }
+            }}
+          >
+            <InputLabel id="customer-type" style={{ color: colors.black[100] }}>Customer Type</InputLabel>
+            <Select
+              labelId="customer-type"
+              label="Customer Type"
+              name="customerType"
+              value={formData.customerType}
+              onChange={handleChange}
+            >
+              <MenuItem value="" disabled>Select Customer Type</MenuItem>
+              <MenuItem value="NEW">NEW</MenuItem>
+              <MenuItem value="REPEAT">REPEAT</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+        {/* <Box flex="1 1 46%">
           <TextField
             label="Customer Type"
             name="customerType"
@@ -570,7 +597,7 @@ const EditCam = ({ camData, setIsEditing }) => {
             value={formData.customerType}
             onChange={handleChange}
           />
-        </Box>
+        </Box> */}
         <Box flex="1 1 46%">
           <FormControl
             fullWidth
