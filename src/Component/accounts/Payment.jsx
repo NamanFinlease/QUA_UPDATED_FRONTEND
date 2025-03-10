@@ -518,7 +518,7 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
             <td>{payment.paymentDate ? dayjs(payment.paymentDate).format('DD/MM/YYYY') : "N/A"}</td>
             <td>{payment.receivedAmount || "N/A"}</td>
             <td>{payment.closingType || "N/A"}</td>
-            <td>{payment.paymentMode || "N/A"}</td>
+            <td>{payment.paymentMethod || "N/A"}</td>
             <td>{payment.transactionId || "N/A"}</td>
             <td>{payment.discount || 0}</td>
             <td>{(payment.isPaymentVerified || payment.isRejected) ? payment.isRejected ? "Rejected" : "Verified" : "Pending"}</td>
@@ -754,7 +754,7 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
                         <TableCell>Payment Receive Date</TableCell>
                         <TableCell>Received Amount</TableCell>
                         <TableCell>Payment Type</TableCell>
-                        <TableCell>Payment Mode</TableCell>
+                        <TableCell>Payment Method</TableCell>
                         <TableCell>Transaction ID</TableCell>
                         <TableCell>Discount Amount</TableCell>
                         <TableCell>Status</TableCell>

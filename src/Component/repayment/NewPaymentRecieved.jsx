@@ -52,7 +52,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
     receivedAmount: "",
     paymentDate: dayjs(),
     closingType: "",
-    paymentMode: "",
+    paymentMethod: "",
     transactionId: "",
     discount: "",
     bankName : "",
