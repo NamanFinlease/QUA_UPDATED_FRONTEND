@@ -215,7 +215,7 @@ export const applicationApi = createApi({
             providesTags: ["bankDetails"],
         }),
         verifyBankDetails: builder.query({
-            query: ({borrowerId, accountNo}) => `/verify/bank/pennyDrop/?borrowerId=${borrowerId}&accountNo=${accountNo}&role=${role()}`,
+            query: ({bankAccount, borrowerId}) => `/verify/bank/pennyDrop/${bankAccount}/${borrowerId}/?role=${role()}`,
             providesTags: ["bankDetails"],
         }),
         allHoldApplication: builder.query({

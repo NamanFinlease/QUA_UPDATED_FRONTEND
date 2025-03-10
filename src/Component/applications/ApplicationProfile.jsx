@@ -110,7 +110,7 @@ const ApplicationProfile = () => {
               <>
                 {currentPage === "personal" && <PersonalDetails id={applicationData?.application?.applicant} />}
                 {currentPage === "banking" &&
-                  <BankDetails id={applicationData?.application?.applicant} />}
+                  <BankDetails id={applicationData?.application?.applicant} leadData={applicationData?.application?.lead} />}
 
                 {currentPage === "verification" &&
                   <EKycVerification

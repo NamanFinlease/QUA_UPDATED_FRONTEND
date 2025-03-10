@@ -34,7 +34,7 @@ import Swal from 'sweetalert2';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { bankDetailsSchema } from '../../utils/validations';
 
-const BankDetails = ({ id }) => {
+const BankDetails = ({ id, leadData }) => {
     const { applicationProfile } = useStore()
     const { empInfo, activeRole } = useAuthStore()
     const [bankDetails, setBankDetails] = useState(null)
@@ -42,11 +42,12 @@ const BankDetails = ({ id }) => {
     const [openVerifyDialog, setOpenVerifyDialog] = useState(false);
 
     const bankRes = useGetBankDetailsQuery(id, { skip: id === null })
-    const verifyBank = useVerifyBankDetailsQuery({ borrowerId :id, accountNo: bankDetails?.bankAccNo }, { skip: id === null || !bankDetails });
+    const verifyBank = useVerifyBankDetailsQuery({ bankAccount: bankDetails?.bankAccNo, borrowerId :id }, { skip: id === null || !bankDetails });
     const [addBank, addBankRes] = useAddBankMutation();
     const [updatBank, { data: updateData, isSuccess: updateSuccess, isLoading: updateLoading, isError: isUpdateError, error: updateError }] = useUpdateBankMutation();
 
-    console.log(verifyBank)
+    console.log(leadData)
+    const fullName = `${leadData?.fName} ${leadData?.mName} ${leadData?.lName}`
 
     // React Hook Form setup
     const { handleSubmit, control, reset, formState: { errors } } = useForm({
@@ -437,8 +438,14 @@ const BankDetails = ({ id }) => {
                                 <TableRow sx={{background:colors.white[100]}}>
                                     <TableCell sx={{color:colors.primary[400]}}><strong>Bank A/c No</strong></TableCell>
                                     <TableCell sx={{color:colors.primary[400]}}>{bankDetails?.bankAccNo}</TableCell>
-                                    <TableCell sx={{color:colors.primary[400]}}></TableCell>
-                                    <TableCell sx={{color:colors.primary[400]}}></TableCell>
+                                    <TableCell sx={{color:colors.primary[400]}}>{verifyBank?.data?.pennydropData?.accountNo}</TableCell>
+                                    <TableCell sx={{color:colors.primary[400]}}>{bankDetails?.bankAccNo === verifyBank?.data?.pennydropData?.accountNo ? "Matched" : "Not Matched"}</TableCell>
+                                </TableRow>
+                                <TableRow sx={{background:colors.white[100]}}>
+                                    <TableCell sx={{color:colors.primary[400]}}><strong>Beneficiary Name</strong></TableCell>
+                                    <TableCell sx={{color:colors.primary[400]}}>{fullName}</TableCell>
+                                    <TableCell sx={{color:colors.primary[400]}}>{verifyBank?.data?.pennydropData?.name}</TableCell>
+                                    <TableCell sx={{color:colors.primary[400]}}>{fullName === verifyBank?.data?.pennydropData?.name ? "Matched" : "Not Matched"}</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
