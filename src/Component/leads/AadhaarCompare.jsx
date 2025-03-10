@@ -26,6 +26,43 @@ import { compareDates, formatDate, formatFullName } from "../../utils/helper";
 import useAuthStore from "../store/authStore";
 import dayjs from 'dayjs';
 
+const formatDOB = (dob) => {
+  if (!dob) return "N/A"; // Handle empty or null values
+
+  let dateObj;
+
+  if (typeof dob === "string") {
+    if (dob.includes("-")) {
+      const parts = dob.split("-");
+      
+      // Check if format is dd-mm-yyyy (assuming first part > 12 to differentiate from yyyy-mm-dd)
+      if (parts[0].length === 2 && parts[2].length === 4) {
+        dateObj = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`); // Convert to yyyy-mm-dd
+      } else {
+        dateObj = new Date(dob); // Assume it's already in a valid date format (ISO)
+      }
+    } else {
+      dateObj = new Date(dob);
+    }
+  } else if (dob instanceof Date) {
+    dateObj = dob;
+  } else {
+    return "Invalid Date";
+  }
+
+  // Ensure valid date
+  if (isNaN(dateObj)) return "Invalid Date";
+
+  // Format as dd-mm-yyyy
+  const day = String(dateObj.getDate()).padStart(2, "0");
+  const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+  const year = dateObj.getFullYear();
+
+  return `${day}-${month}-${year}`;
+};
+
+
+
 
 const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
   const navigate = useNavigate()
@@ -150,11 +187,11 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
   // Fields to be compared
   const getComparisonFields = (lead, aadhaarDetails) => {
 
-    console.log('aadhaar detail',aadhaarDetails)
+    console.log('aadhaar detail',typeof aadhaarDetails.dob)
     console.log('lead detail',lead)
 
     const formattedLeadDob = lead?.dob ? formatDate(lead.dob) : null; // Ensure lead DOB is formatted
-    const formattedAadhaarDob = aadhaarDetails?.dob ? (typeof aadhaarDetails.dob === 'string') ? aadhaarDetails.dob : dayjs(aadhaarDetails.dob).format('DD-MM-YYYY') : null;
+    const formattedAadhaarDob = aadhaarDetails?.dob ?   formatDOB(aadhaarDetails.dob) : null;
     console.log(typeof aadhaarDetails.dob)
     // const formattedAadhaarDob = aadhaarDetails?.dob ? formatDate(aadhaarDetails.dob) : null;
 
