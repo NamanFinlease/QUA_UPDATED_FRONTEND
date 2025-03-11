@@ -172,8 +172,10 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
 
     const mismatches = comparisonFields.filter(({ label }) => {
       if (["Name", "DOB", "Gender", "Masked Aadhaar"].includes(label)) {
-        const leadValue = (label === "DOB" ? formattedLeadDob : lead[label.toLowerCase()]) || (label === "Name" ? formatFullName(`${lead.fName} ${lead.mName} ${lead.lName}`) : lead[label.toLowerCase().trim()]);
-        const aadhaarValue = (label ==="DOB" ? dayjs(aadhaarDetails.dob).format("DD-MM-YYYY") : aadhaarDetails[label.toLowerCase()]) || (label === "Name" ? formatFullName(aadhaarDetails.name) : aadhaarDetails[label.toLowerCase().trim()]);
+        const leadValue = 
+          (label === "DOB" ? formattedLeadDob : lead[label.toLowerCase()]) || (label === "Name" ? formatFullName(lead.fName,lead.mName,lead.lName).trim() : lead[label.toLowerCase().trim()]);
+        const aadhaarValue = 
+          (label ==="DOB" ? formatDOB(aadhaarDetails.dob) : aadhaarDetails[label.toLowerCase()]) || (label === "Name" ? aadhaarDetails.name.trim() : aadhaarDetails[label.toLowerCase().trim()]);
         return compareValues(label, leadValue, aadhaarValue) === "Unmatched";
       }
       return false;
@@ -208,14 +210,8 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
 
   // Fields to be compared
   const getComparisonFields = (lead, aadhaarDetails) => {
-
-    console.log('aadhaar detail',aadhaarDetails)
-    console.log('lead detail',lead)
-
-    const formattedLeadDob = lead?.dob ? formatDate(lead.dob) : null; // Ensure lead DOB is formatted
+    const formattedLeadDob = lead?.dob ? formatDate(lead.dob) : null;
     const formattedAadhaarDob = aadhaarDetails?.dob ?   formatDOB(aadhaarDetails.dob) : null;
-    console.log(typeof aadhaarDetails.dob)
-    // const formattedAadhaarDob = aadhaarDetails?.dob ? formatDate(aadhaarDetails.dob) : null;
 
     const { house, po, dist, state, country, street, pc } = aadhaarDetails?.address
 
@@ -237,7 +233,6 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
 
     const comparisonFields = [
       { label: "Name", leadValue: formatFullName(lead?.fName, lead?.mName,lead?.lName), aadhaarValue: aadhaarDetails?.name.trim() },
-      // { label: "DOB", leadValue: lead?.dob && formatDate(lead?.dob), aadhaarValue: aadhaarDetails?.dob && formatDate(aadhaarDetails?.dob) },
       { label: "DOB", leadValue: formattedLeadDob, aadhaarValue: formattedAadhaarDob },
       { label: "Gender", leadValue: lead?.gender, aadhaarValue: aadhaarDetails?.gender },
       { label: "Masked Aadhaar ", leadValue: `xxxxxxxx${lead?.aadhaar.slice(-4)}`, aadhaarValue: aadhaarDetails?.maskedAdharNumber },
