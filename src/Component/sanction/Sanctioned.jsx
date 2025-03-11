@@ -8,7 +8,7 @@ import * as Pap from "papaparse"; // For CSV conversion
 import { useLazyExportSanctionedQuery } from "../../Service/applicationQueries";
 import useAuthStore from "../store/authStore";
 import CustomToolbar from "../CustomToolbar";
-import CommonTable from '../CommonTable';
+import CommonTable from "../CommonTable";
 
 const Sanctioned = () => {
     const { activeRole } = useAuthStore();
@@ -17,6 +17,7 @@ const Sanctioned = () => {
 
     const [applications, setApplications] = useState([]);
     const [totalApplications, setTotalApplications] = useState();
+    const [isExporting, setIsExporting] = useState(false);
     const [page, setPage] = useState(1);
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
@@ -41,10 +42,10 @@ const Sanctioned = () => {
         },
     ] = useLazyExportSanctionedQuery();
 
-    const handleExportClick = () => {
-        console.log("Export click");
-        // Replace with your actual API call
-        exportSanctioned();
+    const handleExportClick = async () => {
+        setIsExporting(true);
+        await exportSanctioned();
+        setIsExporting(false);
     };
 
     const handlePageChange = (newPaginationModel) => {
@@ -59,20 +60,35 @@ const Sanctioned = () => {
 
     const columns = [
         // { field: 'leadNo', headerName: 'Lead Number', width: 200 },
-        { field: 'name', headerName: 'Full Name', width: 200 },
-        { field: 'mobile', headerName: 'Mobile', width: 150 },
-        { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },
-        { field: 'pan', headerName: 'PAN No.', width: 150 },
+        { field: "name", headerName: "Full Name", width: 200 },
+        { field: "mobile", headerName: "Mobile", width: 150 },
+        { field: "aadhaar", headerName: "Aadhaar No.", width: 150 },
+        { field: "pan", headerName: "PAN No.", width: 150 },
         // { field: 'loanNo', headerName: 'Loan Number', width: 150 },
-        { field: 'city', headerName: 'City', width: 150 },
-        { field: 'state', headerName: 'State', width: 150 },
-        { field: 'loanRecommended', headerName: 'Sanctioned Amount', width: 150 },
-        { field: 'salary', headerName: 'Salary', width: 150 },
-        ...((activeRole === "sanctionHead" || activeRole === "admin") ?
-            [{ field: 'recommendedBy', headerName: 'Recommended By', width: 150 }] : []),
-        { field: 'source', headerName: 'Source', width: 150 },
+        { field: "city", headerName: "City", width: 150 },
+        { field: "state", headerName: "State", width: 150 },
+        {
+            field: "loanRecommended",
+            headerName: "Sanctioned Amount",
+            width: 150,
+        },
+        { field: "salary", headerName: "Salary", width: 150 },
+        ...(activeRole === "sanctionHead" || activeRole === "admin"
+            ? [
+                  {
+                      field: "recommendedBy",
+                      headerName: "Recommended By",
+                      width: 150,
+                  },
+              ]
+            : []),
+        { field: "source", headerName: "Source", width: 150 },
         { field: "breDecision", headerName: "BRE Decision", width: 200 },
-        { field: "maxLoanByBRE", headerName: "Max Loan Recommended by BRE",width: 200,},
+        {
+            field: "maxLoanByBRE",
+            headerName: "Max Loan Recommended by BRE",
+            width: 200,
+        },
     ];
 
     const rows = applications?.map((sanction) => ({
@@ -124,7 +140,7 @@ const Sanctioned = () => {
                 });
 
                 // Use file-saver to download the file
-                saveAs(blob, "Sanctioned Data.csv");
+                saveAs(blob, "Sanctioned.csv");
             } catch (error) {
                 console.log("error", error);
             }
@@ -148,11 +164,16 @@ const Sanctioned = () => {
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Total Sanctioned"
+                actionButton={true}
+                // onAllocateButtonClick={handleAllocate}
+                onExportButtonClick={handleExportClick}
                 loading={isLoading}
+                isExporting={isExporting}
+                // isAllocating={isAllocating}
             />
             <div>
-                {isError &&(
-                    <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+                {isError && (
+                    <Alert severity="error" sx={{ borderRadius: "8px", mt: 2 }}>
                         {error?.data?.message}
                     </Alert>
                 )}
