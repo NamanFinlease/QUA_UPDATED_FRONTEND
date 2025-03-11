@@ -111,7 +111,7 @@ const LeadProfile = () => {
                                             {error?.data?.message}
                                         </Alert>)
                                     }
-                                    {(activeRole !== "sanctionHead" && activeRole !== "admin") && <Box display="flex" justifyContent="flex-end" sx={{ my: 2 }}>
+                                    {(activeRole !== "sanctionHead" && activeRole !== "admin") && (!leadData?.isRejected) && <Box display="flex" justifyContent="flex-end" sx={{ my: 2 }}>
                                         <Button
                                             variant="outlined"
                                             onClick={() => setLeadEdit(true)}
@@ -140,7 +140,7 @@ const LeadProfile = () => {
                                         <CibilScorePage id={leadData._id} />
                                         <InternalDedupe id={leadData._id} />
                                         <ApplicationLogHistory id={leadData._id} />
-                                        {(activeRole === "screener" && <CommonRemarks id={leadData._id} onRemarksChange={handleForwardRemarks}/>)}
+                                        {(activeRole === "screener" && !leadData?.isRejected && <CommonRemarks id={leadData._id} onRemarksChange={handleForwardRemarks}/>)}
                                         {/* Action Buttons */}
                                         {(!leadData?.isRejected && activeRole !== "sanctionHead" && activeRole !== "admin") &&
                                             <div className='my-3  d-flex justify-content-center'>

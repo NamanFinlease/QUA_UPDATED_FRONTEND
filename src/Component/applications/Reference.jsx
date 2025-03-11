@@ -55,7 +55,7 @@ const Reference = ({ reference }) => {
 
     // Call API or mutation here
     updatePersonalDetails({ id, updates: newData })
-    setOpenEdit(false)
+    // setOpenEdit(false)
   };
   
 
@@ -71,7 +71,13 @@ const Reference = ({ reference }) => {
     }
 
   }, [reference])
-  console.log('reference details',referenceDetails)
+
+  
+  useEffect(()=>{
+    if(isSuccess && updatePersonalDetails){
+      setOpenEdit(false)
+    }
+  },[isSuccess])
 
   // Color theme
   const theme = useTheme();
