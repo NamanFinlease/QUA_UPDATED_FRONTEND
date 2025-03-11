@@ -137,7 +137,7 @@ const LeadProfile = () => {
                                 </Paper>
                                 {leadData?._id && (
                                     <>
-                                        <CibilScorePage id={leadData._id} />
+                                        <CibilScorePage id={leadData._id} creditScore={leadData.cibilScore} />
                                         <InternalDedupe id={leadData._id} />
                                         <ApplicationLogHistory id={leadData._id} />
                                         {(activeRole === "screener" && !leadData?.isRejected && <CommonRemarks id={leadData._id} onRemarksChange={handleForwardRemarks}/>)}

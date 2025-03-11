@@ -3,6 +3,7 @@ import { Paper, Box, Alert, useTheme } from '@mui/material';
 import { tokens } from '../../theme';
 import { useNavigate, useParams } from 'react-router-dom';
 import ApplicantProfileData from '../applicantProfileData';
+import CibilScorePage from '../leads/CibilScore';
 import InternalDedupe from '../InternalDedupe';
 import ApplicationLogHistory from '../ApplicationLogHistory';
 import BarButtons from '../BarButtons';
@@ -115,6 +116,7 @@ const DisbursalProfile = () => {
                 >
                   <ApplicantProfileData leadData={disbursalData?.sanction?.application?.lead} />
                 </Paper>
+                <CibilScorePage id={disbursalData?.sanction?.application?.lead?._id} creditScore={disbursalData?.sanction?.application?.lead?.cibilScore} />
                 <InternalDedupe id={disbursalData?.sanction?.application?.lead?._id} />
                 <ApplicationLogHistory id={disbursalData?.sanction?.application?.lead?._id} />
                 {(activeRole === "disbursalHead") && <CommonRemarks />}

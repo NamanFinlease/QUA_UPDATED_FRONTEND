@@ -7,18 +7,19 @@ import useAuthStore from '../store/authStore';
 import useStore from '../../Store';
 import BarButtons from '../BarButtons';
 import ApplicantProfileData from '../applicantProfileData';
+import CibilScorePage from '../leads/CibilScore';
 import InternalDedupe from '../InternalDedupe';
 import ApplicationLogHistory from '../ApplicationLogHistory';
 import PersonalDetails from '../applications/PersonalDetails';
 import BankDetails from '../applications/BankDetails';
 import EKycVerification from '../leads/DetailsVerification';
-import UploadDocuments from '../UploadDocuments';
 import Cam from '../applications/Cam';
 import DisburseLoan from '../disbursal/DisburseLoan';
 import ClosingRequest from './ClosingRequest';
 import Payment from '../accounts/Payment';
 import CollectionDetails from './CollectionDetails';
 import RepaymentDetails from '../repayment/RepaymentDetails';
+import UploadDocuments from '../UploadDocuments';
 
 const CollectionProfile = () => {
     const { id } = useParams();
@@ -26,6 +27,7 @@ const CollectionProfile = () => {
     const { empInfo, activeRole } = useAuthStore()
     const { setApplicationProfile,setLead } = useStore();
     const navigate = useNavigate();
+    const [uploadedDocs, setUploadedDocs] = useState([]);
     const [currentPage, setCurrentPage] = useState("application");
 
 
@@ -33,13 +35,11 @@ const CollectionProfile = () => {
     const { lead } = collectionData?.disbursal?.sanction?.application ?? {}
     const { application } = collectionData?.disbursal?.sanction ?? {}
 
-    console.log(data)
-
+    console.log(data?.data?.disbursal?.sanction?.application?.lead)
     // Color theme
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
-    console.log('collection profile 1', data, collectionData)
     const barButtonOptions = [
         'Application',
         'Documents',
@@ -85,6 +85,7 @@ const CollectionProfile = () => {
                                 <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '0px 20px', background:colors.white[100], }}>
                                     <ApplicantProfileData leadData={lead} />
                                 </Paper>
+                                <CibilScorePage id={lead?._id} creditScore={lead?.cibilScore} />
                                 <InternalDedupe id={lead?._id} />
                                 <ApplicationLogHistory id={lead?._id} />
                             </>
@@ -94,7 +95,6 @@ const CollectionProfile = () => {
 
                 {collectionData && Object.keys(collectionData).length > 0 && (
                     <>
-                        {console.log('collection profile',)}
                         {currentPage === "personal" && <PersonalDetails id={application?.applicant} />}
                         {currentPage === "banking" && <BankDetails id={application?.applicant} />}
 
@@ -112,15 +112,12 @@ const CollectionProfile = () => {
                                 leadId={lead?._id}
                             />
                         )}
-                        {currentPage === "documents" && lead && (
-                            <UploadDocuments leadData={lead} />
-                        )}
+                        {currentPage === "documents" && <UploadDocuments leadData={lead}/>}
 
                         {currentPage === "cam" && <Cam id={application?._id} />}
                         {currentPage === "disbursal" && <DisburseLoan disburse={collectionData?.disbursal?.sanction} />}
                         {currentPage === "collection" && <CollectionDetails disburse={collectionData?.disbursal?.sanction} repaymentId={collectionData?.loanNo} />}
                         {currentPage === "repayment" && <RepaymentDetails disburse={collectionData?.disbursal} repaymentId={collectionData?.loanNo} collectionData={collectionData} />}
-                        {/* {currentPage === "repayment" && <ClosingRequest disburse={collectionData?.disbursal} />} */}
                         {currentPage === "accounts" && (
                             <>
                                 {collectionData ? (

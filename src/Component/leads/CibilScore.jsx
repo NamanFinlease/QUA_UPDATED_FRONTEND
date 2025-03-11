@@ -3,14 +3,15 @@ import { Accordion, AccordionSummary, AccordionDetails, Typography, Button, Box,
 import { tokens } from '../../theme';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PreviewIcon from '@mui/icons-material/Preview';
+import useAuthStore from '../store/authStore';
 import Swal from 'sweetalert2';
 import { useLazyFetchCibilScoreQuery, useLazyGetLeadDocsQuery } from '../../Service/Query';
 import { useParams } from 'react-router-dom';
 
 
-const CibilScore = ({ id }) => {
-
-  const [cibilScore, setCibilScore] = useState('');
+const CibilScore = ({ id, creditScore }) => {
+  const { empInfo, activeRole } = useAuthStore()
+  const [cibilScore, setCibilScore] = useState(creditScore || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -75,7 +76,7 @@ const CibilScore = ({ id }) => {
   const accordionStyles = {
     borderRadius: '0px 20px',
     background: colors.white[100],
-    color:colors.primary[400],
+    color: colors.primary[400],
     boxShadow: '0px 0px 20px #d1d5db',
     marginBottom: '20px',
   };
@@ -83,17 +84,19 @@ const CibilScore = ({ id }) => {
   const paperStyles = {
     padding: '20px',
     borderRadius: '0px 20px',
-    border:`1px solid ${colors.primary[400]}`,
+    border: `1px solid ${colors.primary[400]}`,
     backgroundColor: colors.white[100],
     boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.1)',
-  };  useEffect(() => {
-    if(cibilRes?.isSuccess&& cibilRes?.data && !cibilRes?.isFetching){
-      console.log('cibil score',cibilRes)
+  };
+
+  useEffect(() => {
+    if (cibilRes?.isSuccess && cibilRes?.data && !cibilRes?.isFetching) {
+      console.log('cibil score', cibilRes)
       setCibilScore(cibilRes?.data)
 
     }
 
-  },[cibilRes?.isSuccess, cibilRes?.data, cibilRes?.isFetching])
+  }, [cibilRes?.isSuccess, cibilRes?.data, cibilRes?.isFetching])
 
 
 
@@ -101,12 +104,12 @@ const CibilScore = ({ id }) => {
     <Box sx={{ margin: '0 auto', mt: 3 }}>
       <Accordion style={accordionStyles}>
         <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: colors.primary[400] }} />}>
-          <Typography variant="h6">Fetch CIC Report</Typography>
+          <Typography variant="h6">{(activeRole === "screener") ? "Fetch CIC Report" : "Show CIC Report"}</Typography>
         </AccordionSummary>
         <AccordionDetails >
           <Paper elevation={3} style={paperStyles}>
             <Box display="flex" justifyContent="space-between" alignItems="center">
-              <Button
+              {(activeRole === "screener") && <Button
                 variant="contained"
                 onClick={submitCibil}
                 disabled={loading}
@@ -118,12 +121,12 @@ const CibilScore = ({ id }) => {
                   color: colors.primary[400],
                   '&:hover': {
                     background: colors.primary[400],
-                    color:colors.white[100],
+                    color: colors.white[100],
                   },
                 }}
               >
                 {(cibilRes?.isLoading || cibilRes?.isFetching) ? 'Fetching...' : 'Fetch CIC Report'}
-              </Button>
+              </Button>}
 
               <Box textAlign="right" display="flex" alignItems="center">
                 {cibilRes?.isError && (
@@ -131,7 +134,7 @@ const CibilScore = ({ id }) => {
                     {cibilRes?.error?.data?.message}
                   </Typography>
                 )}
-                {cibilRes?.data?.value && (
+                {(!cibilScore || cibilScore || cibilRes?.data?.value) && (
                   <Box
                     display="flex"
                     alignItems="center"
@@ -147,7 +150,7 @@ const CibilScore = ({ id }) => {
                     {/* CIBIL Score Section */}
                     <Box
                       sx={{
-                        background:colors.white[100], // Light green background for CIBIL score
+                        background: colors.white[100],
                         borderTopLeftRadius: 2,
                         borderBottomRightRadius: 2,
                         px: 1,
@@ -161,12 +164,12 @@ const CibilScore = ({ id }) => {
                           color: colors.primary[400],
                         }}
                       >
-                        Credit Score: {cibilRes?.data?.value}
+                        Credit Score: {(cibilScore || cibilRes?.data?.value) || 'Not Yet Fetched'}
                       </Typography>
                     </Box>
 
                     {/* Preview Icon Section */}
-                    <Box
+                    {cibilScore && <Box
                       component="button"
                       onClick={() => viewFile("cibilReport")}
                       sx={{
@@ -185,7 +188,7 @@ const CibilScore = ({ id }) => {
                         transition: 'background-color 0.3s ease', // Smooth background transition
                         '&:hover': {
                           bgcolor: colors.primary[400],
-                          color:colors.white[100],
+                          color: colors.white[100],
                         },
                       }}
                     >
@@ -197,12 +200,11 @@ const CibilScore = ({ id }) => {
                           }}
                         />
                       </Tooltip>
-                    </Box>
+                    </Box>}
                   </Box>
                 )}
               </Box>
             </Box>
-
           </Paper>
         </AccordionDetails>
       </Accordion>

@@ -7,6 +7,7 @@ import useAuthStore from '../store/authStore';
 import useStore from '../../Store';
 import BarButtons from '../BarButtons';
 import InternalDedupe from '../InternalDedupe';
+import CibilScorePage from '../leads/CibilScore';
 import ApplicationLogHistory from '../ApplicationLogHistory';
 import ActionButton from '../ActionButton';
 import PersonalDetails from '../applications/PersonalDetails';
@@ -116,6 +117,7 @@ const SanctionProfile = () => {
                 </Paper>
                 {data?.application?.lead?._id &&
                   <>
+                    <CibilScorePage id={data?.application?.lead?._id} creditScore={data?.application?.lead?.cibilScore} />
                     <InternalDedupe id={data?.application?.lead?._id} />
                     <ApplicationLogHistory id={data?.application?.lead?._id} />
                     

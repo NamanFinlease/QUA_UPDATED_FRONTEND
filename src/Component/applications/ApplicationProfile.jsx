@@ -8,6 +8,7 @@ import PersonalDetails from './PersonalDetails';
 import BankDetails from './BankDetails';
 import { useFetchSingleApplicationQuery } from '../../Service/applicationQueries';
 import useStore from '../../Store';
+import CibilScorePage from '../leads/CibilScore';
 import Cam from './Cam';
 import BarButtons from '../BarButtons';
 import ActionButton from '../ActionButton';
@@ -79,6 +80,7 @@ const ApplicationProfile = () => {
                 </Paper>
                 {applicationData?.application?.lead?._id &&
                   <>
+                    <CibilScorePage id={applicationData?.application?.lead?._id} creditScore={applicationData?.application?.lead?.cibilScore} />
                     <InternalDedupe id={applicationData?.application?.lead?._id} />
                     <ApplicationLogHistory id={applicationData?.application?.lead?._id} />
                     {(activeRole === "creditManager" && <CommonRemarks id={applicationData?.application?.lead?._id} />)}
