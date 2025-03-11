@@ -58,7 +58,7 @@ const ActiveLeads = () => {
               />
             ),
           },
-        { field: "leadNo", headerName: "Loan Number", width: 200 },
+        { field: "leadNo", headerName: "Lead Number", width: 200 },
         { field: "name", headerName: "Full Name", width: 200 },
         { field: "mobile", headerName: "Mobile", width: 150 },
         { field: "aadhaar", headerName: "Aadhaar No.", width: 150 },

@@ -313,6 +313,11 @@ const BankDetails = ({ id, leadData }) => {
                                 {addBankRes?.error?.data?.message}
                             </Alert>
                         }
+                        {isUpdateError &&
+                            <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+                                {updateError?.data?.message}
+                            </Alert>
+                        }
                     </>
 
                 ) : (
@@ -419,6 +424,11 @@ const BankDetails = ({ id, leadData }) => {
             {bankRes.isError &&
                 <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
                     {bankRes?.error?.data?.message}
+                </Alert>
+            }
+            {isVerifyError &&
+                <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+                    {verifyError?.data?.message}
                 </Alert>
             }
 
