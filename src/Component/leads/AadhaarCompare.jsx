@@ -409,7 +409,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
         >
           Close
         </Button>
-        {(activeRole === "screener" && <Button
+        {(activeRole === "screener" && !lead?.isAadhaarVerified && <Button
           onClick={handleVerify}
           variant="contained"
           sx={{

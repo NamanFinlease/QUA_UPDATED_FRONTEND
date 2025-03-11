@@ -115,8 +115,6 @@ const BankDetails = ({ id, leadData }) => {
 
     }, [addBankRes.data, updateSuccess, updateData])
 
-    console.log(verificationData?.pennydropData?.accountNo)
-
     return (
         <Paper
             elevation={3}
@@ -367,6 +365,17 @@ const BankDetails = ({ id, leadData }) => {
                             </Table>
                         </TableContainer>
 
+                        <Box 
+                            display="flex" 
+                            justifyContent="flex-end" 
+                            marginTop="20px"
+                            sx={{
+                                color:bankDetails?.isPennyDropped ? colors.greenAccent[700] : colors.redAccent[500]
+                            }}
+                        >
+                            <p><strong>{bankDetails?.isPennyDropped ? "Bank Verified" : " Bank is Not Verified"}</strong></p>
+                        </Box>
+
                         {(activeRole === "creditManager") && <Box display="flex" justifyContent="flex-end" marginTop="20px">
                             <Button
                                 variant="contained"
@@ -407,7 +416,6 @@ const BankDetails = ({ id, leadData }) => {
 
                 )}
 
-            <Divider style={{ margin: '30px 0' }} />
             {bankRes.isError &&
                 <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
                     {bankRes?.error?.data?.message}
