@@ -252,16 +252,18 @@ const UploadDocuments = ({ leadData }) => {
             Object.keys(leadData?.documents?.document)
         ) {
             const merged = [
-                ...leadData?.documents?.document?.multipleDocuments?.salarySlip,
-                ...leadData?.documents?.document?.multipleDocuments?.bankStatement,
-                ...leadData?.documents?.document?.multipleDocuments?.others,
-                ...leadData?.documents?.document?.multipleDocuments?.statementAnalyser,
-                ...leadData?.documents?.document?.multipleDocuments?.sanctionLetter,
-                ...leadData?.documents?.document?.multipleDocuments?.repaymentDocs,
-                ...leadData?.documents?.document?.singleDocuments
+                ...(leadData?.documents?.document?.multipleDocuments?.salarySlip ?? []),
+                ...(leadData?.documents?.document?.multipleDocuments?.bankStatement ?? []),
+                ...(leadData?.documents?.document?.multipleDocuments?.others ?? []),
+                ...(leadData?.documents?.document?.multipleDocuments?.statementAnalyser ?? []),
+                ...(leadData?.documents?.document?.multipleDocuments?.sanctionLetter ?? []),
+                ...(leadData?.documents?.document?.multipleDocuments?.repaymentDocs ?? []),
+                ...(leadData?.documents?.document?.singleDocuments ?? [])
             ];
+
             setUploadedDocs(merged);
         }
+
     }, [leadData]);
 
     return (
@@ -667,6 +669,7 @@ const UploadDocuments = ({ leadData }) => {
 
 
             <Box>
+                
 
                 {(
                     uploadedDocs && uploadedDocs.length > 0 &&

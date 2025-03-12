@@ -65,17 +65,14 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
   const { handleSubmit, control, setValue, getValues, watch, reset, clearErrors, setError, formState: { errors } } = useForm({
     defaultValues: defaultValue,
     // resolver: yupResolver(paymentReceivedSchema),
-    // mode: "onBlur",
-    // reValidateMode: "onChange",
   });
 
   const closingType = watch("closingType");
+  const accountRemarks = watch("accountRemarks");
 
   const submitPayment = async (data) => {
 
     clearErrors("repaymentDocs")
-
-    console.log('adddd payment', data)
 
     // Check if a file is selected
     if (!selectedFile) {
@@ -541,6 +538,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                       fullWidth
                       label="Remarks"
                       variant="outlined"
+                      required
                       error={!!fieldState.error}
                       helperText={
                         fieldState.error ? fieldState.error.message : ""
@@ -548,6 +546,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                     />
                   )}
                 />
+                <p style={{fontSize:'12px', fontStyle:"italic", color:"#adadad", margin:0}}>Enter minimum 15 letters for remarks</p>
               </Box>
 
               <Box sx={{ flex: { xs: "1 1 100%", sm: "1 1 100%" } }}>
@@ -621,16 +620,23 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                 <Button
                   type="submit"
                   variant="contained"
-                  //   onClick={handleSubmit(submitPayment)}
                   sx={{
                     background: colors.primary[400],
                     color: colors.white[100],
                     borderRadius: "0px 10px",
-                    ":hover": { background: colors.primary[100] },
+                    cursor: accountRemarks.trim().length < 15 ? "not-allowed" : 'pointer',
+                    ":hover": { 
+                      background: colors.primary[100],
+                      cursor : accountRemarks.trim().length < 15 ? "not-allowed" : 'pointer', 
+                    },
+                  }}
+                  onClick={(e) => {
+                    if (accountRemarks.trim().length < 15) {
+                      e.preventDefault();
+                    }
                   }}
                 >
                   {isLoading ? <CircularProgress size={20} color="inherit" /> : "Add Payment"}
-                  {/* Add Payment */}
                 </Button>
               </Box>
             </Box>

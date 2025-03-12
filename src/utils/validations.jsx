@@ -223,6 +223,10 @@ export const paymentReceivedSchema = Yup.object().shape({
   .required('Choose Payment Mode'),
   transactionId : Yup.string()
   .required('Reference Number is required'),
+  accountRemarks : Yup.string()
+  .required('Remarks is required')
+  .trim()
+  .min(30, "Remarks must be at least 30 characters long"),
 });
 
   
