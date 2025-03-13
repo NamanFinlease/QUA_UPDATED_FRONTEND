@@ -133,7 +133,7 @@ const DisbursalProfile = () => {
           <>
             {currentPage === "personal" && <PersonalDetails id={disbursalData?.sanction?.application?.applicant} />}
             {currentPage === "banking" &&
-              <BankDetails id={disbursalData?.sanction?.application?.lead?.extraDetails?.disbursalBankDetails} />}
+              <BankDetails id={disbursalData?.sanction?.application?.applicant} leadData={disbursalData?.sanction?.application?.lead} />}
 
             {currentPage === "verification" &&
               <EKycVerification
