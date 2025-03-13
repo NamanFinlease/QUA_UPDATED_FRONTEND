@@ -18,8 +18,9 @@ const CommonRemarks = ({ id, onRemarksChange }) => {
     });
 
     const handleRemarksChange = (event) => {
-        const newRemarks = event.target.value;
+        const newRemarks = event;
         onRemarksChange(newRemarks);
+        console.log(newRemarks)
     };
 
     return (

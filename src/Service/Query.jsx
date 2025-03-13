@@ -92,9 +92,10 @@ export const leadsApi = createApi({
             invalidatesTags: ["leadProfile", "logs"],
         }),
         recommendLead: builder.mutation({
-            query: (id) => ({
+            query: ({id, remarks}) => ({
                 url: `leads/recommend/${id}/?role=${role()}`,
                 method: "PATCH",
+                body: {id, remarks}
             }),
         }),
 

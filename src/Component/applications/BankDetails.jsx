@@ -381,7 +381,7 @@ const BankDetails = ({ id, leadData }) => {
                             <p><strong>{bankDetails?.isPennyDropped ? "Bank Verified" : " Bank is Not Verified"}</strong></p>
                         </Box>
 
-                        {(activeRole === "creditManager") && <Box display="flex" justifyContent="flex-end" marginTop="20px">
+                        {(activeRole === "creditManager" || activeRole === "sanctionHead" || activeRole === "disbursalHead") && <Box display="flex" justifyContent="flex-end" marginTop="20px">
                             <Button
                                 variant="contained"
                                 onClick={() => handleOpenVerifyBank()}
@@ -389,7 +389,6 @@ const BankDetails = ({ id, leadData }) => {
                                     background: colors.white[100],
                                     color: colors.primary[400],
                                     borderRadius: "0px 10px",
-                                    margin: "0px 10px",
                                     border: `2px solid ${colors.primary[400]}`,
                                     '&:hover': {
                                         background: colors.primary[400],
@@ -399,22 +398,25 @@ const BankDetails = ({ id, leadData }) => {
                             >
                                 { verifyLoading ? <CircularProgress size={20} color="inherit" /> : "Verify Bank"}
                             </Button>
-                            <Button
-                                variant="contained"
-                                onClick={() => handleOpenForm()}
-                                sx={{
-                                    background: colors.white[100],
-                                    color: colors.primary[400],
-                                    borderRadius: "0px 10px",
-                                    border: `2px solid ${colors.primary[400]}`,
-                                    '&:hover': {
-                                        background: colors.primary[400],
-                                        color: colors.white[100],
-                                    },
-                                }}
-                            >
-                                Edit
-                            </Button>
+                            {(activeRole === "creditManager") && 
+                                <Button
+                                    variant="contained"
+                                    onClick={() => handleOpenForm()}
+                                    sx={{
+                                        background: colors.white[100],
+                                        color: colors.primary[400],
+                                        borderRadius: "0px 10px",
+                                        margin: "0px 0px 0px 10px",
+                                        border: `2px solid ${colors.primary[400]}`,
+                                        '&:hover': {
+                                            background: colors.primary[400],
+                                            color: colors.white[100],
+                                        },
+                                    }}
+                                >
+                                    Edit
+                                </Button>
+                            }
                         </Box>}
                     </>
 
