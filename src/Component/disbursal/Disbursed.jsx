@@ -98,8 +98,8 @@ const Disbursed = () => {
         const parsedDate = new Date(date);
         const options = { day: "2-digit", month: "short", year: "numeric" };
         return parsedDate
-            .toLocaleDateString("en-US", options)
-            .replace(/,/g, "");
+            .toLocaleDateString("en-GB", options)
+            .replace(/-/g, " ");
     };
 
     useEffect(() => {
@@ -116,15 +116,15 @@ const Disbursed = () => {
                     const csvData = {
                         ...row,
                         "Beneficiary Account No.": `"${row.accountNo}"`, // Add a leading single quote to force it as a string
-                        "Lead Created": row["Lead Created"]
-                            ? formatDate(row["Lead Created"])
-                            : "",
-                        "Disbursed Date": row["Disbursed Date"]
-                            ? formatDate(row["Disbursed Date"])
-                            : "",
-                        "Repayment Date": row["Repayment Date"]
-                            ? formatDate(row["Repayment Date"])
-                            : "",
+                        // "Lead Created": row["Lead Created"]
+                        //     ? formatDate(row["Lead Created"])
+                        //     : "",
+                        // "Disbursed Date": row["Disbursed Date"]
+                        //     ? formatDate(row["Disbursed Date"])
+                        //     : "",
+                        // "Repayment Date": row["Repayment Date"]
+                        //     ? formatDate(row["Repayment Date"])
+                        //     : "",
                     };
                     delete csvData.accountNo;
                     return csvData;
@@ -135,6 +135,8 @@ const Disbursed = () => {
                 const csv = Pap.unparse(formattedData, {
                     header: true, // Include headers in the CSV
                 });
+
+                console.log('csv',csv)
 
                 // Create a Blob for the CSV content
                 const blob = new Blob([csv], {
