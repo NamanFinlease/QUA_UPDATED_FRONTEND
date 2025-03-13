@@ -150,7 +150,7 @@ const SanctionProfile = () => {
               <>
                 {currentPage === "personal" && <PersonalDetails id={data?.application?.applicant} />}
                 {currentPage === "banking" &&
-                  <BankDetails id={data?.application?.applicant} />}
+                  <BankDetails id={data?.application?.applicant} leadData={data?.application?.lead} />}
                 {currentPage === "verification" &&
                   <EKycVerification
                     isAadhaarVerified={data?.application?.lead?.isAadhaarVerified}

@@ -24,6 +24,7 @@ const LeadProfile = () => {
     const [uploadedDocs, setUploadedDocs] = useState([]);
     const { setLead } = useStore()
     const [leadEdit, setLeadEdit] = useState(false);
+    const [commonRemarks, setCommonRemarks] = useState();
     
     // Color theme
     const theme = useTheme();
@@ -40,12 +41,7 @@ const LeadProfile = () => {
     ];
     
     const handleForwardRemarks = (remarks) => {
-        const payload = {
-            leadId: leadData._id,
-            screenerId: leadData.screenerId,
-            remarks: remarks,
-        };
-        console.log(payload);
+        setCommonRemarks(remarks)
     };
 
     useEffect(() => {
@@ -144,7 +140,7 @@ const LeadProfile = () => {
                                         {/* Action Buttons */}
                                         {(!leadData?.isRejected && activeRole !== "sanctionHead" && activeRole !== "admin") &&
                                             <div className='my-3  d-flex justify-content-center'>
-                                                <ActionButton id={leadData._id} isHold={leadData.onHold} />
+                                                <ActionButton id={leadData._id} isHold={leadData.onHold} commonRemarks={commonRemarks} />
                                             </div>}
                                     </>
                                 )}
