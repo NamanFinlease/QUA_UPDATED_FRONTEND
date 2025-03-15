@@ -20,11 +20,13 @@ import {
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import useStore from "../../Store";
+import useAuthStore from "../store/authStore";
 import { useVerifyPanMutation } from "../../Service/Query";
 import { compareDates, formatDate, formatFullName } from "../../utils/helper";
 
 const PanCompare = ({ open, setOpen, panDetails }) => {
   const [errorMessage, setErrorMessage] = useState("");
+  const {activeRole} = useAuthStore()
   const { lead } = useStore()
   console.log(lead)
 
@@ -102,7 +104,25 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
     if (mismatches.length > 0) {
         setErrorMessage("Some fields are not matched: " + mismatches.map(m => m.label).join(", "));
     } else {
-        setErrorMessage("Verified");
+      verifyPan({ id: lead._id, data : panDetails })
+      .unwrap()
+      .then((response) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Verification Successful',
+          text: "PAN verified successfully!",
+        });
+        console.log(response);
+        setOpen(false);
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Verification Failed',
+          text: "Verification failed: " + (err?.data?.message || "Unknown error"),
+        });
+          console.error(err);
+      });
     }
 };
 
@@ -295,7 +315,7 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
         >
           Close
         </Button>
-        {/* <Button
+        {(activeRole === "screener" && !lead?.isPanVerified && <Button
           onClick={handleVerify}
           variant="contained"
           sx={{
@@ -311,16 +331,20 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
           }}
         >
           Verify
-        </Button> */}
+        </Button>)}
         {/* <Button
-          onClick={handleSubmit}
+          onClick={handleVerify}
           variant="contained"
-          color="primary"
           sx={{
-            backgroundColor: "#00796b",
+            background:colors.white[100],
+            color: colors.greenAccent[700],
+            border: `1px solid ${colors.greenAccent[700]}`,
             fontWeight: "bold",
-            textTransform: "none",
-            "&:hover": { backgroundColor: "#004d40" },
+            borderRadius:"0px 10px",
+            '&:hover':{
+              backgroundColor:colors.greenAccent[700],
+              color:colors.white[100],
+            }
           }}
         >
           Verify
