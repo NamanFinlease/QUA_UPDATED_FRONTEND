@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { NavLink, Link } from "react-router-dom";
 import useAuthStore from "../Component/store/authStore";
-import { useLazyExportCollectionQuery } from "../Service/applicationQueries";
+import { useLazyExportCollectionQuery, useLazyExportMasterCollectionQuery } from "../Service/applicationQueries";
 import { saveAs } from "file-saver"; // For file downloads
 import * as Pap from "papaparse"; // For CSV conversion
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -38,6 +38,7 @@ import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const { empInfo, activeRole } = useAuthStore();
   const [collectionDownload, setCollectionDownload] = useState(false);
+  const [masterCollectionDownload, setMasterCollectionDownload] = useState(false);
 
   const [
     exportCollection,
@@ -50,6 +51,18 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       error: collectionError,
     },
   ] = useLazyExportCollectionQuery();
+  
+  const [
+    exportMasterCollection,
+    {
+      data: masterCollectionData,
+      isLoading: isMasterCollectionLoading,
+      isSuccess: isMasterCollectionSuccess,
+      isFetching: isMasterCollectionFetching,
+      isError: isMasterCollectionError,
+      error: masterCollectionError,
+    },
+  ] = useLazyExportMasterCollectionQuery();
 
   // Define accordion items based on active role
   const accordionItems = [
@@ -159,6 +172,14 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
             setCollectionDownload(false);
           },
         },
+        {
+          text: "Download Master Collection Report",
+          onClick: async () => {
+            setMasterCollectionDownload(true);
+            await exportMasterCollection();
+            setMasterCollectionDownload(false);
+          },
+        },
       ],
       roles: ["collectionHead", "admin"],
     },
@@ -231,6 +252,31 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       }
     }
   }, [isCollectionSuccess, collectionData, isCollectionFetching]);
+
+  useEffect(() => {
+    if (isMasterCollectionSuccess && masterCollectionData) {
+      try {
+        const formattedData = masterCollectionData?.data?.map((row) => {
+          const csvData = {
+            ...row,
+          };
+          return csvData;
+        });
+
+        const csv = Pap.unparse(formattedData, {
+          header: true,
+        });
+
+        const blob = new Blob([csv], {
+          type: "text/csv;charset=utf-8",
+        });
+
+        saveAs(blob, "MasterCollectionReport.csv");
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+  }, [isMasterCollectionSuccess, masterCollectionData, isMasterCollectionFetching]);
 
   return (
     <>
@@ -337,53 +383,62 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                         borderRadius: "15px 0px 15px 15px",
                       }}>
                       <List>
-                        {item.items.map((subItem) => (
-                          <ListItem button
-                            component={NavLink}
-                            to={subItem.link}
-                            onClick={collectionDownload ? null : subItem.onClick}
-                            key={subItem.text}
-                            sx={{
-                              color: colors.primary[400],
-                              textDecoration: "none",
-                              padding: "10px 15px",
-                              borderTopRightRadius: "10px",
-                              borderBottomLeftRadius: "10px",
-                              border: `2px solid ${colors.white[100]}`,
-                              "&.active": {
-                                background: `linear-gradient(90deg, ${colors.white[400]} 50%, ${colors.primary[400]} 250%)`,
-                                fontWeight: "bold",
-                                border: `2px solid ${colors.primary[400]}`,
-                                "&::after": {
-                                  content: '""',
-                                  position: "absolute",
-                                  right: "20px",
-                                  top: "20px",
-                                  width: "10px",
-                                  height: "10px",
-                                  borderRadius: "50%",
-                                  background: colors.primary[400],
-                                  animation: "blink 1s infinite",
+                        {item.items.map((subItem) => {
+                          const isMisReportItem = item.id === "collectionReport";
+                          return (
+                            <ListItem
+                              button
+                              component={isMisReportItem ? undefined : NavLink}
+                              to={isMisReportItem ? undefined : subItem.link}
+                              onClick={isMisReportItem ? subItem.onClick : collectionDownload || masterCollectionDownload ? null : subItem.onClick}
+                              key={subItem.text}
+                              sx={{
+                                color: colors.primary[400],
+                                textDecoration: "none",
+                                padding: "10px 15px",
+                                borderTopRightRadius: "10px",
+                                borderBottomLeftRadius: "10px",
+                                border: `2px solid ${colors.white[100]}`,
+                                cursor : "pointer",
+                                "&.active": isMisReportItem ? {
+                                  background: "none",
+                                  fontWeight: "normal",
+                                } : {
+                                  background: `linear-gradient(90deg, ${colors.white[400]} 50%, ${colors.primary[400]} 250%)`,
+                                  fontWeight: "bold",
+                                  border: `2px solid ${colors.primary[400]}`,
+                                  "&::after": {
+                                    content: '""',
+                                    position: "absolute",
+                                    right: "20px",
+                                    top: "20px",
+                                    width: "10px",
+                                    height: "10px",
+                                    borderRadius: "50%",
+                                    background: colors.primary[400],
+                                    animation: "blink 1s infinite",
+                                  },
                                 },
-                              },
-                              "&:hover": {
-                                border: `2px solid ${colors.primary[400]}`,
-                                color: colors.white[100],
-                              },
-                              '@keyframes blink': {
-                                "0%": { background: colors.white[100] },
-                                "100%": { background: colors.primary[400] },
-                              }
-                            }}
-                          >
-                            {collectionDownload ? (
-                              <CircularProgress size={24} sx={{ marginRight: 1 }} />
-                            ) : (
-                              <ListItemText sx={{ color: colors.primary[400], }} primary={subItem.text} />
-                            )}
-                            {/* <ListItemText sx={{ color: colors.primary[400], }} primary={subItem.text} /> */}
-                          </ListItem>
-                        ))}
+                                "&:hover": {
+                                  border: `2px solid ${colors.primary[400]}`,
+                                  color: colors.white[100],
+                                },
+                                '@keyframes blink': {
+                                  "0%": { background: colors.white[100] },
+                                  "100%": { background: colors.primary[400] },
+                                },
+                              }}
+                            >
+                              {isCollectionLoading && subItem.text === "Download Collection Report" ? (
+                                <CircularProgress size={24} sx={{ marginRight: 1 }} />
+                              ) : null}
+                              {isMasterCollectionLoading && subItem.text === "Download Master Collection Report" ? (
+                                <CircularProgress size={24} sx={{ marginRight: 1 }} />
+                              ) : null}
+                              <ListItemText sx={{ color: colors.primary[400] }} primary={subItem.text} />
+                            </ListItem>
+                          );
+                        })}
                       </List>
                     </AccordionDetails>
                   </Accordion>
