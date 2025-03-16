@@ -310,6 +310,9 @@ export const applicationApi = createApi({
         exportDisbursed: builder.query({
             query: () => `/disbursals/disbursed/report/?role=${role()}`,
         }),
+        exportCollection: builder.query({
+            query: () => `/reports/collection/?role=${role()}`,
+        }),
     }),
 });
 export const {
@@ -358,5 +361,6 @@ export const {
     useLazyExportSanctionedQuery,
     useLazyExportNewDisbursalQuery,
     useLazyExportDisbursedQuery,
+    useLazyExportCollectionQuery,
     useLazyVerifyBankDetailsQuery,
 } = applicationApi;

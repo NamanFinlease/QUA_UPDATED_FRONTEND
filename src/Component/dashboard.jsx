@@ -50,18 +50,18 @@ const Dashboard = () => {
   });
 
   // Show toast notification on successful login
-  useEffect(() => {
-    let login = true
-    if (login && !toastShown) {
-      Toast.fire({
-        icon: "success",
-        color: colors.primary[500],
-        title: "Logged in Successfully!!!"
+  // useEffect(() => {
+  //   let login = true
+  //   if (login && !toastShown) {
+  //     Toast.fire({
+  //       icon: "success",
+  //       color: colors.primary[500],
+  //       title: "Logged in Successfully!!!"
 
-      });
-      setToastShown(true); // Set the state to true after showing the toast
-    }
-  }, [login, toastShown]);
+  //     });
+  //     setToastShown(true); // Set the state to true after showing the toast
+  //   }
+  // }, [login, toastShown]);
 
 
   console.log("The active log is",activeRole);
@@ -300,6 +300,48 @@ const Dashboard = () => {
     
   },
   collectionExecutive: {
+    activeLeads: {
+      icon: <NewReleasesIcon className='mt-3'
+      sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/activeLeads",
+      title: 'Active Leads ',
+      no : data?.collection?.activeLeads || 0
+    },
+    allocatedLeads: {
+      icon: <CheckCircleIcon className='mt-3'
+      sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/allocatedCollectionLeads",
+      title: 'Allocated Leads',
+      no : data?.collection?.allocatedLeads || 0
+    },
+    activePreCollectionLeads: {
+      icon: <NewReleasesIcon className='mt-3'
+      sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/preCollectionActiveLeads",
+      title: 'Active Precollection Leads ',
+      no : data?.collection?.activePreCollectionLeads || 0
+    },
+    allocatedPreCollectionLeads: {
+      icon: <CheckCircleIcon className='mt-3'
+      sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/allocatedPreCollectionLeads",
+      title: 'Allocated Precollection Leads',
+      no : data?.collection?.allocatedPreCollectionLeads || 0
+    },
+    pendingVerification: {
+      icon: <PauseIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/pending-verification",
+      title: 'Verification Pending',
+      no : 0
+    },
+    closedLeads: {
+      icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/closed-leads",
+      title: 'Closed Leads',
+      no : 0
+    },
+  },
+  collectionHead: {
     activeLeads: {
       icon: <NewReleasesIcon className='mt-3'
       sx={{ color: colors.primary[400], width:'100%', }} />,
