@@ -709,6 +709,15 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                             '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                                             '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                                         }}
+                                        MenuProps={{
+                                            PaperProps: {
+                                                style: {
+                                                    backgroundColor: colors.white[100],
+                                                    color: colors.black[100],
+                                                    borderRadius:"20px 0px",
+                                                },
+                                            },
+                                        }}
                                     >
                                         {reasonList && reasonList.length > 0 && reasonList.map((reason, index) => (
                                             <MenuItem
@@ -796,12 +805,21 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                 label="Send Back to"
                                                 sx={{
                                                     color: colors.black[100],
-                                                    backgroundColor: colors.white[100],
+                                                    background: colors.white[100],
                                                     borderRadius: "0px 10px",
                                                     '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                                                     '& .MuiSvgIcon-root': { color: colors.primary[400] },
                                                     '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                                                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
+                                                }}
+                                                MenuProps={{
+                                                    PaperProps: {
+                                                        style: {
+                                                            backgroundColor: colors.white[100],
+                                                            color: colors.black[100],
+                                                            borderRadius:"20px 0px",
+                                                        },
+                                                    },
                                                 }}
                                             >
                                                 <MenuItem
@@ -809,9 +827,13 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                     sx={{
                                                         color: colors.black[100],
                                                         background: colors.white[100],
-                                                        '& .MuiPaper-root': {
+                                                        '& .MuiPopover-paper': {
                                                             background: colors.white[100],
-                                                        }
+                                                        },
+                                                        '&:hover': {
+                                                            background: colors.primary[400],
+                                                            color: colors.white[100],
+                                                        },
                                                     }}
                                                     disabled
                                                 >

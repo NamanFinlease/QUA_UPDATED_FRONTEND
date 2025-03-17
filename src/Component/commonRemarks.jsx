@@ -11,16 +11,11 @@ const CommonRemarks = ({ id, onRemarksChange }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
-    const { control } = useForm({
-        defaultValues: {
-            addRemarks: '',
-        }
-    });
+    const { control } = useForm();
 
     const handleRemarksChange = (event) => {
         const newRemarks = event;
         onRemarksChange(newRemarks);
-        console.log(newRemarks)
     };
 
     return (
@@ -43,6 +38,7 @@ const CommonRemarks = ({ id, onRemarksChange }) => {
                     <Controller
                         name="addRemarks"
                         control={control}
+                        rules={{ required: "Remarks are required" }}
                         render={({ field, fieldState }) => (
                             <FormControl
                                 variant="outlined"
@@ -92,13 +88,19 @@ const CommonRemarks = ({ id, onRemarksChange }) => {
                                         },
                                         "& .MuiOutlinedInput-notchedOutline": {
                                             borderColor: colors.primary[400],
-                                            "&:hover": {
-                                                borderColor: colors.primary[400]
-                                            }
+                                        },
+                                        '& .MuiOutlinedInput-root': {
+                                            '& fieldset': { borderColor: colors.primary[400], borderRadius: "0px 10px", },
+                                            '&:hover fieldset': { borderColor: colors.primary[400] },
                                         },
                                     }}
                                     required
                                 />
+                                {fieldState.error && (
+                                    <Typography variant="caption" color="error">
+                                        {fieldState.error.message}
+                                    </Typography>
+                                )}
                             </FormControl>
                         )}
                     />

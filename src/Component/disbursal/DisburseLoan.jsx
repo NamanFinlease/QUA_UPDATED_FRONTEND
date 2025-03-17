@@ -171,6 +171,9 @@ const DisburseLoan = ({ disburse }) => {
                   '& .MuiSelect-icon':{
                     color:colors.primary[400],
                   },
+                  '& .MuiSvgIcon-root':{
+                    color:colors.primary[400],
+                  },
                 }}
               >
                 <Box

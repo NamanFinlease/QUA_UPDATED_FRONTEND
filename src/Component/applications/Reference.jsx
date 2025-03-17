@@ -128,7 +128,12 @@ const Reference = ({ reference }) => {
                     },
                     '& .MuiOutlinedInput-notchedOutline':{
                       borderColor:colors.primary[400],
-                    }
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      color: colors.black[100],
+                      '& fieldset': { borderColor: colors.primary[400], borderRadius: "0px 10px", },
+                      '&:hover fieldset': { borderColor: colors.primary[400] },
+                    },
                   }}
                 >
                   {/* Reference 1 */}
@@ -176,12 +181,29 @@ const Reference = ({ reference }) => {
                             <Select
                               {...field}
                               label="Relation"
+                              sx={{
+                                borderRadius: "0px 10px 0px 10px",
+                                color: colors.black[100],
+                                backgroundColor: colors.white[100],
+                                '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
+                                '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
+                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
+                              }}
+                              MenuProps={{
+                                PaperProps: {
+                                    style: {
+                                        backgroundColor: colors.white[100],
+                                        color: colors.black[100],
+                                        borderRadius:"20px 0px",
+                                    },
+                                },
+                              }}
                             >
                               <MenuItem value="" disabled>Select Relation</MenuItem>
-                              <MenuItem value="Friend">Friend</MenuItem>
-                              <MenuItem value="Colleague">Colleague</MenuItem>
-                              <MenuItem value="Relative">Relative</MenuItem>
-                              <MenuItem value="Neighbor">Neighbor</MenuItem>
+                              <MenuItem value="Friend" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Friend</MenuItem>
+                              <MenuItem value="Colleague" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Colleague</MenuItem>
+                              <MenuItem value="Relative" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Relative</MenuItem>
+                              <MenuItem value="Neighbor" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Neighbor</MenuItem>
                             </Select>
                             <FormHelperText>{errors.reference1?.relation?.message}</FormHelperText>
                           </FormControl>
@@ -235,12 +257,29 @@ const Reference = ({ reference }) => {
                             <Select
                               {...field}
                               label="Relation"
+                              sx={{
+                                borderRadius: "0px 10px 0px 10px",
+                                color: colors.black[100],
+                                backgroundColor: colors.white[100],
+                                '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
+                                '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
+                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
+                              }}
+                              MenuProps={{
+                                PaperProps: {
+                                    style: {
+                                        backgroundColor: colors.white[100],
+                                        color: colors.black[100],
+                                        borderRadius:"20px 0px",
+                                    },
+                                },
+                              }}
                             >
                               <MenuItem value="" disabled>Select Relation</MenuItem>
-                              <MenuItem value="Friend">Friend</MenuItem>
-                              <MenuItem value="Colleague">Colleague</MenuItem>
-                              <MenuItem value="Relative">Relative</MenuItem>
-                              <MenuItem value="Neighbor">Neighbor</MenuItem>
+                              <MenuItem value="Friend" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Friend</MenuItem>
+                              <MenuItem value="Colleague" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Colleague</MenuItem>
+                              <MenuItem value="Relative" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Relative</MenuItem>
+                              <MenuItem value="Neighbor" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Neighbor</MenuItem>
                             </Select>
                             <FormHelperText>{errors.reference2?.relation?.message}</FormHelperText>
                           </FormControl>

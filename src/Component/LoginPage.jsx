@@ -66,8 +66,7 @@ const LoginPage = () => {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '100vh',
-        // backgroundColor: colors.white[100],
-        backgroundImage: 'url("../../src/assets/image/loginbackground.jpg")',
+        backgroundImage: 'url("https://globals3diigitaloceanbucket.blr1.cdn.digitaloceanspaces.com/QUAASSESTS/image%20(2).png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
@@ -126,8 +125,8 @@ const LoginPage = () => {
               InputLabelProps={{ style: { color: colors.black[100] }, shrink: true, }}
               sx={{
                 '& input:-webkit-autofill': {
-                  WebkitBoxShadow: '0 0 0 100px #424242 inset',
-                  WebkitTextFillColor: '#fff',
+                  WebkitBoxShadow: '0 0 0 100px rgb(255,255,255) inset',
+                  WebkitTextFillColor: colors.primary[400],
                   transition: 'background-color 5000s ease-in-out 0s',
                 },
               }}

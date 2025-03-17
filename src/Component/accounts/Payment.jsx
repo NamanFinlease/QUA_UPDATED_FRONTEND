@@ -142,6 +142,15 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                                     color: colors.white[100],
                                 }
                             }}
+                            MenuProps={{
+                                PaperProps: {
+                                    style: {
+                                        backgroundColor: colors.white[100],
+                                        color: colors.black[100],
+                                        borderRadius:"20px 0px",
+                                    },
+                                },
+                            }}
                             value={selectedStatus}
                             onChange={handleStatusChange}
                             displayEmpty
@@ -158,10 +167,10 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                                     ? formatCamelCaseToTitle(payment.requestedStatus)
                                     : "N/A"}
                             </MenuItem>
-                            <MenuItem value="partPayment">Part Payment</MenuItem>
-                            <MenuItem value="settled">Settled</MenuItem>
-                            <MenuItem value="writeOff">Write Off</MenuItem>
-                            <MenuItem value="closed">Closed</MenuItem>
+                            <MenuItem value="partPayment" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Part Payment</MenuItem>
+                            <MenuItem value="settled" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Settled</MenuItem>
+                            <MenuItem value="writeOff" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Write Off</MenuItem>
+                            <MenuItem value="closed" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Closed</MenuItem>
                         </Select>
                     </td>
                     <td>
@@ -199,10 +208,26 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
             <Dialog
                 open={open}
                 onClose={handleClose}
+                sx={{
+                    '& .MuiOutlinedInput-root':{
+                        color:colors.black[100],
+                        '& fieldset': { borderColor: colors.primary[400] },
+                        '&:hover fieldset': { borderColor: colors.primary[400] },
+                    },
+                    '& .MuiTypography-root':{
+                        color:colors.black[100],
+                    },
+                    '& .MuiFormLabel-root':{
+                        color:colors.black[100],
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: colors.primary[400],
+                    },
+                }}
                 PaperProps={{
                     style: {
-                        // backgroundColor: colors.grey[100], 
-                        // color:colors.black[100] ,
+                        backgroundColor: colors.white[100], 
+                        color:colors.black[100] ,
                         borderRadius: "0px 20px",
                     }
                 }}
