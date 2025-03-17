@@ -229,7 +229,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   };
 
   useEffect(() => {
-    if (isCollectionSuccess && collectionData) {
+    if (isCollectionSuccess && collectionData && !isCollectionFetching) {
       try {
         const formattedData = collectionData?.data?.map((row) => {
           const csvData = {
@@ -254,7 +254,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   }, [isCollectionSuccess, collectionData, isCollectionFetching]);
 
   useEffect(() => {
-    if (isMasterCollectionSuccess && masterCollectionData) {
+    if (isMasterCollectionSuccess && masterCollectionData && !isMasterCollectionFetching) {
       try {
         const formattedData = masterCollectionData?.data?.map((row) => {
           const csvData = {
