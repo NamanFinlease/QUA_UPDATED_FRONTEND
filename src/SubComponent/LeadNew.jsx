@@ -136,7 +136,7 @@ const LeadNew = () => {
   const [isAllocating, setIsAllocating] = useState(false);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 10,
+    pageSize: 100,
   });
   const { empInfo, activeRole } = useAuthStore();
   const navigate = useNavigate();
