@@ -121,6 +121,11 @@ const Residence = ({ residence }) => {
                   gap={2} 
                   sx={{
                     color:colors.black[100],
+                    '& .MuiOutlinedInput-root':{
+                      color:colors.black[100],
+                      '& fieldset': { borderColor: colors.primary[400] },
+                      '&:hover fieldset': { borderColor: colors.primary[400] },
+                    },
                     '& .MuiInputBase-root':{
                       color:colors.black[100],
                     },

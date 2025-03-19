@@ -55,7 +55,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
     discount: "",
     bankName : "",
     excessAmount: "",
-    accountRemarks: "",
+    collectionRemarks: "",
     paymentUpload: "",
     repaymentDocs: "",
   };
@@ -66,7 +66,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
   });
 
   const closingType = watch("closingType");
-  const accountRemarks = watch("accountRemarks");
+  const collectionRemarks = watch("collectionRemarks");
 
   const submitPayment = async (data) => {
 
@@ -91,7 +91,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
       formData.append("discount", data.discount);
       formData.append("excessAmount", data.excessAmount);
       formData.append("repaymentDocs", selectedFile);
-        formData.append("paymentRemarks", data.accountRemarks);
+        formData.append("collectionRemarks", data.collectionRemarks);
       // if (selectedFile) {
       //   formData.append("repaymentDocs", selectedFile);
       // }
@@ -549,7 +549,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
 
               <Box sx={{ flex: { xs: "1 1 100%", sm: "1 1 100%" } }}>
                 <Controller
-                  name="accountRemarks"
+                  name="collectionRemarks"
                   control={control}
                   render={({ field, fieldState }) => (
                     <TextField
@@ -642,14 +642,14 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                     background: colors.primary[400],
                     color: colors.white[100],
                     borderRadius: "0px 10px",
-                    cursor: accountRemarks.trim().length < 15 ? "not-allowed" : 'pointer',
+                    cursor: collectionRemarks.trim().length < 15 ? "not-allowed" : 'pointer',
                     ":hover": { 
                       background: colors.primary[100],
-                      cursor : accountRemarks.trim().length < 15 ? "not-allowed" : 'pointer', 
+                      cursor : collectionRemarks.trim().length < 15 ? "not-allowed" : 'pointer', 
                     },
                   }}
                   onClick={(e) => {
-                    if (accountRemarks.trim().length < 15) {
+                    if (collectionRemarks.trim().length < 15) {
                       e.preventDefault();
                     }
                   }}

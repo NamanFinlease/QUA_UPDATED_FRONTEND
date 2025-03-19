@@ -136,6 +136,7 @@ export const disburseSchema = Yup.object().shape({
   disbursalDate: Yup.date()
     .typeError('Disbursal Date is required')
     .required('Disbursal Date is required'),
+  utr: Yup.string().required('UTR is required'),
   remarks: Yup.string().required('Remarks are required'),
 });
 

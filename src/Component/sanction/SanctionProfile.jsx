@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { tokens } from '../../theme';
-import {Paper, Box, Alert, useTheme } from '@mui/material';
+import {Paper, Box, Alert, useTheme, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useLazySanctionPreviewQuery, useSanctionProfileQuery } from '../../Service/applicationQueries';
 import useAuthStore from '../store/authStore';
@@ -18,6 +18,7 @@ import LoanSanctionPreview from './LoanSanctionPreview'
 import ApplicantProfileData from '../applicantProfileData';
 import SanctionLetterPreview from './SanctionLetterPreview';
 import EKycVerification from '../leads/DetailsVerification';
+import CommonRemarks from '../CommonRemarks';
 
 
 const barButtonOptions = ['Application', 'Documents', 'Personal', 'Banking', 'Verification', 'Cam']
@@ -31,6 +32,9 @@ const SanctionProfile = () => {
   const navigate = useNavigate();
   const [uploadedDocs, setUploadedDocs] = useState([]);
   const [currentPage, setCurrentPage] = useState("application");
+  const [commonRemarks, setCommonRemarks] = useState();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isRemarksValid, setIsRemarksValid] = useState(false);
 
   const { data, isSuccess, isError, error } = useSanctionProfileQuery(id, { skip: id === null });
   const [sanctionPreview, { data: previewData, isSuccess: previewSuccess, isLoading: previewLoading, isFetching:previewFetching, reset, isError: isPreviewError, error: previewError }] = useLazySanctionPreviewQuery()
@@ -40,6 +44,17 @@ const SanctionProfile = () => {
   // Color theme
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const handleForwardRemarks = (remarks) => {
+    if (remarks.length === 0){
+        setErrorMessage("Remark is required.");
+        setIsRemarksValid(false);
+    }else{
+        setErrorMessage("");
+        setCommonRemarks(remarks)
+        setIsRemarksValid(true);
+    }
+  };
 
   useEffect(() => {
     if (isSuccess) {
@@ -120,6 +135,18 @@ const SanctionProfile = () => {
                     <CibilScorePage id={data?.application?.lead?._id} creditScore={data?.application?.lead?.cibilScore} />
                     <InternalDedupe id={data?.application?.lead?._id} />
                     <ApplicationLogHistory id={data?.application?.lead?._id} />
+                    {(!data.isApproved) && <CommonRemarks onRemarksChange={handleForwardRemarks} />}
+                    {(!data.isApproved) && <Typography variant="h6" sx={{ mt: 2, color:colors.grey[400], fontSize:"14px", fontStyle:"italic" }}>
+                     * Remark is Mandatory to Approve
+                    </Typography>}
+                    {errorMessage && (
+                      <Alert
+                          severity="error"
+                          sx={{ borderRadius: "8px", mt: 2 }}
+                      >
+                          {errorMessage}
+                      </Alert>
+                    )}
                     
 
                     {/* Action Buttons */}
@@ -137,7 +164,8 @@ const SanctionProfile = () => {
                         setPreviewSanction={setPreviewSanction}
                         sanctionPreview={sanctionPreview}
                         setForceRender={setForceRender}
-
+                        commonRemarks={commonRemarks} 
+                        disabled={!isRemarksValid}
                       />
 
                     </Box>}

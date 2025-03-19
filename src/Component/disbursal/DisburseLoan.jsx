@@ -54,6 +54,7 @@ const DisburseLoan = ({ disburse }) => {
     paymentMode: "",
     channel: "",
     disbursalDate: disbursalDate && dayjs(disbursalDate),
+    utr:"",
     remarks: "",
   };
 
@@ -164,6 +165,8 @@ const DisburseLoan = ({ disburse }) => {
                   },
                   '& .MuiOutlinedInput-root':{
                     color:colors.black[100],
+                    '& fieldset': { borderColor: colors.primary[400] },
+                    '&:hover fieldset': { borderColor: colors.primary[400] },
                   },
                   '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline':{
                     borderColor:colors.primary[400],
@@ -190,6 +193,7 @@ const DisburseLoan = ({ disburse }) => {
                       <FormControl
                         fullWidth
                         variant="outlined"
+                        required
                         error={!!fieldState.error}
                       >
                         <InputLabel>
@@ -264,6 +268,7 @@ const DisburseLoan = ({ disburse }) => {
                     render={({ field, fieldState }) => (
                       <FormControl
                         fullWidth
+                        required
                         variant="outlined"
                       >
                         <InputLabel>
@@ -272,7 +277,6 @@ const DisburseLoan = ({ disburse }) => {
                         <Select
                           {...field}
                           label="Payment Mode"
-                          required
                         >
                           <MenuItem value="">
                             <em>Select</em>
@@ -301,6 +305,7 @@ const DisburseLoan = ({ disburse }) => {
                     control={control}
                     render={({ field, fieldState }) => (
                       <FormControl
+                        required
                         fullWidth
                         variant="outlined"
                       >
@@ -310,7 +315,6 @@ const DisburseLoan = ({ disburse }) => {
                         <Select
                           {...field}
                           label="Channel"
-                          required
                         >
                           <MenuItem value="">
                             <em>Select</em>
@@ -379,6 +383,27 @@ const DisburseLoan = ({ disburse }) => {
                       )}
                     />
                   </LocalizationProvider>
+
+                  <Controller
+                    name="utr"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        {...field}
+                        label="Utr"
+                        required
+                        variant="outlined"
+                        fullWidth
+                        error={!!fieldState?.error}
+                        helperText={
+                          fieldState?.error
+                            ? fieldState?.error
+                              ?.message
+                            : ""
+                        }
+                      />
+                    )}
+                  />
 
                   <Controller
                     name="remarks"

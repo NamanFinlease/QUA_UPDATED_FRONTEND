@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Typography, Button, Box, useTheme } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Typography, Button, Box, useTheme, Tooltip } from '@mui/material';
 import { tokens } from '../theme';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import DownloadIcon from '@mui/icons-material/Download';
 import { useLazyGetLeadDocsQuery } from '../Service/Query';
 import Swal from 'sweetalert2';
 
 const DocumentsTable = ({ leadData, uploadedDocs, setSelectedBSA, selectedDocType,selectedBSA,getBanks }) => {
-
-    console.log('docs upload', uploadedDocs)
-
 
     const [getLeadDocs, { data, isSuccess, isError, error }] = useLazyGetLeadDocsQuery();
 
@@ -41,9 +39,7 @@ const DocumentsTable = ({ leadData, uploadedDocs, setSelectedBSA, selectedDocTyp
     useEffect(() => {
         if (isSuccess && data) {
             const fileUrl = data?.url;
-            console.log(data);
             if (data.type === "statementAnalyser") {
-                console.log("testing");
                 // Download the file instead of opening in a new tab
                 const link = document.createElement("a");
                 link.href = fileUrl;
@@ -87,16 +83,33 @@ const DocumentsTable = ({ leadData, uploadedDocs, setSelectedBSA, selectedDocTyp
                                 {/* <IconButton sx={{ color: '#454443'}} onClick={() => handleDownload(doc)}>
                                         <VisibilityIcon />
                                     </IconButton> */}
-                                <IconButton
-                                    color="primary"
-                                    component="a"
-                                    onClick={() => viewFile(doc)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    sx={{ color: colors.primary[400] }}
-                                >
-                                    <VisibilityIcon />
-                                </IconButton>
+                                {doc.url.split("/")[1] === "statementAnalyser" ? 
+                                    <Tooltip title="Download Statement" arrow placement='top'>
+                                        <IconButton
+                                            color="primary"
+                                            component="a"
+                                            onClick={() => viewFile(doc)}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            sx={{ color: colors.primary[400] }}
+                                        >
+                                            <DownloadIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                    :
+                                    <Tooltip title="View Document" arrow placement='top'>
+                                        <IconButton
+                                            color="primary"
+                                            component="a"
+                                            onClick={() => viewFile(doc)}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            sx={{ color: colors.primary[400] }}
+                                        >
+                                            <VisibilityIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                }
                             </TableCell>
                             <TableCell>
                             {(doc?.type || doc.url.split("/")[1]) === "bankStatement" ?

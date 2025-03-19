@@ -5,7 +5,7 @@ import { Box, FormControl, TextField, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import useAuthStore from './store/authStore';
 
-const CommonRemarks = ({ id, onRemarksChange }) => {
+const CommonRemarks = ({ onRemarksChange }) => {
     const { commonRemarks, setCommonRemarks } = useState([]);
     const { empInfo, activeRole } = useAuthStore();
     const theme = useTheme();
@@ -14,7 +14,7 @@ const CommonRemarks = ({ id, onRemarksChange }) => {
     const { control } = useForm();
 
     const handleRemarksChange = (event) => {
-        const newRemarks = event;
+        const newRemarks = event.trim();
         onRemarksChange(newRemarks);
     };
 
@@ -96,6 +96,9 @@ const CommonRemarks = ({ id, onRemarksChange }) => {
                                     }}
                                     required
                                 />
+                                {/* <Typography variant="h5" sx={{color:colors.grey[500], fontSize:"12px", marginTop:"5px", fontStyle:"italic"}}>
+                                    * Remark is Mandatory to forward the lead or application
+                                </Typography> */}
                                 {fieldState.error && (
                                     <Typography variant="caption" color="error">
                                         {fieldState.error.message}
