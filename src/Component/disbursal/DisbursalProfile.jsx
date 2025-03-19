@@ -119,7 +119,6 @@ const DisbursalProfile = () => {
                 <CibilScorePage id={disbursalData?.sanction?.application?.lead?._id} creditScore={disbursalData?.sanction?.application?.lead?.cibilScore} />
                 <InternalDedupe id={disbursalData?.sanction?.application?.lead?._id} />
                 <ApplicationLogHistory id={disbursalData?.sanction?.application?.lead?._id} />
-                {(activeRole === "disbursalHead") && <CommonRemarks />}
 
               </>
 

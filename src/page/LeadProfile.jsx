@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { tokens } from '../theme';
-import { Button, Paper, Box, Alert, useTheme } from '@mui/material';
+import { Button, Paper, Box, Alert, useTheme, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useFetchSingleLeadQuery, } from '../Service/Query';
 import LeadDetails from '../Component/LeadDetails';
@@ -25,6 +25,8 @@ const LeadProfile = () => {
     const { setLead } = useStore()
     const [leadEdit, setLeadEdit] = useState(false);
     const [commonRemarks, setCommonRemarks] = useState();
+    const [errorMessage, setErrorMessage] = useState("");
+    const [isRemarksValid, setIsRemarksValid] = useState(false);
     
     // Color theme
     const theme = useTheme();
@@ -41,7 +43,14 @@ const LeadProfile = () => {
     ];
     
     const handleForwardRemarks = (remarks) => {
-        setCommonRemarks(remarks)
+        if (remarks.length === 0){
+            setErrorMessage("Remark is required.");
+            setIsRemarksValid(false);
+        }else{
+            setErrorMessage("");
+            setCommonRemarks(remarks)
+            setIsRemarksValid(true);
+        }
     };
 
     useEffect(() => {
@@ -136,11 +145,22 @@ const LeadProfile = () => {
                                         <CibilScorePage id={leadData._id} creditScore={leadData.cibilScore} />
                                         <InternalDedupe id={leadData._id} />
                                         <ApplicationLogHistory id={leadData._id} />
-                                        {(activeRole === "screener" && !leadData?.isRejected && <CommonRemarks id={leadData._id} onRemarksChange={handleForwardRemarks}/>)}
+                                        {(!leadData?.isRejected) && <CommonRemarks id={leadData._id} onRemarksChange={handleForwardRemarks}/>}
+                                        {(!leadData?.isRejected) && <Typography variant="h6" sx={{ mt: 2, color:colors.grey[400], fontSize:"14px", fontStyle:"italic" }}>
+                                        * Remark is Mandatory to forward the lead
+                                        </Typography>}
+                                        {errorMessage && (
+                                            <Alert
+                                                severity="error"
+                                                sx={{ borderRadius: "8px", mt: 2 }}
+                                            >
+                                                {errorMessage}
+                                            </Alert>
+                                        )}
                                         {/* Action Buttons */}
                                         {(!leadData?.isRejected && activeRole !== "sanctionHead" && activeRole !== "admin") &&
                                             <div className='my-3  d-flex justify-content-center'>
-                                                <ActionButton id={leadData._id} isHold={leadData.onHold} commonRemarks={commonRemarks} />
+                                                <ActionButton id={leadData._id} isHold={leadData.onHold} commonRemarks={commonRemarks} disabled={!isRemarksValid} />
                                             </div>}
                                     </>
                                 )}

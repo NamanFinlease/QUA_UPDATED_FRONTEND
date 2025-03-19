@@ -101,18 +101,20 @@ export const applicationApi = createApi({
       invalidatesTags:["getApplication","pendingSanctions"]
     }),
     sanctionApprove: builder.mutation({
-      query: (id) => ({
+      query: ({id, remarks}) => ({
 
         url: `sanction/approve/${id}/?role=${role()}`,
         method: 'PATCH',
+        body:{id, remarks}
       }),
       invalidatesTags:["sanctionProfile","pendingSanctions"]
     }),
     recommendApplication: builder.mutation({
-      query: (id) => ({
+      query: ({id, remarks}) => ({
 
         url: `applications/recommend/${id}/?role=${role()}`,
         method: 'PATCH',
+        body:{id, remarks}
       }),
       invalidatesTags:["recommendedApplications"]
     }),

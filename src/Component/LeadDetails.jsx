@@ -98,13 +98,12 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
           },
           '& .MuiOutlinedInput-root': {
             color: colors.black[100],
+            '& fieldset': { borderColor: colors.primary[400], borderRadius: "0px 10px", },
+            '&:hover fieldset': { borderColor: colors.primary[400] },
           },
           '& .MuiOutlinedInput-notchedOutline': {
             borderColor: colors.black[100]
           },
-          '&:hover': {
-            '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.black[100] },
-          }
         }}
       >
         <Box

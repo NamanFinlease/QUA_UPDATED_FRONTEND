@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import useAuthStore from './store/authStore';
 import { useHoldApplicationMutation, useHoldDisbursalMutation, useRecommendApplicationMutation, useRecommendLoanMutation, useRejectApplicationMutation, useRejectDisbursalMutation, useSanctionSendBackMutation, useDisbursalSendBackMutation, useSendBackMutation, useUnholdApplicationMutation, useUnholdDisbursalMutation, useSanctionApproveMutation } from '../Service/applicationQueries';
 import useStore from '../Store';
+import { useForm } from 'react-hook-form';
 
 const loanHoldReasons = [
     { label: "Incomplete Documentation", value: "incomplete_documentation" },
@@ -27,7 +28,7 @@ const loanRejectReasons = [
     { label: "Other", value: "Other" },
 ];
 
-const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRender, commonRemarks }) => {
+const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRender, commonRemarks, disabled }) => {
     const navigate = useNavigate();
     const { empInfo, activeRole } = useAuthStore();
     const { applicationProfile } = useStore();
@@ -38,6 +39,10 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
     const [reasonList, setReasonList] = useState(null);
     const [remarks, setRemarks] = useState("");
     const [isActionInProgress, setIsActionInProgress] = useState(false);
+
+    const {watch} = useForm();
+
+    const commonRemark = watch("commonRemarks");
 
     // Application Action component API-----------
     const [
@@ -189,7 +194,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
         if (activeRole === "screener") {
             recommendLead({id, remarks:commonRemarks});
         } else if (activeRole === "creditManager") {
-            recommendApplication(id);
+            recommendApplication({id, remarks:commonRemarks});
         } else if (activeRole === "disbursalManager") {
             recommendLoan({ id: applicationProfile._id, remarks });
         }
@@ -289,7 +294,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
     };
 
     const handleSanctionApprove = () => {
-        sanctionApprove(id, remarks);
+        sanctionApprove({id, remarks:commonRemarks});
     };
 
     const handleCancel = () => {
@@ -548,14 +553,22 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                     <Button
                                         variant="contained"
                                         disabled={isActionInProgress || sanctionApproveLoading}
-                                        onClick={() => handleSanctionApprove()}
+                                        onClick={(e) => {
+                                            if (commonRemarks.trim().length < 15) {
+                                              e.preventDefault();
+                                            }else{
+                                                handleSanctionApprove()
+                                            }
+                                        }}
+                                        // onClick={() => handleSanctionApprove()}
                                         sx={{
-                                            backgroundColor: (isActionInProgress || sanctionApproveLoading) ? "#000000" : "#04c93f",
+                                            backgroundColor: (isActionInProgress || sanctionApproveLoading || disabled || commonRemarks.length < 15) ? "#ccc" : "#04c93f",
                                             color: (isActionInProgress || sanctionApproveLoading) ? "#666" : "white",
-                                            cursor: (isActionInProgress || sanctionApproveLoading) ? "not-allowed" : "pointer",
+                                            cursor: (isActionInProgress || sanctionApproveLoading || disabled || commonRemarks.length < 15) ? "not-allowed" : "pointer",
                                             borderRadius: "0px 10px",
                                             "&:hover": {
-                                                backgroundColor: (isActionInProgress || sanctionApproveLoading) ? "#ccc" : "#069130",
+                                                backgroundColor: (isActionInProgress || sanctionApproveLoading || disabled) ? "#ccc" : "#069130",
+                                                cursor: (isActionInProgress || sanctionApproveLoading || disabled || commonRemarks.length < 15) ? "not-allowed" : "pointer",
                                             },
                                         }}
                                     >
@@ -609,15 +622,23 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                             :
                                             <Button
                                                 variant="contained"
-                                                onClick={() => handleApprove('')}
+                                                onClick={(e) => {
+                                                    if (commonRemarks.trim().length < 15) {
+                                                      e.preventDefault();
+                                                    }else{
+                                                        handleApprove('')
+                                                    }
+                                                }}
+                                                // onClick={() => handleApprove('')}
                                                 disabled={isActionInProgress || recommendApplicationLoading || recommendLeadloading}
                                                 sx={{
-                                                    backgroundColor: (isActionInProgress || recommendApplicationLoading || recommendLeadloading) ? "#ccc" : colors.primary[400],
+                                                    backgroundColor: (isActionInProgress || recommendApplicationLoading || recommendLeadloading || disabled || commonRemarks.length < 15) ? "#ccc" : colors.primary[400],
                                                     borderRadius: (isActionInProgress || recommendApplicationLoading || recommendLeadloading) ? "#ccc" : "0px 10px 0px 10px",
                                                     color: (isActionInProgress || recommendApplicationLoading || recommendLeadloading) ? "#666" : colors.white[100],
-                                                    cursor: (isActionInProgress || recommendApplicationLoading || recommendLeadloading) ? "not-allowed" : "pointer",
+                                                    cursor: (isActionInProgress || recommendApplicationLoading || recommendLeadloading || disabled) ? "not-allowed" : "pointer",
                                                     "&:hover": {
-                                                        backgroundColor: (isActionInProgress || recommendApplicationLoading || recommendLeadloading) ? "#ccc" : colors.primary[100],
+                                                        backgroundColor: (isActionInProgress || recommendApplicationLoading || recommendLeadloading || disabled || commonRemarks.length < 15) ? "#ccc" : colors.primary[100],
+                                                        cursor: (isActionInProgress || recommendApplicationLoading || recommendLeadloading || disabled || commonRemarks.length < 15) ? "not-allowed" : "pointer",
                                                     },
                                                 }}
                                             >
@@ -709,6 +730,15 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                             '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                                             '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                                         }}
+                                        MenuProps={{
+                                            PaperProps: {
+                                                style: {
+                                                    backgroundColor: colors.white[100],
+                                                    color: colors.black[100],
+                                                    borderRadius:"20px 0px",
+                                                },
+                                            },
+                                        }}
                                     >
                                         {reasonList && reasonList.length > 0 && reasonList.map((reason, index) => (
                                             <MenuItem
@@ -747,7 +777,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                     rows={3}
                                     sx={{
                                         marginTop: 2,
-                                        marginBottom: 3,
+                                        marginBottom: 1,
                                         color: colors.black[100],
                                         backgroundColor: colors.white[100],
                                         '& .MuiOutlinedInput-root': {
@@ -773,6 +803,9 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                         },
                                     }}
                                 />
+                                <Typography variant="h6" gutterBottom sx={{margin:"10px 0px", color:colors.grey[400], fontSize:"12px", fontStyle:"italic"}}>
+                                    Add atleast 15 letters in remarks
+                                </Typography>
                                 {actionType === "sendBack" && (
                                     <>
                                         <FormControl 
@@ -796,12 +829,21 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                 label="Send Back to"
                                                 sx={{
                                                     color: colors.black[100],
-                                                    backgroundColor: colors.white[100],
+                                                    background: colors.white[100],
                                                     borderRadius: "0px 10px",
                                                     '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                                                     '& .MuiSvgIcon-root': { color: colors.primary[400] },
                                                     '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
                                                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: colors.primary[400] },
+                                                }}
+                                                MenuProps={{
+                                                    PaperProps: {
+                                                        style: {
+                                                            backgroundColor: colors.white[100],
+                                                            color: colors.black[100],
+                                                            borderRadius:"20px 0px",
+                                                        },
+                                                    },
                                                 }}
                                             >
                                                 <MenuItem
@@ -809,9 +851,13 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                     sx={{
                                                         color: colors.black[100],
                                                         background: colors.white[100],
-                                                        '& .MuiPaper-root': {
+                                                        '& .MuiPopover-paper': {
                                                             background: colors.white[100],
-                                                        }
+                                                        },
+                                                        '&:hover': {
+                                                            background: colors.primary[400],
+                                                            color: colors.white[100],
+                                                        },
                                                     }}
                                                     disabled
                                                 >
@@ -824,50 +870,6 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                         </FormControl>
                                     </>
                                 )}
-                            </>
-                        )}
-
-                        {(actionType === "approve") && (
-                            <>
-                                <FormControl
-                                    fullWidth 
-                                    sx={{ 
-                                        marginBottom: 3,
-                                        '& .MuiInputLabel-root':{
-                                            color:colors.black[100],
-                                        },
-                                        '& .MuiOutlinedInput-root': {
-                                            color:colors.black[100],
-                                            '& fieldset': {
-                                                borderColor: colors.primary[400],
-                                                borderRadius: '0px 10px',
-                                                color: colors.black[100],
-                                            },
-                                            '&:hover fieldset': {
-                                                borderColor: colors.primary[400],
-                                                color: colors.black[100]
-                                            },
-                                        },
-                                    }}
-                                >
-                                    <InputLabel>Check</InputLabel>
-                                    <Select
-                                        value={remarks}
-                                        onChange={(e) =>
-                                            setRemarks(
-                                                e.target.value
-                                            )
-                                        }
-                                        label="Check"
-                                    >
-                                        <MenuItem value="" disabled>
-                                            Select
-                                        </MenuItem>
-                                        <MenuItem value="Cam and eKyc Checked">
-                                            Cam and eKyc Checked
-                                        </MenuItem>
-                                    </Select>
-                                </FormControl>
                             </>
                         )}
 
@@ -899,7 +901,14 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                             </Button>
                             <Button
                                 variant="contained"
-                                onClick={handleSubmit}
+                                onClick={(e) => {
+                                    if (remarks.trim().length < 15) {
+                                      e.preventDefault();
+                                    }else{
+                                        handleSubmit()
+                                    }
+                                }}
+                                // onClick={handleSubmit}
                                 disabled={
                                     isActionInProgress || 
                                     sanctionSendBackLoading || 
@@ -912,14 +921,15 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                     rejectLeadLoading
                                 }
                                 sx={{
-                                    backgroundColor: (isActionInProgress || sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "#95bdf0" : colors.white[100],
-                                    color: (isActionInProgress || sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "#666" : colors.primary[400],
+                                    backgroundColor: (isActionInProgress || sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading || remarks.length < 15) ? "#ccc" : colors.white[100],
+                                    color: (isActionInProgress || sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading || remarks.length < 15) ? "#666" : colors.primary[400],
                                     border: (isActionInProgress || sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "#666" : `1px solid ${colors.primary[400]}`,
                                     borderRadius: (isActionInProgress || sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "0px 10px" : "0px 10px",
-                                    cursor: (isActionInProgress || sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "not-allowed" : "pointer",
+                                    cursor: (isActionInProgress || sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading || remarks.length < 15) ? "not-allowed" : "pointer",
                                     "&:hover": {
-                                        backgroundColor: (isActionInProgress || sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "#95bdf0" : colors.primary[400],
-                                        color: colors.white[100],
+                                        backgroundColor: (isActionInProgress || sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading || remarks.length < 15) ? "#ccc" : colors.primary[400],
+                                        cursor: (isActionInProgress || sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading || remarks.length < 15) ? "not-allowed" : "pointer",
+                                        color: (remarks.length < 15) ? "#666" : colors.white[100],
                                     },
                                 }}
                             >

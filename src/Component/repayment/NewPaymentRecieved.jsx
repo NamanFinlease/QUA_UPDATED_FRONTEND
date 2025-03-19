@@ -41,8 +41,6 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileSelected, setFileSelected] = useState(false);
-
-  console.log(repaymentDetails?.repaymentDetails?.dpd)
   const dpd = repaymentDetails?.repaymentDetails?.dpd
 
   const [addPayment, { data, isLoading, isSuccess, isError, error }] =
@@ -57,7 +55,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
     discount: "",
     bankName : "",
     excessAmount: "",
-    accountRemarks: "",
+    collectionRemarks: "",
     paymentUpload: "",
     repaymentDocs: "",
   };
@@ -68,7 +66,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
   });
 
   const closingType = watch("closingType");
-  const accountRemarks = watch("accountRemarks");
+  const collectionRemarks = watch("collectionRemarks");
 
   const submitPayment = async (data) => {
 
@@ -93,7 +91,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
       formData.append("discount", data.discount);
       formData.append("excessAmount", data.excessAmount);
       formData.append("repaymentDocs", selectedFile);
-        formData.append("paymentRemarks", data.accountRemarks);
+        formData.append("collectionRemarks", data.collectionRemarks);
       // if (selectedFile) {
       //   formData.append("repaymentDocs", selectedFile);
       // }
@@ -113,27 +111,15 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
       setSelectedFile(file);
       setFileSelected(true);
       clearErrors("repaymentDocs");
+      event.target.value = null;
     }
   };
-  // const handleFileChange = (event) => {
-  //   setSelectedFile(event.target.files[0]);
-  //   clearErrors("repaymentDocs");
-  // };
-
+  
   const handleRemoveFile = () => {
     setSelectedFile(null);
-    // setKey((prevKey) => prevKey + 1);
     setFileSelected(false);
     fileInputRef.current.value = "";
     setError("repaymentDocs", { type: "manual", message: "" });
-    // fileInputRef.current.click();
-  };
-
-  const handleClickChooseFile = () => {
-    if (!fileSelected) {
-      // fileInputRef.current.value = "";
-      fileInputRef.current.click();
-    }
   };
 
   const handleKeyDown = (e) => {
@@ -247,6 +233,11 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                     borderColor: colors.primary[400],
                   },
                 },
+                '& .MuiOutlinedInput-root':{
+                  color:colors.black[100],
+                  '& fieldset': { borderColor: colors.primary[400] },
+                  '&:hover fieldset': { borderColor: colors.primary[400] },
+                },
               }}
             >
               <Box sx={{ flex: { xs: "1 1 100%", sm: "1 1 45%" } }}>
@@ -315,6 +306,15 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                       </InputLabel>
                       <Select
                         {...field}
+                        MenuProps={{
+                          PaperProps: {
+                              style: {
+                                  backgroundColor: colors.white[100],
+                                  color: colors.black[100],
+                                  borderRadius:"20px 0px",
+                              },
+                          },
+                        }}
                         input={
                           <OutlinedInput
                             label="Closing Type"
@@ -323,10 +323,10 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                         }
                       >
                         <MenuItem value="" disabled>Select</MenuItem>
-                        <MenuItem value="closed">Closed</MenuItem>
-                        <MenuItem value="settled" hidden={dpd < 21}>Settled</MenuItem>
-                        <MenuItem value="writeOff" hidden={dpd < 21}>WriteOff</MenuItem>
-                        <MenuItem value="partPayment">Part-Payment</MenuItem>
+                        <MenuItem value="closed" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Closed</MenuItem>
+                        <MenuItem value="settled" hidden={dpd < 21} sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Settled</MenuItem>
+                        <MenuItem value="writeOff" hidden={dpd < 21} sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>WriteOff</MenuItem>
+                        <MenuItem value="partPayment" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>Part-Payment</MenuItem>
                       </Select>
                       {fieldState.error && (
                         <Typography color="error">
@@ -354,6 +354,15 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                       </InputLabel>
                       <Select
                         {...field}
+                        MenuProps={{
+                          PaperProps: {
+                              style: {
+                                  backgroundColor: colors.white[100],
+                                  color: colors.black[100],
+                                  borderRadius:"20px 0px",
+                              },
+                          },
+                        }}
                         input={
                           <OutlinedInput
                             label="Payment Method"
@@ -361,21 +370,22 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                           />
                         }
                       >
-                        <MenuItem value="" disable>
+                        <MenuItem value="" disabled>
                           Select
                         </MenuItem>
-                        <MenuItem value="upi" name="upiPayment">
+                        <MenuItem value="upi" name="upiPayment" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>
                           UPI
                         </MenuItem>
-                        <MenuItem value="cash" name="cashpayment">
+                        <MenuItem value="cash" name="cashpayment" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>
                           Cash
                         </MenuItem>
-                        <MenuItem value="cheque" name="chequePayment">
+                        <MenuItem value="cheque" name="chequePayment" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>
                           Cheque
                         </MenuItem>
                         <MenuItem
                           value="Bank Transfer"
                           name="bankTransferPayment"
+                          sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}
                         >
                           Bank Transfer
                         </MenuItem>
@@ -406,6 +416,15 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                       </InputLabel>
                       <Select
                         {...field}
+                        MenuProps={{
+                          PaperProps: {
+                              style: {
+                                  backgroundColor: colors.white[100],
+                                  color: colors.black[100],
+                                  borderRadius:"20px 0px",
+                              },
+                          },
+                        }}
                         input={
                           <OutlinedInput
                             label="Bank Name"
@@ -416,16 +435,16 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                         <MenuItem value="" disabled>
                           Select
                         </MenuItem>
-                        <MenuItem value="HDFC7815" name="hdfcBank">
+                        <MenuItem value="HDFC7815" name="hdfcBank" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>
                           HDFC / 7815
                         </MenuItem>
-                        <MenuItem value="Bandhan4022" name="bandhanBank">
+                        <MenuItem value="Bandhan4022" name="bandhanBank" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>
                           Bandhan / 4022
                         </MenuItem>
-                        <MenuItem value="Indusind2230" name="indusindBank">
+                        <MenuItem value="Indusind2230" name="indusindBank" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>
                           Indusind Bank / 2230
                         </MenuItem>
-                        <MenuItem value="EquitasSmallFinance" name="equitasSmallBank">
+                        <MenuItem value="EquitasSmallFinance" name="equitasSmallBank" sx={{ background: colors.white[100], color: colors.black[100], ':hover': { background: colors.primary[400], color: colors.white[100] } }}>
                           Equitas Small Finance Bank
                         </MenuItem>
                       </Select>
@@ -530,7 +549,7 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
 
               <Box sx={{ flex: { xs: "1 1 100%", sm: "1 1 100%" } }}>
                 <Controller
-                  name="accountRemarks"
+                  name="collectionRemarks"
                   control={control}
                   render={({ field, fieldState }) => (
                     <TextField
@@ -573,7 +592,6 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                         borderRadius: "0px 10px",
                         border: `1px solid ${colors.primary[400]}`,
                       }}
-                      onClick={handleClickChooseFile}
                       component="span"
                     >
                       Upload Screenshot *
@@ -624,14 +642,14 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                     background: colors.primary[400],
                     color: colors.white[100],
                     borderRadius: "0px 10px",
-                    cursor: accountRemarks.trim().length < 15 ? "not-allowed" : 'pointer',
+                    cursor: collectionRemarks.trim().length < 15 ? "not-allowed" : 'pointer',
                     ":hover": { 
                       background: colors.primary[100],
-                      cursor : accountRemarks.trim().length < 15 ? "not-allowed" : 'pointer', 
+                      cursor : collectionRemarks.trim().length < 15 ? "not-allowed" : 'pointer', 
                     },
                   }}
                   onClick={(e) => {
-                    if (accountRemarks.trim().length < 15) {
+                    if (collectionRemarks.trim().length < 15) {
                       e.preventDefault();
                     }
                   }}

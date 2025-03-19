@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Paper, Box, Alert, useTheme } from '@mui/material';
+import { Paper, Box, Alert, useTheme, Typography } from '@mui/material';
 import { tokens } from '../../theme';
 import { useNavigate, useParams } from 'react-router-dom';
 import UploadDocuments from '../UploadDocuments';
@@ -29,12 +29,26 @@ const ApplicationProfile = () => {
   const [uploadedDocs, setUploadedDocs] = useState([]);
   const [currentPage, setCurrentPage] = useState("application");
   const [leadEdit, setLeadEdit] = useState(false);
+  const [commonRemarks, setCommonRemarks] = useState();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isRemarksValid, setIsRemarksValid] = useState(false);
 
   const { data: applicationData, isSuccess: applicationSuccess, isError, error, refetch } = useFetchSingleApplicationQuery(id, { skip: id === null });
 
   // Color theme
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const handleForwardRemarks = (remarks) => {
+    if (remarks.length === 0){
+        setErrorMessage("Remark is required.");
+        setIsRemarksValid(false);
+    }else{
+        setErrorMessage("");
+        setCommonRemarks(remarks)
+        setIsRemarksValid(true);
+    }
+  };
 
   useEffect(() => {
     if (applicationSuccess) {
@@ -83,7 +97,18 @@ const ApplicationProfile = () => {
                     <CibilScorePage id={applicationData?.application?.lead?._id} creditScore={applicationData?.application?.lead?.cibilScore} />
                     <InternalDedupe id={applicationData?.application?.lead?._id} />
                     <ApplicationLogHistory id={applicationData?.application?.lead?._id} />
-                    {(activeRole === "creditManager" && <CommonRemarks id={applicationData?.application?.lead?._id} />)}
+                    <CommonRemarks id={applicationData?.application?.lead?._id} onRemarksChange={handleForwardRemarks} />
+                    <Typography variant="h6" sx={{ mt: 2, color:colors.grey[400], fontSize:"14px", fontStyle:"italic" }}>
+                      * Remark is Mandatory to forward the application
+                    </Typography>
+                    {errorMessage && (
+                      <Alert
+                          severity="error"
+                          sx={{ borderRadius: "8px", mt: 2 }}
+                      >
+                          {errorMessage}
+                      </Alert>
+                    )}
                     {isError && (
                       <Alert severity="error" style={{ marginTop: "10px" }}>
                         {error?.data?.message}
@@ -97,6 +122,8 @@ const ApplicationProfile = () => {
                         <ActionButton
                           id={applicationData?.application?._id}
                           isHold={applicationData.onHold}
+                          commonRemarks={commonRemarks}
+                          disabled={!isRemarksValid}
                         />
 
                       </Box>}

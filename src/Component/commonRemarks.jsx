@@ -5,22 +5,17 @@ import { Box, FormControl, TextField, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import useAuthStore from './store/authStore';
 
-const CommonRemarks = ({ id, onRemarksChange }) => {
+const CommonRemarks = ({ onRemarksChange }) => {
     const { commonRemarks, setCommonRemarks } = useState([]);
     const { empInfo, activeRole } = useAuthStore();
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
-    const { control } = useForm({
-        defaultValues: {
-            addRemarks: '',
-        }
-    });
+    const { control } = useForm();
 
     const handleRemarksChange = (event) => {
-        const newRemarks = event;
+        const newRemarks = event.trim();
         onRemarksChange(newRemarks);
-        console.log(newRemarks)
     };
 
     return (
@@ -43,6 +38,7 @@ const CommonRemarks = ({ id, onRemarksChange }) => {
                     <Controller
                         name="addRemarks"
                         control={control}
+                        rules={{ required: "Remarks are required" }}
                         render={({ field, fieldState }) => (
                             <FormControl
                                 variant="outlined"
@@ -92,13 +88,22 @@ const CommonRemarks = ({ id, onRemarksChange }) => {
                                         },
                                         "& .MuiOutlinedInput-notchedOutline": {
                                             borderColor: colors.primary[400],
-                                            "&:hover": {
-                                                borderColor: colors.primary[400]
-                                            }
+                                        },
+                                        '& .MuiOutlinedInput-root': {
+                                            '& fieldset': { borderColor: colors.primary[400], borderRadius: "0px 10px", },
+                                            '&:hover fieldset': { borderColor: colors.primary[400] },
                                         },
                                     }}
                                     required
                                 />
+                                {/* <Typography variant="h5" sx={{color:colors.grey[500], fontSize:"12px", marginTop:"5px", fontStyle:"italic"}}>
+                                    * Remark is Mandatory to forward the lead or application
+                                </Typography> */}
+                                {fieldState.error && (
+                                    <Typography variant="caption" color="error">
+                                        {fieldState.error.message}
+                                    </Typography>
+                                )}
                             </FormControl>
                         )}
                     />

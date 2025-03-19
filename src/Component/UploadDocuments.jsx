@@ -17,7 +17,7 @@ import {
     MenuItem,
     FormControl,
     InputLabel,
-    OutlinedInput
+    OutlinedInput,
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -512,16 +512,18 @@ const UploadDocuments = ({ leadData }) => {
 
                                                 {/* View Button */}
                                                 {input.file && (
-                                                    <IconButton
-                                                        color="primary"
-                                                        component="a"
-                                                        href={URL.createObjectURL(input.file)}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        sx={{ color: colors.primary[400] }}
-                                                    >
-                                                        <VisibilityIcon />
-                                                    </IconButton>
+                                                    <Tooltip title="View File" arrow placement='top'>
+                                                        <IconButton
+                                                            color="primary"
+                                                            component="a"
+                                                            href={URL.createObjectURL(input.file)}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            sx={{ color: colors.primary[400] }}
+                                                        >
+                                                            <VisibilityIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
                                                 )}
 
                                                 {/* Remove File Button */}

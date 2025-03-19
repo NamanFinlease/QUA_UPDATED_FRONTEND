@@ -335,6 +335,8 @@ const EditCam = ({ camData, setIsEditing }) => {
         background:colors.white[100],
         '& .MuiOutlinedInput-root':{
           color:colors.black[100],
+          '& fieldset': { borderColor: colors.primary[400] },
+          '&:hover fieldset': { borderColor: colors.primary[400] },
         },
         '& .MuiFormLabel-root':{
           color:colors.black[100]
