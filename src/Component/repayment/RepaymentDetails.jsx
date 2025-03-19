@@ -68,17 +68,16 @@ const RepaymentDetails = ({disburse, repaymentId, collectionData}) => {
   };
 
   const columns = [
-    // { field: "sno", headerName: "S.No", width: 50 },
     { field: "paymentDate", headerName: "Payment Date", width: 150 },
     { field: "paymentAmount", headerName: "Payment Amount", width: 150 },
     { field: "closingType", headerName: "Closing Type", width: 150 },
     { field: "paymentReferenceNumber", headerName: "Reference No", width: 150 },
     { field: "paymentStatus", headerName: "Payment Verification Status", width: 150 },
-    // { field: "paymentApprove", headerName: "Payment Approve/Reject", width: 150 },
     { field: "paymentMethod", headerName: "Payment Method", width: 150 },
-    // { field: "bankName", headerName: "Payment Bank", width: 150 },
     { field: "paymentDiscount", headerName: "Discount", width: 150 },
     { field: "excessAmount", headerName: "Excess Amount", width: 150 },
+    { field: "collectionRemarks", headerName: "Remarks from Collections", width: 200 },
+    { field: "accountRemarks", headerName: "Remarks from Accounts", width: 150 },
     // { field: 'recoveryDiscountType', headerName: 'Discount Type', width: 150 },
     // { field: "recoveryRemarks", headerName: "Remarks", width: 150 },
   ];
@@ -91,6 +90,8 @@ const RepaymentDetails = ({disburse, repaymentId, collectionData}) => {
     closingType: paymentHistory?.closingType,
     paymentDiscount : paymentHistory?.discount || 0,
     excessAmount : paymentHistory?.excessAmount || 0,
+    collectionRemarks : paymentHistory?.collectionRemarks || "-",
+    accountRemarks : paymentHistory?.accountRemarks || "-",
     paymentReferenceNumber : paymentHistory?.transactionId,
     paymentStatus : (paymentHistory?.isPaymentVerified || paymentHistory.isRejected) ? paymentHistory?.isRejected ? "Rejected" : "Verifed" : "Pending",
     paymentDate : moment(paymentHistory?.paymentDate).format("DD-MM-YYYY"),

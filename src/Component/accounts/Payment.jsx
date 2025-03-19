@@ -121,8 +121,9 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
             <td>{payment.paymentMethod || "N/A"}</td>
             <td>{payment.transactionId || "N/A"}</td>
             <td>{payment.discount || 0}</td>
+            <td>{payment.collectionRemarks || "-"}</td>
             <td>{(payment.isPaymentVerified || payment.isRejected) ? payment.isRejected ? "Rejected" : "Verified" : "Pending"}</td>
-            <td>{payment.accountRemarks || "-"}</td>
+            {(payment.isPaymentVerified || payment.isRejected) && <td>{payment.accountRemarks || "-"}</td>}
             {!payment.isPartlyPaid &&
                 <>
                     <td>
@@ -391,8 +392,9 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
                         <TableCell>Payment Method</TableCell>
                         <TableCell>Transaction ID</TableCell>
                         <TableCell>Discount Amount</TableCell>
+                        <TableCell>Remarks from Collection</TableCell>
                         <TableCell>Status</TableCell>
-                        <TableCell>Remarks</TableCell>
+                        {(paymentInfo.isPaymentVerified || paymentInfo.isRejected) && <TableCell>Remarks from Account</TableCell> }
                         <TableCell>Update Status</TableCell>
                         <TableCell>Action</TableCell>
                     </TableRow>
