@@ -80,7 +80,7 @@ const DisbursalHold = () => {
                 columns={columns}
                 rows={rows}
                 totalRows={totalHoldApplications}
-                paginationModel={{ paginationModel}}
+                paginationModel={paginationModel}
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Hold Disbursals"

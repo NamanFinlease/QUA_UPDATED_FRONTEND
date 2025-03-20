@@ -121,7 +121,7 @@ const NewApplications = () => {
           columns={columns}
           rows={rows}
           totalRows={totalApplications}
-          paginationModel={{ paginationModel }}
+          paginationModel={paginationModel }
           onPageChange={handlePageChange}
           title="New Applications"
           actionButton={true}

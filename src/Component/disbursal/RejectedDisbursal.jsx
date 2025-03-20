@@ -75,7 +75,7 @@ const RejectedDisbursal = () => {
                 columns={columns}
                 rows={rows}
                 totalRows={totalRejectedApplcations}
-                paginationModel={{ paginationModel }}
+                paginationModel={ paginationModel }
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Rejected Disbursals"

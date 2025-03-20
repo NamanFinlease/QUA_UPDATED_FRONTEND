@@ -14,7 +14,7 @@ const RejectedLeads = () => {
     const navigate = useNavigate()
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
-        pageSize: 5,
+        pageSize: 10,
     });
     const { data, isSuccess,isLoading, isError, refetch } = useFetchAllRejectedLeadsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
     // const { data: LeadData, isSuccess: leadSuccess } = useFetchSingleLeadQuery(id, { skip: id === null })
@@ -77,7 +77,7 @@ const RejectedLeads = () => {
                 columns={columns}
                 rows={rows}
                 totalRows={totalRejectedLeads}
-                paginationModel={{ paginationModel}}
+                paginationModel={paginationModel}
                 onPageChange={handlePageChange}
                 onRowClick={handleRowClick}
                 title="Rejected Leads"

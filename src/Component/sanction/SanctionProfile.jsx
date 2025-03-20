@@ -137,7 +137,7 @@ const SanctionProfile = () => {
                     <ApplicationLogHistory id={data?.application?.lead?._id} />
                     {(!data.isApproved) && <CommonRemarks onRemarksChange={handleForwardRemarks} />}
                     {(!data.isApproved) && <Typography variant="h6" sx={{ mt: 2, color:colors.grey[400], fontSize:"14px", fontStyle:"italic" }}>
-                     * Remark is Mandatory to Approve
+                     * Remark is Mandatory to Approve (atleast 15 letters)
                     </Typography>}
                     {errorMessage && (
                       <Alert

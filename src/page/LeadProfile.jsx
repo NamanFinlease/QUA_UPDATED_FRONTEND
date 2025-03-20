@@ -145,9 +145,9 @@ const LeadProfile = () => {
                                         <CibilScorePage id={leadData._id} creditScore={leadData.cibilScore} />
                                         <InternalDedupe id={leadData._id} />
                                         <ApplicationLogHistory id={leadData._id} />
-                                        {(!leadData?.isRejected) && <CommonRemarks id={leadData._id} onRemarksChange={handleForwardRemarks}/>}
-                                        {(!leadData?.isRejected) && <Typography variant="h6" sx={{ mt: 2, color:colors.grey[400], fontSize:"14px", fontStyle:"italic" }}>
-                                        * Remark is Mandatory to forward the lead
+                                        {(!leadData?.isRejected || !leadData?.onHold) && <CommonRemarks id={leadData._id} onRemarksChange={handleForwardRemarks}/>}
+                                        {(!leadData?.isRejected || !leadData?.onHold) && <Typography variant="h6" sx={{ mt: 2, color:colors.grey[400], fontSize:"14px", fontStyle:"italic" }}>
+                                        * Remark is Mandatory to forward the lead (atleast 15 letters)
                                         </Typography>}
                                         {errorMessage && (
                                             <Alert
