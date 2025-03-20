@@ -46,7 +46,7 @@ const RejectedApplication = () => {
             ? [{ field: 'rejectedBy', headerName: 'Rejected By', width: 150 }]
             : [])
     ];
-    const rows = rejectedApplications?.map(application => ({
+    const rows = rejectedApplications?.applications?.map(application => ({
         id: application?._id,
         leadNo: application?.leadNo,
         name: `${application?.lead?.fName} ${application?.lead?.mName} ${application?.lead?.lName}`,
@@ -69,7 +69,7 @@ const RejectedApplication = () => {
                 columns={columns}
                 rows={rows}
                 totalRows={totalRejectedApplcations}
-                paginationModel={{ paginationModel }}
+                paginationModel={ paginationModel }
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Rejected Applications"

@@ -97,10 +97,10 @@ const ApplicationProfile = () => {
                     <CibilScorePage id={applicationData?.application?.lead?._id} creditScore={applicationData?.application?.lead?.cibilScore} />
                     <InternalDedupe id={applicationData?.application?.lead?._id} />
                     <ApplicationLogHistory id={applicationData?.application?.lead?._id} />
-                    <CommonRemarks id={applicationData?.application?.lead?._id} onRemarksChange={handleForwardRemarks} />
-                    <Typography variant="h6" sx={{ mt: 2, color:colors.grey[400], fontSize:"14px", fontStyle:"italic" }}>
-                      * Remark is Mandatory to forward the application
-                    </Typography>
+                    {(!applicationData?.application?.isRejected || !applicationData?.application?.onHold) && <CommonRemarks id={applicationData?.application?.lead?._id} onRemarksChange={handleForwardRemarks} />}
+                    {(!applicationData?.application?.isRejected || !applicationData?.application?.onHold) && <Typography variant="h6" sx={{ mt: 2, color:colors.grey[400], fontSize:"14px", fontStyle:"italic" }}>
+                      * Remark is Mandatory to forward the application (atleast 15 letters)
+                    </Typography>}
                     {errorMessage && (
                       <Alert
                           severity="error"

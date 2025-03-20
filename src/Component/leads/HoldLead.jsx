@@ -82,7 +82,7 @@ const HoldLead = () => {
                 columns={columns}
                 rows={rows}
                 totalRows={totalHoldLeads}
-                paginationModel={{paginationModel }}
+                paginationModel={paginationModel}
                 onPageChange={handlePageChange}
                 onRowClick={handleRowClick}
                 title="Leads Hold"

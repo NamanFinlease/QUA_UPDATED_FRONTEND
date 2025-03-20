@@ -30,7 +30,7 @@ const Residence = ({ residence }) => {
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: yupResolver(residenceSchema), // Connect Yup with React Hook Form
     defaultValues: {
-      address: residence?.address || '',
+      address: `${residence?.address || ''} ${residence?.landmark || ''}`.trim(),
       state: residence?.state || '',
       city: residence?.city || '',
       pincode: residence?.pincode || '',
@@ -47,7 +47,7 @@ const Residence = ({ residence }) => {
     setIsEditingResidence(prev => !prev);
     if (!isEditingResidence && residence) {
       reset({
-        address: residence?.address || '',
+        address: `${residence?.address || ''} ${residence?.landmark || ''}`.trim(),
         state: residence?.state || '',
         city: residence?.city || '',
         pincode: residence?.pincode || '',
@@ -94,7 +94,7 @@ const Residence = ({ residence }) => {
   useEffect(() => {
     if (residence && Object.keys(residence).length > 0) {
       setColumns([
-        { label: 'Address', value: `${residence?.address || ''} `, label2: 'State', value2: residence?.state || '' },
+        { label: 'Address', value: `${residence?.address || ''} ${residence?.landmark || ''} `, label2: 'State', value2: residence?.state || '' },
         { label: 'City', value: residence?.city || '', label2: 'Pin Code', value2: residence?.pincode || '' },
         { label: 'Residing Since', value: residence.residingSince && dayjs(residence.residingSince).format('DD-MM-YYYY') || '', },
       ]);
