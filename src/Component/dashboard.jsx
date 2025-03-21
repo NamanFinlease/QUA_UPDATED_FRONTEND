@@ -254,17 +254,29 @@ const Dashboard = () => {
     },
   },
   disbursalManager: {
-    leadNew: {
+    newDisbursal: {
       icon: <NewReleasesIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/disbursal-new",
       title: 'New ',
       no : data?.disbursal?.newDisbursals || 0
     },
-    leadProcess: {
+    disbursalProcess: {
       icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/disbursal-process",
-      title: 'Processing',
+      title: 'Disbursal In Process',
       no : data?.disbursal?.allocatedDisbursals || 0
+    },
+    disbursalHold: {
+      icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/disbursal-hold",
+      title: 'Hold Disbursals',
+      no : data?.disbursal?.HoldDisbursals || 0
+    },
+    disbursalRejected: {
+      icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/rejected-disbursals",
+      title: 'Rejected Disbursals',
+      no : data?.disbursal?.rejectedDisbursals || 0
     },
   
     

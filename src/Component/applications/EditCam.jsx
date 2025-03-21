@@ -42,7 +42,7 @@ const EditCam = ({ camData, setIsEditing }) => {
 
 
   console.log(camData)
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date();
 
   // Color theme
   const theme = useTheme();
@@ -189,28 +189,82 @@ const EditCam = ({ camData, setIsEditing }) => {
       // Handle date changes separately
       if (name === 'disbursalDate') {
         const newDate = dayjs(value);
-        updatedFormData.disbursalDate = newDate.toISOString(); // Store in ISO format
+        updatedFormData.disbursalDate = dayjs(newDate);
+        updatedFormData.repaymentDate = dayjs(updatedFormData.repaymentDate);
+        updatedFormData.nextPayDate = dayjs(updatedFormData.nextPayDate);
+        updatedFormData.salaryDate1 = dayjs(updatedFormData.salaryDate1);
+        updatedFormData.salaryDate2 = dayjs(updatedFormData.salaryDate2);
+        updatedFormData.salaryDate3 = dayjs(updatedFormData.salaryDate3);
         setDateTime((prev) => ({
           ...prev,
-          disbursalDate: newDate,
+          disbursalDate: updatedFormData.disbursalDate,
         }));
       }
-
+      
       if (name === 'repaymentDate') {
         const newDate = dayjs(value);
-        updatedFormData.repaymentDate = newDate.toISOString(); // Store in ISO format
+        updatedFormData.repaymentDate = dayjs(newDate);
+        updatedFormData.nextPayDate = dayjs(updatedFormData.nextPayDate);
+        updatedFormData.disbursalDate = dayjs(updatedFormData.disbursalDate);
+        updatedFormData.salaryDate1 = dayjs(updatedFormData.salaryDate1);
+        updatedFormData.salaryDate2 = dayjs(updatedFormData.salaryDate2);
+        updatedFormData.salaryDate3 = dayjs(updatedFormData.salaryDate3);
         setDateTime((prev) => ({
           ...prev,
-          repaymentDate: newDate,
+          repaymentDate: updatedFormData.repaymentDate,
         }));
       }
-
+      
       if (name === 'nextPayDate') {
         const newDate = dayjs(value);
-        updatedFormData.nextPayDate = newDate.toISOString(); // Store in ISO format
+        updatedFormData.nextPayDate = dayjs(newDate);
+        updatedFormData.repaymentDate = dayjs(updatedFormData.repaymentDate);
+        updatedFormData.disbursalDate = dayjs(updatedFormData.disbursalDate);
+        updatedFormData.salaryDate1 = dayjs(updatedFormData.salaryDate1);
+        updatedFormData.salaryDate2 = dayjs(updatedFormData.salaryDate2);
+        updatedFormData.salaryDate3 = dayjs(updatedFormData.salaryDate3);
         setDateTime((prev) => ({
           ...prev,
-          nextPayDate: newDate,
+          nextPayDate: updatedFormData.nextPayDate,
+        }));
+      }
+      if (name === 'salaryDate1') {
+        const newDate = dayjs(value);
+        updatedFormData.salaryDate1 = dayjs(newDate);
+        updatedFormData.repaymentDate = dayjs(updatedFormData.repaymentDate);
+        updatedFormData.disbursalDate = dayjs(updatedFormData.disbursalDate);
+        updatedFormData.nextPayDate = dayjs(updatedFormData.nextPayDate);
+        updatedFormData.salaryDate2 = dayjs(updatedFormData.salaryDate2);
+        updatedFormData.salaryDate3 = dayjs(updatedFormData.salaryDate3);
+        setDateTime((prev) => ({
+          ...prev,
+          nextPayDate: updatedFormData.nextPayDate,
+        }));
+      }
+      if (name === 'salaryDate2') {
+        const newDate = dayjs(value);
+        updatedFormData.salaryDate2 = dayjs(newDate);
+        updatedFormData.repaymentDate = dayjs(updatedFormData.repaymentDate);
+        updatedFormData.disbursalDate = dayjs(updatedFormData.disbursalDate);
+        updatedFormData.nextPayDate = dayjs(updatedFormData.nextPayDate);
+        updatedFormData.salaryDate1 = dayjs(updatedFormData.salaryDate1);
+        updatedFormData.salaryDate3 = dayjs(updatedFormData.salaryDate3);
+        setDateTime((prev) => ({
+          ...prev,
+          nextPayDate: updatedFormData.nextPayDate,
+        }));
+      }
+      if (name === 'salaryDate3') {
+        const newDate = dayjs(value);
+        updatedFormData.salaryDate3 = dayjs(newDate);
+        updatedFormData.repaymentDate = dayjs(updatedFormData.repaymentDate);
+        updatedFormData.disbursalDate = dayjs(updatedFormData.disbursalDate);
+        updatedFormData.nextPayDate = dayjs(updatedFormData.nextPayDate);
+        updatedFormData.salaryDate2 = dayjs(updatedFormData.salaryDate2);
+        updatedFormData.salaryDate1 = dayjs(updatedFormData.salaryDate1);
+        setDateTime((prev) => ({
+          ...prev,
+          nextPayDate: updatedFormData.nextPayDate,
         }));
       }
 
@@ -548,7 +602,8 @@ const EditCam = ({ camData, setIsEditing }) => {
                 handleChange({
                   target: {
                     name: 'nextPayDate',
-                    value: newValue ? newValue.toISOString() : '',
+                    value: newValue,
+                    // value: newValue ? newValue.toISOString() : '',
                   },
                 });
               }}
@@ -865,12 +920,13 @@ const EditCam = ({ camData, setIsEditing }) => {
               handleChange({
                 target: {
                   name: 'disbursalDate',
-                  value: newValue ? newValue.toISOString() : '',
+                  value: newValue,
+                  // value: newValue ? newValue.toISOString() : '',
                 },
               });
             }}
             slotProps={{
-              textField: { format: "DD/MM/YYYY" },
+              textField: { format: "DD-MM-YYYY" },
             }}
             renderInput={(params) => (
               <TextField
@@ -904,12 +960,13 @@ const EditCam = ({ camData, setIsEditing }) => {
                 handleChange({
                   target: {
                     name: 'repyamentDate',
-                    value: newValue ? newValue.toISOString() : '',
+                    value: newValue,
+                    // value: newValue ? newValue.toISOString() : '',
                   },
                 });
               }}
               slotProps={{
-                textField: { format: "DD/MM/YYYY" },
+                textField: { format: "DD-MM-YYYY" },
               }}
               renderInput={(params) => (
                 <TextField
@@ -1004,16 +1061,25 @@ const EditCam = ({ camData, setIsEditing }) => {
           type="submit"
           variant="contained"
           disabled={isLoading}
-          onclick={handleSubmit}
+          onClick={(e) => {
+            if (formData.remarks.trim().length < 30) {
+              e.preventDefault();
+            }else{
+                handleSubmit()
+            }
+        }}
+          // onclick={handleSubmit}
           sx={{
-            backgroundColor: isLoading ? '#ccc' : colors.white[100],
-            color: isLoading ? '#666' : colors.primary[400],
-            border: `2px solid ${colors.primary[400]}`,
+            backgroundColor: (isLoading || formData.remarks?.length < 30) ? '#ccc' : colors.white[100],
+            color: (isLoading || formData.remarks?.length < 30) ? '#666' : colors.primary[400],
+            border: (isLoading || formData.remarks?.length < 30) ? '2px solid #ccc' : `2px solid ${colors.primary[400]}`,
             borderRadius: '0px 10px',
-            cursor: isLoading ? 'not-allowed' : 'pointer',
+            cursor: (isLoading || formData.remarks?.length < 30) ? 'not-allowed' : 'pointer',
             '&:hover': {
-              backgroundColor: isLoading ? '#ccc' : colors.primary[400],
-              color: isLoading ? '#ccc' : colors.white[100],
+              border: (isLoading || formData.remarks?.length < 30) ? '2px solid #ccc' : `2px solid ${colors.primary[400]}`,
+              backgroundColor: (isLoading || formData.remarks?.length < 30) ? '#ccc' : colors.primary[400],
+              color: (isLoading || formData.remarks?.length < 30) ? '#666' : colors.white[100],
+              cursor:(isLoading || formData.remarks?.length < 30) ? 'not-allowed' : 'pointer',
             },
           }}
         >
