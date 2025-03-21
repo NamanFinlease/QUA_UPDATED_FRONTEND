@@ -1,15 +1,36 @@
-import React, { useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Typography, Button, Box, useTheme, Tooltip } from '@mui/material';
-import { tokens } from '../theme';
-import DeleteIcon from '@mui/icons-material/Delete';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DownloadIcon from '@mui/icons-material/Download';
-import { useLazyGetLeadDocsQuery } from '../Service/Query';
-import Swal from 'sweetalert2';
+import React, { useEffect } from "react";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    IconButton,
+    Typography,
+    Button,
+    Box,
+    useTheme,
+    Tooltip,
+} from "@mui/material";
+import { tokens } from "../theme";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import DownloadIcon from "@mui/icons-material/Download";
+import { useLazyGetLeadDocsQuery } from "../Service/Query";
+import Swal from "sweetalert2";
 
-const DocumentsTable = ({ leadData, uploadedDocs, setSelectedBSA, selectedDocType,selectedBSA,getBanks }) => {
-
-    const [getLeadDocs, { data, isSuccess, isError, error }] = useLazyGetLeadDocsQuery();
+const DocumentsTable = ({
+    leadData,
+    uploadedDocs,
+    setSelectedBSA,
+    selectedDocType,
+    selectedBSA,
+    getBanks,
+}) => {
+    const [getLeadDocs, { data, isSuccess, isError, error }] =
+        useLazyGetLeadDocsQuery();
 
     // Color theme
     const theme = useTheme();
@@ -27,14 +48,26 @@ const DocumentsTable = ({ leadData, uploadedDocs, setSelectedBSA, selectedDocTyp
     };
 
     const selectFile = (file) => {
-        console.log('file',file)
+        console.log("file", file);
 
-        setSelectedBSA(prev => [...prev,file])
-        getBanks()
+        setSelectedBSA((prev) => [...prev, file]);
+        getBanks();
+    };
 
-    }
+    const formatName = (name) => {
+        const mappings = {
+            panCard: "PAN Card",
+            aadhaarCard: "Aadhaar Card",
+            cibilReport: "CIC Report",
+        };
 
+        if (mappings[name]) return mappings[name];
 
+        return name
+            .replace(/_/g, " ") // Replace underscores with spaces
+            .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space before capital letters
+            .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
+    };
 
     useEffect(() => {
         if (isSuccess && data) {
@@ -57,7 +90,15 @@ const DocumentsTable = ({ leadData, uploadedDocs, setSelectedBSA, selectedDocTyp
         }
     }, [isSuccess, data]);
     return (
-        <TableContainer component={Box} sx={{ marginTop: 6, borderRadius: '0px 20px 0px 20px', border: `1px solid ${colors.primary[400]}`, overflow: 'hidden' }}>
+        <TableContainer
+            component={Box}
+            sx={{
+                marginTop: 6,
+                borderRadius: "0px 20px 0px 20px",
+                border: `1px solid ${colors.primary[400]}`,
+                overflow: "hidden",
+            }}
+        >
             <Table>
                 <TableHead>
                     <TableRow
@@ -66,25 +107,40 @@ const DocumentsTable = ({ leadData, uploadedDocs, setSelectedBSA, selectedDocTyp
                             color: colors.white[100],
                         }}
                     >
-                        <TableCell sx={{ fontWeight: 'bold' }}>S.N</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold' }}>Name</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold' }}>Remarks / Document Credentials</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold' }}>View</TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }}>Actions</TableCell>
+                        <TableCell sx={{ fontWeight: "bold" }}>S.N</TableCell>
+                        <TableCell sx={{ fontWeight: "bold" }}>Name</TableCell>
+                        <TableCell sx={{ fontWeight: "bold" }}>
+                            Remarks / Document Credentials
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: "bold" }}>View</TableCell>
+                        <TableCell sx={{ fontWeight: "bold" }}>
+                            Actions
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {uploadedDocs?.map((doc, index) => (
                         <TableRow key={doc?._id}>
-                            <TableCell sx={{ color: colors.black[100] }}>{index + 1}</TableCell>
-                            <TableCell sx={{ color: colors.black[100] }}>{doc?.name}</TableCell>
-                            <TableCell sx={{ color: colors.black[100] }}>{doc?.remarks}</TableCell>
-                            <TableCell >
+                            <TableCell sx={{ color: colors.black[100] }}>
+                                {index + 1}
+                            </TableCell>
+                            <TableCell sx={{ color: colors.black[100] }}>
+                                {formatName(doc?.name)}
+                            </TableCell>
+                            <TableCell sx={{ color: colors.black[100] }}>
+                                {doc?.remarks}
+                            </TableCell>
+                            <TableCell>
                                 {/* <IconButton sx={{ color: '#454443'}} onClick={() => handleDownload(doc)}>
                                         <VisibilityIcon />
                                     </IconButton> */}
-                                {doc.url.split("/")[1] === "statementAnalyser" ? 
-                                    <Tooltip title="Download Statement" arrow placement='top'>
+                                {doc.url.split("/")[1] ===
+                                "statementAnalyser" ? (
+                                    <Tooltip
+                                        title="Download Statement"
+                                        arrow
+                                        placement="top"
+                                    >
                                         <IconButton
                                             color="primary"
                                             component="a"
@@ -96,8 +152,12 @@ const DocumentsTable = ({ leadData, uploadedDocs, setSelectedBSA, selectedDocTyp
                                             <DownloadIcon />
                                         </IconButton>
                                     </Tooltip>
-                                    :
-                                    <Tooltip title="View Document" arrow placement='top'>
+                                ) : (
+                                    <Tooltip
+                                        title="View Document"
+                                        arrow
+                                        placement="top"
+                                    >
                                         <IconButton
                                             color="primary"
                                             component="a"
@@ -109,31 +169,34 @@ const DocumentsTable = ({ leadData, uploadedDocs, setSelectedBSA, selectedDocTyp
                                             <VisibilityIcon />
                                         </IconButton>
                                     </Tooltip>
-                                }
+                                )}
                             </TableCell>
                             <TableCell>
-                            {(doc?.type || doc.url.split("/")[1]) === "bankStatement" ?
+                                {(doc?.type || doc.url.split("/")[1]) ===
+                                "bankStatement" ? (
                                     <Button
                                         variant="contained"
                                         size="small"
-                                        onClick={() => selectFile(doc._id)}                                        
-                                        disabled={selectedDocType || selectedBSA.includes(doc._id)}
+                                        onClick={() => selectFile(doc._id)}
+                                        disabled={
+                                            selectedDocType ||
+                                            selectedBSA.includes(doc._id)
+                                        }
                                         sx={{
-                                            borderRadius: '0px 10px',
-                                            textTransform: 'none',
-                                            '&.Mui-disabled': {
-                                                backgroundColor: colors.primary[400],
+                                            borderRadius: "0px 10px",
+                                            textTransform: "none",
+                                            "&.Mui-disabled": {
+                                                backgroundColor:
+                                                    colors.primary[400],
                                                 opacity: 0.5,
-                                                cursor: 'not-allowed',
-                                                pointerEvents: 'none',
+                                                cursor: "not-allowed",
+                                                pointerEvents: "none",
                                             },
                                         }}
                                     >
                                         BSA
                                     </Button>
-                                    :
-                                    null
-                                    }
+                                ) : null}
                             </TableCell>
                         </TableRow>
                     ))}
