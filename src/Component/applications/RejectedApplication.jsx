@@ -26,7 +26,7 @@ const RejectedApplication = () => {
 
     useEffect(() => {
         if (data) {
-            setRejectedApplications(data?.rejectedApplications?.application)
+            setRejectedApplications(data?.rejectedApplications?.applications)
             setTotalRejectedApplications(data?.rejectedApplications?.totalApplications)
         }
     }, [isSuccess, data])
@@ -46,7 +46,7 @@ const RejectedApplication = () => {
             ? [{ field: 'rejectedBy', headerName: 'Rejected By', width: 150 }]
             : [])
     ];
-    const rows = rejectedApplications?.applications?.map(application => ({
+    const rows = rejectedApplications?.map(application => ({
         id: application?._id,
         leadNo: application?.leadNo,
         name: `${application?.lead?.fName} ${application?.lead?.mName} ${application?.lead?.lName}`,
