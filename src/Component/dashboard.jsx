@@ -116,7 +116,7 @@ const Dashboard = () => {
     },
     applicationHold: {
       icon: <PauseIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
-      path: "/applications-held",
+      path: "/application-hold",
       title: 'Applications Held',
       no : data?.applications?.heldApplications || 0
     },
@@ -125,6 +125,31 @@ const Dashboard = () => {
       path: "/rejected-applications",
       title: 'Applications Rejected',
       no : data?.applications?.rejectedApplications || 0
+    },
+    sanctionPending: {
+      icon: <NewReleasesIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/pending-sanctions",
+      title: 'Pending Sanction',
+      no : data?.sanction?.newSanctions || 0
+    },
+    sanctioned: {
+      icon: <NewReleasesIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/sanctioned",
+      title: 'Sanctioned',
+      no : data?.sanction?.sanctioned || 0
+    },
+    disbursePending: {
+      icon: <NewReleasesIcon className='mt-3'
+      sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/disbursal-pending",
+      title: 'Disbursal Pending',
+      no : data?.disbursal?.pendingDisbursals || 0
+    },
+    disbursed: {
+      icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
+      path: "/disbursed",
+      title: 'Disbursed',
+      no : data?.disbursal?.disbursed || 0
     },
   },
   screener: {
@@ -270,7 +295,7 @@ const Dashboard = () => {
       icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
       path: "/disbursal-hold",
       title: 'Hold Disbursals',
-      no : data?.disbursal?.HoldDisbursals || 0
+      no : data?.disbursal?.holdDisbursals || 0
     },
     disbursalRejected: {
       icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
@@ -395,35 +420,6 @@ const Dashboard = () => {
       no : 0
     },
   },
-  
-  supervisor :{
-    
-      leadNew: {
-        icon: <NewReleasesIcon className='mt-3'
-        sx={{ color: colors.primary[400], width:'100%',}} />,
-        path: "/lead-new",
-        title: 'Todays Leads',
-        no : supData?.leadsGeneratedToday
-      },
-      leadProcess: {
-        icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
-        path: "/lead-process",
-        title: 'Leads Process',
-        no : supData?.inProcessTodayCount
-      },
-      leadHold: {
-        icon: <PauseIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
-        path: "/lead-hold",
-        title: 'Leads Sanctioned',
-        no : supData?.sanctionedTodayCount
-      },
-      leadRejected: {
-        icon: <CancelIcon className='mt-3' sx={{ color: colors.primary[400], width:'100%', }} />,
-        path: "/rejected-leads",
-        title: 'Leads Rejected',
-        no : data?.leads?.rejectedleads || 0
-      },
-    },
 
     accountExecutive : {
     

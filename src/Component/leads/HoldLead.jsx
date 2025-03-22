@@ -38,7 +38,11 @@ const HoldLead = () => {
     useEffect(() => {
         if (data) {
             setHoldLeads(data?.heldLeads)
-        setTotalHoldLeads(data?.heldLeads?.totalRecords)
+            if (activeRole === "screener"){
+                setTotalHoldLeads(data?.heldLeads?.totalRecords)
+            } else {
+                setTotalHoldLeads(data?.heldLeads?.totalLeads)        
+            }
         }
     }, [isSuccess, data])
     const columns = [
@@ -74,7 +78,6 @@ const HoldLead = () => {
         { heldBy: `${lead?.heldBy?.fName}${lead?.heldBy?.mName ? ` ${lead?.heldBy?.mName}` :``} ${lead?.heldBy?.lName}`,})
         
     }));
-
 
     return (
         <>

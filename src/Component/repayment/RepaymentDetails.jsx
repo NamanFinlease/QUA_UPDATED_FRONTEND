@@ -74,17 +74,18 @@ const RepaymentDetails = ({disburse, repaymentId, collectionData}) => {
     { field: "paymentReferenceNumber", headerName: "Reference No", width: 150 },
     { field: "paymentStatus", headerName: "Payment Verification Status", width: 150 },
     { field: "paymentMethod", headerName: "Payment Method", width: 150 },
+    { field: "paymentMode", headerName: "Payment Mode", width: 150 },
     { field: "paymentDiscount", headerName: "Discount", width: 150 },
     { field: "excessAmount", headerName: "Excess Amount", width: 150 },
     { field: "collectionRemarks", headerName: "Remarks from Collections", width: 200 },
     { field: "accountRemarks", headerName: "Remarks from Accounts", width: 150 },
     // { field: 'recoveryDiscountType', headerName: 'Discount Type', width: 150 },
-    // { field: "recoveryRemarks", headerName: "Remarks", width: 150 },
   ];
 
   const rows = fetchRepaymentDetails?.repaymentDetails?.paymentHistory?.map((paymentHistory) => ({
     id: paymentHistory?._id,
     paymentMethod: paymentHistory?.paymentMethod,
+    paymentMode: paymentHistory?.paymentMode,
     bankName: paymentHistory?.bankName,
     paymentAmount: paymentHistory?.receivedAmount,
     closingType: paymentHistory?.closingType,

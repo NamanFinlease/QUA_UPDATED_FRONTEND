@@ -30,7 +30,7 @@ const DisbursalHold = () => {
     useEffect(() => {
         if (data) {
             setHoldApplications(data?.heldApplications?.disbursals)
-        setTotalHoldApplications(data?.heldApplications?.totalRecords)
+            setTotalHoldApplications(data?.heldApplications?.disbursals?.holdDisbursals)
         }
     }, [isSuccess, data])
 
