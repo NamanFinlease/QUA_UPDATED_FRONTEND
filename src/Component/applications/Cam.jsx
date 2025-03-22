@@ -91,9 +91,11 @@ const Cam = ({id}) => {
         disbursalDate: details?.disbursalDate && dayjs(details?.disbursalDate).format('YYYY-MM-DD') || '-',     // Disbursal Date
         finalSalaryToIncomeRatioPercentage: details?.finalSalaryToIncomeRatioPercentage || 0,     // Final Salary to income ratio
         repaymentDate: details?.repaymentDate && dayjs(details?.repaymentDate).format('YYYY-MM-DD')  || '-',     // Repayment Date
-        adminFeePercentage: details?.adminFeePercentage || '',  // Admin Fee Inc. GST (%)
+        adminFeePercentage: details?.adminFeePercentage || 15,  // Admin Fee Inc. GST (%)
+        // adminFeePercentage: details?.adminFeePercentage || '',  // Admin Fee Inc. GST (%)
         totalAdminFeeAmount: details?.totalAdminFeeAmount || '0',  // Admin Fee Inc. GST (%)
-        roi: details?.roi || '',                        // ROI (Rate of Interest)
+        roi: details?.roi || 0.75,                        // ROI (Rate of Interest)
+        // roi: details?.roi || '',                        // ROI (Rate of Interest)
         netAdminFeeAmount: details?.netAdminFeeAmount || 0,   // Net Admin Fee Amount
         eligibleTenure: details?.eligibleTenure || '-',   // Eligible Tenure
         repaymentAmount: details?.repaymentAmount || 0,   // Repayment Amount

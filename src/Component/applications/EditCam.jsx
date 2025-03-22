@@ -70,8 +70,8 @@ const EditCam = ({ camData, setIsEditing }) => {
     loanRecommended: '',       // Loan Recommended
     disbursalDate: '',         // Disbursal Date
     repaymentDate: '',         // Repayment Date
-    adminFeePercentage: '',    // Admin Fee Inc. GST (%)
-    roi: '',                   // ROI (Rate of Interest)
+    adminFeePercentage: 15,    // Admin Fee Inc. GST (%)
+    roi: 0.75,                 // ROI (Rate of Interest)
     netAdminFeeAmount: '',     // Net Admin Fee Amount
     eligibleTenure: '',        // Eligible Tenure
     repaymentAmount: '',       // Repayment Amount
@@ -97,12 +97,14 @@ const EditCam = ({ camData, setIsEditing }) => {
   };
 
   const calculateRepayment = (amount) => {
-    const repayAmount = Number(amount) ? Number(amount) + (Number(amount) * Number(formData.eligibleTenure) * Number(formData?.roi) / 100) : 0;
+    const fixedRoi = 0.75; // Fixed FixedRoi
+    const repayAmount = Number(amount) ? Number(amount) + (Number(amount) * Number(formData.eligibleTenure) * fixedRoi / 100) : 0;
     return repayAmount;
   };
 
   const calculatePF = (loanRecommended, pfPercent) => {
-    const processingFee = Number(loanRecommended) ? (Number(loanRecommended) * Number(pfPercent) / 100) : 0;
+    const fixedAdminFeePercentage = 15; // Fixed AdminFeePercentage
+    const processingFee = Number(loanRecommended) ? (Number(loanRecommended) * fixedAdminFeePercentage / 100) : 0;
     return processingFee;
   };
 
@@ -143,7 +145,7 @@ const EditCam = ({ camData, setIsEditing }) => {
       };
 
       if (name === 'adminFeePercentage') {
-        updatedFormData.netAdminFeeAmount = calculatePF(updatedFormData.loanRecommended, updatedFormData.adminFeePercentage);
+        updatedFormData.netAdminFeeAmount = calculatePF(updatedFormData.loanRecommended);
       }
 
       if (name === 'loanRecommended' || name === 'adminFeePercentage') {
@@ -776,15 +778,18 @@ const EditCam = ({ camData, setIsEditing }) => {
             InputLabelProps={{ shrink: true }}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            slotProps={{
-              input: {
-                endAdornment: (
-                  <InputAdornment position="end" style={{position:"absolute", marginLeft: '50px', }}>
-                    %
-                  </InputAdornment>
-                ),
-              },
+            InputProps={{
+              readOnly: true, // Make this field read-only
             }}
+            // slotProps={{
+            //   input: {
+            //     endAdornment: (
+            //       <InputAdornment position="end" style={{position:"absolute", marginLeft: '50px', }}>
+            //         %
+            //       </InputAdornment>
+            //     ),
+            //   },
+            // }}      
             required
           />
         </Box>
@@ -798,15 +803,18 @@ const EditCam = ({ camData, setIsEditing }) => {
             value={formData.adminFeePercentage}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            slotProps={{
-              input: {
-                endAdornment: (
-                  <InputAdornment position="end" style={{position:"absolute", marginLeft: '50px', }}>
-                    %
-                  </InputAdornment>
-                ),
-              },
+            InputProps={{
+              readOnly: true, // Make this field read-only
             }}
+            // slotProps={{
+            //   input: {
+            //     endAdornment: (
+            //       <InputAdornment position="end" style={{position:"absolute", marginLeft: '50px', }}>
+            //         %
+            //       </InputAdornment>
+            //     ),
+            //   },
+            // }}
             required
           />
         </Box>
@@ -874,15 +882,15 @@ const EditCam = ({ camData, setIsEditing }) => {
             value={formData.finalSalaryToIncomeRatioPercentage}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            slotProps={{
-              input: {
-                endAdornment: (
-                  <InputAdornment position="end" style={{position:"absolute", marginLeft: '50px', }}>
-                    %
-                  </InputAdornment>
-                ),
-              },
-            }}
+            // slotProps={{
+            //   input: {
+            //     endAdornment: (
+            //       <InputAdornment position="end" style={{position:"absolute", marginLeft: '50px', }}>
+            //         %
+            //       </InputAdornment>
+            //     ),
+            //   },
+            // }}
             InputProps={{
               readOnly: true,
             }}
