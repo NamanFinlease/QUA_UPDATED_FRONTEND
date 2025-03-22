@@ -16,10 +16,11 @@ const AllocatedCollectionLeads = () => {
         pageSize: 10,
     });
 
-    const { data, isSuccess, isLoading, isError, error, refetch } = useAllocatedCollectionsListQuery({
-        page: paginationModel.page + 1,
-        limit: paginationModel.pageSize,
-    });
+    const { data, isSuccess, isLoading, isError, error, refetch } =
+        useAllocatedCollectionsListQuery({
+            page: paginationModel.page + 1,
+            limit: paginationModel.pageSize,
+        });
 
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel);
@@ -44,8 +45,13 @@ const AllocatedCollectionLeads = () => {
         ...(activeRole === "collectionHead" || activeRole === "admin"
             ? [
                   {
-                      field: "disbursalHead",
+                      field: "disbursedBy",
                       headerName: "Disbursed By",
+                      width: 150,
+                  },
+                  {
+                      field: "collectionExecutive",
+                      headerName: "Collection Executive",
                       width: 150,
                   },
               ]
@@ -55,12 +61,13 @@ const AllocatedCollectionLeads = () => {
     useEffect(() => {
         if (isSuccess && data) {
             setAllocatedLeads(data.collectionList || []);
-            setTotalAllocatedLeads(data.collectionList.totalAllocatedLeads || 0);
+            setTotalAllocatedLeads(
+                data.collectionList.totalAllocatedLeads || 0
+            );
         }
     }, [isSuccess, data]);
 
     const rows = allocatedLeads?.map((allocatedLeads) => ({
-        
         id: allocatedLeads._id,
         leadNo: allocatedLeads?.leadNo,
         name: ` ${allocatedLeads.fName}  ${allocatedLeads.mName} ${allocatedLeads.lName}`,
@@ -74,10 +81,11 @@ const AllocatedCollectionLeads = () => {
         salary: allocatedLeads.salary,
         source: allocatedLeads.source,
         ...((activeRole === "collectionHead" || activeRole === "admin") && {
-            disbursalHead: allocatedLeads.disbursalBy,
+            disbursedBy: allocatedLeads.disbursedBy,
+            collectionExecutive: allocatedLeads.collectionExecutive,
         }),
     }));
-    console.log("rows", rows)
+    console.log("rows", rows);
 
     useEffect(() => {
         refetch({

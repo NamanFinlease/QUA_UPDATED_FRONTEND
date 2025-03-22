@@ -3,7 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
 import useAuthStore from "../store/authStore";
-import { useAllocatedPreCollectionsListQuery} from "../../Service/LMSQueries";
+import { useAllocatedPreCollectionsListQuery } from "../../Service/LMSQueries";
 import CommonTable from "../CommonTable";
 
 const AllocatedPreCollectionLeads = () => {
@@ -16,10 +16,11 @@ const AllocatedPreCollectionLeads = () => {
         pageSize: 10,
     });
 
-    const { data, isSuccess, isLoading, isError, error, refetch } = useAllocatedPreCollectionsListQuery({
-        page: paginationModel.page + 1,
-        limit: paginationModel.pageSize,
-    });
+    const { data, isSuccess, isLoading, isError, error, refetch } =
+        useAllocatedPreCollectionsListQuery({
+            page: paginationModel.page + 1,
+            limit: paginationModel.pageSize,
+        });
 
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel);
@@ -44,8 +45,13 @@ const AllocatedPreCollectionLeads = () => {
         ...(activeRole === "collectionHead" || activeRole === "admin"
             ? [
                   {
-                      field: "disbursalHead",
+                      field: "disbursedBy",
                       headerName: "Disbursed By",
+                      width: 150,
+                  },
+                  {
+                      field: "preCollectionExecutive",
+                      headerName: "Pre Collection Executive",
                       width: 150,
                   },
               ]
@@ -55,12 +61,13 @@ const AllocatedPreCollectionLeads = () => {
     useEffect(() => {
         if (isSuccess && data) {
             setAllocatedLeads(data.collectionList || []);
-            setTotalAllocatedLeads(data.collectionList.totalAllocatedLeads || 0);
+            setTotalAllocatedLeads(
+                data.collectionList.totalAllocatedLeads || 0
+            );
         }
     }, [isSuccess, data]);
 
     const rows = allocatedLeads?.map((allocatedLeads) => ({
-        
         id: allocatedLeads._id,
         leadNo: allocatedLeads?.leadNo,
         name: ` ${allocatedLeads.fName}  ${allocatedLeads.mName} ${allocatedLeads.lName}`,
@@ -74,10 +81,11 @@ const AllocatedPreCollectionLeads = () => {
         salary: allocatedLeads.salary,
         source: allocatedLeads.source,
         ...((activeRole === "collectionHead" || activeRole === "admin") && {
-            disbursalHead: allocatedLeads?.disbursedBy,
+            disbursedBy: allocatedLeads.disbursedBy,
+            preCollectionExecutive: allocatedLeads.preCollectionExecutive,
         }),
     }));
-    console.log("rows", rows)
+    console.log("rows", rows);
 
     useEffect(() => {
         refetch({
