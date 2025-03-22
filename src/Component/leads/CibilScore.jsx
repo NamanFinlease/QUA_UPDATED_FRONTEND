@@ -92,7 +92,7 @@ const CibilScore = ({ id, creditScore }) => {
   useEffect(() => {
     if (cibilRes?.isSuccess && cibilRes?.data && !cibilRes?.isFetching) {
       console.log('cibil score', cibilRes)
-      setCibilScore(cibilRes?.data)
+      setCibilScore(cibilRes?.data?.value)
 
     }
 
@@ -164,7 +164,7 @@ const CibilScore = ({ id, creditScore }) => {
                           color: colors.primary[400],
                         }}
                       >
-                        Credit Score: {(cibilScore || cibilRes?.data?.value) || 'Not Yet Fetched'}
+                        Credit Score: {cibilScore || cibilRes?.data?.value || 'Not Yet Fetched'}
                       </Typography>
                     </Box>
 

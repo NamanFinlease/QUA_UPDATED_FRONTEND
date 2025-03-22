@@ -639,12 +639,12 @@ const NewPaymentRecieved = ({repaymentDetails}) => {
                   type="submit"
                   variant="contained"
                   sx={{
-                    background: colors.primary[400],
+                    background: collectionRemarks.trim().length < 15 ? colors.grey[100] : colors.primary[400],
                     color: colors.white[100],
                     borderRadius: "0px 10px",
                     cursor: collectionRemarks.trim().length < 15 ? "not-allowed" : 'pointer',
                     ":hover": { 
-                      background: colors.primary[100],
+                      background: collectionRemarks.trim().length < 15 ? colors.grey[100] : colors.primary[100],
                       cursor : collectionRemarks.trim().length < 15 ? "not-allowed" : 'pointer', 
                     },
                   }}
