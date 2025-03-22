@@ -301,6 +301,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
             width: isSidebarOpen ? 265 : 0,
             height: "100%",
             color: colors.white[100],
+            padding:"0px 0px 80px 0px",
             position: "fixed",
             // top: 70,
             // left: 0,
